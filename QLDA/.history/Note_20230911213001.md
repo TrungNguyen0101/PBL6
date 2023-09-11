@@ -1,0 +1,9 @@
+# Thông báo thân thương
+
+##
+
+Mọi người thân thương hãy điền mấy task vào file excel giúp zyzy nhó.Mọi người chỉ cần điền tên task và tên mọi người thuii nhó yêu thương gất nhiều ạ.
+
+##
+
+> **Lưu ý**: Đừng ai sửa cái PROGRESS & START & END nhó.
