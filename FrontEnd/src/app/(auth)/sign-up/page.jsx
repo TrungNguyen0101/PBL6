@@ -53,7 +53,7 @@ export default function SignUpPage() {
   return (
     <div className="form-wrapper flex items-center justify-center px-[20px]">
       <form
-        className="w-[600px] mx-auto my-[50px] bg-[#eee] rounded-lg p-8 bg-opacity-60"
+        className="w-[600px] mx-auto  bg-[#eee] rounded-lg p-8 bg-opacity-60"
         onSubmit={handleSubmit(handleSignUp)}
       >
         <h1 className="mb-3 text-3xl font-bold">REGISTER</h1>

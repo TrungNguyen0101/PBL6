@@ -31,7 +31,7 @@ const InputTogglePassword = ({ name, control, errors }) => {
           )}
         </span>
       </div>
-      <p className="text-xs font-semibold text-red-700 h-[20px] whitespace-nowrap py-1 whitespace-break-spaces">
+      <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
         {errors?.password && errors.password.message}
       </p>
     </Field>
