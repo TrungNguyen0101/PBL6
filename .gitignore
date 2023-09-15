@@ -1,2 +1,2 @@
-Backend/
-FrontEnd/
+node_modules/
+*.log
