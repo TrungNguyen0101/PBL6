@@ -1,0 +1,7 @@
+input:focus,
+input:hover {
+  outline: none;
+  border-color: rgb(94, 105, 207);
+  background-color: #fff;
+  box-shadow: 0 0 0 5px rgb(94 105 207 / 40%);
+}

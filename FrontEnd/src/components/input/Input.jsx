@@ -1,4 +1,5 @@
 import { useController } from 'react-hook-form';
+import '../../styles/Input.css';
 
 const Input = ({ name, control, ...props }) => {
   const { field } = useController({ name, control, defaultValue: '' });

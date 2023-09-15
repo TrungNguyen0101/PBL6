@@ -8,7 +8,9 @@ const InputTogglePassword = ({ name, control, errors }) => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   return (
     <Field>
-      <Label htmlFor={name}>Password</Label>
+      <div className="mb-2">
+        <Label htmlFor={name}>Password</Label>
+      </div>
       <div className="relative w-full">
         <Input
           type={`${isShowPassword ? 'text' : 'password'}`}
@@ -29,9 +31,9 @@ const InputTogglePassword = ({ name, control, errors }) => {
           )}
         </span>
       </div>
-      {errors?.password && (
-        <p className="font-semibold text-red-700">{errors.password.message}</p>
-      )}
+      <p className="text-xs font-semibold text-red-700 h-[20px] whitespace-nowrap py-1">
+        {errors?.password && errors.password.message}
+      </p>
     </Field>
   );
 };
