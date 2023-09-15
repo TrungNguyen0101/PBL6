@@ -11,7 +11,6 @@ export default function Settings({ navigation }) {
   )
 }
 
-
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
