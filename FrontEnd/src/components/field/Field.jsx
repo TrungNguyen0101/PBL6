@@ -1,7 +1,5 @@
 const Field = ({ children }) => {
-  return (
-    <div className="flex flex-col items-start mb-3 gap-y-2">{children}</div>
-  );
+  return <div className="flex flex-col items-start">{children}</div>;
 };
 
 export default Field;
