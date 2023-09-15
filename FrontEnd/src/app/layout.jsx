@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import { Inter, Montserrat } from 'next/font/google';
 
 import './globals.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -29,6 +31,7 @@ export default function RootLayout({ children }) {
         )}
       >
         {children}
+        <ToastContainer autoClose={1000} />
       </body>
     </html>
   );

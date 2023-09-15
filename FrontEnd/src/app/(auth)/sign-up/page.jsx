@@ -9,6 +9,7 @@ import Button from '@/components/button/Button';
 import InputTogglePassword from '@/components/input/InputTogglePassword';
 import Link from 'next/link';
 import routes from '@/constant/routes';
+import InputToggleConfirmPassword from '@/components/input/InputToggleConfirmPassword';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -28,12 +29,15 @@ const schema = yup
           message:
             'Your password must have at least 1 uppercase, 1 lowercase, 1 special character',
         }
-      )
-      .required('Please enter your password'),
+      ),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref('password'), null], 'Password not matches')
+      .required('Please enter confirm your password'),
   })
   .required();
 
-export default function SignInPage() {
+export default function SignUpPage() {
   const {
     handleSubmit,
     control,
@@ -42,16 +46,16 @@ export default function SignInPage() {
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
-  const handleSignIn = (values) => {
+  const handleSignUp = (values) => {
     console.log(values);
   };
   return (
     <div className="form-wrapper">
       <form
         className="w-[500px] mx-auto mt-[120px] bg-[#eee] rounded-lg p-10 bg-opacity-60"
-        onSubmit={handleSubmit(handleSignIn)}
+        onSubmit={handleSubmit(handleSignUp)}
       >
-        <h1 className="mb-3 text-3xl font-bold">LOGIN</h1>
+        <h1 className="mb-3 text-3xl font-bold">REGISTER</h1>
         <Field>
           <Label htmlFor="username">Username</Label>
           <Input
@@ -85,13 +89,18 @@ export default function SignInPage() {
           control={control}
           errors={errors}
         />
-        <div className="mt-8">
-          <Button kind="secondary">Login</Button>
+        <InputToggleConfirmPassword
+          name="confirmPassword"
+          control={control}
+          errors={errors}
+        />
+        <div className="mt-10">
+          <Button kind="secondary">Register</Button>
         </div>
         <div className="text-center mt-[10px]">
-          <span className="font-medium">Do not have an account? </span>
-          <Link href={routes.REGISTER} className="font-bold">
-            Sign Up
+          <span className="font-medium">Do have an account? </span>
+          <Link href={routes.LOGIN} className="font-bold">
+            Sign In
           </Link>
         </div>
       </form>
