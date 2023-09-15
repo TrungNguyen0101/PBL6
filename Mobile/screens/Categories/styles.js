@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import colors from "./contains/colors";
+import colors from "../../contains/colors";
 
 const styles = StyleSheet.create({
     container: {
@@ -7,6 +7,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.bgColor,
         alignItems: 'stretch',
         justifyContent: 'center',
+        paddingHorizontal: 16,
+        paddingVertical: 8
     },
 });
 
