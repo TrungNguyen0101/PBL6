@@ -17,7 +17,7 @@ const InputTogglePassword = ({ name, control, errors }) => {
           name={name}
           control={control}
           id={name}
-          placeholder="Please enter your password"
+          placeholder="Enter your password"
         />
 
         <span
@@ -31,7 +31,7 @@ const InputTogglePassword = ({ name, control, errors }) => {
           )}
         </span>
       </div>
-      <p className="text-xs font-semibold text-red-700 h-[20px] whitespace-nowrap py-1">
+      <p className="text-xs font-semibold text-red-700 h-[20px] whitespace-nowrap py-1 whitespace-break-spaces">
         {errors?.password && errors.password.message}
       </p>
     </Field>

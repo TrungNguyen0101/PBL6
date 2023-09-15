@@ -47,9 +47,9 @@ export default function SignInPage() {
     console.log(values);
   };
   return (
-    <div className="form-wrapper">
+    <div className="form-wrapper flex items-center justify-center px-[20px]">
       <form
-        className="w-[500px] mx-auto my-[50px] bg-[#eee] rounded-lg p-10 bg-opacity-60"
+        className="w-[500px] mx-auto my-[50px] bg-[#eee] rounded-lg p-8 bg-opacity-60"
         onSubmit={handleSubmit(handleSignIn)}
       >
         <h1 className="mb-3 text-3xl font-bold">LOGIN</h1>
@@ -62,7 +62,7 @@ export default function SignInPage() {
             name="username"
             control={control}
             id="username"
-            placeholder="Please enter your username"
+            placeholder="Enter your username"
           />
           <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
             {errors.username && errors.username.message}
@@ -77,7 +77,7 @@ export default function SignInPage() {
             name="email"
             control={control}
             id="email"
-            placeholder="Please enter your email address"
+            placeholder="Enter your email address"
           />
           <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
             {errors.email && errors.email.message}

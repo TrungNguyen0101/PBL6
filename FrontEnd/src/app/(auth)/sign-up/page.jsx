@@ -51,9 +51,9 @@ export default function SignUpPage() {
     console.log(values);
   };
   return (
-    <div className="form-wrapper">
+    <div className="form-wrapper flex items-center justify-center px-[20px]">
       <form
-        className="w-[500px] mx-auto my-[50px] bg-[#eee] rounded-lg p-10 bg-opacity-60"
+        className="w-[600px] mx-auto my-[50px] bg-[#eee] rounded-lg p-8 bg-opacity-60"
         onSubmit={handleSubmit(handleSignUp)}
       >
         <h1 className="mb-3 text-3xl font-bold">REGISTER</h1>
@@ -87,16 +87,18 @@ export default function SignUpPage() {
             {errors.email && errors.email.message}
           </p>
         </Field>
-        <InputTogglePassword
-          name="password"
-          control={control}
-          errors={errors}
-        />
-        <InputToggleConfirmPassword
-          name="confirmPassword"
-          control={control}
-          errors={errors}
-        />
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-x-[20px]">
+          <InputTogglePassword
+            name="password"
+            control={control}
+            errors={errors}
+          />
+          <InputToggleConfirmPassword
+            name="confirmPassword"
+            control={control}
+            errors={errors}
+          />
+        </div>
         <div className="mt-4">
           <ButtonForm>Register</ButtonForm>
         </div>
