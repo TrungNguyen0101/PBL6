@@ -1,15 +1,15 @@
-import Field from '../field/Field';
-import Label from '../label/Label';
-import Input from './Input';
+import Field from '../Field';
+import Label from '../Label';
+import Input from '../Input';
 import { useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
-const InputToggleConfirmPassword = ({ name, control, errors }) => {
+const InputTogglePassword = ({ name, control, errors }) => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   return (
     <Field>
       <div className="mb-2">
-        <Label htmlFor={name}>Confirm password</Label>
+        <Label htmlFor={name}>Password</Label>
       </div>
       <div className="relative w-full">
         <Input
@@ -17,7 +17,8 @@ const InputToggleConfirmPassword = ({ name, control, errors }) => {
           name={name}
           control={control}
           id={name}
-          placeholder="Enter confirm your password"
+          isIcon={true}
+          placeholder="Enter your password"
         />
 
         <span
@@ -31,11 +32,11 @@ const InputToggleConfirmPassword = ({ name, control, errors }) => {
           )}
         </span>
       </div>
-      <p className="font-semibold text-xs text-red-700 h-[20px] py-1 whitespace-break-spaces ">
-        {errors.confirmPassword && errors.confirmPassword.message}
+      <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
+        {errors?.password && errors.password.message}
       </p>
     </Field>
   );
 };
 
-export default InputToggleConfirmPassword;
+export default InputTogglePassword;

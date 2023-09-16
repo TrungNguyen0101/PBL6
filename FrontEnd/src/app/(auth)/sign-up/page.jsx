@@ -1,18 +1,18 @@
 'use client';
 
-import Label from '@/components/label/Label';
-import Input from '@/components/input/Input';
+import Label from '@/components/Label';
+import Input from '@/components/Input';
 import { useForm } from 'react-hook-form';
 import '../../../styles/Form.css';
-import Field from '@/components/field/Field';
-import Button from '@/components/button/Button';
-import InputTogglePassword from '@/components/input/InputTogglePassword';
+import Field from '@/components/Field';
+import Button from '@/components/Button';
+import InputTogglePassword from '@/components/InputTogglePassword';
 import Link from 'next/link';
 import routes from '@/constant/routes';
-import InputToggleConfirmPassword from '@/components/input/InputToggleConfirmPassword';
+import InputToggleConfirmPassword from '@/components/InputToggleConfirmPassword';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import ButtonForm from '@/components/buttonform/ButtonForm';
+import ButtonForm from '@/components/ButtonForm';
 
 const schema = yup
   .object({
@@ -99,7 +99,7 @@ export default function SignUpPage() {
             errors={errors}
           />
         </div>
-        <div className="mt-4">
+        <div className="mt-6">
           <ButtonForm>Register</ButtonForm>
         </div>
         <div className="text-center mt-[10px]">
