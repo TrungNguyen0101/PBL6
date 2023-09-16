@@ -1,9 +1,13 @@
+'use client';
+
 import classNames from 'classnames';
 import { Inter, Montserrat } from 'next/font/google';
 
 import './globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import { Provider } from 'react-redux';
+import store from '@/redux/store';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -30,7 +34,7 @@ export default function RootLayout({ children }) {
           'flex flex-col min-h-screen'
         )}
       >
-        {children}
+        <Provider store={store}>{children}</Provider>
         <ToastContainer autoClose={1000} />
       </body>
     </html>
