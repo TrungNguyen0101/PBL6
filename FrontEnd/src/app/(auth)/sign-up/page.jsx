@@ -1,18 +1,18 @@
 'use client';
 
-import Label from '@/components/Label';
-import Input from '@/components/Input';
-import { useForm } from 'react-hook-form';
-import '../../../styles/Form.css';
-import Field from '@/components/Field';
-import Button from '@/components/Button';
-import InputTogglePassword from '@/components/InputTogglePassword';
-import Link from 'next/link';
 import routes from '@/constant/routes';
+import Link from 'next/link';
+import Label from '@/components/Label';
+import InputTogglePassword from '@/components/InputTogglePassword';
 import InputToggleConfirmPassword from '@/components/InputToggleConfirmPassword';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import Input from '@/components/Input';
+import Field from '@/components/Field';
 import ButtonForm from '@/components/ButtonForm';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { HiArrowNarrowLeft } from 'react-icons/hi';
+import '../../../styles/Form.css';
 
 const schema = yup
   .object({
@@ -99,13 +99,22 @@ export default function SignUpPage() {
             errors={errors}
           />
         </div>
-        <div className="mt-6">
+        <div className="mx-auto mt-6 w-max">
           <ButtonForm>Register</ButtonForm>
         </div>
         <div className="text-center mt-[10px]">
           <span className="font-medium">Do have an account? </span>
           <Link href={routes.LOGIN} className="font-bold">
             Sign In
+          </Link>
+        </div>
+        <div className="mx-auto mt-1 w-max">
+          <Link
+            href={routes.HOME}
+            className="flex items-center text-sm font-semibold gap-x-1"
+          >
+            <HiArrowNarrowLeft />
+            Back to home
           </Link>
         </div>
       </form>
