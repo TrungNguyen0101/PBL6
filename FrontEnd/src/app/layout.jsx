@@ -19,11 +19,6 @@ const montserrat = Montserrat({
   variable: '--font-montserrat',
 });
 
-export const metadata = {
-  title: 'Wiicamp - Next.js Template',
-  description: 'Created by Wiicamp',
-};
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
