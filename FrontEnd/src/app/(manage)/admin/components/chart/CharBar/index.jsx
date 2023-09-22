@@ -2,26 +2,17 @@
 
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import {
-  Chart,
-  ArcElement,
-  CategoryScale,
-  // LinearScale,
-  // LineController,
-  // LineElement,
-  // PointElement,
-  // Tooltip,
-} from 'chart.js';
+import Chart from 'chart.js/auto';
 
-Chart.register(
-  ArcElement,
-  CategoryScale
-  // Tooltip,
-  // LinearScale,
-  // LineController,
-  // LineElement,
-  // PointElement
-);
+// Chart.register(
+//   ArcElement,
+//   Tooltip,
+//   CategoryScale,
+//   LinearScale
+//   // LineController,
+//   // LineElement,
+//   // PointElement,
+// );
 
 function ChartBar() {
   const data = {
