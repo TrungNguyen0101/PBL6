@@ -2,26 +2,26 @@
 
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
-// import {
-//   ArcElement,
-//   CategoryScale,
-//   Chart,
-//   LinearScale,
-//   LineController,
-//   LineElement,
-//   PointElement,
-//   Tooltip,
-// } from 'chart.js';
+import {
+  Chart,
+  ArcElement,
+  CategoryScale,
+  // LinearScale,
+  // LineController,
+  // LineElement,
+  // PointElement,
+  // Tooltip,
+} from 'chart.js';
 
-// Chart.register(
-//   ArcElement,
-//   Tooltip,
-//   CategoryScale,
-//   LinearScale,
-//   LineController,
-//   LineElement,
-//   PointElement
-// );
+Chart.register(
+  ArcElement,
+  CategoryScale
+  // Tooltip,
+  // LinearScale,
+  // LineController,
+  // LineElement,
+  // PointElement
+);
 
 function ChartBar() {
   const data = {
@@ -68,10 +68,7 @@ function ChartBar() {
       },
     },
   };
-  const chartStyle = {
-    height: '400px',
-    width: '600px',
-  };
+
   return (
     // <div className="flex flex-col items-center justify-center bg-[#f9fbfc] p-[20px] md:max-w-[600px] sm:max-w-[500px] max-w-[400px]">
     <div className="flex flex-col items-center justify-center bg-[#f9fbfc] p-[20px] lg:w-[80%] w-full">
