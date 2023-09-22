@@ -7,9 +7,15 @@ const routes = {
   REGISTER: '/sign-up',
 
   // Private
-  DASHBOARD: '/dashboard',
+
   PROFILE: '/profile',
   SETTINGS: '/settings',
+
+  // Manage
+  DASHBOARD: '/admin',
+  ACCOUNT: '/admin/accounts',
+  PRODUCT: '/admin/products',
+  ORDER: '/admin/orders',
 };
 
 export default routes;

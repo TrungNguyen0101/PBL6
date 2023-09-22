@@ -1,5 +1,5 @@
 import React from 'react';
-import '../style/styled.css';
+import '../style/styled.scss';
 const ProductDetail = () => {
   return (
     <div>

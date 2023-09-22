@@ -1,39 +1,40 @@
-import { DocIcon } from "./icons/DocIcon";
-import { HomeIcon } from "./icons/HomeIcon";
-import { StatusIcon } from "./icons/StatusIcon";
-import { CreditIcon } from "./icons/CreditIcon";
-import { ArchiveIcon } from "./icons/ArchiveIcon";
-import { SettingsIcon } from "./icons/SettingsIcon";
+import { DashBoardIcon } from './icons/DashBoardIcon';
+import { AccountIcon } from './icons/AccountIcon';
+import { ProductIcon } from './icons/ProductIcon';
+import { OrderIcon } from './icons/OrderIcon';
+import { DocIcon } from './icons/DocIcon';
+import { SettingsIcon } from './icons/SettingsIcon';
+import routes from '@/constant/routes';
 
 export const data = [
   {
-    title: "Home",
-    icon: <HomeIcon />,
-    link: "/",
+    title: 'Dashboard',
+    icon: <DashBoardIcon />,
+    link: routes.DASHBOARD,
   },
   {
-    title: "Status",
-    icon: <StatusIcon />,
-    link: "/admin/status",
+    title: 'Accounts',
+    icon: <AccountIcon />,
+    link: routes.ACCOUNT,
   },
   {
-    title: "Archives",
-    icon: <ArchiveIcon />,
-    link: "/admin/archives",
+    title: 'Products',
+    icon: <ProductIcon />,
+    link: routes.PRODUCT,
   },
   {
-    title: "Credits",
-    icon: <CreditIcon />,
-    link: "/admin/credits",
+    title: 'Orders',
+    icon: <OrderIcon />,
+    link: routes.ORDER,
   },
   {
-    title: "Settings",
+    title: 'Settings',
     icon: <SettingsIcon />,
-    link: "/admin/settings",
+    link: '/admin/settings',
   },
   {
-    title: "Documentation",
+    title: 'Documentation',
     icon: <DocIcon />,
-    link: "/admin/documentation",
+    link: '/admin/documentation',
   },
 ];
