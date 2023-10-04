@@ -448,8 +448,6 @@ html {
   color: var(--black);
 }
 
-/*    <!-- End content-detail area --> */
-/*    <!-- Start footer content area --> */
 .product-content .footer-content {
   margin: 3.8rem 0px 0px 1.8rem;
 }
@@ -484,24 +482,6 @@ html {
   color: var(--bcg-add-hover);
 }
 
-/*    <!-- End footer content area --> */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* responsive */
 @media(max-width: 1500px) {
   html {
     font-size: 60%;
@@ -567,14 +547,9 @@ html {
     font-weight: 700;
   }
 
-  .content-detail .product-purchase-table .another-choice .product-share .social-network {
-    color: var(--fontcolor);
-    margin-left: 5px;
-  }
-
 }
 
-@media(max-width: 1200px) {
+@media(max-width: 991px) {
   html {
     font-size: 55%;
   }
@@ -620,6 +595,7 @@ html {
     height: auto;
     overflow: hidden;
   }
+
 }
 
 @media(max-width: 600px) {
@@ -668,7 +644,6 @@ html {
     height: auto;
     overflow: hidden;
   }
-
 
 }
 

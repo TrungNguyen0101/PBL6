@@ -2,11 +2,11 @@ import React from 'react';
 import '../style/styled.scss';
 const ProductDetail = () => {
   return (
-    <section class="content">
-      <div class="content-wrapper">
-        {/* <!-- Start main detail area --> */}
+    <div class="content">
+      <section class="content-wrapper">
+        <!-- Start main detail area -->
         <div class="detail-wrapper">
-          {/* <!-- Start product-view area --> */}
+          <!-- Start product-view area -->
           <div class="product-view">
             <img
               src="https://i.ebayimg.com/images/g/8vIAAOSwztNg1quw/s-l1600.jpg"
@@ -18,28 +18,20 @@ const ProductDetail = () => {
               <span class="product-feature">HOT</span>
             </div>
           </div>
-          {/* <!-- End product-view area --> */}
-          {/* <!-- Start product-content area --> */}
+          <!-- End product-view area -->
+          <!-- Start product-content area -->
           <div class="product-content">
-            {/* <!-- Start header-detail area --> */}
+            <!-- Start header-detail area -->
             <div class="header-detail">
               <div class="path-detail">
                 <nav class="product-path">
-                  <a href="#" class="home">
-                    Home
-                  </a>
-                  <a href="#" class="icon-division">
-                    /
-                  </a>
-                  <a href="#" class="Adventure">
-                    Adventure
-                  </a>
-                  <a href="#" class="icon-division">
-                    /
-                  </a>
-                  <span class="product-name">
-                    Nobita và vùng đất lý tưởng trên mây
-                  </span>
+                  <a href="#" class="home">Home</a>
+                  <a href="#" class="icon-division">/</a>
+                  <a href="#" class="Adventure">Adventure</a>
+                  <a href="#" class="icon-division">/</a>
+                  <span class="product-name"
+                    >Nobita và vùng đất lý tưởng trên mây</span
+                  >
                 </nav>
               </div>
               <div class="product-management">
@@ -48,8 +40,8 @@ const ProductDetail = () => {
                 <i class="fa fa-angle-right product-next"></i>
               </div>
             </div>
-            {/* <!-- End header-detail area --> */}
-            {/* <!-- Start content-detail area --> */}
+            <!-- End header-detail area -->
+            <!-- Start content-detail area -->
             <div class="content-detail">
               <div class="product-information">
                 <h1 class="product-title">
@@ -61,13 +53,11 @@ const ProductDetail = () => {
                   <i class="fa fa-solid fa-star fa-2xl icon-star"></i>
                   <i class="fa fa-solid fa-star fa-2xl icon-star"></i>
                   <i class="fa fa-solid fa-star fa-2xl icon-star"></i>
-                  <span class="customer-review">
-                    (
-                    <a href="#" class="customer-review-link">
-                      2 Customer reviews
-                    </a>
-                    )
-                  </span>
+                  <span class="customer-review"
+                    >(<a href="#" class="customer-review-link"
+                      >2 Customer reviews</a
+                    >)</span
+                  >
                 </div>
                 <div class="product-description">
                   <p>
@@ -90,13 +80,11 @@ const ProductDetail = () => {
                   </div>
                   <div class="developer">
                     <span class="orther-title">Developer</span>
-                    <a href="#" class="dev-link">
-                      Raven Software
-                    </a>
+                    <a href="#" class="dev-link">Raven Software</a>
                   </div>
                 </div>
               </div>
-              {/* <!-- Start product-purchase-table area --> */}
+              <!-- Start product-purchase-table area -->
               <div class="product-purchase-table">
                 <div class="product-price">
                   <span class="old-price">$34.99</span>
@@ -138,29 +126,30 @@ const ProductDetail = () => {
                 <footer class="another-choice">
                   <div class="favorite-product">
                     <a href="#" class="favpro-text">
-                      <i class="fa fa-heart-o icon-heart"></i> Add to wishlist
-                    </a>
+                      <i class="fa fa-heart-o icon-heart"></i> Add to
+                      wishlist</a
+                    >
                   </div>
                   <div class="product-share">
                     <span class="prosha-text">Share:</span>
-                    <a href="#" class="social-network icon-facebook">
-                      <i class="fa fa-brands fa-facebook-f icon-facebook"></i>
-                    </a>
-                    <a href="#" class="social-network icon-twitter">
-                      <i class="fa fa-brands fa-twitter icon-twitter"></i>
-                    </a>
-                    <a href="#" class="social-network icon-mail">
-                      <i class="fa fa-solid fa-envelope icon-mail"></i>
-                    </a>
-                    <a href="#" class="social-network icon-telegram">
-                      <i class="fa fa-brands fa-telegram icon-telegram"></i>
-                    </a>
+                    <a href="#" class="social-network icon-facebook"
+                      ><i class="fa fa-brands fa-facebook-f icon-facebook"></i
+                    ></a>
+                    <a href="#" class="social-network icon-twitter"
+                      ><i class="fa fa-brands fa-twitter icon-twitter"></i
+                    ></a>
+                    <a href="#" class="social-network icon-mail"
+                      ><i class="fa fa-solid fa-envelope icon-mail"></i
+                    ></a>
+                    <a href="#" class="social-network icon-telegram"
+                      ><i class="fa fa-brands fa-telegram icon-telegram"></i
+                    ></a>
                   </div>
                 </footer>
               </div>
-              {/* <!-- End product-purchase-table area --> */}
+              <!-- End product-purchase-table area -->
             </div>
-            {/* <!-- End content-detail area --> */}
+            <!-- End content-detail area -->
             <div class="footer-content">
               <table class="footer-tb">
                 <tbody class="footer-detail">
@@ -173,9 +162,7 @@ const ProductDetail = () => {
                       />
                     </th>
                     <td class="item-value">
-                      <p>
-                        <a href="#">Action</a>
-                      </p>
+                      <p><a href="#">Action</a></p>
                     </td>
                   </tr>
                   <tr class="mild-language">
@@ -187,9 +174,7 @@ const ProductDetail = () => {
                       />
                     </th>
                     <td class="item-value">
-                      <p>
-                        <a href="#">Mild Language,Violence</a>
-                      </p>
+                      <p><a href="#">Mild Language,Violence</a></p>
                     </td>
                   </tr>
                   <tr class="support-language">
@@ -201,9 +186,7 @@ const ProductDetail = () => {
                       />
                     </th>
                     <td class="item-value">
-                      <p>
-                        <a href="#">12 Support Language</a>
-                      </p>
+                      <p><a href="#">12 Support Language</a></p>
                     </td>
                   </tr>
                   <tr class="single-player">
@@ -215,24 +198,22 @@ const ProductDetail = () => {
                       />
                     </th>
                     <td class="item-value">
-                      <p>
-                        <a href="#">12 Support Language</a>
-                      </p>
+                      <p><a href="#">12 Support Language</a></p>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
-          {/* <!-- End product-content area --> */}
+          <!-- End product-content area -->
         </div>
-        {/* <!-- End  main detail area --> */}
-        {/* <!-- Specification --> */}
+        <!-- End  main detail area -->
+        <!-- {/* Specification */} -->
         <div>12312</div>
-        {/* <!-- Customer Reviews --> */}
+        <!-- {/* Customer Reviews */} -->
         <div>123213</div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 
