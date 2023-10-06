@@ -2,23 +2,35 @@ import { StyleSheet } from "react-native"
 import colors from "../../contains/colors";
 
 const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        padding: 16,
-        borderRadius: 4,
-        backgroundColor: colors.primaryColor,
-        shadowColor: colors.blackColor,
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
-        shadowOffset: { width: 0, height: 0 },
-        marginBottom: 16,
-    },
-    title: {
-        color: colors.whiteColor,
-        textTransform: 'uppercase',
-        marginBottom: 8,
-        fontWeight: '700'
-    }
-})
+  container: {
+    marginHorizontal: 12,
+    marginVertical: 4,
+    elevation: 12,
+    backgroundColor: 'white', 
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+  },
+  backgroundImage: {
+    width: 180,
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  textWrapper: {
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-end',
+    height: '100%'
+  },
+  title: {
+    color: colors.blackColor,
+    fontSize: 18,
+    fontWeight: 'bold',
+    alignItems: 'flex-end'
+  },
+});
+
 
 export default styles;
