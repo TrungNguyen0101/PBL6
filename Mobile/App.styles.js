@@ -3,7 +3,7 @@ import colors from "./contains/colors";
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
         backgroundColor: colors.bgColor,
         alignItems: 'stretch',
         justifyContent: 'center',
