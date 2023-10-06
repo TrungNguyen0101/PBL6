@@ -117,22 +117,20 @@ const ProductDetail = () => {
                   </div>
                 </div>
                 <div class="product-payment">
-                  <div class="add">
-                    <div class="col-wrap product-number">
-                      <div class="col col-minus">
-                        <i class="fa fa-light fa-minus fa-xs"></i>
-                      </div>
-                      <div class="col col-number">
-                        <span>1</span>
-                      </div>
-                      <div class="col col-plus">
-                        <i class="fa fa-light fa-plus fa-xs"></i>
-                      </div>
+                  <div class="col-wrap product-number">
+                    <div class="col col-minus">
+                      <i class="fa fa-light fa-minus fa-xs"></i>
                     </div>
-                    <button class="product-add">
-                      <span class="add-text">Add To Cart</span>
-                    </button>
+                    <div class="col col-number">
+                      <span>1</span>
+                    </div>
+                    <div class="col col-plus">
+                      <i class="fa fa-light fa-plus fa-xs"></i>
+                    </div>
                   </div>
+                  <button class="product-add">
+                    <span class="add-text">Add To Cart</span>
+                  </button>
                   <button class="product-buy">
                     <span class="buy-text">Buy Now</span>
                   </button>

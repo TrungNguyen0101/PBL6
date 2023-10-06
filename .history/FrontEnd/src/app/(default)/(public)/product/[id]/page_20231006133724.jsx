@@ -137,6 +137,7 @@ const ProductDetail = () => {
                     <span class="buy-text">Buy Now</span>
                   </button>
                 </div>
+                </div>
                 <footer class="another-choice">
                   <div class="favorite-product">
                     <a href="#" class="favpro-text">

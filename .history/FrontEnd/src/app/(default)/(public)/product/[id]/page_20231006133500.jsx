@@ -117,22 +117,20 @@ const ProductDetail = () => {
                   </div>
                 </div>
                 <div class="product-payment">
-                  <div class="add">
-                    <div class="col-wrap product-number">
-                      <div class="col col-minus">
-                        <i class="fa fa-light fa-minus fa-xs"></i>
-                      </div>
-                      <div class="col col-number">
-                        <span>1</span>
-                      </div>
-                      <div class="col col-plus">
-                        <i class="fa fa-light fa-plus fa-xs"></i>
-                      </div>
+                  <div class="col-wrap product-number">
+                    <div class="col col-minus">
+                      <i class="fa fa-light fa-minus fa-xs"></i>
                     </div>
-                    <button class="product-add">
-                      <span class="add-text">Add To Cart</span>
-                    </button>
+                    <div class="col col-number">
+                      <span>1</span>
+                    </div>
+                    <div class="col col-plus">
+                      <i class="fa fa-light fa-plus fa-xs"></i>
+                    </div>
                   </div>
+                  <button class="product-add">
+                    <span class="add-text">Add To Cart</span>
+                  </button>
                   <button class="product-buy">
                     <span class="buy-text">Buy Now</span>
                   </button>
@@ -228,13 +226,11 @@ const ProductDetail = () => {
           </div>
           {/* <!-- End product-content area --> */}
         </div>
-        {/* <!-- Start Description area --> */}
+        <!-- Start Description area -->
         <div class="description-wrapper">
-          <div class="description-title">
-            <h1>Description</h1>
-          </div>
+          <div class="description-title"><h1>Description</h1></div>
           <div class="description-slider">
-            {/* <!-- tôm làm phần ni co zy ngen --> */}
+            <!-- tôm làm phần ni co zy ngen -->
           </div>
           <div class="description-detail">
             <h2>Information about the story</h2>
@@ -310,7 +306,7 @@ const ProductDetail = () => {
             </div>
           </div>
         </div>
-        {/* <!-- End Description area --> */}
+        <!-- End Description area -->
         {/* <!-- End  main detail area --> */}
         {/* <!-- Specification --> */}
         <div>12312</div>

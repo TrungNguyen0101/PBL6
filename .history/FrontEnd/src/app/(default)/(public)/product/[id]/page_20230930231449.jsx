@@ -117,22 +117,20 @@ const ProductDetail = () => {
                   </div>
                 </div>
                 <div class="product-payment">
-                  <div class="add">
-                    <div class="col-wrap product-number">
-                      <div class="col col-minus">
-                        <i class="fa fa-light fa-minus fa-xs"></i>
-                      </div>
-                      <div class="col col-number">
-                        <span>1</span>
-                      </div>
-                      <div class="col col-plus">
-                        <i class="fa fa-light fa-plus fa-xs"></i>
-                      </div>
+                  <div class="col-wrap product-number">
+                    <div class="col col-minus">
+                      <i class="fa fa-light fa-minus fa-xs"></i>
                     </div>
-                    <button class="product-add">
-                      <span class="add-text">Add To Cart</span>
-                    </button>
+                    <div class="col col-number">
+                      <span>1</span>
+                    </div>
+                    <div class="col col-plus">
+                      <i class="fa fa-light fa-plus fa-xs"></i>
+                    </div>
                   </div>
+                  <button class="product-add">
+                    <span class="add-text">Add To Cart</span>
+                  </button>
                   <button class="product-buy">
                     <span class="buy-text">Buy Now</span>
                   </button>
@@ -228,89 +226,6 @@ const ProductDetail = () => {
           </div>
           {/* <!-- End product-content area --> */}
         </div>
-        {/* <!-- Start Description area --> */}
-        <div class="description-wrapper">
-          <div class="description-title">
-            <h1>Description</h1>
-          </div>
-          <div class="description-slider">
-            {/* <!-- tôm làm phần ni co zy ngen --> */}
-          </div>
-          <div class="description-detail">
-            <h2>Information about the story</h2>
-            <div class="main-actors">
-              <span class="actors-label">Main actors:</span>
-              <img
-                src="https://tse1.mm.bing.net/th?id=OIP.AbyqDkpwVGUclMtO1kqv0QHaEV&pid=Api&P=0&h=180"
-                alt=""
-                class="actors-img"
-              />
-              <img
-                src="https://vignette.wikia.nocookie.net/doraemon/images/1/1e/Nobita_Nobi_2005_anime_ID.png/revision/latest?cb=20181215061916&path-prefix=en"
-                alt=""
-                class="actors-img"
-              />
-              <img
-                src="http://game8.vn/media/201807/images/unnamed.jpg"
-                alt=""
-                class="actors-img"
-              />
-              <img
-                src="https://vignette.wikia.nocookie.net/doraemon/images/6/6e/Suneo_Honekawa_-_2D.png/revision/latest?cb=20150911122247&path-prefix=en"
-                alt=""
-                class="actors-img"
-              />
-              <img
-                src="https://img2.thuthuatphanmem.vn/uploads/2018/12/08/hinh-anh-chaien_105740138.jpg"
-                alt=""
-                class="actors-img"
-              />
-            </div>
-            <div class="story-summary">
-              <p class="story-summary-value">
-                Since the 1980s, to meet the needs of viewers, the author and
-                producer released the first Doraemon movie - Doraemon: Nobita's
-                Dinosaur. This first feature-length film publication of Doraemon
-                has made a big splash in the world. The series earned the
-                production crew 1.5 billion Yen and attracted more than 3
-                million views. Since then, every year, audiences have enjoyed a
-                cinematic release of the childhood animated series Doraemon.
-                Returning to the movie market this time, Doraemon's production
-                team promises to bring viewers a special movie called Doraemon:
-                Nobita and the Ideal Land in the Clouds. This new movie is
-                considered by many critics to have attractive content and
-                eye-catching effects. Thanks to that, the film easily brings
-                viewers to the fantasy world in the clouds with many interesting
-                and unique things.
-              </p>
-              <center>
-                <img
-                  src="https://bloganchoi.com/wp-content/uploads/2023/03/doraemon-nobita-sky-utobia.jpg"
-                  alt=""
-                  class="story-summary-img"
-                />
-              </center>
-              <p class="story-summary-value">
-                Doraemon Story 2023 will be a completely new adventure of
-                Nobita's group to the magical land of Paradapia. The story
-                begins when Nobita accidentally reads a book about Utopia. This
-                is a place that is described as bringing everyone a peaceful and
-                happy life.And with the help of Doraemon and his friends, Nobita
-                and everyone quickly set out to find the promised land. After a
-                long journey, Doraemon, Nobita and their friends finally arrived
-                at Paradapia. This fairyland floating in the sky is portrayed as
-                a paradise land, where everyone can live a leisurely and happy
-                life. This place was created by three prominent sages with the
-                desire to create a new world, perfect and suitable for everyone.
-                However, the joy did not last long before Paradapia faced the
-                risk of being wiped out. Faced with this fateful situation, what
-                will Nobita and his friends do to save the land of Paradapia?
-                Let's wait for the movie to get the answer!
-              </p>
-            </div>
-          </div>
-        </div>
-        {/* <!-- End Description area --> */}
         {/* <!-- End  main detail area --> */}
         {/* <!-- Specification --> */}
         <div>12312</div>

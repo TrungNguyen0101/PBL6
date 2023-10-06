@@ -129,9 +129,6 @@ const ProductDetail = () => {
                         <i class="fa fa-light fa-plus fa-xs"></i>
                       </div>
                     </div>
-                    <button class="product-add">
-                      <span class="add-text">Add To Cart</span>
-                    </button>
                   </div>
                   <button class="product-buy">
                     <span class="buy-text">Buy Now</span>
