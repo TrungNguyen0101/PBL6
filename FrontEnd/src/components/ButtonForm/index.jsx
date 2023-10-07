@@ -1,4 +1,4 @@
-import '../../styles/ButtonForm.css';
+import '../../styles/ButtonForm.scss';
 
 const ButtonForm = ({ children }) => {
   return (
@@ -7,10 +7,7 @@ const ButtonForm = ({ children }) => {
       <svg>
         <defs>
           <filter id="glow">
-            <fegaussianblur
-              result="coloredBlur"
-              stdDeviation="5"
-            ></fegaussianblur>
+            <fegaussianblur result="coloredBlur" stdDeviation="5" />
             <femerge>
               <femergenode in="coloredBlur"></femergenode>
               <femergenode in="coloredBlur"></femergenode>

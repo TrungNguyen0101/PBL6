@@ -1,84 +1,93 @@
+import routes from '@/constant/routes';
 import Link from 'next/link';
+import Image from 'next/image';
+import logo from '../../../assets/logo.png';
+import {
+  BsFacebook,
+  BsYoutube,
+  BsTwitter,
+  BsInstagram,
+  BsPinterest,
+  BsFillTelephoneFill,
+} from 'react-icons/bs';
+import { MdEmail } from 'react-icons/md';
 
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-gray-900">
-      <div className="max-w-screen-xl px-6 py-8 mx-auto">
-        <div className="flex flex-col items-center text-center">
-          <Link href="/">
-            <img
-              className="w-auto h-7"
-              src="https://merakiui.com/images/full-logo.svg"
-              alt=""
-            />
-          </Link>
-
-          <p className="max-w-md mx-auto mt-4 text-gray-500 dark:text-gray-400">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    <footer className="py-5 mt-10 bg-white">
+      <div className="flex items-center gap-x-10 wrapper-content">
+        <div className="w-[30%] border-r border-r-gray-500">
+          <div className="w-[150px] h-[150px] ml-16">
+            <Link href={routes.HOME}>
+              <Image src={logo} alt="" className="object-cover w-full h-full" />
+            </Link>
+          </div>
+          <p className="pr-2 mb-3 text-sm font-medium">
+            NTHĐV bán sách và giao hàng tận nơi. Không hỗ trợ đặt mua và nhận
+            hàng trực tiếp tại văn phòng cũng như tất cả hệ thống NTHĐV trên
+            toàn quốc.
           </p>
-
-          <div className="flex flex-col mt-4 sm:flex-row sm:items-center sm:justify-center">
-            <button
-              className="flex items-center justify-center order-1 w-full px-2 py-2 mt-3 text-sm tracking-wide text-gray-600 capitalize transition-colors duration-300 transform border rounded-md sm:mx-2 dark:border-gray-400 dark:text-gray-300 sm:mt-0 sm:w-auto hover:bg-gray-50 focus:outline-none focus:ring dark:hover:bg-gray-800 focus:ring-gray-300 focus:ring-opacity-40"
-              type="button"
-            >
-              <svg
-                className="w-5 h-5 mx-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C21.9939 17.5203 17.5203 21.9939 12 22ZM4 12.172C4.04732 16.5732 7.64111 20.1095 12.0425 20.086C16.444 20.0622 19.9995 16.4875 19.9995 12.086C19.9995 7.68451 16.444 4.10977 12.0425 4.086C7.64111 4.06246 4.04732 7.59876 4 12V12.172ZM10 16.5V7.5L16 12L10 16.5Z"
-                  fill="currentColor"
-                />
-              </svg>
-
-              <span className="mx-1">View Demo</span>
-            </button>
-
-            <button
-              className="w-full px-5 py-2 text-sm tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md sm:mx-2 sm:order-2 sm:w-auto hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-80"
-              type="button"
-            >
-              Get started
-            </button>
+          <div className="ml-16">
+            <h3 className="pl-5 mb-3 text-xl font-semibold">Mạng xã hội</h3>
+            <div className="flex gap-x-3">
+              <Link href={routes.HOME}>
+                <BsFacebook size="25px" color="#1773ea" />
+              </Link>
+              <Link href={routes.HOME}>
+                <BsInstagram size="25px" color="#f76520" />
+              </Link>
+              <Link href={routes.HOME}>
+                <BsYoutube size="25px" color="#f70101" />
+              </Link>
+              <Link href={routes.HOME}>
+                <BsTwitter size="25px" color="#26a5db" />
+              </Link>
+              <Link href={routes.HOME}>
+                <BsPinterest size="25px" color="#b7081b" />
+              </Link>
+            </div>
           </div>
         </div>
-
-        <hr className="my-10 border-gray-200 dark:border-gray-700" />
-
-        <div className="flex flex-col items-center sm:flex-row sm:justify-between">
-          <p className="text-sm text-gray-500">
-            © Copyright 2021. All Rights Reserved.
-          </p>
-
-          <div className="flex mt-3 -mx-2 sm:mt-0">
+        <div className="w-[70%] flex">
+          <div className="flex flex-col gap-y-2 w-[33.33%]">
+            <h3 className="text-xl font-semibold">Tìm hiểu thêm</h3>
             <Link
-              href="/"
-              className="mx-2 text-sm text-gray-500 transition-colors duration-300 hover:text-gray-500 dark:hover:text-gray-300"
-              aria-label="Reddit"
+              href={routes.INTRODUCE}
+              className="text-sm hover:text-[#6d4eec] transition-all w-max"
             >
-              {' '}
-              Teams{' '}
+              Giới thiệu NTHĐV
             </Link>
-
             <Link
-              href="/"
-              className="mx-2 text-sm text-gray-500 transition-colors duration-300 hover:text-gray-500 dark:hover:text-gray-300"
-              aria-label="Reddit"
+              href={routes.PRIVACY}
+              className="text-sm hover:text-[#6d4eec] transition-all w-max"
             >
-              {' '}
-              Privacy{' '}
+              Chính sách bảo mật thông tin cá nhân
             </Link>
-
+          </div>
+          <div className="flex flex-col gap-y-2 w-[33.33%] cursor-pointer">
+            <h3 className="text-xl font-semibold">Liên hệ</h3>
+            <span className="text-sm hover:text-[#6d4eec] transition-all w-max flex items-center gap-x-2">
+              <BsFillTelephoneFill size="15px" />
+              123-456-7890
+            </span>
+            <span className="text-sm hover:text-[#6d4eec] transition-all w-max flex items-center gap-x-2">
+              <MdEmail size="15px" />
+              nguyentuhuydatvy@gmail.com
+            </span>
+          </div>
+          <div className="flex flex-col gap-y-2 w-[33.33%]">
+            <h3 className="text-xl font-semibold">Tài khoản của tôi</h3>
             <Link
-              href="/"
-              className="mx-2 text-sm text-gray-500 transition-colors duration-300 hover:text-gray-500 dark:hover:text-gray-300"
-              aria-label="Reddit"
+              href={routes.LOGIN}
+              className="text-sm hover:text-[#6d4eec] transition-all w-max"
             >
-              {' '}
-              Cookies{' '}
+              Đăng nhập
+            </Link>
+            <Link
+              href={routes.REGISTER}
+              className="text-sm hover:text-[#6d4eec] transition-all w-max"
+            >
+              Tạo tài khoản mới
             </Link>
           </div>
         </div>

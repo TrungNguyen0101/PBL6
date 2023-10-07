@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    padding-bottom: 20px;
+    background-color: #f0f0f0;
+  }
+  .wrapper-content {
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .category-list .swiper-wrapper .swiper-slide {
+    width: 200px !important;
+    height: 150px !important;
+  }
+  .category-list .swiper .swiper-pagination {
+    transform: translateY(12px);
+  }
+  .button-next,
+  .button-prev {
+    position: relative;
+    z-index: 20;
+  }
+  .book-list .swiper-wrapper .swiper-slide {
+    width: 250px !important;
+    height: auto !important;
+  }
+  .book-list .swiper {
+    height: 100%;
+    position: relative !important;
+  }
+  .book-list .swiper .swiper-pagination {
+    transform: translateY(12px);
+    z-index: 20;
+  }
+}

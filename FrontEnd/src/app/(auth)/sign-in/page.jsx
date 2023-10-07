@@ -11,11 +11,10 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { HiArrowNarrowLeft } from 'react-icons/hi';
-import '../../../styles/Form.css';
+import '../../../styles/Form.scss';
 
 const schema = yup
   .object({
-    username: yup.string().required('Please enter your username'),
     email: yup
       .string()
       .email('Please enter valid email address')
@@ -53,21 +52,6 @@ export default function SignInPage() {
         onSubmit={handleSubmit(handleSignIn)}
       >
         <h1 className="mb-3 text-3xl font-bold">LOGIN</h1>
-        <Field>
-          <div className="mb-2">
-            <Label htmlFor="username">Username</Label>
-          </div>
-          <Input
-            type="text"
-            name="username"
-            control={control}
-            id="username"
-            placeholder="Enter your username"
-          />
-          <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
-            {errors.username && errors.username.message}
-          </p>
-        </Field>
         <Field>
           <div className="mb-2">
             <Label htmlFor="email">Email address</Label>
