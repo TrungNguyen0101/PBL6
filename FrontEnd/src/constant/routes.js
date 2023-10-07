@@ -1,6 +1,8 @@
 const routes = {
   // Public
   HOME: '/',
+  INTRODUCE: '/introduce',
+  PRIVACY: '/privacy',
 
   // Auth
   LOGIN: '/sign-in',

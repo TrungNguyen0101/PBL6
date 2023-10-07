@@ -12,7 +12,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { HiArrowNarrowLeft } from 'react-icons/hi';
-import '../../../styles/Form.css';
+import '../../../styles/Form.scss';
 
 const schema = yup
   .object({

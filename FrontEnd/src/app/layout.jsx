@@ -5,9 +5,14 @@ import { Inter, Montserrat } from 'next/font/google';
 
 import './globals.css';
 import 'react-toastify/dist/ReactToastify.css';
+import 'swiper/scss/scrollbar';
+import 'swiper/scss/pagination';
+import 'swiper/css/navigation';
+import 'swiper/scss';
 import { ToastContainer } from 'react-toastify';
 import { Provider } from 'react-redux';
 import store from '@/redux/store';
+import Backtop from '@/components/Backtop';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -31,6 +36,7 @@ export default function RootLayout({ children }) {
       >
         <Provider store={store}>{children}</Provider>
         <ToastContainer autoClose={1000} />
+        <Backtop />
       </body>
     </html>
   );
