@@ -785,9 +785,6 @@ body{
 
 /* responsive */
 @media(max-width: 1400px) {
-  html {
-    font-size: 60%;
-  }
 
   .content-detail {
     margin: 28px 0px 0px 25px;
@@ -875,9 +872,6 @@ body{
 
 
 @media(max-width: 1000px) {
-  html {
-    font-size: 55%;
-  }
 
   .detail-wrapper {
     display: grid;
@@ -976,10 +970,6 @@ body{
 
 
 @media(max-width: 600px) {
-  html {
-    font-size: 50%;
-  }
-
   .detail-wrapper {
     display: grid;
     grid-template-columns: 1fr;
@@ -1054,7 +1044,4 @@ body{
 
 
 @media(max-width: 450px) {
-  html {
-    font-size: 50%;
-  }
 }
