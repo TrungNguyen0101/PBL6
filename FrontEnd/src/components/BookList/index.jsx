@@ -3,20 +3,17 @@
 import React from 'react';
 import BookItem from '../BookItem';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-import ButtonSlide from '../ButtonSlide';
+import { Navigation, Pagination } from 'swiper';
+import '../../styles/SwiperButton.scss';
 
 const BookList = () => {
   return (
-    <div className="mt-5 book-list">
+    <div className="mt-5 book-list h-[220px]">
       <Swiper
-        modules={[Navigation, Pagination, Scrollbar, A11y]}
+        modules={[Navigation, Pagination]}
         spaceBetween={30}
         slidesPerView={'auto'}
-        navigation={{
-          nextEl: '.button-next-slide',
-          prevEl: '.button-prev-slide',
-        }}
+        navigation
         grabCursor={'true'}
         pagination={{ clickable: true }}
       >
@@ -41,7 +38,6 @@ const BookList = () => {
         <SwiperSlide>
           <BookItem />
         </SwiperSlide>
-        <ButtonSlide />
       </Swiper>
     </div>
   );

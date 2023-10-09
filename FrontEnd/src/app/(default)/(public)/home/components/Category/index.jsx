@@ -2,20 +2,16 @@
 
 import CategoryItem from '../CategoryItem';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-import ButtonSlide from '@/components/ButtonSlide';
+import { Navigation, Pagination } from 'swiper';
 
 const Category = () => {
   return (
-    <div className="mt-5 category-list">
+    <div className="mt-5 category-list h-[220px]">
       <Swiper
-        modules={[Navigation, Pagination, Scrollbar, A11y]}
+        modules={[Navigation, Pagination]}
         spaceBetween={30}
         slidesPerView={'auto'}
-        navigation={{
-          nextEl: '.button-next-slide',
-          prevEl: '.button-prev-slide',
-        }}
+        navigation
         grabCursor={'true'}
         pagination={{ clickable: true }}
       >
@@ -40,7 +36,6 @@ const Category = () => {
         <SwiperSlide>
           <CategoryItem />
         </SwiperSlide>
-        <ButtonSlide />
       </Swiper>
     </div>
   );
