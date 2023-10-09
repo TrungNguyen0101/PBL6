@@ -25,12 +25,12 @@
     z-index: 20;
   }
   .book-list .swiper-wrapper .swiper-slide {
-    width: 250px !important;
-    height: auto !important;
+    width: 200px !important;
+    height: 150px !important;
   }
-  .book-list .swiper {
+  .book-list .swiper,
+  .category-list .swiper {
     height: 100%;
-    position: relative !important;
   }
   .book-list .swiper .swiper-pagination {
     transform: translateY(12px);

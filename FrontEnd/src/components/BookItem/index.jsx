@@ -16,7 +16,7 @@ const BookItem = () => {
           />
         </Link>
       </div>
-      <div className="p-2 font-semibold">
+      <div className="p-1 font-semibold">
         <div className="flex items-center justify-between">
           <Link href={routes.HOME}>
             <span>Star wars Jedi</span>
