@@ -22,7 +22,7 @@ export function SidebarItems() {
     <ul className="md:pl-3">
       {data.map((item) => (
         <li key={item.title}>
-          <Link href={item.link}>
+          <Link href={item.link} as={item.link}>
             <span className={style.link}>
               <div
                 className={`p-2 ${item.link === pathname ? style.active : ''}`}

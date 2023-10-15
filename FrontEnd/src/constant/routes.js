@@ -15,9 +15,9 @@ const routes = {
 
   // Manage
   DASHBOARD: '/admin',
-  ACCOUNT: '/admin/accounts',
-  PRODUCT: '/admin/products',
-  ORDER: '/admin/orders',
+  ACCOUNT: '/admin-accounts',
+  PRODUCT: '/admin-products',
+  ORDER: '/admin-orders',
 };
 
 export default routes;

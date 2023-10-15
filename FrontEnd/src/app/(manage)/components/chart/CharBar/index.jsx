@@ -16,10 +16,10 @@ import Chart from 'chart.js/auto';
 
 function ChartBar() {
   const data = {
-    labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5'],
+    labels: ['January', 'February', 'March', 'April', 'May'],
     datasets: [
       {
-        label: 'Doanh Thu',
+        label: 'Sales',
         data: [12, 19, 3, 5, 2],
         backgroundColor: [
           'rgba(255, 99, 132, 0.6)',

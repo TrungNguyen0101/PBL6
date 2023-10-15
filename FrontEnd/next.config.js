@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  resolve: {
+    caseSensitive: false,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

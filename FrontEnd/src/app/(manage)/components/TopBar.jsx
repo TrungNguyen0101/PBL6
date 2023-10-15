@@ -1,12 +1,12 @@
 'use client';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleMenu } from '../../../../redux/reducers/menuReducer';
+import { toggleMenu } from '@/redux/reducers/menuReducer';
+import { useDispatch } from 'react-redux';
 
 export function TopBar() {
   const dispatch = useDispatch();
   return (
-    <header className="relative z-10 items-center h-20 pl-[10px]">
-      <div className="relative z-10 flex flex-col justify-center h-full px-3 mx-auto text-black">
+    <header className="relative z-10 items-center pl-[10px]">
+      <div className="relative z-10 flex flex-col justify-center h-full px-3 mx-auto text-black bg-[#90e0ef]">
         <div className="relative flex items-center w-full pl-1 sm:ml-0 sm:pr-2">
           <div className="relative flex items-center w-12 h-full group">
             <button
@@ -16,7 +16,17 @@ export function TopBar() {
               onClick={() => dispatch(toggleMenu())}
               className="text-4xl text-black focus:outline-none"
             >
-              &#8801;
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill="currentColor"
+                  d="M1 2.75A.75.75 0 0 1 1.75 2h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 2.75Zm0 5A.75.75 0 0 1 1.75 7h12.5a.75.75 0 0 1 0 1.5H1.75A.75.75 0 0 1 1 7.75ZM1.75 12h12.5a.75.75 0 0 1 0 1.5H1.75a.75.75 0 0 1 0-1.5Z"
+                />
+              </svg>
             </button>
           </div>
           <div className="container relative left-0 flex w-3/4">
@@ -34,18 +44,6 @@ export function TopBar() {
                   <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <svg
-                className="absolute left-0 hidden w-4 h-4 ml-4 text-gray-100 pointer-events-none fill-white group-hover:text-gray-400 sm:block"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
-              </svg>
-              {/* <input
-                type="text"
-                className="block w-full rounded-2xl bg-gray-800 py-1.5 pl-10 pr-4 leading-normal text-gray-400 opacity-90 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Search"
-              /> */}
             </div>
           </div>
           <div className="relative flex items-center justify-end w-full p-1 ml-5 sm:right-auto sm:mr-0">

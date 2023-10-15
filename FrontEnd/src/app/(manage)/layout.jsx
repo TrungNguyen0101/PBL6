@@ -1,6 +1,6 @@
-import { Overlay } from './admin/components/Overlay';
-import { TopBar } from './admin/components/TopBar';
-import { Sidebar } from './admin/components/sidebar/Sidebar';
+import { Overlay } from './components/Overlay';
+import { TopBar } from './components/TopBar';
+import { Sidebar } from './components/sidebar/Sidebar';
 
 const style = {
   container: 'bg-gray-900 h-screen overflow-hidden relative',
@@ -20,7 +20,6 @@ function LayoutAdmin({ children }) {
         </div>
       </div>
     </div>
-    // <div>23123</div>
   );
 }
 
