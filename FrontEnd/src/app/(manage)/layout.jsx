@@ -5,7 +5,7 @@ import { Sidebar } from './components/sidebar/Sidebar';
 const style = {
   container: 'bg-gray-900 h-screen overflow-hidden relative',
   mainContainer: 'flex flex-col h-screen pl-0 w-full lg:pl-20 lg:space-y-4',
-  main: 'h-screen overflow-auto  px-[30px] lg-py-0 py-[10px]',
+  main: 'h-screen overflow-auto  px-[30px] lg-py-0 py-[15px]',
 };
 
 function LayoutAdmin({ children }) {
