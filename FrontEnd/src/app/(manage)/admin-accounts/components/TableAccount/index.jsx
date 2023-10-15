@@ -151,7 +151,7 @@ const TableAccount = () => {
         }}
         scroll={{
           x: 620,
-          y: 242,
+          y: 227,
         }}
       />
     </div>

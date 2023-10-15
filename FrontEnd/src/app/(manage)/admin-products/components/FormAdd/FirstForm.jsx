@@ -52,6 +52,10 @@ export default function FirstForm({ offAdd }) {
   const hanlderFirstForm = (values) => {
     dispatch(nextForm());
     dispatch(saveFirstForm(values));
+    message.config({
+      duration: 1, // Độ dài mili giây của mỗi message (2 giây)
+      maxCount: 1, // Số lượng message tối đa hiển thị cùng một lúc
+    });
     message.success("The first form's data has been saved!");
   };
 
@@ -73,9 +77,9 @@ export default function FirstForm({ offAdd }) {
     }
   }, []);
   return (
-    <div className="pt-[10px]">
+    <div className="pt-[5px]">
       <form className="px-[20px]" onSubmit={handleSubmit(hanlderFirstForm)}>
-        <div className="grid grid-cols-2 gap-x-[20px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-[20px]">
           {/* title */}
           <Field>
             <div className="mb-2">
@@ -112,7 +116,7 @@ export default function FirstForm({ offAdd }) {
             </p>
           </Field>
         </div>
-        <div className="grid grid-cols-3 gap-x-[20px]">
+        <div className="grid grid-cols-1 mb:grid-cols-2 md:grid-cols-3 gap-x-[20px]">
           {/* price */}
           <Field>
             <div className="mb-2">
@@ -175,7 +179,7 @@ export default function FirstForm({ offAdd }) {
           </p>
         </Field>
 
-        <div className="text-start pb-[10px] flex items-center gap-x-[10px]">
+        <div className="text-start pb-[5px] flex items-center gap-x-[10px]">
           <button
             className="btn-70  hover:text-[#90e0ef] duration-300"
             onClick={() => dispatch(offCheckAdd())}

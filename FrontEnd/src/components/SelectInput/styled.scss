@@ -11,17 +11,40 @@
   .ant-select-selection-placeholder {
   text-align: start;
 }
-:where(.css-dev-only-do-not-override-amq5gd).ant-select:not(
-    .ant-select-disabled
-  ):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover
-  .ant-select-selector {
-  border-color: rgb(94, 105, 207);
-  box-shadow: 0 0 0 5px rgb(94 105 207 / 40%);
-}
+
 .ant-select-focused:where(.css-dev-only-do-not-override-amq5gd).ant-select:not(
     .ant-select-disabled
   ):not(.ant-select-customize-input):not(.ant-pagination-size-changer)
   .ant-select-selector {
   border-color: rgb(94, 105, 207);
   box-shadow: 0 0 0 5px rgb(94 105 207 / 40%);
+}
+:where(.css-dev-only-do-not-override-19gw05y).ant-select-single:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  text-align: start;
+}
+:where(.css-19gw05y).ant-select-single:not(.ant-select-customize-input)
+  .ant-select-selector {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  text-align: start;
+}
+.ant-select-focused:where(.css-dev-only-do-not-override-19gw05y).ant-select:not(
+    .ant-select-disabled
+  ):not(.ant-select-customize-input):not(.ant-pagination-size-changer)
+  .ant-select-selector {
+  border-color: rgb(94, 105, 207);
+  box-shadow: 0 0 0 5px rgb(94 105 207 / 40%);
+}
+:where(.css-dev-only-do-not-override-19gw05y).ant-select:not(
+    .ant-select-disabled
+  ):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover
+  .ant-select-selector {
+  border-color: inherit;
 }

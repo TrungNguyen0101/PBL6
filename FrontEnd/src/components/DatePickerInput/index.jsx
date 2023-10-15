@@ -10,11 +10,8 @@ const DatePickerInput = ({ name, control, className, ...props }) => {
   });
 
   return (
-    // <Space direction="vertical">
-    //   <DatePicker {...field} {...props} />
-    // </Space>
     <input
-      className="w-full py-[10px] pl-[10px] text-base rounded-md outline-none font-semibold"
+      className="input w-full py-[10px] pl-[10px] text-base rounded-md outline-none font-semibold"
       type="date"
       {...field}
       {...props}

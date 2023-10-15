@@ -216,7 +216,7 @@ const TableData = () => {
         }}
         scroll={{
           x: 800,
-          y: 225,
+          y: 227,
         }}
       />
     </div>
