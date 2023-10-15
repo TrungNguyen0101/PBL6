@@ -1,0 +1,17 @@
+:where(.css-dev-only-do-not-override-amq5gd).ant-select-single {
+  height: 45.33px;
+}
+:where(
+    .css-dev-only-do-not-override-amq5gd
+  ).ant-select-single.ant-select-show-arrow
+  .ant-select-selection-item,
+:where(
+    .css-dev-only-do-not-override-amq5gd
+  ).ant-select-single.ant-select-show-arrow
+  .ant-select-selection-placeholder {
+  text-align: start;
+}
+.text-area:focus {
+  border-color: rgb(94, 105, 207);
+  box-shadow: 0 0 0 5px rgb(94 105 207 / 40%);
+}

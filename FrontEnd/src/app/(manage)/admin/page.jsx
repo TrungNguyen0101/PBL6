@@ -1,10 +1,9 @@
 'use client';
 
 import React from 'react';
-import ChartPie from './components/chart/ChartPie';
-import ChartBar from './components/chart/CharBar';
 import Link from 'next/link';
 import routes from '@/constant/routes';
+import ChartBar from '../components/chart/CharBar';
 const Page = () => {
   return (
     <>
@@ -15,6 +14,7 @@ const Page = () => {
             <span className="text-[20px]">20+</span>
           </div>
           <Link
+            as={routes.ACCOUNT}
             href={routes.ACCOUNT}
             className="bg-[#1591a5] text-center rounded-b-lg py-[3px] flex gap-x-[10px] items-center justify-center cursor-pointer duration-300 hover:text-black"
           >
@@ -40,6 +40,7 @@ const Page = () => {
             <span className="text-[20px]">100+</span>
           </div>
           <Link
+            as={routes.PRODUCT}
             href={routes.PRODUCT}
             className="bg-[#c6303e] text-center rounded-b-lg py-[3px] flex gap-x-[10px] items-center justify-center cursor-pointer duration-300 hover:text-black"
           >
@@ -65,6 +66,7 @@ const Page = () => {
             <span className="text-[20px]">50+</span>
           </div>
           <Link
+            as={routes.ORDER}
             href={routes.ORDER}
             className="bg-[#e5ad06] text-center rounded-b-lg py-[3px] flex gap-x-[10px] items-center justify-center cursor-pointer duration-300 hover:text-black"
           >
@@ -97,8 +99,8 @@ const Page = () => {
               <g
                 fill="none"
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M9.5 3.5h4v4" />
                 <path d="M13.5 3.5L7.85 9.15a.5.5 0 0 1-.7 0l-2.3-2.3a.5.5 0 0 0-.7 0L.5 10.5" />
@@ -111,10 +113,7 @@ const Page = () => {
           </span>
         </div>
       </div>
-      {/* <div className="flex xl:items-stretch items-center justify-center mt-[50px] gap-x-[50px] gap-y-[30px] xl:flex-row flex-col">
-        <ChartPie></ChartPie>
-        <ChartBar></ChartBar>
-      </div> */}
+
       <div className="flex items-center justify-center w-full mt-[50px]">
         <ChartBar></ChartBar>
       </div>

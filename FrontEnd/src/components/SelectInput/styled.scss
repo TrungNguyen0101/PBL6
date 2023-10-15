@@ -1,0 +1,27 @@
+:where(.css-dev-only-do-not-override-pr0fja).ant-select-single {
+  height: 45.33px;
+}
+:where(
+    .css-dev-only-do-not-override-pr0fja
+  ).ant-select-single.ant-select-show-arrow
+  .ant-select-selection-item,
+:where(
+    .css-dev-only-do-not-override-pr0fja
+  ).ant-select-single.ant-select-show-arrow
+  .ant-select-selection-placeholder {
+  text-align: start;
+}
+:where(.css-dev-only-do-not-override-amq5gd).ant-select:not(
+    .ant-select-disabled
+  ):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover
+  .ant-select-selector {
+  border-color: rgb(94, 105, 207);
+  box-shadow: 0 0 0 5px rgb(94 105 207 / 40%);
+}
+.ant-select-focused:where(.css-dev-only-do-not-override-amq5gd).ant-select:not(
+    .ant-select-disabled
+  ):not(.ant-select-customize-input):not(.ant-pagination-size-changer)
+  .ant-select-selector {
+  border-color: rgb(94, 105, 207);
+  box-shadow: 0 0 0 5px rgb(94 105 207 / 40%);
+}
