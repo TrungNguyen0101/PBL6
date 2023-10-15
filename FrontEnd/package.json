@@ -15,7 +15,7 @@
     "@mui/material": "^5.14.11",
     "@mui/x-data-grid": "^6.15.0",
     "@reduxjs/toolkit": "^1.9.5",
-    "antd": "^5.10.0",
+    "antd": "5.8.1",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
     "chart.js": "3.5.1",
