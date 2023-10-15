@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import menuReducer from './menuReducer';
-import formAddReducer from './FormAddReducer';
+import formAddReducer from './formAddReducer';
 
 const rootReducer = combineReducers({
   menu: menuReducer,
