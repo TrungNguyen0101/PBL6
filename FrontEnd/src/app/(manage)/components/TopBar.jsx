@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 export function TopBar() {
   const dispatch = useDispatch();
   return (
-    <header className="relative z-10 items-center pl-[10px]">
+    <header className="relative z-10 items-center ">
       <div className="relative z-10 flex flex-col justify-center h-full px-3 mx-auto text-black bg-[#90e0ef]">
         <div className="relative flex items-center w-full pl-1 sm:ml-0 sm:pr-2">
           <div className="relative flex items-center w-12 h-full group">

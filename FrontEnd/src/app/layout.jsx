@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
         className={classNames(
           inter.variable,
           montserrat.variable,
-          'flex flex-col min-h-screen'
+          'flex flex-col min-h-screen bg-white'
         )}
       >
         <Provider store={store}>{children}</Provider>

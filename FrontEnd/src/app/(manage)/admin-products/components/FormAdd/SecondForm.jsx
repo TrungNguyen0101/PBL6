@@ -48,7 +48,7 @@ export default function SecondForm({ offAdd }) {
     message.error('Second form data is not saved !!!');
   };
   return (
-    <div className="pt-[10px]">
+    <div className="pt-[5px]">
       <form className="px-[20px]" onSubmit={handleSubmit(hanlderSecondForm)}>
         <div className="grid grid-cols-2 gap-x-[20px]">
           {/* title */}
@@ -104,7 +104,7 @@ export default function SecondForm({ offAdd }) {
             {errors.test3 && errors.test3.message}
           </p>
         </Field>
-        <div className="text-start pb-[10px] flex items-center gap-x-[10px]">
+        <div className="text-start pb-[5px] flex items-center gap-x-[10px]">
           <button
             className="btn-70  hover:text-[#90e0ef] duration-300"
             onClick={() => prev()}

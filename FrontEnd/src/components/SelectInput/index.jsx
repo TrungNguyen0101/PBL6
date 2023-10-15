@@ -2,7 +2,6 @@ import React from 'react';
 import { Select } from 'antd';
 import { useController } from 'react-hook-form';
 import './styled.scss';
-
 const SelectInput = ({ name, control, isIcon, className, ...props }) => {
   const { field } = useController({
     name,
@@ -18,7 +17,7 @@ const SelectInput = ({ name, control, isIcon, className, ...props }) => {
         value: 'romance',
         label: 'Romance',
       }}
-      className="w-full"
+      className="w-full input h-[45.33px]"
       {...field}
       {...props}
       options={[
