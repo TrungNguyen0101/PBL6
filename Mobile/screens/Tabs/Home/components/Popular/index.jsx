@@ -1,13 +1,19 @@
-import { FlatList, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { get } from '../../../../../axios-config';
+import { FontAwesome5 } from '@expo/vector-icons';
 
+import colors from '../../../../../contains/colors';
 import styles from './styles';
-import PopularProductItem from '../../../../../components/PopularProductItem';
+import HomeProductItem from '../../../../../components/HomeProductItem';
+
 
 export default function Popular() {
     const [products, setProducts] = useState();
+    const [isLoading, setIsLoading] = useState(true);
+
     const fetchData = async () => {
+        setIsLoading(true);
         try {
             const response = await get('/products')
             if (response) {
@@ -15,6 +21,8 @@ export default function Popular() {
             }
         } catch (err) {
             throw err
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -25,22 +33,30 @@ export default function Popular() {
     return (
         <View style={styles.container}>
             <View style={styles.titleWrapper}>
-                <Text style={styles.title}>Popular</Text>
+                <FontAwesome5 name="book-open" size={24} color={colors.primaryColor} />
+                <Text style={styles.title}>Phổ biến</Text>
             </View>
             <View>
-                <FlatList
-                    data={products}
-                    renderItem={({ item }) => 
-                        <PopularProductItem
-                            product={item}
-                            onPress={''}
-                        />
-                    }
-                    keyExtractor={(item) => `${item.id}`}
-                    horizontal
-                    pagingEnabled
-                />
+                {isLoading ? (
+                    <ActivityIndicator size="large" color={colors.primaryColor} />
+                ) : (
+                    <FlatList
+                        data={products}
+                        renderItem={({ item }) =>
+                            <HomeProductItem
+                                product={item}
+                                onPress={''}
+                            />
+                        }
+                        keyExtractor={(item) => `${item.id}`}
+                        horizontal
+                        pagingEnabled
+                    />
+                    )}
             </View>
+            <TouchableOpacity style={styles.discoverBtn}>
+                <Text style={styles.discoverBtnText}>Discover all</Text>
+            </TouchableOpacity>
         </View>
     )
 }

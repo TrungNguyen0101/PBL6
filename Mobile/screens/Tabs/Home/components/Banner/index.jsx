@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, FlatList, Image, Text, View } from 'react-native';
+import { Dimensions, FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 
 const images = [
@@ -55,6 +55,14 @@ export default function Banner() {
     const renderBanner = ({ item }) => (
         <View>
             <Image source={item.img} style={{ height: '100%', width: screenWidth }} />
+            <View style={styles.descriptionWrapper}>
+                <Text style={styles.descriptionName}>Tên sách: Cô gái năm ấy tôi từng theo đuổi</Text>
+                <Text style={styles.descriptionCategory}>Thể loại: Tình yêu</Text>
+                <Text style={styles.descriptionText} numberOfLines={3}>Mô tả: "Cô gái năm ấy tôi từng theo theo đuổi" kể về câu chuyện tình ngọt ngào, ngốc nghếch của cậu sinh viên - Kha Cảnh Đằng và Thẩm Giai Nghi. Chuyện tình thời sinh viên ngây thơ, chân thành nhưng cũng đầy nuối tiếc của họ sẽ mang đọc giả về với những ngày tháng hồn nhiên nhất của cuộc đời, cảm nhận sâu sắc hơn tình yêu, có hạnh phúc và cũng có nhiều lưu luyến.</Text>
+                <TouchableOpacity>
+                    <Text style={styles.detailBtn}>Watch now</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 

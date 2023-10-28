@@ -1,5 +1,5 @@
 const colors = {
-    primaryColor: '#f12711',
+    primaryColor: '#6d4eec',
     linearGradientColor: '#ffd452',
     bgColor: '#fff',
     textColor: '#000',
