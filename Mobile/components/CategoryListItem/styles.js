@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     elevation: 12,
     backgroundColor: 'white', 
+    borderRadius: 24,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
@@ -25,10 +26,13 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   title: {
-    color: colors.blackColor,
+    color: colors.whiteColor,
     fontSize: 18,
     fontWeight: 'bold',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)', 
+    textShadowOffset: { width: 2, height: 2 }, 
+    textShadowRadius: 6,
   },
 });
 

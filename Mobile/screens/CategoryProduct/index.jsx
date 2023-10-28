@@ -10,7 +10,7 @@ export default function CategoryProduct({ route }) {
 
     const getData = async () => {
         try {
-            const response = await axios.get('https://fakestoreapi.com/products')
+            const response = await axios.get('/products')
             if (response) {
                 if (categoryName) {
                     const filteredProducts = response.data.filter(product => product.category === categoryName);

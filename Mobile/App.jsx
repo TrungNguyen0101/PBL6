@@ -19,10 +19,11 @@ import Cart from './screens/Tabs/Cart';
 import Settings from './screens/Tabs/Settings';
 import Home from './screens/Tabs/Home';
 import Favorites from './screens/Tabs/Favorites';
-import Shop from './screens/Tabs/Categories';
+import Shop from './screens/Tabs/Shop';
 
 //Screens
 import CategoryProduct from './screens/CategoryProduct'
+import Profile from './screens/Profile';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,6 +53,11 @@ export default function App() {
             component={SignUp}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="Profile"
+            component={Profile}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>
@@ -61,9 +67,7 @@ export default function App() {
 function TabsComponent() {
   return (
     <Tab.Navigator screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
-
+      tabBarIcon: ({ focused, color }) => {
         if (route.name === 'Home') {
           if (focused) {
             return <Ionicons name="home-sharp" size={24} color={color} />

@@ -46,7 +46,7 @@ export default function Settings({ navigation }) {
       <View >
       </View>
       <View style={styles.body}>
-        {user ? <TouchableOpacity style={styles.option}>
+        {user ? <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('Profile')}>
           <View style={styles.optionIconWrapper}>
             <FontAwesome name="user" size={24} color="white" />
           </View>
