@@ -8,17 +8,20 @@ import styles from './styles'
 import Banner from './components/Banner'
 import Category from '../../../components/Category'
 import Popular from './components/Popular'
+import Search from './components/Search'
 
 export default function Home() {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={['banner', 'category', 'popular']}
+        data={['banner', 'search', 'category', 'popular']}
         keyExtractor={(item) => item}
         renderItem={({ item }) => {
           switch (item) {
             case 'banner':
               return <Banner />;
+            case 'search':
+              return <Search />;
             case 'category':
               return <Category />;
             case 'popular':
