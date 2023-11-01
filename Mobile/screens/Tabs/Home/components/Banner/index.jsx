@@ -78,7 +78,7 @@ export default function Banner() {
     ));
 
     return (
-        <View style={{ height: screenHeight * 0.84 - 56 }}>
+        <View style={{ height: screenHeight * 0.90 - 56 }}>
             <FlatList
                 ref={flatListRef}
                 data={images}
