@@ -1,7 +1,7 @@
 const {
     userService,bookService
 } = require("../services/index.js")
-const login = async (req,res) => {
+const handleLogin = async (req,res) => {
     let data = req.body;
     if(!data)
     {
@@ -10,13 +10,16 @@ const login = async (req,res) => {
             message: "Missing inputs parameter",
         });
     }
-    await userService.login({email,password})
-    //call service
-    res.status(200).json({
-        message : "Login Successed"
-    })
+    let userData = await userService.handleLogin(data);
+    if(userData.errCode === 0)
+    {
+        return res.status(200).json(userData.data);
+    }
+    return res.status(500).json({
+        message : userData.errMessage
+    });
 }
-const register = async (req,res)=> {
+const handleRegister = async (req,res)=> {
     let data = req.body;
     if(!data) {
         return res.status(500).json({
@@ -24,9 +27,8 @@ const register = async (req,res)=> {
             message: "Missing inputs parameter",
         })
     }
-    let userData = await userService.register(data);
-    console.log(userData)
-    if(userData.errCode == 0)
+    let userData = await userService.handleRegister(data);
+    if(userData.errCode === 0)
     {
         return res.status(200).json(userData.errMessage);
     }
@@ -35,6 +37,6 @@ const register = async (req,res)=> {
       });
 }
 module.exports = {
-    login :login ,
-    register : register
+    handleLogin :handleLogin ,
+    handleRegister : handleRegister
 }

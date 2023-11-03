@@ -1,4 +1,5 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
+
 const getTokenFrom = (request) => {
   const authorization = request.get("authorization");
   if (authorization !== undefined) {

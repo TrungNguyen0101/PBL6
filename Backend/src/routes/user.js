@@ -2,11 +2,10 @@ const express = require("express")
 const router = express.Router();
 const {
         userController,
-        bookController
 } = require('../controllers/index.js')
 router.get("/", (req,res)=> {
         res.send("GetUser")});
-router.post("/login",userController.login);
-router.post("/register",userController.register);
+router.post("/login",userController.handleLogin);
+router.post("/register",userController.handleRegister);
             
 module.exports = router;

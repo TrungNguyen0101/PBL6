@@ -1,25 +1,66 @@
 const userController = require('../controllers/index.js')
-const User = require('../models/User.js');
+const db = require('../models/index.js');
 const bcrypt = require('bcrypt')
 const salt = bcrypt.genSaltSync(10);
-const login = async({email, password})=> {
-    console.log("login success")
-}
-const register = async(data)=> {
+const jwt = require("jsonwebtoken");
+const GeneralAccessToken = (data) => {
+    const access_token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: "60",
+    });
+    return access_token;
+  };
+const handleLogin = async(data)=> {
     let userData = {};
     try {
-        const userExist = await User.find({email:data.email}).exec();
-        console.log("aaa" + userExist)
-        if(userExist) {
+        const user = await db.User.findOne({email:data.email}).exec();
+        if(user) {
+            let isMatch = await bcrypt.compare(data.password,user.password);
+            if(isMatch) 
+            {
+                const access_token = GeneralAccessToken({
+                    id : user._id.toString(),
+                    roleID : user.roleID
+                })
+                userData.errCode = 0;
+                userData.errMessage = "Login succeed!";
+                delete user.password;
+                userData.data  = {
+                    access_token,user
+                }
+            }
+            else {
+                userData.errCode = 2;
+                userData.errMessage = "Wrong password!"
+            }
+            return userData;
+        }
+        else {
+            userData.errCode = 2;
+            userData.errMessage = "Account does not exist";
+            }
+        return userData;
+    }
+    catch (error) {
+        userData.errCode = 2;
+        userData.errMessage = "Email address is invalid!"
+    }
+    return userData;
+}
+const handleRegister = async(data)=> {
+    let userData = {};
+    try {
+        const user = await db.User.findOne({email:data.email}).exec();
+        if(user) {
             userData.errCode = 2;
             userData.errMessage = "User already exists"
-            return userData
+            return userData;
         }
         let hashPassword = await bcrypt.hashSync(data.password, salt);
-        await User.create({
+        await db.User.create({
             username : data.username,
             email : data.email,
-            password : hashPassword
+            password : hashPassword,
+            roleID : "2"
         })
         userData.errCode = 0;
         userData.errMessage = "Create users succeed";
@@ -29,7 +70,7 @@ const register = async(data)=> {
     }
     return userData;
 }
-module.exports = {
-    login : login,
-    register : register
+module.exports = { 
+    handleLogin : handleLogin,
+    handleRegister : handleRegister
 }
