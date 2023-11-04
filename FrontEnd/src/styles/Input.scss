@@ -4,3 +4,16 @@
   background-color: #fff;
   box-shadow: 0 0 0 5px rgb(94 105 207 / 40%);
 }
+input[type='number'] {
+  /* Ẩn thanh tăng giảm */
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Ẩn spinner trên trình duyệt Safari */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
