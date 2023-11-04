@@ -1,0 +1,30 @@
+:where(.css-dev-only-do-not-override-19gw05y).ant-select-multiple
+  .ant-select-selection-placeholder {
+  text-align: start;
+  font-weight: 600;
+  color: #9ca3af !important;
+  font-size: 16px;
+}
+.ant-select-show-search:where(
+    .css-dev-only-do-not-override-19gw05y
+  ).ant-select:not(.ant-select-customize-input)
+  .ant-select-selector {
+  height: 100%;
+}
+:where(.css-dev-only-do-not-override-19gw05y).ant-select-multiple
+  .ant-select-selection-item {
+  height: 35px;
+  align-items: center;
+  font-size: 17px;
+  color: #9ca3af !important;
+  font-weight: 500;
+  margin-left: 10px;
+}
+:where(.css-dev-only-do-not-override-19gw05y).ant-select-multiple
+  .ant-select-selection-item-content {
+  margin-inline-end: 10px;
+}
+:where(.css-dev-only-do-not-override-19gw05y).ant-select-multiple
+  .ant-select-selection-item-remove {
+  font-size: 14px;
+}
