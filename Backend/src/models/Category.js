@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const { Schema, model } = mongoose;
 const { ObjectId } = require('mongodb');
 
-const User = new Schema({
+const Category = new Schema({
     id: { type: ObjectId },
     image: {
          type: Blob("long"),
@@ -13,4 +13,4 @@ const User = new Schema({
 
 })
 
-module.exports = mongoose.model('User', User);
+module.exports = mongoose.model('Category', Category);
