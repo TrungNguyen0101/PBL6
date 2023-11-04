@@ -4,9 +4,9 @@ const userRouter = require('./user.js')
 const bookRouter = require('./book.js')
 const middleware = require('../utils/middleware.js')
 const initWebRoutes = (app) => {
-    app.use('/user',userRouter)
-    app.use('/book',bookRouter)
-    return app.use("/api/", router);
+    app.use('/api/user',userRouter)
+    app.use('/api/book',bookRouter)
+    return app.use("/", router);
 };
 
 module.exports = initWebRoutes;
