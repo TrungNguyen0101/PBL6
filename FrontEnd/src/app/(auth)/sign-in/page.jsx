@@ -12,6 +12,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { HiArrowNarrowLeft } from 'react-icons/hi';
 import '../../../styles/Form.scss';
+import { postSignIn } from '@/services/authService';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 const schema = yup
   .object({
@@ -34,6 +37,7 @@ const schema = yup
   .required();
 
 export default function SignInPage() {
+  const router = useRouter();
   const {
     handleSubmit,
     control,
@@ -42,8 +46,13 @@ export default function SignInPage() {
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
-  const handleSignIn = (values) => {
-    console.log(values);
+  const handleSignIn = async (values) => {
+    const res = await postSignIn(values.email, values.password);
+    if (res) {
+      toast.success('Đăng nhập thành công');
+      router.push(routes.HOME);
+      sessionStorage.setItem('auth', JSON.stringify(res));
+    }
   };
   return (
     <div className="form-wrapper flex items-center justify-center px-[20px]">
