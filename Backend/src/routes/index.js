@@ -8,6 +8,7 @@ const initWebRoutes = (app) => {
     app.use('/api/user',userRouter)
     app.use('/api/book',bookRouter)
     app.use('/api/category',categoryRouter)
+    return app.use("/", router);
 };
 
 module.exports = initWebRoutes;
