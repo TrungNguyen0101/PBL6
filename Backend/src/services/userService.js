@@ -5,7 +5,7 @@ const salt = bcrypt.genSaltSync(10);
 const jwt = require("jsonwebtoken");
 const GeneralAccessToken = (data) => {
     const access_token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "60",
+      expiresIn: "1d",
     });
     return access_token;
   };
@@ -19,7 +19,7 @@ const handleLogin = async(data)=> {
             {
                 const access_token = GeneralAccessToken({
                     id : user._id.toString(),
-                    roleID : user.roleID
+                    User : user,
                 })
                 userData.errCode = 0;
                 userData.errMessage = "Login succeed!";
@@ -60,7 +60,8 @@ const handleRegister = async(data)=> {
             username : data.username,
             email : data.email,
             password : hashPassword,
-            roleID : "2"
+            roleID : "2",
+            phoneNumber: "",
         })
         userData.errCode = 0;
         userData.errMessage = "Create users succeed";
@@ -70,7 +71,42 @@ const handleRegister = async(data)=> {
     }
     return userData;
 }
+const handleUpdateUser = async(user,data) => {
+    let userData = {};
+    try {
+        if(!user)
+        {
+            userData.errCode = 2;
+            userData.errMessage = "Missing required parameter";
+            return userData;
+        }
+        let users = await db.User.findOne({email:user.User.email}).exec();
+        if(users._id.toString() === user.id || user.User.roleID === "0")
+        {
+            if(users) {
+                users.username = data.username;
+                users.phoneNumber = data.phoneNumber;
+                await users.save();
+                userData.status = 200;
+                userData.errMessage= "Update user succeeds"
+            }
+            else {
+                userData.errCode = 404;
+                userData.errMessage= "User's not found!"
+            }
+        }
+        else {
+            userData.errCode = 500;
+            userData.errMessage= "Missing required parameter"
+            return userData;
+        }
+    } catch (e) {
+        console.log(e);
+    }
+    return userData;
+}
 module.exports = { 
     handleLogin : handleLogin,
-    handleRegister : handleRegister
+    handleRegister : handleRegister,
+    handleUpdateUser: handleUpdateUser
 }

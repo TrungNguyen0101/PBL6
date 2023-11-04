@@ -1,42 +1,72 @@
 const {
-    userService,bookService
+    userService, bookService
 } = require("../services/index.js")
-const handleLogin = async (req,res) => {
+const handleLogin = async (req, res) => {
     let data = req.body;
-    if(!data)
-    {
+    if (!data) {
         return res.status(500).json({
-            errCode : 1,
+            errCode: 1,
             message: "Missing inputs parameter",
         });
     }
     let userData = await userService.handleLogin(data);
-    if(userData.errCode === 0)
-    {
-        return res.status(200).json(userData.data);
+    if (userData.errCode === 0) {
+        const response = {
+            ...userData.data,
+            status: 200,
+            message : userData.errMessage
+        }
+        return res.status(200).json(response);
     }
-    return res.status(500).json({
-        message : userData.errMessage
+    const response = {
+        ...userData.data,
+        status: 404,
+        message: userData.errMessage
+    }
+    return res.status(404).json({
+        response
     });
 }
-const handleRegister = async (req,res)=> {
+const handleRegister = async (req, res) => {
     let data = req.body;
-    if(!data) {
+    if (!data) {
         return res.status(500).json({
             errCode: 1,
             message: "Missing inputs parameter",
         })
     }
     let userData = await userService.handleRegister(data);
-    if(userData.errCode === 0)
-    {
-        return res.status(200).json(userData.errMessage);
+    if (userData.errCode === 0) {
+        const response = {
+            ...userData.data,
+            status: 200,
+            message : userData.errMessage
+        }
+        return res.status(200).json(response);
+    }
+    const response = {
+        ...userData.data,
+        status: 500,
+        message : userData.errMessage
     }
     return res.status(500).json({
-        message: userData.errMessage,
-      });
+        response
+    });
+}
+const handleUpdateUser = async (req, res) => {
+    const user = req.User;
+    const data = req.body;
+    if (!data) {
+        return res.status(500).json({
+            errCode: 1,
+            message: "Missing inputs parameter",
+        })
+    }
+    let message = await userService.handleUpdateUser(user,data);
+    return res.status(200).json(message);
 }
 module.exports = {
-    handleLogin :handleLogin ,
-    handleRegister : handleRegister
+    handleLogin: handleLogin,
+    handleRegister: handleRegister,
+    handleUpdateUser: handleUpdateUser
 }
