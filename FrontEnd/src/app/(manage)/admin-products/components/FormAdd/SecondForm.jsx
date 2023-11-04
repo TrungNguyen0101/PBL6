@@ -10,43 +10,75 @@ import { useForm } from 'react-hook-form';
 import TextErea from '@/components/TextErea';
 import SelectInput from '@/components/SelectInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { offCheckAdd, prevForm } from '@/redux/reducers/formAddReducer';
+import {
+  offCheckAdd,
+  prevForm,
+  saveDescImage,
+  saveErrorDescImage,
+  saveFirstForm,
+  saveMainImage,
+} from '@/redux/reducers/formAddReducer';
 import './styled.scss';
 import { message } from 'antd';
+import UploadImage from '@/components/UploadImage';
+import UploadImageDesc from '@/components/UploadImage/UploadImageDesc';
+import SelectInputLanguage from '@/components/SelectInputLanguage';
+import { useEffect } from 'react';
 const schema = yup
   .object({
-    test1: yup.string().required('Please enter the book title'),
-    test2: yup.string().required('Please enter price'),
-    test3: yup.string().required('Please enter description'),
+    publisher: yup.string().required('Please enter ublisher'),
+    infomation: yup.string().required('Please enter information about book'),
+    language: yup.array().min(1, 'Please select language'),
   })
   .required();
 
-export default function SecondForm({ offAdd }) {
+export default function SecondForm() {
   const {
     handleSubmit,
     control,
+    getValues,
     formState: { errors },
   } = useForm({
     mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: {},
   });
-  const dataFirstForm = useSelector((state) => state.form.firstForm);
   const dispatch = useDispatch();
+  const dataFirstForm = useSelector((state) => state.form.firstForm);
+  const dataDescImage = useSelector((state) => state.form.descImage);
+  const dataErrorDescImage = useSelector((state) => state.form.errorDescImage);
 
   const hanlderSecondForm = (values) => {
-    const newValues = { ...dataFirstForm, ...values };
-    console.log(
-      'file: SecondForm.jsx:39 ~ hanlderSecondForm ~ newValues:',
-      newValues
-    );
-    message.success('Processing complete!');
-    dispatch(offCheckAdd());
+    if (dataDescImage.length > 3) {
+      const newValues = { ...dataFirstForm, ...values };
+      newValues.descImage = dataDescImage;
+
+      console.log(
+        'file: SecondForm.jsx:44 ~ hanlderSecondForm ~ newValues:',
+        newValues
+      );
+
+      message.success('Processing complete!');
+      dispatch(saveDescImage([]));
+      dispatch(saveFirstForm({}));
+      dispatch(saveMainImage([]));
+      dispatch(prevForm());
+      dispatch(offCheckAdd());
+    }
   };
   const prev = () => {
+    dispatch(saveDescImage([]));
     dispatch(prevForm());
     message.error('Second form data is not saved !!!');
   };
+
+  useEffect(() => {
+    if (dataDescImage.length < 4) {
+      dispatch(
+        saveErrorDescImage('*Please upload at least 4 description photos')
+      );
+    }
+  }, []);
   return (
     <div className="pt-[5px]">
       <form className="px-[20px]" onSubmit={handleSubmit(hanlderSecondForm)}>
@@ -54,56 +86,67 @@ export default function SecondForm({ offAdd }) {
           {/* title */}
           <Field>
             <div className="mb-2">
-              <Label htmlFor="test1">Book Title</Label>
+              <Label htmlFor="publisher">Publisher</Label>
             </div>
             <Input
               type="text"
-              name="test1"
+              name="publisher"
               control={control}
-              id="test1"
-              placeholder="Please enter the book title"
+              id="publisher"
+              placeholder="Please enter Publisher"
               className="border"
             />
             <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
-              {errors.test1 && errors.test1.message}
+              {errors.publisher && errors.publisher.message}
             </p>
           </Field>
 
           {/* title */}
           <Field>
             <div className="mb-2">
-              <Label htmlFor="test2">Book Title</Label>
+              <Label htmlFor="language">Language</Label>
             </div>
-            <Input
-              type="text"
-              name="test2"
+            <SelectInputLanguage
               control={control}
-              id="test2"
-              placeholder="Please enter the book title"
-              className="border"
+              name="language"
+              id="language"
             />
             <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
-              {errors.test2 && errors.test2.message}
+              {errors.language && errors.language.message}
             </p>
           </Field>
         </div>
 
-        {/* textarea */}
-        <Field>
-          <div className="mb-2">
-            <Label htmlFor="test3">Description</Label>
+        <div className="grid grid-cols-2 gap-x-[10px]">
+          {/* textarea */}
+          <Field>
+            <div className="mb-2">
+              <Label htmlFor="infomation">Information about book</Label>
+            </div>
+            <TextErea
+              name="infomation"
+              control={control}
+              id="infomation"
+              placeholder="Please enter Information about book"
+              className="border h-[150px]"
+            />
+            <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
+              {errors.infomation && errors.infomation.message}
+            </p>
+          </Field>
+          {/* image */}
+          <div className="flex flex-col flex-wrap items-start w-full">
+            <div className="mb-2">
+              <Label htmlFor="imageDesc">Description Image</Label>
+            </div>
+            <div className="w-full text-start">
+              <UploadImageDesc id="imageDesc" />
+            </div>
+            <p className="font-semibold text-xs text-red-500 h-[20px] py-1">
+              {dataErrorDescImage !== '' && dataErrorDescImage}
+            </p>
           </div>
-          <TextErea
-            name="test3"
-            control={control}
-            id="test3"
-            placeholder="Please enter description"
-            className="border"
-          />
-          <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
-            {errors.test3 && errors.test3.message}
-          </p>
-        </Field>
+        </div>
         <div className="text-start pb-[5px] flex items-center gap-x-[10px]">
           <button
             className="btn-70  hover:text-[#90e0ef] duration-300"
@@ -111,7 +154,10 @@ export default function SecondForm({ offAdd }) {
           >
             Previous
           </button>
-          <button className="btn-70  hover:text-[#90e0ef] duration-300">
+          <button
+            type="submit"
+            className="btn-70  hover:text-[#90e0ef] duration-300"
+          >
             Done
           </button>
         </div>
