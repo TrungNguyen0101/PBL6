@@ -1,4 +1,3 @@
-const {print, OutputType} = require("../../helpers/print.js")
 const mongoose = require('mongoose')
 async function connect() {
     try {
@@ -7,7 +6,7 @@ async function connect() {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });
-        print('Connected to the database successfully!', OutputType.SUCCESS)
+        console.log('Connected to the database successfully!')
     } catch (error) {
         console.error('Failed to connect to the database:', error);
     }
