@@ -26,7 +26,7 @@ const BookItem = () => {
             <AiFillStar color="#eabe12" />
           </span>
         </div>
-        <span className="text-[#6d4eec] text-xs">20.000</span>
+        <span className="text-[#bc1313dd] text-xs">20.000</span>
       </div>
     </>
   );

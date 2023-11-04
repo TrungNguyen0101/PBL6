@@ -7,6 +7,7 @@ const routes = {
   // Auth
   LOGIN: '/sign-in',
   REGISTER: '/sign-up',
+  VERIFY: '/verify',
 
   // Private
 
