@@ -1,5 +1,4 @@
 const db = require('./src/config/database/index')
-const viewEngine =require("../Backend/src/config/viewEngine.js");
 const express = require('express')
 const app = express();
 const path = require('path');
@@ -27,7 +26,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-viewEngine(app);
 initWebRoutes(app);
 // route(app);
 const port = process.env.PORT || 3030;  
