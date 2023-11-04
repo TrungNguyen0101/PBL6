@@ -15,7 +15,7 @@ app.use(cors());
 
 app.use('/', express.static(path.join(__dirname, 'lib')))
 
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.get('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 //middleware
