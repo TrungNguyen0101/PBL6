@@ -5,7 +5,7 @@ const { ObjectId } = require('mongodb');
 const Category = new Schema({
     id: { type: ObjectId },
     image: {
-         type: Blob("long"),
+         type: new Blob("long"),
         },
     name: {
          type: String,
