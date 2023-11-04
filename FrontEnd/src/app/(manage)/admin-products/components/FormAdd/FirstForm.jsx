@@ -12,11 +12,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   nextForm,
   offCheckAdd,
+  saveErrorMainImage,
   saveFirstForm,
+  saveMainImage,
 } from '@/redux/reducers/formAddReducer';
 import DatePickerInput from '@/components/DatePickerInput';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { message } from 'antd';
+import UploadImage from '@/components/UploadImage';
+import './styled.scss';
+import { format, parse } from 'date-fns';
+import SliderAnt from '@/components/SliderAnt';
+import { Slider } from 'antd';
+import InputPrice from '@/components/InputPrice';
 
 const schema = yup
   .object({
@@ -35,38 +43,88 @@ const schema = yup
   })
   .required();
 
-export default function FirstForm({ offAdd }) {
+export default function FirstForm() {
   const {
     handleSubmit,
     control,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm({
     mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: {},
   });
+
   const dispatch = useDispatch();
   const dataFirstForm = useSelector((state) => state.form.firstForm);
+  const dataMainImage = useSelector((state) => state.form.mainImage);
+  const dataErrorMainImage = useSelector((state) => state.form.errorMainImage);
+
+  const formatter = (value) => `${value}%`;
+  const [sliderValue, setSliderValue] = useState(0);
+  const [valuePrice, setValuePrice] = useState(0);
+  console.log('file: FirstForm.jsx:67 ~ FirstForm ~ valuePrice:', valuePrice);
+  const formatNumber = (value) => {
+    return value.toLocaleString('vi-VN');
+  };
+
+  const handleSliderChange = (value) => {
+    const price = getValues('price');
+    const priceWithoutFormat = price?.replaceAll('.', '').replace(/\D/g, '');
+
+    if (priceWithoutFormat) {
+      const priceDiscount = (priceWithoutFormat * (100 - value)) / 100;
+
+      setValuePrice(priceDiscount);
+      setSliderValue(value);
+      // setValue(
+      //   'price',
+      //   priceDiscount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+      // );
+    } else {
+      // Handle the case when the price is empty or does not contain a valid format
+      setValue('price', '');
+    }
+  };
 
   const hanlderFirstForm = (values) => {
-    dispatch(nextForm());
-    dispatch(saveFirstForm(values));
-    message.config({
-      duration: 1, // Độ dài mili giây của mỗi message (2 giây)
-      maxCount: 1, // Số lượng message tối đa hiển thị cùng một lúc
-    });
-    message.success("The first form's data has been saved!");
+    if (dataMainImage.length > 0) {
+      const newValues = { ...values };
+
+      const stringFromDate = (date) => format(date, 'yyyy-MM-dd');
+      const dateToSerialize = stringFromDate(new Date(newValues.datePicker));
+
+      newValues.datePicker = dateToSerialize;
+      newValues.mainImage = dataMainImage;
+
+      console.log(
+        'file: FirstForm.jsx:84 ~ hanlderFirstForm ~ newValues:',
+        newValues
+      );
+      dispatch(saveFirstForm(newValues));
+      dispatch(nextForm());
+
+      message.config({
+        duration: 2, // Độ dài mili giây của mỗi message (2 giây)
+        maxCount: 1, // Số lượng message tối đa hiển thị cùng một lúc
+      });
+      message.success("The first form's data has been saved!");
+    }
   };
 
   function isObjectEmpty(obj) {
     return Object.getOwnPropertyNames(obj).length === 0;
   }
+  /* set value */
   useEffect(() => {
     if (!isObjectEmpty(dataFirstForm)) {
       setValue('author', dataFirstForm.author);
       setValue('booktitle', dataFirstForm.booktitle);
-      setValue('datePicker', dataFirstForm.datePicker);
+
+      const originalDate = new Date(dataFirstForm.datePicker);
+      const formattedDate = originalDate.toISOString().split('T')[0];
+      setValue('datePicker', formattedDate);
       setValue('desc', dataFirstForm.desc);
       setValue('price', dataFirstForm.price);
       if (dataFirstForm.category.value) {
@@ -76,6 +134,16 @@ export default function FirstForm({ offAdd }) {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (dataMainImage.length === 0) {
+      dispatch(saveErrorMainImage('*Please upload a main photo'));
+    }
+  }, []);
+  const handleChange = (event) => {
+    const formattedValue = formatNumber(event.target.value.replace(/\D/g, ''));
+    // field.onChange(formattedValue);
+  };
   return (
     <div className="pt-[5px]">
       <form className="px-[20px]" onSubmit={handleSubmit(hanlderFirstForm)}>
@@ -116,73 +184,111 @@ export default function FirstForm({ offAdd }) {
             </p>
           </Field>
         </div>
-        <div className="grid grid-cols-1 mb:grid-cols-2 md:grid-cols-3 gap-x-[20px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-[20px]">
           {/* price */}
-          <Field>
-            <div className="mb-2">
-              <Label htmlFor="price">Price</Label>
+          <div className="w-full flex items-start gap-x-[10px]">
+            <div className="flex flex-col items-start w-full">
+              <div className="mb-2">
+                <Label htmlFor="price">Price</Label>
+              </div>
+              <InputPrice
+                type="text"
+                name="price"
+                control={control}
+                value={valuePrice}
+                id="price"
+                placeholder="Enter price"
+                className="border"
+              />
+              <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
+                {errors.price && errors.price.message}
+              </p>
             </div>
-            <Input
-              type="text"
-              name="price"
+            <div className="flex flex-col items-start w-full">
+              <div className="mb-2">
+                <Label htmlFor="discount">Discount</Label>
+              </div>
+              <Slider
+                defaultValue={0}
+                tooltip={{
+                  formatter,
+                }}
+                onChange={handleSliderChange}
+                className="w-full"
+              />
+            </div>
+          </div>
+
+          <div className="w-full flex items-start gap-x-[10px]">
+            {/* select */}
+            <div className="w-full">
+              <Field>
+                <div className="mb-2">
+                  <Label htmlFor="category">Category</Label>
+                </div>
+                <SelectInput
+                  control={control}
+                  name="category"
+                  id="category"
+                ></SelectInput>
+              </Field>
+            </div>
+            {/* date * */}
+            <div className="w-full">
+              <Field>
+                <div className="mb-2">
+                  <Label htmlFor="datePicker">Release date</Label>
+                </div>
+                <DatePickerInput
+                  control={control}
+                  name="datePicker"
+                  id="datePicker"
+                ></DatePickerInput>
+                <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
+                  {errors.datePicker && errors.datePicker.message}
+                </p>
+              </Field>
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-between">
+          {/* textarea */}
+          <div className="w-[70%] flex items-start flex-col">
+            <div className="mb-2">
+              <Label htmlFor="desc">Description</Label>
+            </div>
+            <TextErea
+              name="desc"
               control={control}
-              id="price"
-              placeholder="Please enter book price"
+              id="desc"
+              placeholder="Please enter description"
               className="border"
             />
             <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
-              {errors.price && errors.price.message}
+              {errors.desc && errors.desc.message}
             </p>
-          </Field>
-
-          {/* select */}
-          <Field>
-            <div className="mb-2">
-              <Label htmlFor="category">Category</Label>
-            </div>
-            <SelectInput
-              control={control}
-              name="category"
-              id="category"
-            ></SelectInput>
-          </Field>
-
-          {/* date * */}
-          <Field>
-            <div className="mb-2">
-              <Label htmlFor="datePicker">Release date</Label>
-            </div>
-            <DatePickerInput
-              control={control}
-              name="datePicker"
-              id="datePicker"
-            ></DatePickerInput>
-            <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
-              {errors.datePicker && errors.datePicker.message}
-            </p>
-          </Field>
-        </div>
-        {/* textarea */}
-        <Field>
-          <div className="mb-2">
-            <Label htmlFor="desc">Description</Label>
           </div>
-          <TextErea
-            name="desc"
-            control={control}
-            id="desc"
-            placeholder="Please enter description"
-            className="border"
-          />
-          <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
-            {errors.desc && errors.desc.message}
-          </p>
-        </Field>
+          {/* image */}
+          <div className="w-[25%] flex items-start flex-col">
+            <div className="mb-2">
+              <Label htmlFor="mainImage">Main Image</Label>
+            </div>
+            <UploadImage id="mainImage" />
+            <p className="font-semibold text-xs text-red-500 h-[20px] py-1">
+              {dataErrorMainImage !== '' && dataErrorMainImage}
+            </p>
+          </div>
+        </div>
 
         <div className="text-start pb-[5px] flex items-center gap-x-[10px]">
           <button
             className="btn-70  hover:text-[#90e0ef] duration-300"
-            onClick={() => dispatch(offCheckAdd())}
+            onClick={() => {
+              dispatch(saveFirstForm({}));
+              dispatch(saveMainImage([]));
+              dispatch(offCheckAdd());
+              message.error('Canceled add book!');
+            }}
           >
             Cancel
           </button>
