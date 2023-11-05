@@ -21,15 +21,13 @@ import { useEffect, useState } from 'react';
 import { message } from 'antd';
 import UploadImage from '@/components/UploadImage';
 import './styled.scss';
-import { format, parse } from 'date-fns';
-import SliderAnt from '@/components/SliderAnt';
-import { Slider } from 'antd';
-import InputPrice from '@/components/InputPrice';
+import { format } from 'date-fns';
 
 const schema = yup
   .object({
     booktitle: yup.string().required('Please enter the book title'),
     price: yup.string().required('Please enter price'),
+    quantity: yup.string().required('Please enter quantity'),
     desc: yup.string().required('Please enter description'),
     author: yup.string().required("Please enter the author's name"),
     datePicker: yup
@@ -61,42 +59,17 @@ export default function FirstForm() {
   const dataMainImage = useSelector((state) => state.form.mainImage);
   const dataErrorMainImage = useSelector((state) => state.form.errorMainImage);
 
-  const formatter = (value) => `${value}%`;
-  const [sliderValue, setSliderValue] = useState(0);
-  const [valuePrice, setValuePrice] = useState(0);
-  console.log('file: FirstForm.jsx:67 ~ FirstForm ~ valuePrice:', valuePrice);
-  const formatNumber = (value) => {
-    return value.toLocaleString('vi-VN');
-  };
-
-  const handleSliderChange = (value) => {
-    const price = getValues('price');
-    const priceWithoutFormat = price?.replaceAll('.', '').replace(/\D/g, '');
-
-    if (priceWithoutFormat) {
-      const priceDiscount = (priceWithoutFormat * (100 - value)) / 100;
-
-      setValuePrice(priceDiscount);
-      setSliderValue(value);
-      // setValue(
-      //   'price',
-      //   priceDiscount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-      // );
-    } else {
-      // Handle the case when the price is empty or does not contain a valid format
-      setValue('price', '');
-    }
-  };
-
   const hanlderFirstForm = (values) => {
     if (dataMainImage.length > 0) {
       const newValues = { ...values };
 
       const stringFromDate = (date) => format(date, 'yyyy-MM-dd');
       const dateToSerialize = stringFromDate(new Date(newValues.datePicker));
-
+      const price = getValues('price');
       newValues.datePicker = dateToSerialize;
       newValues.mainImage = dataMainImage;
+
+      newValues.price = price;
 
       console.log(
         'file: FirstForm.jsx:84 ~ hanlderFirstForm ~ newValues:',
@@ -140,10 +113,7 @@ export default function FirstForm() {
       dispatch(saveErrorMainImage('*Please upload a main photo'));
     }
   }, []);
-  const handleChange = (event) => {
-    const formattedValue = formatNumber(event.target.value.replace(/\D/g, ''));
-    // field.onChange(formattedValue);
-  };
+
   return (
     <div className="pt-[5px]">
       <form className="px-[20px]" onSubmit={handleSubmit(hanlderFirstForm)}>
@@ -191,11 +161,10 @@ export default function FirstForm() {
               <div className="mb-2">
                 <Label htmlFor="price">Price</Label>
               </div>
-              <InputPrice
+              <Input
                 type="text"
                 name="price"
                 control={control}
-                value={valuePrice}
                 id="price"
                 placeholder="Enter price"
                 className="border"
@@ -206,16 +175,19 @@ export default function FirstForm() {
             </div>
             <div className="flex flex-col items-start w-full">
               <div className="mb-2">
-                <Label htmlFor="discount">Discount</Label>
+                <Label htmlFor="quantity">Quantity</Label>
               </div>
-              <Slider
-                defaultValue={0}
-                tooltip={{
-                  formatter,
-                }}
-                onChange={handleSliderChange}
-                className="w-full"
+              <Input
+                type="number"
+                name="quantity"
+                control={control}
+                id="quantity"
+                placeholder="Enter quantity"
+                className="border"
               />
+              <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
+                {errors.quantity && errors.quantity.message}
+              </p>
             </div>
           </div>
 
