@@ -98,7 +98,7 @@ const handleRegister = async (data) => {
 
     const mailOptions = {
         from: mailConfig.FROM_ADDRESS,
-        to: email,
+        to: data.email,
         subject: 'NTHDV - Xác thực tài khoản',
         text: `
                 NTHDV
