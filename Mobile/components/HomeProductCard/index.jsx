@@ -3,7 +3,7 @@ import React from 'react'
 import { AntDesign } from '@expo/vector-icons';
 
 import styles from './styles';
-export default function HomeProductItem({ product, onPress }) {
+export default function HomeProductCard({ product, onPress }) {
   return (
     <TouchableOpacity style={styles.shadow}>
       <View style={styles.container}>

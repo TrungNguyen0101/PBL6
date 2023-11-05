@@ -1,48 +1,38 @@
 import { FlatList, View } from 'react-native';
-import styles from './styles'
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import ProductListItem from '../../components/ProductListItem';
+import { useEffect, useContext, useState } from 'react';
+import { ProductContext } from '../../context/ProductProvider';
+import CategoryProductCard from '../../components/CategoryProductCard';
+import styles from './styles';
 
 export default function CategoryProduct({ route }) {
     const { categoryName } = route.params;
-    const [products, setProducts] = useState([])
-
-    const getData = async () => {
-        try {
-            const response = await axios.get('/products')
-            if (response) {
-                if (categoryName) {
-                    const filteredProducts = response.data.filter(product => product.category === categoryName);
-                    setProducts(filteredProducts);
-                }
-                else {
-                    setProducts([])
-                }
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    const { products } = useContext(ProductContext);
+    const [filteredProducts, setFilteredProducts] = useState([]);
 
     useEffect(() => {
-        getData();
-    }, [categoryName])
+        if (products) {
+            if (categoryName) {
+                const filteredProducts = products.filter(product => product.category === categoryName);
+                setFilteredProducts(filteredProducts);
+            } else {
+                setFilteredProducts([]);
+            }
+        }
+    }, [categoryName, products]);
 
     return (
         <View style={styles.wrapper}>
             <FlatList
-                data={products}
+                data={filteredProducts}
                 numColumns={2}
                 contentContainerStyle={styles.container}
-                renderItem={({ item }) =>
-                    <View style={styles.wrapper}>
-                        <ProductListItem product={item} />
+                renderItem={({ item }) => (
+                    <View style={styles.innerWrapper}>
+                        <CategoryProductCard product={item} />
                     </View>
-                }
+                )}
                 keyExtractor={(item) => `${item.id}`}
             />
         </View>
     );
 }
-

@@ -7,7 +7,9 @@
     "android": "yarn clean && expo start --android",
     "ios": "yarn clean && expo start --ios",
     "web": "yarn clean && expo start --web",
-    "clean": "rimraf .expo out"
+    "clean": "rimraf .expo out",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.5.8",

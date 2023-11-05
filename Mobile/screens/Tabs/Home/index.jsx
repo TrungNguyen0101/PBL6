@@ -6,9 +6,9 @@ import styles from './styles'
 
 //components
 import Banner from './components/Banner'
-import Category from '../../../components/Category'
 import Popular from './components/Popular'
 import Search from './components/Search'
+import CategorySection from '../../../components/CategorySection'
 
 export default function Home() {
   return (
@@ -23,7 +23,7 @@ export default function Home() {
             case 'search':
               return <Search />;
             case 'category':
-              return <Category />;
+              return <CategorySection />;
             case 'popular':
               return <Popular />;
             default:
