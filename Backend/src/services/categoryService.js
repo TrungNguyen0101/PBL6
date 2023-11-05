@@ -7,7 +7,9 @@ const insertCategory = async(data,user) => {
     let categoryData = {};
     try {
         let user = await db.User.findOne({id : user.id}).exec();
-        
+        categoryData.status = 200;
+        categoryData.errMessage = "ok";
+        console.log(user);
     } catch (e) {
         categoryData.status = 500;
         categoryData.errMessage = e;

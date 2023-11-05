@@ -35,8 +35,8 @@ const handleCreateCategory = async (req,res) => {
         })
     } catch (e) {
         return res.status(500).json({
-            status: data.status,
-            message: data.errMessage });
+            status: 400,
+            message: e });
     }
 }
 const handleUpdateCategory = async (req,res)=> {
