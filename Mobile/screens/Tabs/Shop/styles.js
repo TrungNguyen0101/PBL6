@@ -1,11 +1,10 @@
-import { StyleSheet } from "react-native";
-import colors from "../../../contains/colors";
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginTop: 40,
-    },
+  container: {
+    flex: 1,
+    marginTop: 40,
+  },
 });
 
 export default styles;

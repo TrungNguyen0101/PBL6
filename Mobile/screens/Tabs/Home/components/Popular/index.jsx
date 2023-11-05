@@ -1,34 +1,22 @@
-import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { get } from '../../../../../axios-config';
+import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
+import React, { useContext } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 import colors from '../../../../../contains/colors';
 import styles from './styles';
-import HomeProductItem from '../../../../../components/HomeProductItem';
-
+import HomeProductCard from '../../../../../components/HomeProductCard';
+import { ProductContext } from '../../../../../context/ProductProvider';
 
 export default function Popular() {
-    const [products, setProducts] = useState();
-    const [isLoading, setIsLoading] = useState(true);
+    const { products, isLoading } = useContext(ProductContext);
+    const navigation = useNavigation();
 
-    const fetchData = async () => {
-        setIsLoading(true);
-        try {
-            const response = await get('/products')
-            if (response) {
-                setProducts(response.data)
-            }
-        } catch (err) {
-            throw err
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    useEffect(() => {
-        fetchData()
-    }, [])
+    const navigateToProduct = (productId) => {
+        // Implement navigation to the detailed product view here
+        // For example:
+        // navigation.navigate('ProductDetail', { productId });
+    };
 
     return (
         <View style={styles.container}>
@@ -42,21 +30,20 @@ export default function Popular() {
                 ) : (
                     <FlatList
                         data={products}
-                        renderItem={({ item }) =>
-                            <HomeProductItem
-                                product={item}
-                                onPress={''}
-                            />
-                        }
+                        renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => navigateToProduct(item.id)}>
+                                <HomeProductCard product={item} />
+                            </TouchableOpacity>
+                        )}
                         keyExtractor={(item) => `${item.id}`}
                         horizontal
                         pagingEnabled
                     />
-                    )}
+                )}
             </View>
-            <TouchableOpacity style={styles.discoverBtn}>
+            <TouchableOpacity style={styles.discoverBtn} onPress={() => navigation.navigate('AllProducts')}>
                 <Text style={styles.discoverBtnText}>Discover all</Text>
             </TouchableOpacity>
         </View>
-    )
+    );
 }
