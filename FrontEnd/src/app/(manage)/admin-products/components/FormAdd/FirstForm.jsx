@@ -92,13 +92,14 @@ export default function FirstForm() {
   /* set value */
   useEffect(() => {
     if (!isObjectEmpty(dataFirstForm)) {
-      setValue('author', dataFirstForm.author);
-      setValue('booktitle', dataFirstForm.booktitle);
-
       const originalDate = new Date(dataFirstForm.datePicker);
       const formattedDate = originalDate.toISOString().split('T')[0];
       setValue('datePicker', formattedDate);
+
+      setValue('author', dataFirstForm.author);
+      setValue('booktitle', dataFirstForm.booktitle);
       setValue('desc', dataFirstForm.desc);
+      setValue('quantity', dataFirstForm.quantity);
       setValue('price', dataFirstForm.price);
       if (dataFirstForm.category.value) {
         setValue('category', dataFirstForm.category.value);
