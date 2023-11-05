@@ -13,9 +13,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { HiArrowNarrowLeft } from 'react-icons/hi';
 import '../../../styles/Form.scss';
-import { postSignUp } from '@/services/authService';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { signUpData } from '@/redux/reducers/dataSignUpReducer';
+import { postSignUp } from '@/services/authService';
 
 const schema = yup
   .object({
@@ -43,6 +44,7 @@ const schema = yup
 
 export default function SignUpPage() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const {
     handleSubmit,
     control,
@@ -52,20 +54,19 @@ export default function SignUpPage() {
     resolver: yupResolver(schema),
   });
   const handleSignUp = async (values) => {
+    // dispatch(signUpData(values));
+    // router.push(routes.VERIFY);
     const res = await postSignUp(
       values.username,
       values.email,
       values.password
     );
-    if (res) {
-      toast.success('Đăng ký tài khoản thành công');
-      router.push(routes.LOGIN);
-    }
+    console.log(res);
   };
   return (
     <div className="form-wrapper flex items-center justify-center px-[20px]">
       <form
-        className="w-[600px] mx-auto  bg-[#eee] rounded-lg p-8 bg-opacity-60"
+        className="w-[600px] mx-auto bg-[#eee] rounded-lg p-8 bg-opacity-60"
         onSubmit={handleSubmit(handleSignUp)}
       >
         <h1 className="mb-3 text-3xl font-bold">REGISTER</h1>

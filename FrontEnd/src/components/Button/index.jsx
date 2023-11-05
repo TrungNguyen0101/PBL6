@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-const Button = ({ kind, children, to, isBorder = false }) => {
+const Button = ({ kind, children, to, isBorder = false, ...props }) => {
   const router = useRouter();
   let bgcClassName = '';
   let colorText = '';
@@ -18,13 +18,26 @@ const Button = ({ kind, children, to, isBorder = false }) => {
     default:
       break;
   }
+  if (to) {
+    return (
+      <button
+        type="submit"
+        className={`px-6 py-2 w-max text-base font-semibold cursor-pointer rounded-md hover:opacity-80 transition-all ${bgcClassName} ${colorText} ${
+          isBorder ? 'border border-black' : ''
+        }`}
+        onClick={() => router.push(to)}
+      >
+        {children}
+      </button>
+    );
+  }
   return (
     <button
       type="submit"
       className={`px-6 py-2 w-max text-base font-semibold cursor-pointer rounded-md hover:opacity-80 transition-all ${bgcClassName} ${colorText} ${
         isBorder ? 'border border-black' : ''
       }`}
-      onClick={() => router.push(to)}
+      {...props}
     >
       {children}
     </button>

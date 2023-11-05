@@ -14,4 +14,12 @@ const postSignUp = (username, email, password) => {
     password,
   });
 };
-export { postSignIn, postSignUp };
+
+const updateInforUser = (username, phoneNumber) => {
+  return instance.put('user/update', {
+    username,
+    phoneNumber,
+  });
+};
+
+export { postSignIn, postSignUp, updateInforUser };
