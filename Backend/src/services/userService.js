@@ -91,7 +91,7 @@ const handleUpdateUser = async(user,data) => {
                 userData.errMessage= "Update user succeeds"
                 return {
                     ...userData,
-                    users
+                    user : users
                 }
             }
             else {
