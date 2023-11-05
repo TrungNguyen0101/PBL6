@@ -24,6 +24,7 @@ import UploadImage from '@/components/UploadImage';
 import UploadImageDesc from '@/components/UploadImage/UploadImageDesc';
 import SelectInputLanguage from '@/components/SelectInputLanguage';
 import { useEffect } from 'react';
+import axios from 'axios';
 const schema = yup
   .object({
     publisher: yup.string().required('Please enter ublisher'),
@@ -48,23 +49,28 @@ export default function SecondForm() {
   const dataDescImage = useSelector((state) => state.form.descImage);
   const dataErrorDescImage = useSelector((state) => state.form.errorDescImage);
 
-  const hanlderSecondForm = (values) => {
-    if (dataDescImage.length > 3) {
-      const newValues = { ...dataFirstForm, ...values };
-      newValues.descImage = dataDescImage;
+  const hanlderSecondForm = async (values) => {
+    try {
+      if (dataDescImage.length > 3) {
+        const newValues = { ...dataFirstForm, ...values };
+        newValues.descImage = dataDescImage;
 
-      console.log(
-        'file: SecondForm.jsx:44 ~ hanlderSecondForm ~ newValues:',
-        newValues
-      );
-
-      message.success('Processing complete!');
-      dispatch(saveDescImage([]));
-      dispatch(saveFirstForm({}));
-      dispatch(saveMainImage([]));
-      dispatch(prevForm());
-      dispatch(offCheckAdd());
-    }
+        const result = await axios.post(
+          'http://localhost:3030/api/book/insert',
+          newValues
+        );
+        if (result.data.data.errCode === 0) {
+          message.success(result.data.data.errMessage);
+          dispatch(saveDescImage([]));
+          dispatch(saveFirstForm({}));
+          dispatch(saveMainImage([]));
+          dispatch(prevForm());
+          dispatch(offCheckAdd());
+        } else {
+          message.success(result.data.data.errMessage);
+        }
+      }
+    } catch (error) {}
   };
   const prev = () => {
     dispatch(saveDescImage([]));

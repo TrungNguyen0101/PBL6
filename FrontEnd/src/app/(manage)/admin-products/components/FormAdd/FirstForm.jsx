@@ -68,13 +68,11 @@ export default function FirstForm() {
       const price = getValues('price');
       newValues.datePicker = dateToSerialize;
       newValues.mainImage = dataMainImage;
-
       newValues.price = price;
+      if (newValues.category.value) {
+        newValues.category = newValues.category.value;
+      }
 
-      console.log(
-        'file: FirstForm.jsx:84 ~ hanlderFirstForm ~ newValues:',
-        newValues
-      );
       dispatch(saveFirstForm(newValues));
       dispatch(nextForm());
 
