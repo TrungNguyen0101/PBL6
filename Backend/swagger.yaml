@@ -9,8 +9,10 @@ servers:
 tags:
   - name: user
     description: Everything about your users
+  - name: book
+    description: Everything about book
 paths:
-  /api/login:
+  /api/user/login:
     post:
       tags:
         - user
@@ -78,10 +80,47 @@ paths:
                     default: Login succeed!
         "400":
           description: Invalid ID 
-  /api/register:
+  /api/user/register:
     post:
       tags:
         - user
+      summary: Login for user
+      description: Login for user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Tên của người dùng
+                email:
+                  type: string
+                  format: email
+                  description: Email của người dùng
+                password:
+                  type: string
+                  description: Mật khẩu của người dùng
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Thông điệp
+                    default: Created user succeed!
+        "400":
+          description: Invalid ID supplied
+  /api/book:
+   post:
+      tags:
+        - book
       summary: Login for user
       description: Login for user
       requestBody:
