@@ -10,6 +10,7 @@ const GeneralAccessToken = (data) => {
     return access_token;
 };
 const mailConfig = require('../config/mail')
+const nodemailer = require('nodemailer');
 require('dotenv/config')
 
 const handleLogin = async (data) => {
