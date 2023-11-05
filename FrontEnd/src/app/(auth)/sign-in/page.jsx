@@ -48,16 +48,17 @@ export default function SignInPage() {
   });
   const handleSignIn = async (values) => {
     const res = await postSignIn(values.email, values.password);
-    if (res) {
-      toast.success('Đăng nhập thành công');
+    if (res.status === 200) {
+      toast.success(res.message);
       router.push(routes.HOME);
-      sessionStorage.setItem('auth', JSON.stringify(res));
+      sessionStorage.setItem('token', res.access_token);
+      sessionStorage.setItem('auth', JSON.stringify(res?.user));
     }
   };
   return (
     <div className="form-wrapper flex items-center justify-center px-[20px]">
       <form
-        className="w-[500px] mx-auto  bg-[#eee] rounded-lg p-8 bg-opacity-60"
+        className="w-[500px] mx-auto bg-[#eee] rounded-lg p-8 bg-opacity-60"
         onSubmit={handleSubmit(handleSignIn)}
       >
         <h1 className="mb-3 text-3xl font-bold">LOGIN</h1>
