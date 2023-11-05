@@ -1,22 +1,47 @@
 const categoryService
  = require('../controllers/index.js')
 const Book = require('../models/Book.js');
+const db = require('../models/index.js');
 
-const insertBook = async(user,data) => {
-    console.log("insert book")
+const insertCategory = async(data,user) => {
+    let categoryData = {};
+    try {
+        let user = await db.User.findOne({id : user.id}).exec();
+        
+    } catch (e) {
+        categoryData.status = 500;
+        categoryData.errMessage = e;
+    }
+    return categoryData
+
 }
-const updateBook = async()=> {
+const updateCategory = async()=> {
     
 }
-const getAllBooks = async()=> {
-    
+const getAllCategory = async()=> {
+    let data = {};
+    try {
+        let category = await db.Category.find({});
+        category = category.map((sche)=> {
+            if(sche.image == null) return sche;
+            sche.image = Buffer.from(sche.image).toString("base64");
+            return sche;
+        })
+        data.category = category;
+        data.status = 200;
+        return data;
+    } catch (e) {
+        data.status = 500;
+        data.errMessage = e;
+        return data;
+    }
 }
-const getBookById = async()=> {
+const deleteCategory = async()=> {
     
 }
 module.exports = {
-    insertBook:insertBook,
-    updateBook:updateBook,
-    getAllBooks:getAllBooks,
-    getBookById : getBookById
+    insertCategory:insertCategory,
+    updateCategory:updateCategory,
+    getAllCategory:getAllCategory,
+    deleteCategory : deleteCategory
 }

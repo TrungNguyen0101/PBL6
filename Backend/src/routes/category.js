@@ -3,9 +3,9 @@ const router = express.Router();
 const {
         categoryController,
 } = require('../controllers/index.js')
-router.get("/",categoryController.handleGetCategory);
+router.get("/",categoryController.handleGetAllCategory);
 router.patch("/update",categoryController.handleUpdateCategory);
 router.post("/delete/:id",categoryController.handleDeleteCategory);
-router.post("/create",categoryController.handleCreateCategory);
+router.post("/insert",categoryController.handleCreateCategory);
             
 module.exports = router;

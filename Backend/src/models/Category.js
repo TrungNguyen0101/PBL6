@@ -5,10 +5,12 @@ const { ObjectId } = require('mongodb');
 const Category = new Schema({
     id: { type: ObjectId },
     image: {
-        //  type: new Blob("long"),
+         type: Buffer,
+         require : true,
         },
     name: {
          type: String,
+         require : true,
         },
 
 })
