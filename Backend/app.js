@@ -14,7 +14,8 @@ const swaggerDocument = YAML.load('./swagger.yaml');
 app.use(cors());
 
 
-app.use('/', express.static(path.join(__dirname, 'lib')), swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+// app.use('/', express.static(path.join(__dirname, 'lib')), swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+app.use('/', express.static(path.join(__dirname, 'lib')))
 
 //middleware
 app.use(

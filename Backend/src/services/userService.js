@@ -89,6 +89,10 @@ const handleUpdateUser = async(user,data) => {
                 await users.save();
                 userData.status = 200;
                 userData.errMessage= "Update user succeeds"
+                return {
+                    ...userData,
+                    users
+                }
             }
             else {
                 userData.errCode = 404;
