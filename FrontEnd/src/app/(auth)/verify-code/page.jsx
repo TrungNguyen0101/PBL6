@@ -7,17 +7,14 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/Button';
-import { useRouter } from 'next/navigation';
-import routes from '@/constant/routes';
 
 const schema = yup
   .object({
-    verify: yup.string().required('Please enter your email'),
+    verifyCode: yup.string().required('Please enter verification code'),
   })
   .required();
 
-const VerifyPage = () => {
-  const router = useRouter();
+const VerifyCodePage = () => {
   const {
     handleSubmit,
     control,
@@ -26,43 +23,40 @@ const VerifyPage = () => {
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
-  const handleVerify = (values) => {
+  const handleVerifyCode = (values) => {
     console.log(values);
-    router.push(routes.VERIFYCODE);
   };
   return (
     <div className="flex items-center justify-center px-[20px]">
       <form
         className="w-[450px] mt-[150px] mx-auto bg-[#f2f3f4] shadow-xl rounded-lg p-8"
-        onSubmit={handleSubmit(handleVerify)}
+        onSubmit={handleSubmit(handleVerifyCode)}
       >
-        <h1 className="mb-3 text-2xl font-bold text-center">
-          Xác minh người dùng
-        </h1>
+        <h1 className="mb-3 text-2xl font-bold text-center">Nhập mã</h1>
         <p className="mb-1 text-sm">
-          Nhận mã xác minh được gửi đến email của bạn
+          Nhập mã xác minh 6 chữ số để xác nhận bạn đã nhận được mã xác thực
         </p>
         <Field>
           <div className="mb-2">
-            <Label htmlFor="verify">Email address</Label>
+            <Label htmlFor="verifyCode">Mã xác minh</Label>
           </div>
           <Input
-            type="email"
-            name="verify"
+            type="text"
+            name="verifyCode"
             control={control}
-            id="verify"
-            placeholder="Please enter your email"
+            id="verifyCode"
+            placeholder="Please enter verification code"
           />
           <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
-            {errors.verify && errors.verify.message}
+            {errors.verifyCode && errors.verifyCode.message}
           </p>
         </Field>
         <div className="mx-auto mt-4 w-max">
-          <Button kind="primary">Gửi</Button>
+          <Button kind="primary">Xác minh</Button>
         </div>
       </form>
     </div>
   );
 };
 
-export default VerifyPage;
+export default VerifyCodePage;
