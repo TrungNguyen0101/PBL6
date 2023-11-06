@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { signUpData } from '@/redux/reducers/dataSignUpReducer';
 import { postSignUp } from '@/services/authService';
+import { toast } from 'react-toastify';
 
 const schema = yup
   .object({
@@ -54,14 +55,15 @@ export default function SignUpPage() {
     resolver: yupResolver(schema),
   });
   const handleSignUp = async (values) => {
-    // dispatch(signUpData(values));
-    // router.push(routes.VERIFY);
     const res = await postSignUp(
       values.username,
       values.email,
       values.password
     );
-    console.log(res);
+    if (res.status === 200) {
+      toast.success(res.message);
+      router.push(routes.LOGIN);
+    }
   };
   return (
     <div className="form-wrapper flex items-center justify-center px-[20px]">
