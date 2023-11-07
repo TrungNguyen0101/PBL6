@@ -113,21 +113,6 @@ const UploadImageDesc = () => {
       return false;
     }
     return true;
-    //  const isFileOverLimit = isFileLimit(file, list);
-    //  const fileValid = isFileValid(file);
-    //  const sizeValid = isSizeValid(file);
-    //  if (isFileOverLimit) {
-    //    return false;
-    //  }
-    //  if (!fileValid || !sizeValid) {
-    //    const msg =
-    //      (!fileValid ? FILE_VALIDATE + UPLOAD_MESSAGE.FORMAT : '') +
-    //      (!sizeValid ? UPLOAD_MESSAGE.SIZE.replace('size', `${SIZE_LIMIT}`) : '');
-    //    showError(msg);
-    //    return false;
-    //  }
-    //  handleUploadFile(file);
-    //  return true;
   };
   return (
     <>

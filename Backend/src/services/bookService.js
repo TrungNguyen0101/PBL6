@@ -1,4 +1,3 @@
-const bookService = require("../controllers/index.js");
 const Book = require("../models/Book.js");
 const db = require("../models/index.js");
 

@@ -1,49 +1,36 @@
-const categoryService
- = require('../controllers/index.js')
-const Book = require('../models/Book.js');
-const db = require('../models/index.js');
+const Category = require("../models/Category.js");
+const db = require("../models/index.js");
 
-const insertCategory = async(data,user) => {
-    let categoryData = {};
-    try {
-        let user = await db.User.findOne({id : user.id}).exec();
-        categoryData.status = 200;
-        categoryData.errMessage = "ok";
-        console.log(user);
-    } catch (e) {
-        categoryData.status = 500;
-        categoryData.errMessage = e;
-    }
-    return categoryData
-
-}
-const updateCategory = async()=> {
-    
-}
-const getAllCategory = async()=> {
-    let data = {};
-    try {
-        let category = await db.Category.find({});
-        category = category.map((sche)=> {
-            if(sche.image == null) return sche;
-            sche.image = Buffer.from(sche.image).toString("base64");
-            return sche;
-        })
-        data.category = category;
-        data.status = 200;
-        return data;
-    } catch (e) {
-        data.status = 500;
-        data.errMessage = e;
-        return data;
-    }
-}
-const deleteCategory = async()=> {
-    
-}
+const insertCategory = async (data) => {
+  let categoryData = {};
+  try {
+    await db.Category.create(data);
+    categoryData.errCode = 0;
+    categoryData.errMessage = "Create category succeed";
+  } catch (e) {
+    categoryData.errCode = 2;
+    categoryData.errMessage = "Create category failed";
+  }
+  return categoryData;
+};
+const updateCategory = async () => {};
+const getAllCategory = async () => {
+  let categoryData = {};
+  try {
+    const category = await db.Category.find();
+    categoryData.categories = category;
+    categoryData.errCode = 0;
+    categoryData.errMessage = "Get all category succeed";
+  } catch (e) {
+    categoryData.errCode = 2;
+    categoryData.errMessage = "Get all category failed";
+  }
+  return categoryData;
+};
+const deleteCategory = async () => {};
 module.exports = {
-    insertCategory:insertCategory,
-    updateCategory:updateCategory,
-    getAllCategory:getAllCategory,
-    deleteCategory : deleteCategory
-}
+  insertCategory: insertCategory,
+  updateCategory: updateCategory,
+  getAllCategory: getAllCategory,
+  deleteCategory: deleteCategory,
+};
