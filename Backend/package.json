@@ -4,8 +4,8 @@
   "description": "backend pbl6",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./app.js",
-    "build": "npm install && echo 'Building process completed'",
+    "start": "node ./app.js",
+    "build": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -26,6 +26,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.2.0",
     "mongoose": "^7.6.4",
+    "nodemailer": "^6.9.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "validator": "^13.11.0",
@@ -35,6 +36,6 @@
     "nodemon": "^3.0.1"
   },
   "engines": {
-    "node": ">=18.18.0 <19.0.0"
+    "node": ">=18.0.0 <19.0.0"
   }
 }

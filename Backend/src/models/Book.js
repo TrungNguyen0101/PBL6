@@ -1,12 +1,19 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const BookModal = new Schema({
-    Name_Category: { type: String },
-    Name: { type: String },
-    Price: { type: Number },
-    Author: { type: String },
-    Desc: { type: String },
-})
+  booktitle: { type: String },
+  author: { type: String },
+  price: { type: Number },
+  quantity: { type: String },
+  datePicker: { type: Date },
+  description: { type: String },
+  category: { type: String },
+  mainImage: { type: Array },
+  descImage: { type: Array },
+  publisher: { type: String },
+  infomation: { type: String },
+  language: { type: Array },
+});
 
-module.exports = mongoose.model('Book', BookModal);
+module.exports = mongoose.model("Book", BookModal);

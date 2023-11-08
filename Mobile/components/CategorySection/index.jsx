@@ -10,9 +10,9 @@ import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import colors from '../../contains/colors';
 import { get } from '../../axios-config';
-import CategoryListItem from '../CategoryListItem';
+import CategoryCard from '../CategoryCard';
 
-export default function Category() {
+export default function CategorySection() {
   const [categories, setCategories] = useState([])
   const navigation = useNavigation()
   const screenHeight = Dimensions.get('window').height
@@ -51,7 +51,7 @@ export default function Category() {
       ) : (
         <FlatList
           data={categories}
-          renderItem={({ item }) => <CategoryListItem
+          renderItem={({ item }) => <CategoryCard
             category={item}
             navigation={navigation}
             onPress={() => navigation?.navigate('CategoryProduct', { headerName: item.name, categoryName: item.name })}

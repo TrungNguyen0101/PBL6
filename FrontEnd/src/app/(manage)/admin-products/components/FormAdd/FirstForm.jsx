@@ -68,13 +68,11 @@ export default function FirstForm() {
       const price = getValues('price');
       newValues.datePicker = dateToSerialize;
       newValues.mainImage = dataMainImage;
-
       newValues.price = price;
+      if (newValues.category.value) {
+        newValues.category = newValues.category.value;
+      }
 
-      console.log(
-        'file: FirstForm.jsx:84 ~ hanlderFirstForm ~ newValues:',
-        newValues
-      );
       dispatch(saveFirstForm(newValues));
       dispatch(nextForm());
 
@@ -92,13 +90,14 @@ export default function FirstForm() {
   /* set value */
   useEffect(() => {
     if (!isObjectEmpty(dataFirstForm)) {
-      setValue('author', dataFirstForm.author);
-      setValue('booktitle', dataFirstForm.booktitle);
-
       const originalDate = new Date(dataFirstForm.datePicker);
       const formattedDate = originalDate.toISOString().split('T')[0];
       setValue('datePicker', formattedDate);
+
+      setValue('author', dataFirstForm.author);
+      setValue('booktitle', dataFirstForm.booktitle);
       setValue('desc', dataFirstForm.desc);
+      setValue('quantity', dataFirstForm.quantity);
       setValue('price', dataFirstForm.price);
       if (dataFirstForm.category.value) {
         setValue('category', dataFirstForm.category.value);

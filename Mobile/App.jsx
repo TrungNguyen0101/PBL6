@@ -9,6 +9,8 @@ import { AntDesign, FontAwesome, Ionicons, SimpleLineIcons } from '@expo/vector-
 
 //Provider
 import AuthProvider from './context/AuthProvider';
+import ProductProvider from './context/ProductProvider';
+import ProductDetailProvider from './context/ProductDetailProvider'
 
 //Auth screen
 import SignIn from './screens/Auth/SignIn';
@@ -31,35 +33,39 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <AuthProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Tabs">
-          <Stack.Screen
-            name="Tabs"
-            component={TabsComponent}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="CategoryProduct"
-            component={CategoryProduct}
-            options={({ route }) => ({ title: route.params.headerName })}
-          />
-          <Stack.Screen
-            name="SignIn"
-            component={SignIn}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SignUp"
-            component={SignUp}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Profile"
-            component={Profile}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ProductProvider>
+        <ProductDetailProvider>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="Tabs">
+              <Stack.Screen
+                name="Tabs"
+                component={TabsComponent}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="CategoryProduct"
+                component={CategoryProduct}
+                options={({ route }) => ({ title: route.params.headerName })}
+              />
+              <Stack.Screen
+                name="SignIn"
+                component={SignIn}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="SignUp"
+                component={SignUp}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Profile"
+                component={Profile}
+                options={{ headerShown: false }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </ProductDetailProvider>
+      </ProductProvider>
     </AuthProvider>
   );
 }

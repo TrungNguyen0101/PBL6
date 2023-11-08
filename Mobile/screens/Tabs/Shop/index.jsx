@@ -1,9 +1,9 @@
 import { Dimensions, FlatList, SafeAreaView } from 'react-native';
 import styles from './styles';
 
-import Category from '../../../components/Category';
 import VoucherList from './components/VoucherList';
 import TrendItemList from './components/TrendItemList';
+import CategorySection from '../../../components/CategorySection';
 
 export default function Shop() {
   const screenHeight = Dimensions.get('window').height
@@ -17,7 +17,7 @@ export default function Shop() {
         renderItem={({ item }) => {
           switch (item) {
             case 'category':
-              return <Category />;
+              return <CategorySection />;
             case 'trendItemList':
               return <TrendItemList />;
             case 'voucherList':
