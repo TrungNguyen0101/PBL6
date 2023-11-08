@@ -82,7 +82,13 @@ export default function SignInPage() {
           control={control}
           errors={errors}
         />
-        <div className="mx-auto mt-4 w-max">
+        <Link
+          href={routes.FORGOTTEN}
+          className="font-semibold text-xs flex justify-end -translate-y-3 hover:opacity-70 transition-all"
+        >
+          Bạn đã quên mật khẩu?
+        </Link>
+        <div className="mx-auto mt-2 w-max">
           <ButtonForm>Login</ButtonForm>
         </div>
         <div className="text-center mt-[10px]">
