@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   current: 0,
   firstForm: {},
-  checkAdd: true,
+  checkAdd: false,
   mainImage: [],
   errorMainImage: '',
   descImage: [],
