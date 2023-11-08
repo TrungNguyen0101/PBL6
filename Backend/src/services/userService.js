@@ -51,15 +51,15 @@ const handleLogin = async (data) => {
 }
 const handleRegister = async (data) => {
     let userData = {};
-    const codeLength = 6;
-    const characters = '0123456789';
-    let verificationCodeProgress = '';
+    // const codeLength = 6;
+    // const characters = '0123456789';
+    // let verificationCodeProgress = '';
 
-    for (let i = 0; i < codeLength; i++) {
-        verificationCodeProgress += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
+    // for (let i = 0; i < codeLength; i++) {
+    //     verificationCodeProgress += characters.charAt(Math.floor(Math.random() * characters.length));
+    // }
 
-    const verificationCode = verificationCodeProgress
+    // const verificationCode = verificationCodeProgress
     try {
         const user = await db.User.findOne({ email: data.email }).exec();
         if (user) {
@@ -74,7 +74,7 @@ const handleRegister = async (data) => {
             password: hashPassword,
             roleID: "2",
             phoneNumber: "",
-            verificationCode: verificationCode
+            verificationCode: ""
         })
         userData.errCode = 0;
         userData.errMessage = "Create users succeed";
@@ -82,40 +82,6 @@ const handleRegister = async (data) => {
         userData.errCode = 2;
         userData.errMessage = "Create users failed";
     }
-
-    const transporter = nodemailer.createTransport({
-        tls: {
-            rejectUnauthorized: false
-        },
-        host: mailConfig.HOST,
-        port: mailConfig.PORT,
-        secure: false,
-        auth: {
-            user: mailConfig.USERNAME,
-            pass: mailConfig.PASSWORD,
-        },
-    });
-
-    const mailOptions = {
-        from: mailConfig.FROM_ADDRESS,
-        to: data.email,
-        subject: 'NTHDV - Xác thực tài khoản',
-        text: `
-                NTHDV
-                
-                Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi, 
-    
-                Chúng tôi xin gửi mã xác thực của bạn là: ${verificationCode}.
-                `,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending verification email', error);
-        } else {
-            console.log('Verification email sent', info.response);
-        }
-    });
     return userData;
 }
 const handleUpdateUser = async (user, data) => {
@@ -154,12 +120,11 @@ const handleUpdateUser = async (user, data) => {
     }
     return userData;
 }
-const getUserById = async(user, id)=> {
-    let data = {}; 
+const getUserById = async (user, id) => {
+    let data = {};
     try {
         const userbyid = await db.User.findById(id);
-        if(!userbyid) 
-        {
+        if (!userbyid) {
             data.status = 404;
             data.errMessage = "Not found!"
             return data;
@@ -174,9 +139,102 @@ const getUserById = async(user, id)=> {
     }
     return data;
 }
-module.exports = { 
-    handleLogin : handleLogin,
-    handleRegister : handleRegister,
-    handleUpdateUser: handleUpdateUser,
-    getUserById :getUserById
+const forgottenPassword = async (email) => {
+    let data = {};
+    const user = await db.User.findOne({ email: email }).exec();
+    if (user) {
+        const numbers = '0123456789';
+        const characters = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
+        const special = '!@$%&*';
+        const lowercaseCharacters = 'qwertyuiopasdfghjklzxcvbnm';
+        const uppercaseCharacters = 'QWERTYUIOPASDFGHJKLZXCVBNM';
+
+        const passwordLength = 8; // Độ dài mật khẩu mong muốn
+        let newPasswordProgress = '';
+
+        // Chọn ít nhất 1 số, 1 ký tự thường, 1 ký tự in hoa, và 1 ký tự đặc biệt
+        newPasswordProgress += numbers.charAt(Math.floor(Math.random() * numbers.length));
+        newPasswordProgress += lowercaseCharacters.charAt(Math.floor(Math.random() * lowercaseCharacters.length));
+        newPasswordProgress += uppercaseCharacters.charAt(Math.floor(Math.random() * uppercaseCharacters.length));
+        newPasswordProgress += special.charAt(Math.floor(Math.random() * special.length));
+
+        // Số ký tự cần chọn thêm sau khi đã có ít nhất 1 ký tự từ mỗi nhóm
+        const remainingChars = passwordLength - newPasswordProgress.length;
+
+        // Tạo mật khẩu ngẫu nhiên với các ký tự còn lại từ tất cả các loại ký tự
+        const allCharacters = characters + numbers + special;
+        for (let i = 0; i < remainingChars; i++) {
+            const randomIndex = Math.floor(Math.random() * allCharacters.length);
+            newPasswordProgress += allCharacters.charAt(randomIndex);
+        }
+        const newPassword = newPasswordProgress
+        const transporter = nodemailer.createTransport({
+            tls: {
+                rejectUnauthorized: false
+            },
+            host: mailConfig.HOST,
+            port: mailConfig.PORT,
+            secure: false,
+            auth: {
+                user: mailConfig.USERNAME,
+                pass: mailConfig.PASSWORD,
+            },
+        });
+
+        const mailOptions = {
+            from: mailConfig.FROM_ADDRESS,
+            to: user.email,
+            subject: 'NTHDV - Xác thực tài khoản',
+            text: `
+                    NTHDV
+                    
+                    Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi, 
+        
+                    Chúng tôi xin gửi mật khẩu của bạn là: ${newPassword}
+                    `,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending verification email', error);
+            } else {
+                console.log('Verification email sent', info.response);
+            }
+        });
+        let hashPassword = await bcrypt.hashSync(newPassword, salt);
+        user.password = hashPassword;
+        user.save();
+        data.status = 200;
+        data.message = "Reset password succeedfully";
+    } else {
+        data.status = 404;
+        data.message = "User not found!";
+    }
+    return data;
+}
+// const getUserByEmail = async(email) => {
+//     let data = {};
+//     try {
+//         const user = await db.User.findOne({ email: email }).exec();
+//         if(user) {
+//             return {
+//                 ...user._doc,
+//                 status : 200,
+//                 errMessage : "Get User by Email succeed"
+//             }
+//         }
+//         data.status =500;
+//         data.errMessage= "User's not found!"
+//     } catch (error) {
+//         data.status = 500;
+//         data.errMessage = error;
+//     }
+//     return data;
+// }
+module.exports = {
+    handleLogin,
+    handleRegister,
+    handleUpdateUser,
+    getUserById,
+    forgottenPassword,
 }
