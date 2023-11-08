@@ -48,9 +48,19 @@ const UploadImage = () => {
     copyList.splice(index, 1);
     setFileList([...copyList]);
     if (copyList.length === 0) {
-      dispatch(saveErrorMainImage('*Please upload a main photo'));
+      dispatch(saveErrorMainImage('*Please upload a main image'));
     }
   };
+  // const beforeUpload = async (file, list) => {
+  //   const prevList = fileList.length;
+  //   const maxCount = list.length;
+
+  //   if (prevList + maxCount >= 1) {
+  //     dispatch(saveErrorMainImage('*Upload max 1 main image'));
+  //     return false;
+  //   }
+  //   return true;
+  // };
 
   /* upload image with cloudinary */
   const uploadProfileImg = async (formData) => {
@@ -107,8 +117,7 @@ const UploadImage = () => {
         action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
         listType="picture-card"
         fileList={fileList}
-        maxCount={5}
-        multiple
+        maxCount={1}
         onPreview={handlePreview}
         // beforeUpload={beforeUpload}
         onRemove={(e) => handleRemove(e)}
