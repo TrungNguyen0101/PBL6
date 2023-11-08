@@ -65,8 +65,27 @@ const handleUpdateUser = async (req, res) => {
     let message = await userService.handleUpdateUser(user,data);
     return res.status(200).json(message);
 }
+const handleGetUserById = async (req,res)=> {
+    let idUser = req.params.id;
+    let user = req.User;
+    let data = await userService.getUserById(user,idUser);
+    console.log(data)
+    if(data.status === 200)
+    {
+        return res.status(200).json({
+            user: data.user,
+            status : data.status,
+            message: data.errMessage
+        })
+    }
+    return res.status(500).json({
+        status : data.status,
+        message: data.errMessage
+    })
+}
 module.exports = {
     handleLogin: handleLogin,
     handleRegister: handleRegister,
-    handleUpdateUser: handleUpdateUser
+    handleUpdateUser: handleUpdateUser,
+    handleGetUserById: handleGetUserById
 }
