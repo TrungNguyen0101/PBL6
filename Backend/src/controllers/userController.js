@@ -83,9 +83,29 @@ const handleGetUserById = async (req,res)=> {
         message: data.errMessage
     })
 }
+const handleForgottenPassword = async(req,res) => {
+    let email = req.body.email;
+    if(!email){
+        return res.status(500).json({
+            errCode: 1,
+            message: "Missing inputs parameter",
+        })
+    }
+    let data = await userService.forgottenPassword(email);
+    if(!data)
+    {
+        return res.status(500).json(
+           { status: data.status,
+            message: data.message});
+    }
+    return res.status(200).json(
+        {  status: data.status,
+           message :data.message})
+}
 module.exports = {
-    handleLogin: handleLogin,
-    handleRegister: handleRegister,
-    handleUpdateUser: handleUpdateUser,
-    handleGetUserById: handleGetUserById
+    handleLogin,
+    handleRegister,
+    handleUpdateUser,
+    handleGetUserById,
+    handleForgottenPassword,
 }
