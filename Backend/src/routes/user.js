@@ -12,6 +12,6 @@ router.post("/login",userController.handleLogin);
 router.post("/register",userController.handleRegister);
 router.put("/update",middleware.authMiddleWare,userController.handleUpdateUser);
 router.get("/getId/:id",middleware.authMiddleWare,userController.handleGetUserById);
-router.post("/forgotten",userController.handleForgottenPassword);
+router.post("/forgot-password",userController.handleForgottenPassword);
             
 module.exports = router;
