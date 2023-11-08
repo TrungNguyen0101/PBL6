@@ -154,8 +154,29 @@ const handleUpdateUser = async (user, data) => {
     }
     return userData;
 }
-module.exports = {
-    handleLogin: handleLogin,
-    handleRegister: handleRegister,
-    handleUpdateUser: handleUpdateUser
+const getUserById = async(user, id)=> {
+    let data = {}; 
+    try {
+        const userbyid = await db.User.findById(id);
+        if(!userbyid) 
+        {
+            data.status = 404;
+            data.errMessage = "Not found!"
+            return data;
+        }
+        data.user = userbyid;
+        data.status = 200;
+        data.errMessage = "Get User By ID Succeed"
+        return data;
+    } catch (error) {
+        data.status = 500;
+        data.errMessage = error;
+    }
+    return data;
+}
+module.exports = { 
+    handleLogin : handleLogin,
+    handleRegister : handleRegister,
+    handleUpdateUser: handleUpdateUser,
+    getUserById :getUserById
 }
