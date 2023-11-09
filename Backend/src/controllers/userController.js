@@ -5,23 +5,23 @@ const handleLogin = async (req, res) => {
     let data = req.body;
     if (!data) {
         return res.status(500).json({
-            errCode: 1,
+            status: 500,
             message: "Missing inputs parameter",
         });
     }
     let userData = await userService.handleLogin(data);
-    if (userData.errCode === 0) {
+    if (userData.status === 200) {
         const response = {
             ...userData.data,
             status: 200,
-            message : userData.errMessage
+            message : userData.message
         }
         return res.status(200).json(response);
     }
     const response = {
         ...userData.data,
         status: 404,
-        message: userData.errMessage
+        message: userData.message
     }
     return res.status(404).json({
         response
@@ -36,18 +36,18 @@ const handleRegister = async (req, res) => {
         })
     }
     let userData = await userService.handleRegister(data);
-    if (userData.errCode === 0) {
+    if (userData.status === 200) {
         const response = {
             ...userData.data,
             status: 200,
-            message : userData.errMessage
+            message : userData.message
         }
         return res.status(200).json(response);
     }
     const response = {
         ...userData.data,
         status: 500,
-        message : userData.errMessage
+        message : userData.message
     }
     return res.status(500).json({
         response
@@ -58,7 +58,7 @@ const handleUpdateUser = async (req, res) => {
     const data = req.body;
     if (!data) {
         return res.status(500).json({
-            errCode: 1,
+            status: 500,
             message: "Missing inputs parameter",
         })
     }
@@ -75,19 +75,19 @@ const handleGetUserById = async (req,res)=> {
         return res.status(200).json({
             user: data.user,
             status : data.status,
-            message: data.errMessage
+            message: data.message
         })
     }
     return res.status(500).json({
         status : data.status,
-        message: data.errMessage
+        message: data.message
     })
 }
 const handleForgottenPassword = async(req,res) => {
     let email = req.body.email;
     if(!email){
         return res.status(500).json({
-            errCode: 1,
+            status: 500,
             message: "Missing inputs parameter",
         })
     }
