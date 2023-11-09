@@ -3,16 +3,15 @@ const db = require('../models/index.js');
 const bcrypt = require('bcrypt')
 const salt = bcrypt.genSaltSync(10);
 const jwt = require("jsonwebtoken");
+const mailConfig = require('../config/mail')
+const nodemailer = require('nodemailer');
+require('dotenv/config')
 const GeneralAccessToken = (data) => {
     const access_token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: "1d",
     });
     return access_token;
 };
-const mailConfig = require('../config/mail')
-const nodemailer = require('nodemailer');
-require('dotenv/config')
-
 const handleLogin = async (data) => {
     let userData = {};
     try {
@@ -24,28 +23,28 @@ const handleLogin = async (data) => {
                     id: user._id.toString(),
                     User: user,
                 })
-                userData.errCode = 0;
-                userData.errMessage = "Login succeed!";
+                userData.status = 200;
+                userData.message = "Login succeed!";
                 delete user.password;
                 userData.data = {
                     access_token, user
                 }
             }
             else {
-                userData.errCode = 2;
-                userData.errMessage = "Wrong password!"
+                userData.status = 500;
+                userData.message = "Wrong password!"
             }
             return userData;
         }
         else {
-            userData.errCode = 2;
-            userData.errMessage = "Account does not exist";
+            userData.status = 500;
+            userData.message = "Account does not exist";
         }
         return userData;
     }
     catch (error) {
-        userData.errCode = 2;
-        userData.errMessage = "Email address is invalid!"
+        userData.status = 500;
+        userData.message = "Email address is invalid!"
     }
     return userData;
 }
@@ -63,8 +62,8 @@ const handleRegister = async (data) => {
     try {
         const user = await db.User.findOne({ email: data.email }).exec();
         if (user) {
-            userData.errCode = 2;
-            userData.errMessage = "User already exists"
+            userData.status = 500;
+            userData.message = "User already exists"
             return userData;
         }
         let hashPassword = await bcrypt.hashSync(data.password, salt);
@@ -76,11 +75,11 @@ const handleRegister = async (data) => {
             phoneNumber: "",
             verificationCode: ""
         })
-        userData.errCode = 0;
-        userData.errMessage = "Create users succeed";
+        userData.status = 200;
+        userData.message = "Create users succeed";
     } catch (e) {
-        userData.errCode = 2;
-        userData.errMessage = "Create users failed";
+        userData.status = 500;
+        userData.message = "Create users failed";
     }
     return userData;
 }
@@ -88,8 +87,8 @@ const handleUpdateUser = async (user, data) => {
     let userData = {};
     try {
         if (!user) {
-            userData.errCode = 2;
-            userData.errMessage = "Missing required parameter";
+            userData.status = 500;
+            userData.message = "Missing required parameter";
             return userData;
         }
         let users = await db.User.findOne({ email: user.User.email }).exec();
@@ -99,7 +98,7 @@ const handleUpdateUser = async (user, data) => {
                 users.phoneNumber = data.phoneNumber;
                 await users.save();
                 userData.status = 200;
-                userData.errMessage = "Update user succeeds"
+                userData.message = "Update user succeeds"
                 return {
                     ...userData,
                     user: users
@@ -107,12 +106,12 @@ const handleUpdateUser = async (user, data) => {
             }
             else {
                 userData.errCode = 404;
-                userData.errMessage = "User's not found!"
+                userData.message = "User's not found!"
             }
         }
         else {
             userData.errCode = 500;
-            userData.errMessage = "Missing required parameter"
+            userData.message = "Missing required parameter"
             return userData;
         }
     } catch (e) {
@@ -126,16 +125,16 @@ const getUserById = async (user, id) => {
         const userbyid = await db.User.findById(id);
         if (!userbyid) {
             data.status = 404;
-            data.errMessage = "Not found!"
+            data.message = "Not found!"
             return data;
         }
         data.user = userbyid;
         data.status = 200;
-        data.errMessage = "Get User By ID Succeed"
+        data.message = "Get User By ID Succeed"
         return data;
     } catch (error) {
         data.status = 500;
-        data.errMessage = error;
+        data.message = error;
     }
     return data;
 }
@@ -220,14 +219,14 @@ const forgottenPassword = async (email) => {
 //             return {
 //                 ...user._doc,
 //                 status : 200,
-//                 errMessage : "Get User by Email succeed"
+//                 message : "Get User by Email succeed"
 //             }
 //         }
 //         data.status =500;
-//         data.errMessage= "User's not found!"
+//         data.message= "User's not found!"
 //     } catch (error) {
 //         data.status = 500;
-//         data.errMessage = error;
+//         data.message = error;
 //     }
 //     return data;
 // }
