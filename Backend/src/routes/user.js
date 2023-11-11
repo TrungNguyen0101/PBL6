@@ -13,5 +13,7 @@ router.post("/register",userController.handleRegister);
 router.put("/update",middleware.authMiddleWare,userController.handleUpdateUser);
 router.get("/getId/:id",middleware.authMiddleWare,userController.handleGetUserById);
 router.post("/forgot-password",userController.handleForgottenPassword);
+router.post("/sendcode",middleware.authMiddleWare,userController.handleSendCodeVerify);
+router.post("/verify",middleware.authMiddleWare,userController.handleVerifyUser);
             
 module.exports = router;

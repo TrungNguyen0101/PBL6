@@ -23,7 +23,7 @@ app.use(
         extended: true,
     }),
 );
-// app.use(checkToken.checkToken); //shield
+// app.use(checkToken.checkToken); //shiel
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());

@@ -102,10 +102,49 @@ const handleForgottenPassword = async(req,res) => {
         {  status: data.status,
            message :data.message})
 }
+const handleSendCodeVerify = async(req,res) => {
+    const user = req.User.User;
+    if(!user) {
+        return res.status(500).json({
+            status: 500,
+            message : "Missing inputs parameter",
+        })
+    }
+    let data = await userService.verifyUser(user);
+    if(data.status === 200)
+    {
+        const code = req.body.code;
+        let compare = await userService.compareVerifyCode(user,code);
+        if(compare.status === 200)
+        {
+            return res.status(200).json({
+                status: compare.status,
+                message : compare.message
+            })
+        }
+        else {
+            return res.status(500).json({
+                status: compare.status,
+                message : compare.message
+            })
+        }
+    }
+    else {
+        return res.status(500).json({
+            status: data.status,
+            message : data.message
+        })
+    }
+}
+const handleVerifyUser = async(req,res) => {
+
+}
 module.exports = {
     handleLogin,
     handleRegister,
     handleUpdateUser,
     handleGetUserById,
     handleForgottenPassword,
+    handleVerifyUser,
+    handleSendCodeVerify
 }
