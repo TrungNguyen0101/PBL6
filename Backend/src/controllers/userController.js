@@ -13,14 +13,14 @@ const handleLogin = async (req, res) => {
     if (userData.status === 200) {
         const response = {
             ...userData.data,
-            status: 200,
+            status: userData.status,
             message: userData.message
         }
         return res.status(200).json(response);
     }
     const response = {
         ...userData.data,
-        status: 404,
+        status: userData.status,
         message: userData.message
     }
     return res.status(404).json({
