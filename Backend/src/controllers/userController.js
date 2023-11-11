@@ -140,7 +140,8 @@ const handleVerifyUser = async (req, res) => {
     if (data.status === 200) {
         return res.status(200).json({
             status: data.status,
-            message: data.message
+            message: data.message,
+            data : data.data
         })
     }
     else {
@@ -150,6 +151,16 @@ const handleVerifyUser = async (req, res) => {
         })
     }
 }
+const handleAddUserByAdmin = async (req,res)=> {
+    let roleID = req.body.roleID;
+    if(!roleID) {
+        return res.status(500).json({
+            status: 500,
+            message: "Missing inputs parameter",
+        })
+    }
+    let data = await userService.addUserByAdmin();
+}
 module.exports = {
     handleLogin,
     handleRegister,
@@ -157,5 +168,6 @@ module.exports = {
     handleGetUserById,
     handleForgottenPassword,
     handleVerifyUser,
-    handleSendCodeVerify
+    handleSendCodeVerify,
+    handleAddUserByAdmin
 }
