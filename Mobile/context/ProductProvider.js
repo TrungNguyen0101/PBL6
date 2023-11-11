@@ -6,6 +6,7 @@ export const ProductContext = createContext();
 function ProductProvider({ children }) {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [productId, setProductId] = useState(null);
 
     const fetchData = useCallback(async () => {
         setIsLoading(true);
@@ -25,7 +26,7 @@ function ProductProvider({ children }) {
         fetchData();
     }, [fetchData]);
 
-    const contextValue = useMemo(() => ({ products, isLoading }), [products, isLoading]);
+    const contextValue = useMemo(() => ({ products, isLoading, productId, setProductId }), [products, isLoading, productId, setProductId]);
 
     return (
         <ProductContext.Provider value={contextValue}>

@@ -12,12 +12,6 @@ export default function Popular() {
     const { products, isLoading } = useContext(ProductContext);
     const navigation = useNavigation();
 
-    const navigateToProduct = (productId) => {
-        // Implement navigation to the detailed product view here
-        // For example:
-        // navigation.navigate('ProductDetail', { productId });
-    };
-
     return (
         <View style={styles.container}>
             <View style={styles.titleWrapper}>
