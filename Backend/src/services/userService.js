@@ -25,9 +25,16 @@ const handleLogin = async (data) => {
                 })
                 userData.status = 200;
                 userData.message = "Login succeed!";
-                delete user.password;
                 userData.data = {
-                    access_token, user
+                    access_token, 
+                    user: {
+                        _id: user._id,
+                        username : user.username,
+                        phoneNumber : user.phoneNumber,
+                        email : user.email,
+                        roleID : user.roleID,
+                        isVerified : user.isVerified
+                    }
                 }
             }
             else {
@@ -275,12 +282,25 @@ const verifyCode = async(data,code)=> {
         user.save();
         userData.status = 200;
         userData.message = "Verify successfully";
+        userData.data = {
+            user: {
+                _id: user._id,
+                username : user.username,
+                phoneNumber : user.phoneNumber,
+                email : user.email,
+                roleID : user.roleID,
+                isVerified : user.isVerified
+            }
+        }
     }
     else {
         userData.status = 500;
         userData.message = "Verify failed";
     }
     return userData;
+}
+const addUserByAdmin = async() => {
+
 }
 module.exports = {
     handleLogin,
@@ -289,5 +309,6 @@ module.exports = {
     getUserById,
     forgottenPassword,
     sendCodeVerifyUser,
-    verifyCode
+    verifyCode,
+    addUserByAdmin
 }

@@ -15,5 +15,5 @@ router.get("/getId/:id",middleware.authMiddleWare,userController.handleGetUserBy
 router.post("/forgot-password",userController.handleForgottenPassword);
 router.post("/sendcode-verify",middleware.authMiddleWare,userController.handleSendCodeVerify);
 router.post("/verify",middleware.authMiddleWare,userController.handleVerifyUser);
-            
+router.post("/add-user-by-admin",userController.handleAddUserByAdmin);
 module.exports = router;
