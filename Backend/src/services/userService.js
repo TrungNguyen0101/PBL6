@@ -50,15 +50,6 @@ const handleLogin = async (data) => {
 }
 const handleRegister = async (data) => {
     let userData = {};
-    const codeLength = 6;
-    const characters = '0123456789';
-    let verificationCodeProgress = '';
-
-    for (let i = 0; i < codeLength; i++) {
-        verificationCodeProgress += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-
-    const verificationCode = verificationCodeProgress
     try {
         const user = await db.User.findOne({ email: data.email }).exec();
         if (user) {
@@ -73,7 +64,7 @@ const handleRegister = async (data) => {
             password: hashPassword,
             roleID: "2",
             phoneNumber: "",
-            verificationCode: verificationCode
+            verificationCode: ""
         })
         userData.status = 200;
         userData.message = "Create users succeed";
@@ -213,6 +204,19 @@ const forgottenPassword = async (email) => {
 }
 const sendCodeVerifyUser = async(data) => {
     const dataUser = {};
+    const codeLength = 6;
+    const characters = '0123456789';
+    let verificationCodeProgress = '';
+    for (let i = 0; i < codeLength; i++) {
+        verificationCodeProgress += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    const verificationCode = verificationCodeProgress
+    const user = await db.User.findOne({ email: data.email }).exec();
+    if(user)
+    {
+        user.verificationCode = verificationCode
+        user.save();
+    }
     if(data) {
         const transporter = nodemailer.createTransport({
             tls: {
@@ -236,7 +240,7 @@ const sendCodeVerifyUser = async(data) => {
                     
                     Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi, 
         
-                    Chúng tôi xin gửi mã xác thực của bạn là: ${data.verificationCode}
+                    Chúng tôi xin gửi mã xác thực của bạn là: ${verificationCode}
                     `,
         };
 
@@ -256,7 +260,7 @@ const sendCodeVerifyUser = async(data) => {
     }
     return dataUser
 }
-const compareVerifyCode = async(data,code)=> {
+const verifyCode = async(data,code)=> {
     const userData = {};
     const user = await db.User.findOne({ email: data.email }).exec();
     if(!user||!code)
@@ -278,25 +282,6 @@ const compareVerifyCode = async(data,code)=> {
     }
     return userData;
 }
-// const getUserByEmail = async(email) => {
-//     let data = {};
-//     try {
-//         const user = await db.User.findOne({ email: email }).exec();
-//         if(user) {
-//             return {
-//                 ...user._doc,
-//                 status : 200,
-//                 message : "Get User by Email succeed"
-//             }
-//         }
-//         data.status =500;
-//         data.message= "User's not found!"
-//     } catch (error) {
-//         data.status = 500;
-//         data.message = error;
-//     }
-//     return data;
-// }
 module.exports = {
     handleLogin,
     handleRegister,
@@ -304,5 +289,5 @@ module.exports = {
     getUserById,
     forgottenPassword,
     sendCodeVerifyUser,
-    compareVerifyCode
+    verifyCode
 }

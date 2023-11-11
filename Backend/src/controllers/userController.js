@@ -13,14 +13,14 @@ const handleLogin = async (req, res) => {
     if (userData.status === 200) {
         const response = {
             ...userData.data,
-            status: 200,
-            message : userData.message
+            status: userData.status,
+            message: userData.message
         }
         return res.status(200).json(response);
     }
     const response = {
         ...userData.data,
-        status: 404,
+        status: userData.status,
         message: userData.message
     }
     return res.status(404).json({
@@ -40,14 +40,14 @@ const handleRegister = async (req, res) => {
         const response = {
             ...userData.data,
             status: 200,
-            message : userData.message
+            message: userData.message
         }
         return res.status(200).json(response);
     }
     const response = {
         ...userData.data,
         status: 500,
-        message : userData.message
+        message: userData.message
     }
     return res.status(500).json({
         response
@@ -62,82 +62,93 @@ const handleUpdateUser = async (req, res) => {
             message: "Missing inputs parameter",
         })
     }
-    let message = await userService.handleUpdateUser(user,data);
+    let message = await userService.handleUpdateUser(user, data);
     return res.status(200).json(message);
 }
-const handleGetUserById = async (req,res)=> {
+const handleGetUserById = async (req, res) => {
     let idUser = req.params.id;
     let user = req.User;
-    let data = await userService.getUserById(user,idUser);
+    let data = await userService.getUserById(user, idUser);
     console.log(data)
-    if(data.status === 200)
-    {
+    if (data.status === 200) {
         return res.status(200).json({
             user: data.user,
-            status : data.status,
+            status: data.status,
             message: data.message
         })
     }
     return res.status(500).json({
-        status : data.status,
+        status: data.status,
         message: data.message
     })
 }
-const handleForgottenPassword = async(req,res) => {
+const handleForgottenPassword = async (req, res) => {
     let email = req.body.email;
-    if(!email){
+    if (!email) {
         return res.status(500).json({
             status: 500,
             message: "Missing inputs parameter",
         })
     }
     let data = await userService.forgottenPassword(email);
-    if(!data)
-    {
+    if (!data) {
         return res.status(500).json(
-           { status: data.status,
-            message: data.message});
+            {
+                status: data.status,
+                message: data.message
+            });
     }
     return res.status(200).json(
-        {  status: data.status,
-           message :data.message})
+        {
+            status: data.status,
+            message: data.message
+        })
 }
-const handleSendCodeVerify = async(req,res) => {
+const handleSendCodeVerify = async (req, res) => {
     const user = req.User.User;
-    if(!user) {
+    console.log(user);
+    if (!user) {
         return res.status(500).json({
             status: 500,
-            message : "Missing inputs parameter",
+            message: "Missing inputs parameter",
         })
     }
-    let data = await userService.verifyUser(user);
-    if(data.status === 200)
-    {
-        const code = req.body.code;
-        let compare = await userService.compareVerifyCode(user,code);
-        if(compare.status === 200)
-        {
-            return res.status(200).json({
-                status: compare.status,
-                message : compare.message
-            })
-        }
-        else {
-            return res.status(500).json({
-                status: compare.status,
-                message : compare.message
-            })
-        }
+    let data = await userService.sendCodeVerifyUser(user);
+    if (data.status === 200) {
+        return res.status(200).json({
+            status: data.status,
+            message: data.message
+        })
     }
     else {
         return res.status(500).json({
             status: data.status,
-            message : data.message
+            message: data.message
         })
     }
 }
-const handleVerifyUser = async(req,res) => {
-
+const handleVerifyUser = async (req, res) => {
+    let user = req.User.User
+    let code = req.body.code;
+    if (!code) {
+        return res.status(500).json({
+            status: 500,
+            message: "Missing inputs parameter",
+        })
+    }
+    let data = await userService.verifyCode(user,code);
+    if (data.status === 200) {
+        return res.status(200).json({
+            status: data.status,
+            message: data.message
+        })
+    }
+    else {
+        return res.status(500).json({
+            status: data.status,
+            message: data.message
+        })
+    }
 }
 module.exports = {
     handleLogin,
