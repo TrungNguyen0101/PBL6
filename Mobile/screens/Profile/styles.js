@@ -37,37 +37,35 @@ const styles = StyleSheet.create({
   },
   updateBtn: {
     backgroundColor: colors.primaryColor,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 6,
   },
   updateBtnText: {
     color: colors.whiteColor,
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: '500',
   },
   profileWrapper: {
+    flex: 1,
     marginHorizontal: 12,
     marginVertical: 24,
   },
   infoWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
     gap: 6,
     marginVertical: 6,
   },
   info: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '500',
     flex: 1,
   },
   infoInput: {
-    fontSize: 16,
+    fontSize: 18,
     backgroundColor: colors.grayColor,
-    paddingVertical: 4,
-    paddingHorizontal: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
     flex: 3,
-    borderRadius: 6,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: colors.blackColor
   },
   errorText: {
     alignSelf: 'flex-end',

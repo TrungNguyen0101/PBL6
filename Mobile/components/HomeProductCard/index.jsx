@@ -1,11 +1,21 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useContext, useNavigate } from 'react'
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 import styles from './styles';
-export default function HomeProductCard({ product, onPress }) {
+
+import { ProductContext } from '../../context/ProductProvider'
+
+export default function HomeProductCard({ product }) {
+  const { setProductId } = useContext(ProductContext)
+  const navigation = useNavigation();
+  const handleNavigateDetailProduct = (id) => {
+    setProductId(id)
+    navigation?.navigate('DetailProduct')
+  }
   return (
-    <TouchableOpacity style={styles.shadow}>
+    <TouchableOpacity style={styles.shadow} onPress={() => { handleNavigateDetailProduct(product?.id) }}>
       <View style={styles.container}>
         <Image style={styles.img} resizeMode="center" source={{ uri: product.image }} />
         <View style={styles.info}>

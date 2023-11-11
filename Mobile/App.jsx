@@ -10,7 +10,7 @@ import { AntDesign, FontAwesome, Ionicons, SimpleLineIcons } from '@expo/vector-
 //Provider
 import AuthProvider from './context/AuthProvider';
 import ProductProvider from './context/ProductProvider';
-import ProductDetailProvider from './context/ProductDetailProvider'
+import StateProvider from './context/StateProvider';
 
 //Auth screen
 import SignIn from './screens/Auth/SignIn';
@@ -26,15 +26,16 @@ import Shop from './screens/Tabs/Shop';
 //Screens
 import CategoryProduct from './screens/CategoryProduct'
 import Profile from './screens/Profile';
+import DetailProduct from './screens/DetailProduct';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <AuthProvider>
-      <ProductProvider>
-        <ProductDetailProvider>
+    <StateProvider>
+      <AuthProvider>
+        <ProductProvider>
           <NavigationContainer>
             <Stack.Navigator initialRouteName="Tabs">
               <Stack.Screen
@@ -62,11 +63,16 @@ export default function App() {
                 component={Profile}
                 options={{ headerShown: false }}
               />
+              <Stack.Screen
+                name="DetailProduct"
+                component={DetailProduct}
+                options={{ headerShown: false }}
+              />
             </Stack.Navigator>
           </NavigationContainer>
-        </ProductDetailProvider>
-      </ProductProvider>
-    </AuthProvider>
+        </ProductProvider>
+      </AuthProvider>
+    </StateProvider>
   );
 }
 
