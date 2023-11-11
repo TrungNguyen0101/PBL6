@@ -50,15 +50,15 @@ const handleLogin = async (data) => {
 }
 const handleRegister = async (data) => {
     let userData = {};
-    // const codeLength = 6;
-    // const characters = '0123456789';
-    // let verificationCodeProgress = '';
+    const codeLength = 6;
+    const characters = '0123456789';
+    let verificationCodeProgress = '';
 
-    // for (let i = 0; i < codeLength; i++) {
-    //     verificationCodeProgress += characters.charAt(Math.floor(Math.random() * characters.length));
-    // }
+    for (let i = 0; i < codeLength; i++) {
+        verificationCodeProgress += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
 
-    // const verificationCode = verificationCodeProgress
+    const verificationCode = verificationCodeProgress
     try {
         const user = await db.User.findOne({ email: data.email }).exec();
         if (user) {
@@ -73,7 +73,7 @@ const handleRegister = async (data) => {
             password: hashPassword,
             roleID: "2",
             phoneNumber: "",
-            verificationCode: ""
+            verificationCode: verificationCode
         })
         userData.status = 200;
         userData.message = "Create users succeed";
@@ -211,6 +211,73 @@ const forgottenPassword = async (email) => {
     }
     return data;
 }
+const sendCodeVerifyUser = async(data) => {
+    const dataUser = {};
+    if(data) {
+        const transporter = nodemailer.createTransport({
+            tls: {
+                rejectUnauthorized: false
+            },
+            host: mailConfig.HOST,
+            port: mailConfig.PORT,
+            secure: false,
+            auth: {
+                user: mailConfig.USERNAME,
+                pass: mailConfig.PASSWORD,
+            },
+        });
+
+        const mailOptions = {
+            from: mailConfig.FROM_ADDRESS,
+            to: data.email,
+            subject: 'NTHDV - Xác thực tài khoản',
+            text: `
+                    NTHDV
+                    
+                    Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi, 
+        
+                    Chúng tôi xin gửi mã xác thực của bạn là: ${data.verificationCode}
+                    `,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending verification email', error);
+            } else {
+                console.log('Verification email sent', info.response);
+            }
+        });
+        dataUser.status = 200;
+        dataUser.message = "Send verify code succeed!";
+    }
+    else {
+        dataUser.status = 404;
+        dataUser.message = "User not found!";
+    }
+    return dataUser
+}
+const compareVerifyCode = async(data,code)=> {
+    const userData = {};
+    const user = await db.User.findOne({ email: data.email }).exec();
+    if(!user||!code)
+    {
+        userData.status = 500;
+        userData.message = "Missing required parameter";
+        return userData;
+    }
+    if(user.verificationCode === code)
+    {
+        user.isVerified = true;
+        user.save();
+        userData.status = 200;
+        userData.message = "Verify successfully";
+    }
+    else {
+        userData.status = 500;
+        userData.message = "Verify failed";
+    }
+    return userData;
+}
 // const getUserByEmail = async(email) => {
 //     let data = {};
 //     try {
@@ -236,4 +303,6 @@ module.exports = {
     handleUpdateUser,
     getUserById,
     forgottenPassword,
+    sendCodeVerifyUser,
+    compareVerifyCode
 }
