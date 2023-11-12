@@ -159,7 +159,7 @@ const handleAddUserByAdmin = async (req,res)=> {
             message: "Missing inputs parameter",
         })
     }
-    let data = await userService.addUserByAdmin();
+    let data = await userService.addUserByAdmin(); 
 }
 module.exports = {
     handleLogin,
