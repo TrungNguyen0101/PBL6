@@ -161,6 +161,30 @@ const handleAddUserByAdmin = async (req,res)=> {
     }
     let data = await userService.addUserByAdmin(); 
 }
+const handleChangePassword = async(req,res) => {
+    let user = req.User.User;
+    let newpassword = req.body.newpassword;
+    if(!user) {
+        return res.status(500).json({
+            status: 500,
+            message: "Missing inputs parameter",
+        })
+    }
+    let data = await userService.changePassword(user,newpassword);
+    if(data.status === 200)
+    {
+        return res.status(200).json({
+            status: data.status,
+            message: data.message,
+        })
+    }
+    else {
+        return res.status(500).json({
+            status: data.status,
+            message: data.message,
+        })
+    }
+}
 module.exports = {
     handleLogin,
     handleRegister,
@@ -169,5 +193,6 @@ module.exports = {
     handleForgottenPassword,
     handleVerifyUser,
     handleSendCodeVerify,
-    handleAddUserByAdmin
+    handleAddUserByAdmin,
+    handleChangePassword
 }

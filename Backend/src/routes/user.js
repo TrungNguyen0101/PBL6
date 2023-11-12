@@ -16,4 +16,5 @@ router.post("/forgot-password",userController.handleForgottenPassword);
 router.post("/sendcode-verify",middleware.authMiddleWare,userController.handleSendCodeVerify);
 router.post("/verify",middleware.authMiddleWare,userController.handleVerifyUser);
 router.post("/add-user-by-admin",userController.handleAddUserByAdmin);
+router.post("/change-password",middleware.authMiddleWare,userController.handleChangePassword);
 module.exports = router;
