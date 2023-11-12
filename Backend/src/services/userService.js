@@ -302,6 +302,23 @@ const verifyCode = async(data,code)=> {
 const addUserByAdmin = async() => {
 
 }
+const changePassword = async(user,newpassword) => {
+    let data = {};
+    try {
+        const userbyid = await db.User.findById(user._id);
+        if(userbyid){
+            let hashPassword = await bcrypt.hashSync(newpassword, salt);
+            userbyid.password = hashPassword;
+            userbyid.save();
+            data.status = 200;
+            data.message = "Change password succeed!";
+        }
+    } catch (error) {
+        data.status = 500;
+        data.message = error;
+    }
+    return data;
+}
 module.exports = {
     handleLogin,
     handleRegister,
@@ -310,5 +327,6 @@ module.exports = {
     forgottenPassword,
     sendCodeVerifyUser,
     verifyCode,
-    addUserByAdmin
+    addUserByAdmin,
+    changePassword
 }
