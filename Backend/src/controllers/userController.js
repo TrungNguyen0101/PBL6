@@ -185,6 +185,9 @@ const handleChangePassword = async(req,res) => {
         })
     }
 }
+const handle = async(req,res)=> {
+
+}
 module.exports = {
     handleLogin,
     handleRegister,
@@ -194,5 +197,6 @@ module.exports = {
     handleVerifyUser,
     handleSendCodeVerify,
     handleAddUserByAdmin,
-    handleChangePassword
+    handleChangePassword,
+    handle
 }
