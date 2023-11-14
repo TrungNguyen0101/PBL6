@@ -136,12 +136,12 @@ const handleVerifyUser = async (req, res) => {
             message: "Missing inputs parameter",
         })
     }
-    let data = await userService.verifyCode(user,code);
+    let data = await userService.verifyCode(user, code);
     if (data.status === 200) {
         return res.status(200).json({
             status: data.status,
             message: data.message,
-            data : data.data
+            data: data.data
         })
     }
     else {
@@ -151,28 +151,28 @@ const handleVerifyUser = async (req, res) => {
         })
     }
 }
-const handleAddUserByAdmin = async (req,res)=> {
+const handleAddUserByAdmin = async (req, res) => {
     let roleID = req.body.roleID;
-    if(!roleID) {
+    if (!roleID) {
         return res.status(500).json({
             status: 500,
             message: "Missing inputs parameter",
         })
     }
-    let data = await userService.addUserByAdmin(); 
+    let data = await userService.addUserByAdmin();
 }
-const handleChangePassword = async(req,res) => {
+const handleChangePassword = async (req, res) => {
     let user = req.User.User;
+    let oldpassword = req.body.oldpassword;
     let newpassword = req.body.newpassword;
-    if(!user) {
+    if (!user || !oldpassword || !newpassword) {
         return res.status(500).json({
             status: 500,
             message: "Missing inputs parameter",
         })
     }
-    let data = await userService.changePassword(user,newpassword);
-    if(data.status === 200)
-    {
+    let data = await userService.changePassword(user, newpassword, oldpassword);
+    if (data.status === 200) {
         return res.status(200).json({
             status: data.status,
             message: data.message,
@@ -185,7 +185,7 @@ const handleChangePassword = async(req,res) => {
         })
     }
 }
-const handle = async(req,res)=> {
+const handle = async (req, res) => {
 
 }
 module.exports = {

@@ -26,14 +26,14 @@ const handleLogin = async (data) => {
                 userData.status = 200;
                 userData.message = "Login succeed!";
                 userData.data = {
-                    access_token, 
+                    access_token,
                     user: {
                         _id: user._id,
-                        username : user.username,
-                        phoneNumber : user.phoneNumber,
-                        email : user.email,
-                        roleID : user.roleID,
-                        isVerified : user.isVerified
+                        username: user.username,
+                        phoneNumber: user.phoneNumber,
+                        email: user.email,
+                        roleID: user.roleID,
+                        isVerified: user.isVerified
                     }
                 }
             }
@@ -209,7 +209,7 @@ const forgottenPassword = async (email) => {
     }
     return data;
 }
-const sendCodeVerifyUser = async(data) => {
+const sendCodeVerifyUser = async (data) => {
     const dataUser = {};
     const codeLength = 6;
     const characters = '0123456789';
@@ -219,12 +219,11 @@ const sendCodeVerifyUser = async(data) => {
     }
     const verificationCode = verificationCodeProgress
     const user = await db.User.findOne({ email: data.email }).exec();
-    if(user)
-    {
+    if (user) {
         user.verificationCode = verificationCode
         user.save();
     }
-    if(data) {
+    if (data) {
         const transporter = nodemailer.createTransport({
             tls: {
                 rejectUnauthorized: false
@@ -267,17 +266,15 @@ const sendCodeVerifyUser = async(data) => {
     }
     return dataUser
 }
-const verifyCode = async(data,code)=> {
+const verifyCode = async (data, code) => {
     const userData = {};
     const user = await db.User.findOne({ email: data.email }).exec();
-    if(!user||!code)
-    {
+    if (!user || !code) {
         userData.status = 500;
         userData.message = "Missing required parameter";
         return userData;
     }
-    if(user.verificationCode === code)
-    {
+    if (user.verificationCode === code) {
         user.isVerified = true;
         user.save();
         userData.status = 200;
@@ -285,11 +282,11 @@ const verifyCode = async(data,code)=> {
         userData.data = {
             user: {
                 _id: user._id,
-                username : user.username,
-                phoneNumber : user.phoneNumber,
-                email : user.email,
-                roleID : user.roleID,
-                isVerified : user.isVerified
+                username: user.username,
+                phoneNumber: user.phoneNumber,
+                email: user.email,
+                roleID: user.roleID,
+                isVerified: user.isVerified
             }
         }
     }
@@ -299,19 +296,26 @@ const verifyCode = async(data,code)=> {
     }
     return userData;
 }
-const addUserByAdmin = async() => {
+const addUserByAdmin = async () => {
 
 }
-const changePassword = async(user,newpassword) => {
+const changePassword = async (user, newpassword, oldpassword) => {
     let data = {};
     try {
         const userbyid = await db.User.findById(user._id);
-        if(userbyid){
-            let hashPassword = await bcrypt.hashSync(newpassword, salt);
-            userbyid.password = hashPassword;
-            userbyid.save();
-            data.status = 200;
-            data.message = "Change password succeed!";
+        if (userbyid) {
+            let isMatch = await bcrypt.compare(oldpassword, userbyid.password);
+            if (isMatch) {
+                let hashPassword = await bcrypt.hashSync(newpassword, salt);
+                userbyid.password = hashPassword;
+                userbyid.save();
+                data.status = 200;
+                data.message = "Change password succeed!";
+            }
+            else {
+                data.status = 500;
+                data.message = "Wrong password";
+            }
         }
     } catch (error) {
         data.status = 500;
