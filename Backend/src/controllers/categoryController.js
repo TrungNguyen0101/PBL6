@@ -44,7 +44,7 @@ async function insertCategory(req, res) {
 
 module.exports = {
   getAllCategory: getAllCategory,
-  //   getBookById: getBookById,
+  // getCategoryById: getCategoryById,
   //   updateBook: updateBook,
   insertCategory: insertCategory,
 };

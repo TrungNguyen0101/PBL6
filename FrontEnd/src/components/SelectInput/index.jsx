@@ -27,7 +27,7 @@ const SelectInput = ({ name, control, isIcon, className, ...props }) => {
         value: 'romance',
         label: 'Romance',
       }}
-      className="w-full input h-[45.33px]"
+      className="w-full input min-h-[45.33px]"
       {...field}
       {...props}
       options={data}

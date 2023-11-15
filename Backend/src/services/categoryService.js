@@ -27,6 +27,7 @@ const getAllCategory = async () => {
   }
   return categoryData;
 };
+
 const deleteCategory = async () => {};
 module.exports = {
   insertCategory: insertCategory,
