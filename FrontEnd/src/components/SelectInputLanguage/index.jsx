@@ -86,7 +86,7 @@ const SelectInputLanguage = ({
       defaultValue={['china']}
       onChange={handleChange}
       optionLabelProp="label"
-      className="w-full input h-[45.33px]"
+      className="w-full input min-h-[45.33px]"
       {...field}
       {...props}
     >
