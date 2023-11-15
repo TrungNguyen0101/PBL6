@@ -2,7 +2,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import styles from './styles'
 
-export default function CategoryProductCard({ product, onAddToCart }) {
+export default function ProductByCategoryCard({ product, onAddToCart }) {
     return (
         <TouchableOpacity style={styles.shadow}>
             <View style={styles.container}>

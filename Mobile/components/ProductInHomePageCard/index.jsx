@@ -7,7 +7,7 @@ import styles from './styles';
 
 import { ProductContext } from '../../context/ProductProvider'
 
-export default function HomeProductCard({ product }) {
+export default function ProductInHomePageCard({ product }) {
   const { setProductId } = useContext(ProductContext)
   const navigation = useNavigation();
   const handleNavigateDetailProduct = (id) => {

@@ -1,10 +1,10 @@
 import { FlatList, View } from 'react-native';
 import { useEffect, useContext, useState } from 'react';
 import { ProductContext } from '../../context/ProductProvider';
-import CategoryProductCard from '../../components/CategoryProductCard';
+import ProductByCategoryCard from '../../components/ProductByCategoryCard';
 import styles from './styles';
 
-export default function CategoryProduct({ route }) {
+export default function ListProductByCategory({ route }) {
     const { categoryName } = route.params;
     const { products } = useContext(ProductContext);
     const [filteredProducts, setFilteredProducts] = useState([]);
@@ -28,7 +28,7 @@ export default function CategoryProduct({ route }) {
                 contentContainerStyle={styles.container}
                 renderItem={({ item }) => (
                     <View style={styles.innerWrapper}>
-                        <CategoryProductCard product={item} />
+                        <ProductByCategoryCard product={item} />
                     </View>
                 )}
                 keyExtractor={(item) => `${item.id}`}

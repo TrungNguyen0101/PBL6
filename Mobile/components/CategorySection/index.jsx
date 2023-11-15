@@ -43,7 +43,7 @@ export default function CategorySection() {
   return (
     <View style={[styles.container, { height: screenHeight * 0.3 }]}>
       <View style={styles.titleWrapper}>
-        <FontAwesome name="bookmark" size={24} color={colors.primaryColor} />
+        <FontAwesome name="bookmark" size={24} color={colors.blackColor} />
         <Text style={styles.title}>Thể loại</Text>
       </View>
       {isLoading ? (
