@@ -48,11 +48,15 @@ export default function SignInPage() {
   });
   const handleSignIn = async (values) => {
     const res = await postSignIn(values.email, values.password);
-    if (res.status === 200) {
-      toast.success(res.message);
+    console.log(res);
+    if (res?.status === 200) {
+      toast.success(res?.message);
       router.push(routes.HOME);
       sessionStorage.setItem('token', res.access_token);
       sessionStorage.setItem('auth', JSON.stringify(res?.user));
+    }
+    else if (res?.response?.status === 500) {
+      toast.error(res?.response?.message);
     }
   };
   return (
@@ -77,11 +81,15 @@ export default function SignInPage() {
             {errors.email && errors.email.message}
           </p>
         </Field>
-        <InputTogglePassword
-          name="password"
-          control={control}
-          errors={errors}
-        />
+        <>
+          <InputTogglePassword
+            name="password"
+            control={control}
+          />
+          <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
+            {errors?.password && errors.password.message}
+          </p>
+        </>
         <Link
           href={routes.FORGOTTEN}
           className="font-semibold text-xs flex justify-end -translate-y-3 hover:opacity-70 transition-all"
