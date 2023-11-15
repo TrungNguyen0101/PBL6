@@ -22,4 +22,11 @@ const updateInforUser = (username, phoneNumber) => {
   });
 };
 
-export { postSignIn, postSignUp, updateInforUser };
+const changePassword = (oldpassword, newpassword) => {
+  return instance.post("user/change-password", {
+    oldpassword,
+    newpassword
+  })
+}
+
+export { postSignIn, postSignUp, updateInforUser, changePassword };
