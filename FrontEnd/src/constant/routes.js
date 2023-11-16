@@ -8,7 +8,6 @@ const routes = {
   LOGIN: '/sign-in',
   REGISTER: '/sign-up',
   FORGOTTEN: '/forgotten',
-  VERIFY: '/verify',
   VERIFYCODE: '/verify-code',
 
   // Private

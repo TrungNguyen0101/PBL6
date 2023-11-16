@@ -9,6 +9,8 @@ import Input from '@/components/Input';
 import Button from '@/components/Button';
 import { updateInforUser } from '@/services/authService';
 import { toast } from 'react-toastify';
+import routes from '@/constant/routes';
+import { AiOutlineCheck } from 'react-icons/ai';
 
 const ProfilePage = () => {
   const [auth, setAuth] = useState(null);
@@ -51,6 +53,21 @@ const ProfilePage = () => {
         <h1 className="mb-5 text-2xl font-semibold text-center">
           Thông tin người dùng
         </h1>
+        <div className="w-[500px] bg-white mx-auto p-4 rounded-md mb-2">
+          <h2 className="text-2xl font-semibold text-center">Xác thực</h2>
+          <h3 className="flex items-center justify-center mb-2 text-sm font-semibold gap-x-2">
+            Tài khoản của bạn:{' '}
+            {auth?.user?.isVerified
+              ? 'Tài khoản của bạn đã được xác thực'
+              : 'Tài khoản của bạn chưa được xác thực'}
+            {auth?.user?.isVerified && <AiOutlineCheck color="green" />}
+          </h3>
+          <div className="mx-auto w-max">
+            <Button kind="primary" to={routes.VERIFYCODE}>
+              Xác thực ngay
+            </Button>
+          </div>
+        </div>
         <div className="mb-3">
           <Field>
             <div className="mb-2">

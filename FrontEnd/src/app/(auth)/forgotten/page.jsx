@@ -8,6 +8,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
+import { forgotPassword } from '@/services/authService';
+import { toast } from 'react-toastify';
+import routes from '@/constant/routes';
 
 const schema = yup
   .object({
@@ -16,6 +19,7 @@ const schema = yup
   .required();
 
 const ForgottenPage = () => {
+  const router = useRouter();
   const {
     handleSubmit,
     control,
@@ -24,8 +28,12 @@ const ForgottenPage = () => {
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
-  const handleForgotten = (values) => {
-    console.log(values);
+  const handleForgotten = async (values) => {
+    const res = await forgotPassword(values.forgotten);
+    if (res.status === 200) {
+      toast.success(res.message);
+      router.push(routes.LOGIN);
+    }
   };
   return (
     <div className="flex items-center justify-center px-[20px]">
