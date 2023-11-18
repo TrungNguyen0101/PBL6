@@ -1,5 +1,4 @@
 const db = require('./src/config/database/index')
-const createAdmin = require("./src/services/userService.js")
 const express = require('express')
 const app = express();
 const path = require('path');
@@ -34,6 +33,5 @@ initWebRoutes(app);
 const port = process.env.PORT || 3030;
 app.listen(port, async () => {
     await db.connect();
-    // createAdmin.AutoCreateAcount();
     console.log(`Api is running on port ${port}`)
 })
