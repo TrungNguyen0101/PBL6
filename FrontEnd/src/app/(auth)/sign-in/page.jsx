@@ -51,10 +51,14 @@ export default function SignInPage() {
     console.log(res);
     if (res.status === 200) {
       toast.success(res.message);
+
       router.push(routes.HOME);
       sessionStorage.setItem('token', res.access_token);
       sessionStorage.setItem('auth', JSON.stringify(res?.user));
     } else if (res?.response?.status === 500) {
+      toast.error(res?.response?.message);
+    }
+    else if (res?.response?.status === 500) {
       toast.error(res?.response?.message);
     }
   };
@@ -80,11 +84,15 @@ export default function SignInPage() {
             {errors.email && errors.email.message}
           </p>
         </Field>
-        <InputTogglePassword
-          name="password"
-          control={control}
-          errors={errors}
-        />
+        <>
+          <InputTogglePassword
+            name="password"
+            control={control}
+          />
+          <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
+            {errors?.password && errors.password.message}
+          </p>
+        </>
         <Link
           href={routes.FORGOTTEN}
           className="flex justify-end text-xs font-semibold transition-all -translate-y-3 hover:opacity-70"

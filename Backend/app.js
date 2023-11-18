@@ -17,21 +17,21 @@ app.use(cors());
 app.use('/', express.static(path.join(__dirname, 'lib')))
 // app.use('/', express.static(path.join(__dirname, 'lib')), swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
-//middleware
+// middleware test
 app.use(
     express.urlencoded({
         extended: true,
     }),
 );
-// app.use(checkToken.checkToken); //shield
+// app.use(checkToken.checkToken); //shiel
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 initWebRoutes(app);
 // route(app);
-const port = process.env.PORT || 3030;  
-app.listen(port,async () => {
+const port = process.env.PORT || 3030;
+app.listen(port, async () => {
     await db.connect();
     console.log(`Api is running on port ${port}`)
 })
