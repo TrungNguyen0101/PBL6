@@ -13,6 +13,7 @@ const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
 app.use(cors());
 
+// HKH
 
 app.use('/', express.static(path.join(__dirname, 'lib')))
 // app.use('/', express.static(path.join(__dirname, 'lib')), swaggerUi.serve, swaggerUi.setup(swaggerDocument))
