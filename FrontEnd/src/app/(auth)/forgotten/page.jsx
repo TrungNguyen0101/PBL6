@@ -8,15 +8,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/Button';
 import { useRouter } from 'next/navigation';
+import { forgotPassword } from '@/services/authService';
+import { toast } from 'react-toastify';
 import routes from '@/constant/routes';
 
 const schema = yup
   .object({
-    verify: yup.string().required('Please enter your email'),
+    forgotten: yup.string().required('Please enter your email'),
   })
   .required();
 
-const VerifyPage = () => {
+const ForgottenPage = () => {
   const router = useRouter();
   const {
     handleSubmit,
@@ -26,35 +28,38 @@ const VerifyPage = () => {
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
-  const handleVerify = (values) => {
-    console.log(values);
-    router.push(routes.VERIFYCODE);
+  const handleForgotten = async (values) => {
+    const res = await forgotPassword(values.forgotten);
+    if (res.status === 200) {
+      toast.success(res.message);
+      router.push(routes.LOGIN);
+    }
   };
   return (
     <div className="flex items-center justify-center px-[20px]">
       <form
         className="w-[450px] mt-[150px] mx-auto bg-[#f2f3f4] shadow-xl rounded-lg p-8"
-        onSubmit={handleSubmit(handleVerify)}
+        onSubmit={handleSubmit(handleForgotten)}
       >
         <h1 className="mb-3 text-2xl font-bold text-center">
-          Xác minh người dùng
+          Tìm kiếm tài khoản của bạn
         </h1>
         <p className="mb-1 text-sm">
           Nhận mã xác minh được gửi đến email của bạn
         </p>
         <Field>
           <div className="mb-2">
-            <Label htmlFor="verify">Email address</Label>
+            <Label htmlFor="forgotten">Email address</Label>
           </div>
           <Input
             type="email"
-            name="verify"
+            name="forgotten"
             control={control}
-            id="verify"
+            id="forgotten"
             placeholder="Please enter your email"
           />
           <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
-            {errors.verify && errors.verify.message}
+            {errors.forgotten && errors.forgotten.message}
           </p>
         </Field>
         <div className="mx-auto mt-4 w-max">
@@ -65,4 +70,4 @@ const VerifyPage = () => {
   );
 };
 
-export default VerifyPage;
+export default ForgottenPage;

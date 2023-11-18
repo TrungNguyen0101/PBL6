@@ -161,7 +161,7 @@ export default function FirstForm() {
                 <Label htmlFor="price">Price</Label>
               </div>
               <Input
-                type="text"
+                type="number"
                 name="price"
                 control={control}
                 id="price"

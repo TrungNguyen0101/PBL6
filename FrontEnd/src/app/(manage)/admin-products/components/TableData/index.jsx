@@ -1,131 +1,16 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Popconfirm, Table, message } from 'antd';
 import './styled.scss';
-const data1 = [
-  {
-    id: 1,
-    name: 'Doremon',
-    price: '5.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 2,
-    name: 'Doremon',
-    price: '25.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 3,
-    name: 'Doremon',
-    price: '30.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 4,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 5,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 6,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 7,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 8,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 9,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 10,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 11,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 12,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-];
+import axios from 'axios';
 
 const TableData = () => {
-  const [data, setData] = useState(data1);
-  const handleDelete = (rowId) => {
-    const updatedData = data.filter((row) => row.id !== rowId);
-    setData(updatedData);
-    message.success('Record deleted successfully');
-  };
   const columns = [
     {
-      title: 'Name',
+      title: 'Title',
       width: 20,
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'booktitle',
+      key: 'booktitle',
     },
     {
       title: 'Price',
@@ -203,22 +88,48 @@ const TableData = () => {
       ),
     },
   ];
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  console.log('file: index.jsx:93 ~ TableData ~ isLoading:', isLoading);
+  const handleDelete = (rowId) => {
+    const updatedData = data.filter((row) => row.id !== rowId);
+    setData(updatedData);
+    message.success('Record deleted successfully');
+  };
+  useEffect(() => {
+    try {
+      setIsLoading(true);
+      const hanldeGetAllBooks = async () => {
+        const { data } = await axios.get('http://localhost:3030/api/book');
+        setData(data.data.books);
+        setIsLoading(false);
+      };
+      hanldeGetAllBooks();
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }, []);
+
   return (
     <div className="max-h-[400px]">
-      <Table
-        columns={columns}
-        dataSource={data}
-        className="max-h-[400px]"
-        pagination={{
-          showSizeChanger: true, // Hiển thị tùy chọn lựa chọn pageSize
-          pageSizeOptions: ['4', '8', '12'], // Các tùy chọn pageSize
-          defaultPageSize: 4, // Kích thước mặc định của pageSize
-        }}
-        scroll={{
-          x: 800,
-          y: 227,
-        }}
-      />
+      {isLoading ? (
+        <div></div>
+      ) : (
+        <Table
+          columns={columns}
+          dataSource={data}
+          className="max-h-[400px]"
+          pagination={{
+            showSizeChanger: true, // Hiển thị tùy chọn lựa chọn pageSize
+            pageSizeOptions: ['4', '8', '12'], // Các tùy chọn pageSize
+            defaultPageSize: 4, // Kích thước mặc định của pageSize
+          }}
+          scroll={{
+            x: 800,
+            y: 227,
+          }}
+        />
+      )}
     </div>
   );
 };

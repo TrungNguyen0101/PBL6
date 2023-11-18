@@ -7,7 +7,7 @@ const BookModal = new Schema({
   price: { type: Number },
   quantity: { type: String },
   datePicker: { type: Date },
-  description: { type: String },
+  desc: { type: String },
   category: { type: String },
   mainImage: { type: Array },
   descImage: { type: Array },
