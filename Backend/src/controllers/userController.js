@@ -9,7 +9,7 @@ const handleLogin = async (req, res) => {
             message: "Missing inputs parameter",
         });
     }
-    let userData = await userService.login(data);
+    let userData = await userService.handleLogin(data);
     if (userData.status === 200) {
         const response = {
             ...userData.data,
@@ -161,9 +161,6 @@ const handleAddUserByAdmin = async (req, res) => {
     }
     let data = await userService.addUserByAdmin();
 }
-// tesst
-
-
 const handleChangePassword = async (req, res) => {
     let user = req.User.User;
     let oldpassword = req.body.oldpassword;

@@ -12,7 +12,7 @@ const GeneralAccessToken = (data) => {
     });
     return access_token;
 };
-const login = async (data) => {
+const handleLogin = async (data) => {
     let userData = {};
     try {
         const user = await db.User.findOne({ email: data.email }).exec();
@@ -71,7 +71,7 @@ const handleRegister = async (data) => {
             password: hashPassword,
             roleID: "2",
             phoneNumber: "",
-            verificationCode: "",
+            verificationCode: ""
         })
         userData.status = 200;
         userData.message = "Create users succeed";
@@ -296,27 +296,8 @@ const verifyCode = async (data, code) => {
     }
     return userData;
 }
-const addUserByAdmin = async (user, body) => {
-    let data = {};
-    if (user.email === "nthdv6969@gmail.com") {
-        let hashPassword = await bcrypt.hashSync(body.password, salt);
-        await db.User.create({
-            username: body.username,
-            email: body.email,
-            password: hashPassword,
-            roleID: body.roleID,
-            phoneNumber: body.phoneNumber,
-            verificationCode: "",
-            isVerified: false,
-        })
-        data.status = 200;
-        data.message = "Create account succeed!"
-    }
-    else {
-        data.status = 500;
-        data.message = "Create account failed! "
-    }
-    return data;
+const addUserByAdmin = async () => {
+
 }
 const changePassword = async (user, newpassword, oldpassword) => {
     let data = {};
@@ -342,24 +323,8 @@ const changePassword = async (user, newpassword, oldpassword) => {
     }
     return data;
 }
-const AutoCreateAcount = async (req, res) => {
-    const user = await db.User.findOne({ email: "nthdv6969@gmail.com" }).exec();
-    console.log(user)
-    if (!user) {
-        let hashPassword = await bcrypt.hashSync("Admin@123", salt);
-        await db.User.create({
-            username: "Admin",
-            email: "nthdv6969@gmail.com",
-            password: hashPassword,
-            roleID: "1",
-            phoneNumber: "",
-            verificationCode: "",
-            isVerified: true,
-        })
-    }
-}
 module.exports = {
-    login,
+    handleLogin,
     handleRegister,
     handleUpdateUser,
     getUserById,
@@ -367,6 +332,5 @@ module.exports = {
     sendCodeVerifyUser,
     verifyCode,
     addUserByAdmin,
-    changePassword,
-    AutoCreateAcount
+    changePassword
 }
