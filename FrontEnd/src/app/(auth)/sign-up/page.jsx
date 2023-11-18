@@ -10,14 +10,12 @@ import Field from '@/components/Field';
 import ButtonForm from '@/components/ButtonForm';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { postSignUp } from '@/services/authService';
 import { HiArrowNarrowLeft } from 'react-icons/hi';
 import '../../../styles/Form.scss';
-import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
-import { signUpData } from '@/redux/reducers/dataSignUpReducer';
-import { postSignUp } from '@/services/authService';
-import { toast } from 'react-toastify';
 
 const schema = yup
   .object({
@@ -45,7 +43,6 @@ const schema = yup
 
 export default function SignUpPage() {
   const router = useRouter();
-  const dispatch = useDispatch();
   const {
     handleSubmit,
     control,

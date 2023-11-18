@@ -5,7 +5,7 @@ const colors = {
   textColor: '#000',
   whiteColor: '#fff',
   blackColor: '#000',
-  grayColor: '#ccc',
+  grayColor: '#f0f2f5',
 };
 
 export default colors;

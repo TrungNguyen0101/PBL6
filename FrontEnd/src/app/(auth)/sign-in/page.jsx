@@ -9,12 +9,12 @@ import Field from '@/components/Field';
 import ButtonForm from '@/components/ButtonForm';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { postSignIn } from '@/services/authService';
 import { HiArrowNarrowLeft } from 'react-icons/hi';
 import '../../../styles/Form.scss';
-import { postSignIn } from '@/services/authService';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
 
 const schema = yup
   .object({
@@ -48,11 +48,18 @@ export default function SignInPage() {
   });
   const handleSignIn = async (values) => {
     const res = await postSignIn(values.email, values.password);
+    console.log(res);
     if (res.status === 200) {
       toast.success(res.message);
+
       router.push(routes.HOME);
       sessionStorage.setItem('token', res.access_token);
       sessionStorage.setItem('auth', JSON.stringify(res?.user));
+    } else if (res?.response?.status === 500) {
+      toast.error(res?.response?.message);
+    }
+    else if (res?.response?.status === 500) {
+      toast.error(res?.response?.message);
     }
   };
   return (
@@ -77,12 +84,22 @@ export default function SignInPage() {
             {errors.email && errors.email.message}
           </p>
         </Field>
-        <InputTogglePassword
-          name="password"
-          control={control}
-          errors={errors}
-        />
-        <div className="mx-auto mt-4 w-max">
+        <>
+          <InputTogglePassword
+            name="password"
+            control={control}
+          />
+          <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
+            {errors?.password && errors.password.message}
+          </p>
+        </>
+        <Link
+          href={routes.FORGOTTEN}
+          className="flex justify-end text-xs font-semibold transition-all -translate-y-3 hover:opacity-70"
+        >
+          Bạn đã quên mật khẩu?
+        </Link>
+        <div className="mx-auto mt-2 w-max">
           <ButtonForm>Login</ButtonForm>
         </div>
         <div className="text-center mt-[10px]">
