@@ -4,7 +4,6 @@ const {
         userController,
 } = require('../controllers/index.js')
 const middleware = require('../utils/middleware.js');
-const { userService } = require("../services/index.js");
 
 // router.get("/", (req,res)=> {
 //         res.send("GetUser")});
