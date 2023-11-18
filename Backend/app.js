@@ -1,4 +1,5 @@
 const db = require('./src/config/database/index')
+const createAdmin = require("./src/services/userService.js")
 const express = require('express')
 const app = express();
 const path = require('path');
@@ -30,6 +31,7 @@ app.use(express.json());
 
 initWebRoutes(app);
 // route(app);
+createAdmin.AutoCreateAcount();
 const port = process.env.PORT || 3030;
 app.listen(port, async () => {
     await db.connect();
