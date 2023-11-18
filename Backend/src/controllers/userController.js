@@ -151,27 +151,19 @@ const handleVerifyUser = async (req, res) => {
         })
     }
 }
-// const handleAddUserByAdmin = async (req, res) => {
-//     let user = req.User.User;
-//     let body = req.body;
-//     if (!user || !body) {
-//         return res.status(500).json({
-//             status: 500,
-//             message: "Missing inputs parameter",
-//         })
-//     }
-//     let data = await userService.addUserByAdmin(user, body);
-//     if (data.status === 200) {
-//         return res.status(200).json({
-//             status: data.status,
-//             message: data.message,
-//         })
-//     }
-//     return res.status(500).json({
-//         status: data.status,
-//         message: data.message,
-//     })
-// }
+const handleAddUserByAdmin = async (req, res) => {
+    let roleID = req.body.roleID;
+    if (!roleID) {
+        return res.status(500).json({
+            status: 500,
+            message: "Missing inputs parameter",
+        })
+    }
+    let data = await userService.addUserByAdmin();
+}
+// tesst
+
+
 const handleChangePassword = async (req, res) => {
     let user = req.User.User;
     let oldpassword = req.body.oldpassword;
