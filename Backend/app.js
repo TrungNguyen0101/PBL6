@@ -31,9 +31,9 @@ app.use(express.json());
 
 initWebRoutes(app);
 // route(app);
-createAdmin.AutoCreateAcount();
 const port = process.env.PORT || 3030;
 app.listen(port, async () => {
     await db.connect();
+    // createAdmin.AutoCreateAcount();
     console.log(`Api is running on port ${port}`)
 })
