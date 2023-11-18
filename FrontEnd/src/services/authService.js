@@ -22,11 +22,27 @@ const updateInforUser = (username, phoneNumber) => {
   });
 };
 
-const changePassword = (oldpassword, newpassword) => {
-  return instance.post("user/change-password", {
-    oldpassword,
-    newpassword
-  })
-}
+const forgotPassword = (email) => {
+  return instance.post('user/forgot-password', {
+    email,
+  });
+};
 
-export { postSignIn, postSignUp, updateInforUser, changePassword };
+const sendCodeVerify = () => {
+  return instance.post('user/sendcode-verify');
+};
+
+const verifyCode = (code) => {
+  return instance.post('user/verify', {
+    code,
+  });
+};
+
+export {
+  postSignIn,
+  postSignUp,
+  updateInforUser,
+  forgotPassword,
+  sendCodeVerify,
+  verifyCode,
+};

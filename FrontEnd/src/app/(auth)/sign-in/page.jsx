@@ -9,12 +9,12 @@ import Field from '@/components/Field';
 import ButtonForm from '@/components/ButtonForm';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { postSignIn } from '@/services/authService';
 import { HiArrowNarrowLeft } from 'react-icons/hi';
 import '../../../styles/Form.scss';
-import { postSignIn } from '@/services/authService';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
 
 const schema = yup
   .object({
@@ -49,11 +49,14 @@ export default function SignInPage() {
   const handleSignIn = async (values) => {
     const res = await postSignIn(values.email, values.password);
     console.log(res);
-    if (res?.status === 200) {
-      toast.success(res?.message);
+    if (res.status === 200) {
+      toast.success(res.message);
+
       router.push(routes.HOME);
       sessionStorage.setItem('token', res.access_token);
       sessionStorage.setItem('auth', JSON.stringify(res?.user));
+    } else if (res?.response?.status === 500) {
+      toast.error(res?.response?.message);
     }
     else if (res?.response?.status === 500) {
       toast.error(res?.response?.message);
@@ -92,7 +95,7 @@ export default function SignInPage() {
         </>
         <Link
           href={routes.FORGOTTEN}
-          className="font-semibold text-xs flex justify-end -translate-y-3 hover:opacity-70 transition-all"
+          className="flex justify-end text-xs font-semibold transition-all -translate-y-3 hover:opacity-70"
         >
           Bạn đã quên mật khẩu?
         </Link>

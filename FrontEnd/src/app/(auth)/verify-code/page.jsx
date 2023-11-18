@@ -7,6 +7,10 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/Button';
+import { sendCodeVerify, verifyCode } from '@/services/authService';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import routes from '@/constant/routes';
 
 const schema = yup
   .object({
@@ -15,6 +19,7 @@ const schema = yup
   .required();
 
 const VerifyCodePage = () => {
+  const router = useRouter();
   const {
     handleSubmit,
     control,
@@ -23,8 +28,21 @@ const VerifyCodePage = () => {
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
-  const handleVerifyCode = (values) => {
-    console.log(values);
+  const handleSendCodeVerify = async () => {
+    const res = await sendCodeVerify();
+    if (res.status === 200) {
+      toast.success(res.message);
+    }
+  };
+  const handleVerifyCode = async (values) => {
+    const res = await verifyCode(values.verifyCode);
+    sessionStorage.setItem('auth', JSON.stringify(res?.data));
+    if (res.status === 200) {
+      toast.success(res.message);
+      router.push(routes.PROFILE);
+    } else {
+      toast.success('Verify fail');
+    }
   };
   return (
     <div className="flex items-center justify-center px-[20px]">
@@ -51,7 +69,10 @@ const VerifyCodePage = () => {
             {errors.verifyCode && errors.verifyCode.message}
           </p>
         </Field>
-        <div className="mx-auto mt-4 w-max">
+        <div className="flex mx-auto mt-4 w-max gap-x-3">
+          <Button type="button" kind="secondary" onClick={handleSendCodeVerify}>
+            Gửi mã
+          </Button>
           <Button kind="primary">Xác minh</Button>
         </div>
       </form>
