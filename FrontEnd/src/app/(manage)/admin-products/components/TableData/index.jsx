@@ -1,131 +1,16 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Popconfirm, Table, message } from 'antd';
 import './styled.scss';
-const data1 = [
-  {
-    id: 1,
-    name: 'Doremon',
-    price: '5.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 2,
-    name: 'Doremon',
-    price: '25.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 3,
-    name: 'Doremon',
-    price: '30.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 4,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 5,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 6,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 7,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 8,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 9,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 10,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 11,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-  {
-    id: 12,
-    name: 'Doremon',
-    price: '20.000',
-    author: ' Fujiko F. Fujio',
-    publisher: 'Nhật Bản',
-    category: 'Cartoon',
-    quantity: '5',
-  },
-];
+import axios from 'axios';
 
-const TableData = () => {
-  const [data, setData] = useState(data1);
-  const handleDelete = (rowId) => {
-    const updatedData = data.filter((row) => row.id !== rowId);
-    setData(updatedData);
-    message.success('Record deleted successfully');
-  };
+const TableData = ({ handleOnEdit, listBook }) => {
   const columns = [
     {
-      title: 'Name',
+      title: 'Title',
       width: 20,
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'booktitle',
+      key: 'booktitle',
     },
     {
       title: 'Price',
@@ -167,7 +52,7 @@ const TableData = () => {
         <div className="flex items-center gap-x-[10px] pl-[-10px] ml-[-10px]">
           <Popconfirm
             title="Are you sure to delete this record?"
-            onConfirm={() => handleDelete(record.id)}
+            onConfirm={() => handleDelete(record._id)}
             onCancel={() => {}}
             okText="Yes"
             cancelText="No"
@@ -186,7 +71,7 @@ const TableData = () => {
               </svg>
             </Button>
           </Popconfirm>
-          <button type="button">
+          <button type="button" onClick={() => handleEdit(record._id)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="22"
@@ -203,22 +88,56 @@ const TableData = () => {
       ),
     },
   ];
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const handleDelete = (rowId) => {
+    const updatedData = data.filter((row) => row._id !== rowId);
+    setData(updatedData);
+    message.success('Record deleted successfully');
+  };
+  const handleEdit = (rowId) => {
+    handleOnEdit(rowId);
+    message.warning('Data will not be saved when canceling or returning!');
+  };
+  useEffect(() => {
+    try {
+      setIsLoading(true);
+      const hanldeGetAllBooks = async () => {
+        const { data } = await axios.get('http://localhost:3030/api/book');
+        setData(data.data.books);
+        setIsLoading(false);
+      };
+      hanldeGetAllBooks();
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }, []);
+  useEffect(() => {
+    if (listBook?.length > 0) {
+      setData(listBook);
+    }
+  }, [listBook]);
+
   return (
     <div className="max-h-[400px]">
-      <Table
-        columns={columns}
-        dataSource={data}
-        className="max-h-[400px]"
-        pagination={{
-          showSizeChanger: true, // Hiển thị tùy chọn lựa chọn pageSize
-          pageSizeOptions: ['4', '8', '12'], // Các tùy chọn pageSize
-          defaultPageSize: 4, // Kích thước mặc định của pageSize
-        }}
-        scroll={{
-          x: 800,
-          y: 227,
-        }}
-      />
+      {isLoading ? (
+        <div></div>
+      ) : (
+        <Table
+          columns={columns}
+          dataSource={data}
+          className="max-h-[400px]"
+          pagination={{
+            showSizeChanger: true, // Hiển thị tùy chọn lựa chọn pageSize
+            pageSizeOptions: ['4', '8', '12'], // Các tùy chọn pageSize
+            defaultPageSize: 4, // Kích thước mặc định của pageSize
+          }}
+          scroll={{
+            x: 800,
+            y: 227,
+          }}
+        />
+      )}
     </div>
   );
 };

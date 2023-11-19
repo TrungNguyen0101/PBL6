@@ -4,12 +4,12 @@ import Input from '../Input';
 import { useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
-const InputTogglePassword = ({ name, control, errors }) => {
+const InputTogglePassword = ({ name, control, label = "Password" }) => {
   const [isShowPassword, setIsShowPassword] = useState(false);
   return (
     <Field>
       <div className="mb-2">
-        <Label htmlFor={name}>Password</Label>
+        <Label htmlFor={name}>{label}</Label>
       </div>
       <div className="relative w-full">
         <Input
@@ -20,7 +20,6 @@ const InputTogglePassword = ({ name, control, errors }) => {
           isIcon={true}
           placeholder="Enter your password"
         />
-
         <span
           className="absolute translate-y-1/2 cursor-pointer right-3 bottom-1/2"
           onClick={() => setIsShowPassword(!isShowPassword)}
@@ -32,9 +31,9 @@ const InputTogglePassword = ({ name, control, errors }) => {
           )}
         </span>
       </div>
-      <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
+      {/* <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
         {errors?.password && errors.password.message}
-      </p>
+      </p> */}
     </Field>
   );
 };

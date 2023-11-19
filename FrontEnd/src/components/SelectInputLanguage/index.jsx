@@ -7,6 +7,63 @@ const { Option } = Select;
 const handleChange = (value) => {
   console.log(`selected ${value}`);
 };
+const data = [
+  {
+    key: '🇻🇳',
+    text: 'Vietnamese (Tiếng Việt)',
+    label: 'Vietnamese',
+  },
+  {
+    key: '🇨🇳',
+    text: 'China (中文)',
+    label: 'Chinese',
+  },
+  {
+    key: '🇰🇷',
+    text: 'Korea (한국어)',
+    label: 'Korean',
+  },
+  {
+    key: '🇯🇵',
+    label: 'Japanese',
+    text: 'Japan (日本語)',
+  },
+  {
+    key: '🇺🇸',
+    label: 'English',
+    text: 'English',
+  },
+  {
+    key: '🇫🇷',
+    label: 'French',
+    text: 'France (Français)',
+  },
+  {
+    key: '🇩🇪',
+    label: 'German',
+    text: 'Germany (Deutsch)',
+  },
+  {
+    key: '🇪🇸',
+    label: 'Spanish',
+    text: 'Spain (Español)',
+  },
+  {
+    key: '🇮🇳',
+    label: 'Hindi',
+    text: 'India (भारत)',
+  },
+  {
+    key: '🇷🇺',
+    label: 'Russian',
+    text: 'Russia (Русский)',
+  },
+  {
+    key: '🇧🇷',
+    label: 'Portuguese',
+    text: 'Brazil (Brasil)',
+  },
+];
 const SelectInputLanguage = ({
   name,
   control,
@@ -17,7 +74,7 @@ const SelectInputLanguage = ({
   const { field } = useController({
     name,
     control,
-    defaultValue: ['china'],
+    defaultValue: ['Vietnamese (Tiếng Việt)'],
   });
   return (
     <Select
@@ -26,45 +83,24 @@ const SelectInputLanguage = ({
         width: '100%',
       }}
       placeholder="Select language"
-      defaultValue={['china']}
+      defaultValue={['Vietnamese (Tiếng Việt)']}
       onChange={handleChange}
       optionLabelProp="label"
-      className="w-full input h-[45.33px]"
+      className="w-full input min-h-[45.33px]"
       {...field}
       {...props}
     >
-      <Option value="china" label="China">
-        <Space>
-          <span role="img" aria-label="China">
-            🇨🇳
-          </span>
-          China (中国)
-        </Space>
-      </Option>
-      <Option value="usa" label="USA">
-        <Space>
-          <span role="img" aria-label="USA">
-            🇺🇸
-          </span>
-          USA (美国)
-        </Space>
-      </Option>
-      <Option value="japan" label="Japan">
-        <Space>
-          <span role="img" aria-label="Japan">
-            🇯🇵
-          </span>
-          Japan (日本)
-        </Space>
-      </Option>
-      <Option value="korea" label="Korea">
-        <Space>
-          <span role="img" aria-label="Korea">
-            🇰🇷
-          </span>
-          Korea (韩国)
-        </Space>
-      </Option>
+      {data.length > 0 &&
+        data.map((item) => (
+          <Option value={item.text} label={item.label}>
+            <Space>
+              <span role="img" aria-label={item.label}>
+                {item.key}
+              </span>
+              {item.text}
+            </Space>
+          </Option>
+        ))}
     </Select>
   );
 };

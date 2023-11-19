@@ -3,11 +3,11 @@ const { Schema, model } = mongoose;
 const { ObjectId } = require("mongodb");
 
 const Category = new Schema({
-  image: {
-    type: Buffer,
+  value: {
+    type: String,
     require: true,
   },
-  name: {
+  label: {
     type: String,
     require: true,
   },

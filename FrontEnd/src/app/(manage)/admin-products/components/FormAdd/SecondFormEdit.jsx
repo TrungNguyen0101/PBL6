@@ -29,11 +29,23 @@ const schema = yup
   .object({
     publisher: yup.string().required('Please enter ublisher'),
     infomation: yup.string().required('Please enter information about book'),
+    discount: yup
+      .number()
+      .required('Please enter discout percent')
+      .min(0, 'Discount percentage is greater than 0')
+      .max(100, 'Discount percentage is less than 100')
+      .typeError('Please enter discout percent'),
     language: yup.array().min(1, 'Please select language'),
   })
   .required();
 
-export default function SecondForm({ isEdit, book }) {
+export default function SecondFormEdit({
+  idBook,
+  isEdit,
+  book,
+  handleOffEdit,
+  hanldeGetAllBooks,
+}) {
   const {
     handleSubmit,
     control,
@@ -49,12 +61,13 @@ export default function SecondForm({ isEdit, book }) {
   const dataFirstForm = useSelector((state) => state.form.firstForm);
   const dataFirstFormEdit = useSelector((state) => state.form.firstFormEdit);
   const dataDescImage = useSelector((state) => state.form.descImage);
+
   const dataErrorDescImage = useSelector((state) => state.form.errorDescImage);
 
   const hanlderSecondForm = async (values) => {
     try {
-      if (!!!isEdit) {
-        if (dataDescImage.length > 3) {
+      if (dataDescImage.length > 3) {
+        if (!!!isEdit) {
           const newValues = { ...dataFirstForm, ...values };
           newValues.descImage = dataDescImage;
 
@@ -76,15 +89,22 @@ export default function SecondForm({ isEdit, book }) {
           } else {
             message.success(result.data.data.errMessage);
           }
+        } else {
+          const newValues = { ...dataFirstFormEdit, ...values };
+          newValues.descImage = dataDescImage;
+          newValues.id = idBook;
+          const result = await axios.put(
+            'http://localhost:3030/api/book',
+            newValues
+          );
+          if (result.data.data.errCode === 0) {
+            message.success('Updated book successfully');
+            handleOffEdit();
+            hanldeGetAllBooks();
+          } else {
+            message.success('Updated book fail');
+          }
         }
-      } else {
-        const newValues = { ...dataFirstFormEdit, ...values };
-        newValues.descImage = dataDescImage;
-
-        console.log(
-          'file: SecondForm.jsx:61 ~ hanlderSecondForm ~ newValues:',
-          newValues
-        );
       }
     } catch (error) {}
   };
@@ -122,27 +142,49 @@ export default function SecondForm({ isEdit, book }) {
       dispatch(saveDescImage(book.descImage));
     }
   }, [book]);
+  useEffect(() => {
+    setValue('discount', 0);
+  }, []);
   return (
     <div className="pt-[5px]">
       <form className="px-[20px]" onSubmit={handleSubmit(hanlderSecondForm)}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[20px]">
-          {/* title */}
-          <Field>
-            <div className="mb-2">
-              <Label htmlFor="publisher">Publisher</Label>
+          {/* publisher */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[20px]">
+            <Field>
+              <div className="mb-2">
+                <Label htmlFor="publisher">Publisher</Label>
+              </div>
+              <Input
+                type="text"
+                name="publisher"
+                control={control}
+                id="publisher"
+                placeholder="Please enter Publisher"
+                className="border"
+              />
+              <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
+                {errors.publisher && errors.publisher.message}
+              </p>
+            </Field>
+            {/* discount */}
+            <div className="flex flex-col items-start w-full">
+              <div className="mb-2">
+                <Label htmlFor="discount">Discount (%)</Label>
+              </div>
+              <Input
+                type="number"
+                name="discount"
+                control={control}
+                id="discount"
+                placeholder="Enter the discount percent"
+                className="border"
+              />
+              <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
+                {errors.discount && errors.discount.message}
+              </p>
             </div>
-            <Input
-              type="text"
-              name="publisher"
-              control={control}
-              id="publisher"
-              placeholder="Please enter Publisher"
-              className="border"
-            />
-            <p className="font-semibold text-xs text-red-700 h-[20px] py-1">
-              {errors.publisher && errors.publisher.message}
-            </p>
-          </Field>
+          </div>
 
           {/* language */}
           <Field>

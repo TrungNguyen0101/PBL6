@@ -22,4 +22,27 @@ const updateInforUser = (username, phoneNumber) => {
   });
 };
 
-export { postSignIn, postSignUp, updateInforUser };
+const forgotPassword = (email) => {
+  return instance.post('user/forgot-password', {
+    email,
+  });
+};
+
+const sendCodeVerify = () => {
+  return instance.post('user/sendcode-verify');
+};
+
+const verifyCode = (code) => {
+  return instance.post('user/verify', {
+    code,
+  });
+};
+
+export {
+  postSignIn,
+  postSignUp,
+  updateInforUser,
+  forgotPassword,
+  sendCodeVerify,
+  verifyCode,
+};

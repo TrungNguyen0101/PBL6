@@ -1,8 +1,8 @@
 import '../../styles/ButtonForm.scss';
 
-const ButtonForm = ({ children }) => {
+const ButtonForm = ({ children, props }) => {
   return (
-    <button className="button-form">
+    <button className="mx-auto button-form" {...props}>
       {children}
       <svg>
         <defs>

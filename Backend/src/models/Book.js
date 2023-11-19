@@ -7,13 +7,15 @@ const BookModal = new Schema({
   price: { type: Number },
   quantity: { type: String },
   datePicker: { type: Date },
-  description: { type: String },
+  desc: { type: String },
   category: { type: String },
   mainImage: { type: Array },
   descImage: { type: Array },
   publisher: { type: String },
   infomation: { type: String },
   language: { type: Array },
+  status: { type: Number, default: 0 },
+  discount: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model("Book", BookModal);

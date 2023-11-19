@@ -1,64 +1,50 @@
-const {
-    categoryController, categoryService
-} = require("../services/index.js")
-const fs = require('fs');
-function getByteArray(filePath) {
-    let fileData = fs.readFileSync(filePath);
-    return fileData;
-  }
-const handleCreateCategory = async (req,res) => {
-    try {
-        const file = Object.values(req.files).flat()[0];
-        let data = req.body;
-        if(file)
-        {
-            data.image = getByteArray(file.tempFilePath);
-        }else {
-            data.image = null;
-        }
-        const user = req.User;
-        if(!data) {
-            return res.status(500).json({
-                status: 500,
-                message: "Missing inputs parameter",
-              });
-        }
-        let categoryData = await categoryService.insertCategory(data,user);
-        if(categoryData.status === 200)
-        { return res.status(200).json({
-            status: categoryData.status,
-            message: categoryData.errMessage
-        })}
-        return res.status(500).json({
-            status: categoryData.status,
-            message: categoryData.errMessage
-        })
-    } catch (e) {
-        return res.status(500).json({
-            status: 400,
-            message: e });
-    }
-}
-const handleUpdateCategory = async (req,res)=> {
-    
-}
-const handleDeleteCategory = async (req,res) => {
+const { categoryService } = require("../services");
+const categoryController = require("./categoryController");
 
+async function getAllCategory(req, res) {
+  try {
+    const category = await categoryService.getAllCategory();
+    res.status(200).json({
+      message: "get all succeed",
+      data: category,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "failed",
+    });
+  }
 }
-const handleGetAllCategory = async (req,res)=> {
-    try {
-        let data = await categoryService.getAllCategory();
-        if(!data) return res.status(500).json("Error!")
-        if (data.status === 200) return res.status(200).json(data.category);
-    } catch (error) {
-        return res.status(500).json({
-            status: data.status,
-            message: data.errMessage });
-    }
+// async function getBookById(req, res) {
+//   try {
+//     const book = await bookService.getBookById(req.params);
+//     res.status(200).json({
+//       message: "get book by id succeed",
+//       data: book,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       message: "failed",
+//     });
+//   }
+// }
+// async function updateBook(req, res) {}
+async function insertCategory(req, res) {
+  try {
+    const category = await categoryService.insertCategory(req.body);
+    res.status(200).json({
+      message: "insert succeed",
+      data: category,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "failed",
+    });
+  }
 }
+
 module.exports = {
-    handleCreateCategory :handleCreateCategory,
-    handleUpdateCategory : handleUpdateCategory,
-    handleDeleteCategory :handleDeleteCategory,
-    handleGetAllCategory: handleGetAllCategory
-}
+  getAllCategory: getAllCategory,
+  // getCategoryById: getCategoryById,
+  //   updateBook: updateBook,
+  insertCategory: insertCategory,
+};

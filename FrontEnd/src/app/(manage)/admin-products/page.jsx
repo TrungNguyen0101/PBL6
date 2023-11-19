@@ -1,136 +1,102 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import '../styled.scss';
 import ChartPie from '../components/chart/ChartPie';
 import FormAdd from './components/FormAdd/FirstForm';
 import TableData from './components/TableData';
+import { message } from 'antd';
 import StepForm from './components/StepForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { onCheckAdd } from '@/redux/reducers/formAddReducer';
+import {
+  onCheckAdd,
+  prevForm,
+  saveDescImage,
+  saveFirstFormEdit,
+  saveMainImage,
+} from '@/redux/reducers/formAddReducer';
+import LoadingAnt from '@/components/Loading';
+import ModalAnt from '@/components/ModalAnt';
+import axios from 'axios';
 
 export default function ProductPage() {
-  const columns = [
-    {
-      field: 'name',
-      headerName: 'Name',
-      sortable: false,
-      width: 130,
-    },
-    {
-      field: 'price',
-      headerName: 'Price',
-      width: 100,
-    },
-    {
-      field: 'author',
-      headerName: 'Author',
-      sortable: false,
-      width: 150,
-    },
-    {
-      field: 'publisher',
-      headerName: 'Pulisher',
-      width: 130,
-    },
-    {
-      field: 'category',
-      headerName: 'Category',
-      width: 130,
-    },
-    {
-      field: 'quantity',
-      headerName: 'Quantity',
-      width: 80,
-    },
-    {
-      field: 'action',
-      headerName: 'Action',
-      width: 100,
-      sortable: false,
-      renderCell: (params) => (
-        <button onClick={() => handleDelete(params.row.id)}>Delete</button>
-      ),
-    },
-  ];
-
-  const initialRows = [
-    {
-      id: 1,
-      name: 'Doremon',
-      price: '20.000',
-      author: ' Fujiko F. Fujio',
-      publisher: 'Nhật Bản',
-      category: 'Cartoon',
-      quantity: '5',
-      action: 'delete',
-    },
-    {
-      id: 2,
-      name: 'Doremon',
-      price: '20.000',
-      author: ' Fujiko F. Fujio',
-      publisher: 'Nhật Bản',
-      category: 'Cartoon',
-      quantity: '5',
-      action: 'delete',
-    },
-    {
-      id: 3,
-      name: 'Doremon',
-      price: '20.000',
-      author: ' Fujiko F. Fujio',
-      publisher: 'Nhật Bản',
-      category: 'Cartoon',
-      quantity: '5',
-      action: 'delete',
-    },
-    {
-      id: 4,
-      name: 'Doremon',
-      price: '20.000',
-      author: ' Fujiko F. Fujio',
-      publisher: 'Nhật Bản',
-      category: 'Cartoon',
-      quantity: '5',
-      action: 'delete',
-    },
-  ];
-  // const [checkAdd, setCheckAdd] = React.useState(true);
-
-  function handleDelete(id) {
-    // Tìm hàng có id tương ứng và xóa nó khỏi mảng rows
-    const updatedRows = rows.filter((row) => row.id !== id);
-
-    // Cập nhật mảng rows với các hàng đã được xóa
-    setRows(updatedRows);
-  }
   const checkAdd = useSelector((state) => state.form.checkAdd);
+  const current = useSelector((state) => state.form.current);
   const dispatch = useDispatch();
 
-  const handlerCheckAdd = () => {
+  const [isEdit, setIsEdit] = useState(false);
+  const [idBook, setIdBook] = useState('');
+  const [book, setBook] = useState({});
+  const [listBook, setListBook] = useState([]);
+  console.log('file: page.jsx:31 ~ ProductPage ~ listBook:', listBook);
+
+  const hanleGetBookById = async (idBook) => {
+    const { data } = await axios.get(
+      `http://localhost:3030/api/book/${idBook}`
+    );
+    if (data?.data) {
+      setBook(data.data.book);
+    }
+  };
+
+  const hanldeGetAllBooks = async () => {
+    const { data } = await axios.get('http://localhost:3030/api/book');
+    setListBook(data.data.books);
+  };
+
+  const handleCheckAdd = () => {
     dispatch(onCheckAdd());
+    message.warning('Data will not be saved when canceling or returning!');
+  };
+  const handleOnEdit = (id) => {
+    setIdBook(id);
+    setIsEdit(true);
+    if (id) {
+      hanleGetBookById(id);
+    }
+  };
+  const handleOffEdit = () => {
+    setIsEdit(false);
+    setIdBook('');
+    setBook({});
+    dispatch(saveMainImage([]));
+    dispatch(saveDescImage([]));
+    dispatch(saveFirstFormEdit({}));
+    if (current === 1) {
+      dispatch(prevForm());
+    }
   };
   return (
     <>
       {!checkAdd ? (
-        <>
+        <div className="relative">
           <h2 className="font-semibold text-[28px] mb-[10px]">
             Products Management
           </h2>
           <div className="mb-[20px]">
             <button
               className="btn-70  hover:text-[#90e0ef] duration-300"
-              onClick={handlerCheckAdd}
+              onClick={handleCheckAdd}
             >
               Add Product
             </button>
           </div>
-          <TableData></TableData>
-        </>
+          <TableData
+            handleOnEdit={handleOnEdit}
+            listBook={listBook}
+          ></TableData>
+        </div>
       ) : (
         <StepForm></StepForm>
       )}
+      <ModalAnt
+        book={book}
+        idBook={idBook}
+        isEdit={isEdit}
+        handleOffEdit={handleOffEdit}
+        hanldeGetAllBooks={hanldeGetAllBooks}
+        // handleCancelIdBook={handleCancelIdBook}
+      ></ModalAnt>
     </>
   );
 }
