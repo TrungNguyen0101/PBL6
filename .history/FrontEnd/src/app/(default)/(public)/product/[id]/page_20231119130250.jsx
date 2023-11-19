@@ -213,7 +213,7 @@ const ProductDetail = () => {
                   src={book?.descImage[3]?.url}
                   width={500}
                   height={500}
-                  className="story-summary-img"
+                  class="story-summary-img"
                 ></Image>
               </div>
             </div>
