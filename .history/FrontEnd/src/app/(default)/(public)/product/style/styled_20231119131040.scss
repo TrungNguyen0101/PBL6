@@ -244,7 +244,6 @@ body {
   font-size: 17px;
   font-weight: 600;
   margin-bottom: 15px;
-  text-align: justify;
 }
 
 .content-detail .product-information .orther-information {
@@ -352,7 +351,7 @@ body {
 .content-detail .product-purchase-table .product-payment .product-number {
   overflow: hidden;
   display: table;
-  width: 100%;
+  width: 95%;
   height: 40px;
   vertical-align: middle;
   text-align: center;
@@ -360,6 +359,7 @@ body {
 }
 
 .content-detail .product-purchase-table .product-payment .product-number .col {
+  // display: table-cell;
   padding: 6px;
   vertical-align: middle;
   text-align: center;
@@ -374,8 +374,6 @@ body {
   border-bottom: var(--line-color) solid 2px;
   color: var(--fontcolor);
   font-size: 13px;
-  height: 100% !important;
-  display: inline-block;
 }
 
 .content-detail
@@ -389,8 +387,6 @@ body {
   color: var(--fontcolor);
   font-weight: 100;
   font-size: 11px;
-  height: 100% !important;
-  display: inline-block;
 }
 
 .content-detail
@@ -404,8 +400,6 @@ body {
   color: var(--fontcolor);
   font-weight: 100;
   font-size: 11px;
-  height: 100% !important;
-  display: inline-block;
 }
 
 .content-detail
