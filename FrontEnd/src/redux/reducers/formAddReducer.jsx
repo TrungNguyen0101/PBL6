@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   current: 0,
   firstForm: {},
+  firstFormEdit: {},
   checkAdd: false,
   mainImage: [],
   errorMainImage: '',
@@ -23,6 +24,10 @@ const FormAddSlice = createSlice({
     /* first form */
     saveFirstForm: (state, action) => {
       state.firstForm = action.payload;
+    },
+    /* first form edit */
+    saveFirstFormEdit: (state, action) => {
+      state.firstFormEdit = action.payload;
     },
     /* check form add */
     onCheckAdd: (state) => {
@@ -52,6 +57,7 @@ export const {
   nextForm,
   prevForm,
   saveFirstForm,
+  saveFirstFormEdit,
   onCheckAdd,
   offCheckAdd,
   saveMainImage,

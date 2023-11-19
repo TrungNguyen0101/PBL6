@@ -55,8 +55,11 @@
 .ant-modal-body {
   img {
     object-fit: contain;
-    max-height: 400px;
+    height: 100%;
   }
+}
+:where(.css-dev-only-do-not-override-19gw05y).ant-modal .ant-modal-body {
+  height: 100%;
 }
 :where(.css-dev-only-do-not-override-19gw05y).ant-upload-wrapper
   .ant-upload-list {

@@ -84,7 +84,6 @@ body {
   display: grid;
   grid-template-columns: 30% 70%;
   background-color: var(--bcg-detail-color);
-  height: 650px;
   /* align-items: stretch; */
 }
 
@@ -638,7 +637,6 @@ body {
   margin: 80px 20px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 650px;
   gap: 0px 30px;
 }
 
@@ -702,7 +700,7 @@ body {
 }
 
 .specification-wrapper .languages {
-  margin-top: 35px;
+  margin-top: 20px;
 }
 
 /* <!-- End specification area --> */
@@ -711,9 +709,7 @@ body {
 .discounted-wrapper {
   background-color: var(--bcg-detail-color);
   padding: 20px;
-  height: 75%;
   border-radius: 5px;
-  overflow: hidden;
 }
 
 .discounted-wrapper .discounted-content {
@@ -1454,7 +1450,6 @@ input[type='checkbox'] {
 
   .specification-wrapper .overview {
     margin: 30px 0;
-    height: 380px;
     border-bottom: var(--line-color) outset 2px;
   }
 
