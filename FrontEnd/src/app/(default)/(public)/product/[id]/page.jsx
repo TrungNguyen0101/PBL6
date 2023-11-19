@@ -11,6 +11,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const parsedDate = new Date(book !== undefined && book?.datePicker);
   const formattedDate = format(parsedDate, 'dd/MM/yyyy');
+  console.log('file: page.jsx:10 ~ ProductDetail ~ book:', book);
 
   const handlerMinus = useCallback(() => {
     if (count === 1) {
@@ -60,7 +61,7 @@ const ProductDetail = () => {
           </div>
           <div className="product-management">
             <i className="fa fa-angle-left product-pre"></i>
-            <i className="fa fa fa-th-large product-large"></i>
+            <i className="fa fa-th-large product-large"></i>
             <i className="fa fa-angle-right product-next"></i>
           </div>
         </div>
@@ -68,11 +69,17 @@ const ProductDetail = () => {
         <div className="detail-wrapper">
           {/* <!-- Start product-view area --> */}
           <div className="product-view">
-            <img
+            <Image
+              src={book?.mainImage[0]?.url}
+              width={400}
+              height={600}
+              className="product-img"
+            ></Image>
+            {/* <img
               src="https://i.ebayimg.com/images/g/8vIAAOSwztNg1quw/s-l1600.jpg"
               alt=""
               className="product-img"
-            />
+            /> */}
             <div className="product-labels">
               <span className="product-onsale">-33%</span>
               <span className="product-feature">HOT</span>
@@ -158,15 +165,13 @@ const ProductDetail = () => {
                 <div className="product-payment">
                   <div className="add">
                     <div className="col-wrap product-number">
-                      <div className="col col-minus">
+                      <button onClick={handlerMinus} className="col col-minus">
                         <i className="fa fa-light fa-minus fa-xs"></i>
-                      </div>
-                      <div className="col col-number">
-                        <span>1</span>
-                      </div>
-                      <div className="col col-plus">
+                      </button>
+                      <span className="col col-number">{count}</span>
+                      <button onClick={handlerPlus} className="col col-plus">
                         <i className="fa fa-light fa-plus fa-xs"></i>
-                      </div>
+                      </button>
                     </div>
 
                     <button className="product-add">
@@ -242,7 +247,7 @@ const ProductDetail = () => {
                     {book?.publisher}
                   </span>
                 </div>
-                <div className="overview-developer specification-form">
+                <div className="overview-developer specification-form pb-[10px]">
                   <span className="developer-label">Author</span>
                   <span className="developer-value">{book?.author}</span>
                 </div>
@@ -257,14 +262,13 @@ const ProductDetail = () => {
                 <div className="languages-language specification-form">
                   <span className="language-label">Language</span>
                   <span className="language-value value">
-                    Arabic, Chinese (Simplified), Chinese (Traditional), Czech,
-                    Danish, Dutch, English, French, Ukrainian
-                  </span>
-                </div>
-                <div className="languages-audio specification-form">
-                  <span className="audio-label">Audio</span>
-                  <span className="audio-value value">
-                    Czech, Danish, Dutch, English, French
+                    {book?.language.length > 0 &&
+                      book?.language.map((item, index) => (
+                        <span id={index}>
+                          {item}
+                          {index !== book?.language.length - 1 ? ' , ' : '.'}
+                        </span>
+                      ))}
                   </span>
                 </div>
               </div>
@@ -562,7 +566,6 @@ const ProductDetail = () => {
                     id="author"
                     type="text"
                     name="author"
-                    value
                     size="30"
                     required
                   />

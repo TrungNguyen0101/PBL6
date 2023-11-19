@@ -14,6 +14,7 @@ import {
   offCheckAdd,
   saveErrorMainImage,
   saveFirstForm,
+  saveFirstFormEdit,
   saveMainImage,
 } from '@/redux/reducers/formAddReducer';
 import DatePickerInput from '@/components/DatePickerInput';
@@ -22,6 +23,7 @@ import { message } from 'antd';
 import UploadImage from '@/components/UploadImage';
 import './styled.scss';
 import { format } from 'date-fns';
+import axios from 'axios';
 
 const schema = yup
   .object({
@@ -41,13 +43,14 @@ const schema = yup
   })
   .required();
 
-export default function FirstForm() {
+export default function FirstFormEdit({ handleOffEdit, isEdit, book }) {
   const {
     handleSubmit,
     control,
     setValue,
     getValues,
     formState: { errors },
+    reset,
   } = useForm({
     mode: 'onChange',
     // resolver: yupResolver(schema),
@@ -55,14 +58,16 @@ export default function FirstForm() {
   });
 
   const dispatch = useDispatch();
-  const dataFirstForm = useSelector((state) => state.form.firstForm);
+  const dataFirstFormEdit = useSelector((state) => state.form.firstFormEdit);
   const dataMainImage = useSelector((state) => state.form.mainImage);
+
   const dataErrorMainImage = useSelector((state) => state.form.errorMainImage);
+
+  const [bookEdit, setBookEdit] = useState({});
 
   const hanlderFirstForm = (values) => {
     // if (dataMainImage?.length > 0) {
     const newValues = { ...values };
-
     const stringFromDate = (date) => format(date, 'yyyy-MM-dd');
     const dateToSerialize = stringFromDate(new Date(newValues.datePicker));
     const price = getValues('price');
@@ -71,54 +76,72 @@ export default function FirstForm() {
     newValues.price = price;
     if (newValues.category.value) {
       newValues.category = newValues.category.value;
+    } else {
     }
-
-    dispatch(saveFirstForm(newValues));
+    dispatch(saveFirstFormEdit(newValues));
     dispatch(nextForm());
 
     message.config({
       duration: 2, // Độ dài mili giây của mỗi message (2 giây)
       maxCount: 1, // Số lượng message tối đa hiển thị cùng một lúc
     });
-    message.success("The first form's data has been saved!");
     // }
   };
 
   const hanleCancel = () => {
     dispatch(saveFirstForm({}));
     dispatch(saveMainImage([]));
-    dispatch(offCheckAdd());
-    message.error('Canceled add book!');
+    handleOffEdit();
+    message.error('Canceled Edit book!');
   };
 
   function isObjectEmpty(obj) {
     obj = obj ?? {};
     return Object.getOwnPropertyNames(obj).length === 0;
   }
-  /* set value */
-  useEffect(() => {
-    if (!isObjectEmpty(dataFirstForm)) {
-      const originalDate = new Date(dataFirstForm.datePicker);
-      const formattedDate = originalDate.toISOString().split('T')[0];
-      setValue('datePicker', formattedDate);
 
-      setValue('author', dataFirstForm.author);
-      setValue('booktitle', dataFirstForm.booktitle);
-      setValue('desc', dataFirstForm.desc);
-      setValue('quantity', dataFirstForm.quantity);
-      setValue('price', dataFirstForm.price);
-      if (dataFirstForm.category.value) {
-        setValue('category', dataFirstForm.category.value);
-      } else {
-        setValue('category', dataFirstForm.category);
+  /*set value edit first form*/
+  useEffect(() => {
+    if (!isObjectEmpty(dataFirstFormEdit)) {
+      setBookEdit(dataFirstFormEdit);
+    } else {
+      if (!isObjectEmpty(book)) {
+        setBookEdit(book);
       }
     }
-  }, []);
+  }, [book]);
 
+  /* set value edit */
+  useEffect(() => {
+    if (!isObjectEmpty(bookEdit) && !!isEdit) {
+      const originalDate = new Date(bookEdit.datePicker);
+      const formattedDate = originalDate.toISOString().split('T')[0];
+      setValue('datePicker', formattedDate);
+      setValue('author', bookEdit.author);
+      setValue('booktitle', bookEdit.booktitle);
+      if (bookEdit.category.value) {
+        setValue('category', bookEdit.category.value);
+      } else {
+        setValue('category', bookEdit.category);
+      }
+      setValue('desc', bookEdit.desc);
+      setValue('quantity', bookEdit.quantity);
+      setValue('price', bookEdit.price);
+      dispatch(saveMainImage(bookEdit.mainImage));
+    }
+  }, [bookEdit, book]);
+
+  /* set main image */
   useEffect(() => {
     if (dataMainImage?.length === 0) {
       dispatch(saveErrorMainImage('*Please upload a main photo'));
+    } else {
+      dispatch(saveErrorMainImage(''));
     }
+  }, [dataMainImage]);
+
+  useEffect(() => {
+    dispatch(saveMainImage(book.mainImage));
   }, []);
 
   return (

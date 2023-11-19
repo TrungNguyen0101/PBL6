@@ -106,10 +106,10 @@ const UploadImage = () => {
     dispatch(saveMainImage(fileList));
   }, [fileList]);
   useEffect(() => {
-    if (dataMainImage.length > 0) {
+    if (dataMainImage?.length > 0) {
       setFileList(dataMainImage);
     }
-  }, []);
+  }, [dataMainImage]);
 
   return (
     <>
@@ -137,11 +137,17 @@ const UploadImage = () => {
         )}
       </Upload>
 
-      <Modal open={previewOpen} footer={null} onCancel={handleCancel}>
+      <Modal
+        open={previewOpen}
+        footer={null}
+        onCancel={handleCancel}
+        className="max-w-[700px] max-h-[450px] top-[20px]"
+      >
         <img
           alt="example"
           style={{
             width: '100%',
+            height: '100%',
           }}
           src={previewImage}
         />

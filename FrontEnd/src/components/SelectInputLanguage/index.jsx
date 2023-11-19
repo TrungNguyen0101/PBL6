@@ -74,7 +74,7 @@ const SelectInputLanguage = ({
   const { field } = useController({
     name,
     control,
-    defaultValue: ['china'],
+    defaultValue: ['Vietnamese (Tiếng Việt)'],
   });
   return (
     <Select
@@ -83,7 +83,7 @@ const SelectInputLanguage = ({
         width: '100%',
       }}
       placeholder="Select language"
-      defaultValue={['china']}
+      defaultValue={['Vietnamese (Tiếng Việt)']}
       onChange={handleChange}
       optionLabelProp="label"
       className="w-full input min-h-[45.33px]"
