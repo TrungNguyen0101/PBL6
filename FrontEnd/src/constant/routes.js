@@ -20,6 +20,9 @@ const routes = {
   ACCOUNT: '/admin-accounts',
   PRODUCT: '/admin-products',
   ORDER: '/admin-orders',
+
+  // BOOK
+  ALLBOOK: '/all-book',
 };
 
 export default routes;

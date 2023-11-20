@@ -1,10 +1,13 @@
 'use client';
+
 import React, { useCallback, useEffect, useState } from 'react';
 import '../style/styled.scss';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
 import { format, parseISO } from 'date-fns';
 import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 const ProductDetail = () => {
   const [book, setBook] = useState();
   const [count, setCount] = useState(1);
@@ -22,17 +25,20 @@ const ProductDetail = () => {
   const handlerPlus = useCallback(() => {
     setCount(count + 1);
   }, [count]);
-
-  useEffect(async () => {
+  useEffect(() => {
     try {
       const handleGetBookByID = async () => {
         const result = await axios.get(`http://localhost:3030/api/book/${id}`);
-        return result.data.data.book;
+        if (result.data.data.book) {
+          setBook(result.data.data.book);
+        }
       };
-      const data = await handleGetBookByID();
-      setBook(data);
-    } catch (error) {}
+      handleGetBookByID();
+    } catch (error) {
+      console.log('file: page.jsx:37 ~ useEffect ~ error:', error);
+    }
   }, []);
+  console.log('check book', book);
   return (
     <section className="content">
       <div className="content-wrapper">
@@ -60,7 +66,7 @@ const ProductDetail = () => {
           </div>
           <div className="product-management">
             <i className="fa fa-angle-left product-pre"></i>
-            <i className="fa fa fa-th-large product-large"></i>
+            <i className="fa fa-th-large product-large"></i>
             <i className="fa fa-angle-right product-next"></i>
           </div>
         </div>
@@ -194,6 +200,20 @@ const ProductDetail = () => {
         <div className="description-wrapper">
           <div className="description-title directory-name">
             <h1>Description</h1>
+            <div className="mt-5">
+              <Swiper spaceBetween={20} slidesPerView={2} grabCursor={'true'}>
+                {book?.descImage?.length > 0 &&
+                  book?.descImage?.map((descImg, index) => (
+                    <SwiperSlide key={index}>
+                      <img
+                        src={descImg.url}
+                        alt=""
+                        className="object-cover w-full h-[450px] rounded-md"
+                      />
+                    </SwiperSlide>
+                  ))}
+              </Swiper>
+            </div>
           </div>
           <div className="description-slider">
             {/* <!-- tôm làm phần ni co zy ngen --> */}

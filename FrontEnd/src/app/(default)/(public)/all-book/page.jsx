@@ -1,32 +1,37 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import BookCard from '@/components/BookCard';
 import { getAllBook } from '@/services/bookService';
-import { useEffect } from 'react';
 
 const AllBookPage = () => {
+  const [listBook, setListBook] = useState([]);
   const handleGetAllBook = async () => {
     const res = await getAllBook();
-    console.log('check', res);
+    if (res?.data?.errCode === 0) {
+      setListBook(res?.data?.books);
+    }
   };
   useEffect(() => {
     handleGetAllBook();
+    // return () => {
+    //   console.log('This will be logged on unmount');
+    // };
   }, []);
   return (
-    <div className="wrapper-content mt-5">
+    <div className="mt-5 wrapper-content">
       <>
         <input
           type="text"
           placeholder="Search book..."
-          className="p-3 rounded-md w-full outline-none text-sm font-semibold"
+          className="w-full p-3 text-sm font-semibold rounded-md outline-none"
         />
       </>
-      <div className="flex">
-        <BookCard></BookCard>
-        <BookCard></BookCard>
-        <BookCard></BookCard>
-        <BookCard></BookCard>
-        <BookCard></BookCard>
+      <div className="flex flex-wrap gap-5 mt-5">
+        {listBook?.length > 0 &&
+          listBook.map((book) => (
+            <BookCard key={book._id} data={book}></BookCard>
+          ))}
       </div>
     </div>
   );

@@ -1,32 +1,36 @@
-import routes from '@/constant/routes';
 import React from 'react';
-import Link from 'next/link';
 import { AiFillStar } from 'react-icons/ai';
+import Link from 'next/link';
 import '../../styles/BookItem.scss';
 
-const BookCard = () => {
+const BookCard = ({ data }) => {
   return (
-    <div>
+    <div className="w-[calc(20%-20px)]">
       <div className="rounded-lg book-item">
-        <Link href={routes.HOME}>
-          <img
-            src="https://images.unsplash.com/photo-1682685797661-9e0c87f59c60?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-            alt=""
-            className="object-cover w-full h-full rounded-lg"
-          />
+        <Link href={`/product/${data._id}`}>
+          {data?.descImage?.length > 0 &&
+            data?.descImage
+              ?.slice(0, 1)
+              .map((image) => (
+                <img
+                  src={image?.url}
+                  alt=""
+                  className="object-cover w-full h-[200px] cursor-pointer"
+                />
+              ))}
         </Link>
       </div>
       <div className="p-1 font-semibold">
         <div className="flex items-center justify-between">
-          <Link href={routes.HOME}>
-            <span>Star wars Jedi</span>
+          <Link href={`/product/${data._id}`}>
+            <span className="cursor-pointer">{data?.booktitle}</span>
           </Link>
           <span className="flex items-center gap-x-[2px] text-sm">
-            5
+            {data?.quantity}
             <AiFillStar color="#eabe12" />
           </span>
         </div>
-        <span className="text-[#bc1313dd] text-xs">20.000</span>
+        <span className="text-[#bc1313dd] text-xs">{data?.price}</span>
       </div>
     </div>
   );
