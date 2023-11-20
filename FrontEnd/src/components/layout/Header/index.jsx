@@ -48,24 +48,14 @@ export default function Header() {
           Home
         </Link>
         <Link
-          href={routes.HOME}
+          href={routes.ALLBOOK}
           className={
-            pathname === routes.HOME
+            pathname === routes.ALLBOOK
               ? 'text-[#b08fff] font-semibold text-sm'
               : 'text-sm font-semibold'
           }
         >
           Books
-        </Link>
-        <Link
-          href={routes.HOME}
-          className={
-            pathname === routes.HOME
-              ? 'text-[#b08fff] font-semibold text-sm'
-              : 'text-sm font-semibold'
-          }
-        >
-          Home
         </Link>
       </div>
       <div className="flex ml-auto gap-x-3">

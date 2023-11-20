@@ -51,14 +51,12 @@ export default function SignInPage() {
     console.log(res);
     if (res.status === 200) {
       toast.success(res.message);
-
       router.push(routes.HOME);
       sessionStorage.setItem('token', res.access_token);
       sessionStorage.setItem('auth', JSON.stringify(res?.user));
     } else if (res?.response?.status === 500) {
       toast.error(res?.response?.message);
-    }
-    else if (res?.response?.status === 500) {
+    } else if (res?.response?.status === 500) {
       toast.error(res?.response?.message);
     }
   };
@@ -85,10 +83,7 @@ export default function SignInPage() {
           </p>
         </Field>
         <>
-          <InputTogglePassword
-            name="password"
-            control={control}
-          />
+          <InputTogglePassword name="password" control={control} />
           <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
             {errors?.password && errors.password.message}
           </p>
