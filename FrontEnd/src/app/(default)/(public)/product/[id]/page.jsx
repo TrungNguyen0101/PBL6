@@ -1,10 +1,14 @@
 'use client';
+
 import React, { useCallback, useEffect, useState } from 'react';
 import '../style/styled.scss';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
 import { format, parseISO } from 'date-fns';
 import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+
 const ProductDetail = () => {
   const [book, setBook] = useState();
   const [count, setCount] = useState(1);
@@ -23,17 +27,20 @@ const ProductDetail = () => {
   const handlerPlus = useCallback(() => {
     setCount(count + 1);
   }, [count]);
-
-  useEffect(async () => {
+  useEffect(() => {
     try {
       const handleGetBookByID = async () => {
         const result = await axios.get(`http://localhost:3030/api/book/${id}`);
-        return result.data.data.book;
+        if (result.data.data.book) {
+          setBook(result.data.data.book);
+        }
       };
-      const data = await handleGetBookByID();
-      setBook(data);
-    } catch (error) {}
+      handleGetBookByID();
+    } catch (error) {
+      console.log('file: page.jsx:37 ~ useEffect ~ error:', error);
+    }
   }, []);
+  console.log('check book', book);
   return (
     <section className="content">
       <div className="content-wrapper">
@@ -89,7 +96,7 @@ const ProductDetail = () => {
           {/* <!-- Start product-content area --> */}
           <div className="product-content">
             {/* <!-- Start content-detail area --> */}
-            <div className="content-detail flex lg:items-center items-start lg:flex-row flex-col gap-x-[20px]">
+            <div className="content-detail flex items-start lg:flex-row flex-col gap-x-[20px]">
               <div className="product-information lg:w-[60%] w-full">
                 <h1 className="product-title">{book?.booktitle}</h1>
                 <div className="product-reviews">
@@ -165,11 +172,17 @@ const ProductDetail = () => {
                 <div className="product-payment">
                   <div className="add">
                     <div className="col-wrap product-number">
-                      <button onClick={handlerMinus} className="col col-minus">
+                      <button
+                        onClick={handlerMinus}
+                        className="col col-minus w-full"
+                      >
                         <i className="fa fa-light fa-minus fa-xs"></i>
                       </button>
-                      <span className="col col-number">{count}</span>
-                      <button onClick={handlerPlus} className="col col-plus">
+                      <span className="col col-number w-full">{count}</span>
+                      <button
+                        onClick={handlerPlus}
+                        className="col col-plus w-full"
+                      >
                         <i className="fa fa-light fa-plus fa-xs"></i>
                       </button>
                     </div>
@@ -199,11 +212,30 @@ const ProductDetail = () => {
         <div className="description-wrapper">
           <div className="description-title directory-name">
             <h1>Description</h1>
+            <div className="mt-5">
+              <Swiper
+                spaceBetween={20}
+                slidesPerView={2}
+                grabCursor={'true'}
+                modules={[Navigation, Pagination]}
+                pagination={{ clickable: true }}
+                className="pb-[30px]"
+              >
+                {book?.descImage?.length > 0 &&
+                  book?.descImage?.map((descImg, index) => (
+                    <SwiperSlide key={index}>
+                      <Image
+                        src={descImg.url}
+                        width={400}
+                        height={600}
+                        className="object-cover w-full max-h-[300px] rounded-md"
+                      />
+                    </SwiperSlide>
+                  ))}
+              </Swiper>
+            </div>
           </div>
-          <div className="description-slider">
-            {/* <!-- tôm làm phần ni co zy ngen --> */}
-          </div>
-          <div className="description-detail">
+          <div className="description-detail mt-[20px]">
             <h2>Information about the story</h2>
             <div className="story-summary">
               <p className="story-summary-value">{book?.infomation}</p>
