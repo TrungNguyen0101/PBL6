@@ -29,6 +29,7 @@ const updateBook = async (data) => {
         desc: data.desc,
         category: data.category,
         mainImage: data.mainImage,
+        descImage: data.descImage,
         publisher: data.publisher,
         infomation: data.infomation,
         language: data.language,

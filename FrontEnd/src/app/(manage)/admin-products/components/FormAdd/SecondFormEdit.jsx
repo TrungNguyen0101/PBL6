@@ -120,11 +120,17 @@ export default function SecondFormEdit({
   };
 
   useEffect(() => {
-    if (dataDescImage.length < 4) {
+    if (dataDescImage?.length < 4) {
       dispatch(
         saveErrorDescImage('*Please upload at least 4 description photos')
       );
+    } else {
+      dispatch(saveErrorDescImage(''));
     }
+  }, [dataDescImage]);
+
+  useEffect(() => {
+    dispatch(saveDescImage(book.descImage));
   }, []);
 
   function isObjectEmpty(obj) {
