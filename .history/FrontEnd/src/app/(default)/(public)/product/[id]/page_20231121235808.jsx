@@ -228,7 +228,7 @@ const ProductDetail = () => {
                         src={descImg.url}
                         width={400}
                         height={600}
-                        className="object-cover w-full h-[300px] rounded-md"
+                        className="object-cover w-full max-h-[300px] rounded-md"
                       />
                     </SwiperSlide>
                   ))}
