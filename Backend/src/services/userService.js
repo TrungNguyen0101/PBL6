@@ -363,37 +363,6 @@ const getCountByRole = async (data) => {
     }
     return userData;
 }
-const createAdmin = async () => {
-    try {
-        let adminCreationExecuted = false;
-        if (adminCreationExecuted) {
-            console.log("Admin creation already executed");
-            return;
-        }
-
-        const user = await db.User.findOne({ email: "nthdv6969@gmail.com" }).exec();
-        if (user) {
-            console.log("Admin already exists");
-            return;
-        }
-
-        let hashPassword = await bcrypt.hashSync("Admin123@", salt);
-        await db.User.create({
-            username: "Admin",
-            email: "nthdv6969@gmail.com",
-            password: hashPassword,
-            roleID: "1",
-            phoneNumber: "",
-            verificationCode: "",
-            isVerified: true
-        });
-        adminCreationExecuted = true;
-
-        console.log("Admin created successfully");
-    } catch (error) {
-        console.error(error);
-    }
-}
 module.exports = {
     handleLogin,
     handleRegister,
@@ -406,5 +375,4 @@ module.exports = {
     changePassword,
     getAllAccount,
     getCountByRole,
-    createAdmin
 }

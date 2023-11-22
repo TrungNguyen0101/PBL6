@@ -8,7 +8,6 @@ const checkToken = require("./src/utils/middleware.js")
 const initWebRoutes = require("./src/routes/index.js");
 const cors = require("cors");
 const swaggerUi = require('swagger-ui-express');
-const userService = require("../Backend/src/services/userService.js")
 require("dotenv").config();
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
@@ -31,7 +30,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 initWebRoutes(app);
-userService.createAdmin();
 
 const port = process.env.PORT || 3030;
 app.listen(port, async () => {
