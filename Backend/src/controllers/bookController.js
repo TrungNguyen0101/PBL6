@@ -29,8 +29,7 @@ async function getBookById(req, res) {
 }
 async function getBookByCategory(req, res) {
   try {
-    console.log(req.body);
-    const book = await bookService.getBookByCategory(req.body);
+    const book = await bookService.getBookByCategory(req.query);
     res.status(200).json({
       message: "get book by id succeed",
       data: book,
