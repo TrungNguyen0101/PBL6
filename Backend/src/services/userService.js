@@ -323,6 +323,46 @@ const changePassword = async (user, newpassword, oldpassword) => {
     }
     return data;
 }
+const getAllAccount = async (data) => {
+    let userData = {};
+    try {
+        if (data.roleID === "1") {
+            const account = await db.User.find();
+            userData.account = account;
+            userData.status = 200;
+            userData.message = "Get all account";
+            return userData;
+        }
+        userData.status = 500;
+        userData.message = "You are not an admin";
+        return userData;
+    } catch (e) {
+        userData.status = 500;
+        userData.message = e;
+    }
+    return userData;
+}
+const getCountByRole = async (data) => {
+    let userData = {};
+    try {
+        if (data.roleID === "1") {
+            const countsByRole = await db.User.aggregate([
+                { $group: { _id: "$roleID", totalaccount: { $sum: 1 } } },
+            ]);
+            userData.status = 200;
+            userData.message = "Get count by role";
+            userData.countsByRole = countsByRole;
+            return userData;
+        }
+        userData.status = 500;
+        userData.message = "You are not an admin";
+        return userData;
+    } catch (e) {
+        userData.status = 500;
+        userData.message = e;
+    }
+    return userData;
+}
 module.exports = {
     handleLogin,
     handleRegister,
@@ -332,5 +372,7 @@ module.exports = {
     sendCodeVerifyUser,
     verifyCode,
     addUserByAdmin,
-    changePassword
+    changePassword,
+    getAllAccount,
+    getCountByRole
 }

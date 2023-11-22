@@ -185,8 +185,35 @@ const handleChangePassword = async (req, res) => {
         })
     }
 }
-const handle = async (req, res) => {
-
+const handleGetAllAccount = async (req, res) => {
+    let admin = req.User.User;
+    let data = await userService.getAllAccount(admin);
+    if (data.status === 200) {
+        return res.status(200).json({
+            account: data.account,
+            status: data.status,
+            message: data.message
+        })
+    }
+    return res.status(500).json({
+        status: data.status,
+        message: data.message
+    })
+}
+const handleCountByRole = async (req, res) => {
+    let admin = req.User.User;
+    let data = await userService.getCountByRole(admin);
+    if (data.status === 200) {
+        return res.status(200).json({
+            data: data.countsByRole,
+            status: data.status,
+            message: data.message
+        })
+    }
+    return res.status(500).json({
+        status: data.status,
+        message: data.message
+    })
 }
 module.exports = {
     handleLogin,
@@ -198,5 +225,6 @@ module.exports = {
     handleSendCodeVerify,
     handleAddUserByAdmin,
     handleChangePassword,
-    handle
+    handleGetAllAccount,
+    handleCountByRole
 }
