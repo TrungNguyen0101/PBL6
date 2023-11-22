@@ -46,8 +46,7 @@ const updateBook = async (data) => {
   }
   return bookData;
 };
-const getAllBooks = async () => {
-  let bookData = {};
+const getAllBooks = async (body) => {
   try {
     let bookData = {};
     const { page, limit } = body;
