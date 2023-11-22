@@ -18,7 +18,7 @@ import {
 import LoadingAnt from '@/components/Loading';
 import ModalAnt from '@/components/ModalAnt';
 import axios from 'axios';
-import { getAllBook } from '@/services/bookService';
+import { getAllBook, getBookById } from '@/services/bookService';
 
 export default function ProductPage() {
   const checkAdd = useSelector((state) => state.form.checkAdd);

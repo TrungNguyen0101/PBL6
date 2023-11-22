@@ -16,7 +16,6 @@ const ProductDetail = () => {
   const { id } = useParams();
   const parsedDate = new Date(book !== undefined && book?.datePicker);
   const formattedDate = format(parsedDate, 'dd/MM/yyyy');
-  console.log('file: page.jsx:10 ~ ProductDetail ~ book:', book);
 
   const handlerMinus = useCallback(() => {
     if (count === 1) {

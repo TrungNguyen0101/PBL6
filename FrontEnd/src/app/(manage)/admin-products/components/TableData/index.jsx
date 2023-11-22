@@ -44,7 +44,6 @@ const TableData = ({ handleOnEdit, listBook }) => {
       key: 'quantity',
       width: 10,
     },
-
     {
       title: 'Action',
       key: 'action',
