@@ -4,7 +4,7 @@ import { Button, Popconfirm, Table, message } from 'antd';
 import './styled.scss';
 import axios from 'axios';
 
-const TableData = () => {
+const TableData = ({ handleOnEdit, listBook }) => {
   const columns = [
     {
       title: 'Title',
@@ -52,7 +52,7 @@ const TableData = () => {
         <div className="flex items-center gap-x-[10px] pl-[-10px] ml-[-10px]">
           <Popconfirm
             title="Are you sure to delete this record?"
-            onConfirm={() => handleDelete(record.id)}
+            onConfirm={() => handleDelete(record._id)}
             onCancel={() => {}}
             okText="Yes"
             cancelText="No"
@@ -71,7 +71,7 @@ const TableData = () => {
               </svg>
             </Button>
           </Popconfirm>
-          <button type="button">
+          <button type="button" onClick={() => handleEdit(record._id)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="22"
@@ -90,11 +90,14 @@ const TableData = () => {
   ];
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  console.log('file: index.jsx:93 ~ TableData ~ isLoading:', isLoading);
   const handleDelete = (rowId) => {
-    const updatedData = data.filter((row) => row.id !== rowId);
+    const updatedData = data.filter((row) => row._id !== rowId);
     setData(updatedData);
     message.success('Record deleted successfully');
+  };
+  const handleEdit = (rowId) => {
+    handleOnEdit(rowId);
+    message.warning('Data will not be saved when canceling or returning!');
   };
   useEffect(() => {
     try {
@@ -109,6 +112,11 @@ const TableData = () => {
       setIsLoading(false);
     }
   }, []);
+  useEffect(() => {
+    if (listBook?.length > 0) {
+      setData(listBook);
+    }
+  }, [listBook]);
 
   return (
     <div className="max-h-[400px]">

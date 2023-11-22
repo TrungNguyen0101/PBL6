@@ -100,10 +100,10 @@ const UploadImageDesc = () => {
     }
   }, [fileList]);
   useEffect(() => {
-    if (datadescImage.length > 0) {
+    if (datadescImage?.length > 0) {
       setFileList(datadescImage);
     }
-  }, []);
+  }, [datadescImage]);
   const beforeUpload = async (file, list) => {
     const prevList = fileList.length;
     const maxCount = list.length;
@@ -141,7 +141,12 @@ const UploadImageDesc = () => {
         )}
       </Upload>
 
-      <Modal open={previewOpen} footer={null} onCancel={handleCancel}>
+      <Modal
+        open={previewOpen}
+        footer={null}
+        onCancel={handleCancel}
+        className="max-w-[700px] max-h-[450px] top-[20px]"
+      >
         <img
           alt="example"
           style={{

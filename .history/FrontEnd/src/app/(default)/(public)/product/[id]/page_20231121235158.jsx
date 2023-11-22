@@ -215,7 +215,7 @@ const ProductDetail = () => {
             <div className="mt-5">
               <Swiper
                 spaceBetween={20}
-                slidesPerView={3}
+                slidesPerView={2}
                 grabCursor={'true'}
                 modules={[Navigation, Pagination]}
                 pagination={{ clickable: true }}
@@ -228,7 +228,7 @@ const ProductDetail = () => {
                         src={descImg.url}
                         width={400}
                         height={600}
-                        className="object-cover w-full h-[300px] rounded-md"
+                        className="object-cover w-full max-h-[300px] rounded-md"
                       />
                     </SwiperSlide>
                   ))}

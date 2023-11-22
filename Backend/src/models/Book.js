@@ -14,6 +14,8 @@ const BookModal = new Schema({
   publisher: { type: String },
   infomation: { type: String },
   language: { type: Array },
+  status: { type: Number, default: 0 },
+  discount: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model("Book", BookModal);

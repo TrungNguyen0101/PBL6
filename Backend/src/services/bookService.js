@@ -14,8 +14,40 @@ const insertBook = async (data) => {
   }
   return bookData;
 };
-const updateBook = async () => { };
-async function getAllBooks(body) {
+const updateBook = async (data) => {
+  let bookData = {};
+  try {
+    // const bookById = await db.Book.findOne({ _id: data.id });
+    const result = await Book.updateOne(
+      { _id: data.id },
+      {
+        booktitle: data.booktitle,
+        author: data.author,
+        price: data.price,
+        quantity: data.quantity,
+        datePicker: data.datePicker,
+        desc: data.desc,
+        category: data.category,
+        mainImage: data.mainImage,
+        descImage: data.descImage,
+        publisher: data.publisher,
+        infomation: data.infomation,
+        language: data.language,
+        discount: data.discount,
+        // status: data.status,
+      }
+    );
+    bookData.book = result;
+    bookData.errCode = 0;
+    bookData.errMessage = "update book succeed";
+  } catch (e) {
+    bookData.errCode = 2;
+    bookData.errMessage = "update book failed";
+  }
+  return bookData;
+};
+const getAllBooks = async () => {
+  let bookData = {};
   try {
     let bookData = {};
     const { page, limit } = body;

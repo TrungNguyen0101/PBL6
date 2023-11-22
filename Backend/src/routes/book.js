@@ -7,5 +7,5 @@ router.get("/", bookController.getAllBooks);
 router.get("/book-by-category", bookController.getBookByCategory);
 router.get("/:id", bookController.getBookById);
 router.post("/insert", bookController.insertBook);
-router.patch("/", bookController.updateBook);
+router.put("/", bookController.updateBook);
 module.exports = router;
