@@ -69,7 +69,7 @@ const handleRegister = async (data) => {
             username: data.username,
             email: data.email,
             password: hashPassword,
-            roleID: "2",
+            roleID: "3",
             phoneNumber: "",
             verificationCode: ""
         })
