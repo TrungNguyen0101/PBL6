@@ -59,10 +59,6 @@ export default function SecondForm({ isEdit, book }) {
           const newValues = { ...dataFirstForm, ...values };
           newValues.descImage = dataDescImage;
 
-          console.log(
-            'file: SecondForm.jsx:61 ~ hanlderSecondForm ~ newValues:',
-            newValues
-          );
           // const result = await axios.post(
           //   'http://localhost:3030/api/book/insert',
           //   newValues
@@ -82,11 +78,6 @@ export default function SecondForm({ isEdit, book }) {
       } else {
         const newValues = { ...dataFirstFormEdit, ...values };
         newValues.descImage = dataDescImage;
-
-        console.log(
-          'file: SecondForm.jsx:61 ~ hanlderSecondForm ~ newValues:',
-          newValues
-        );
       }
     } catch (error) {}
   };
@@ -102,7 +93,7 @@ export default function SecondForm({ isEdit, book }) {
   };
 
   useEffect(() => {
-    if (dataDescImage.length < 4) {
+    if (dataDescImage?.length < 4) {
       dispatch(
         saveErrorDescImage('*Please upload at least 4 description photos')
       );

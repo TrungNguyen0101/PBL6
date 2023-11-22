@@ -86,6 +86,7 @@ export default function ProductPage() {
           <TableData
             handleOnEdit={handleOnEdit}
             listBook={listBook}
+            hanldeGetAllBooks={hanldeGetAllBooks}
           ></TableData>
         </div>
       ) : (
