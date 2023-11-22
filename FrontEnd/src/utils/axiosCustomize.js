@@ -2,7 +2,8 @@ import axios from 'axios';
 
 const instance = axios.create({
   // đường dẫn của api
-  baseURL: 'https://nthdv-pbl6.up.railway.app/api/',
+  // baseURL: 'https://nthdv-pbl6.up.railway.app/api/',
+  baseURL: 'http://localhost:3030/api/',
 });
 
 // Add a request interceptor

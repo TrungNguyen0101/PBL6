@@ -2,7 +2,6 @@ const Book = require("../models/Book.js");
 const db = require("../models/index.js");
 
 const insertBook = async (data) => {
-  console.log("file: bookService.js:5 ~ insertBook ~ data:", data);
   let bookData = {};
   try {
     await db.Book.create(data);
@@ -11,6 +10,20 @@ const insertBook = async (data) => {
   } catch (e) {
     bookData.errCode = 2;
     bookData.errMessage = "Create book failed";
+  }
+  return bookData;
+};
+const deleteBook = async (id) => {
+  let bookData = {};
+  try {
+    await db.Book.deleteOne({
+      _id: id.id,
+    });
+    bookData.errCode = 0;
+    bookData.errMessage = "delete book succeed";
+  } catch (e) {
+    bookData.errCode = 2;
+    bookData.errMessage = "delete book failed";
   }
   return bookData;
 };
@@ -104,6 +117,7 @@ const getBookByCategory = async (category) => {
 module.exports = {
   insertBook: insertBook,
   updateBook: updateBook,
+  deleteBook: deleteBook,
   getAllBooks: getAllBooks,
   getBookById: getBookById,
   getBookByCategory: getBookByCategory,

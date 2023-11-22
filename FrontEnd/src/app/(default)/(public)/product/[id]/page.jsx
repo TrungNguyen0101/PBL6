@@ -8,6 +8,7 @@ import { format, parseISO } from 'date-fns';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import { getBookById } from '@/services/bookService';
 
 const ProductDetail = () => {
   const [book, setBook] = useState();
@@ -15,7 +16,6 @@ const ProductDetail = () => {
   const { id } = useParams();
   const parsedDate = new Date(book !== undefined && book?.datePicker);
   const formattedDate = format(parsedDate, 'dd/MM/yyyy');
-  console.log('file: page.jsx:10 ~ ProductDetail ~ book:', book);
 
   const handlerMinus = useCallback(() => {
     if (count === 1) {
@@ -30,9 +30,10 @@ const ProductDetail = () => {
   useEffect(() => {
     try {
       const handleGetBookByID = async () => {
-        const result = await axios.get(`http://localhost:3030/api/book/${id}`);
-        if (result.data.data.book) {
-          setBook(result.data.data.book);
+        // const result = await axios.get(`http://localhost:3030/api/book/${id}`);
+        const result = await getBookById(id);
+        if (result.data.book) {
+          setBook(result.data.book);
         }
       };
       handleGetBookByID();
@@ -174,14 +175,14 @@ const ProductDetail = () => {
                     <div className="col-wrap product-number">
                       <button
                         onClick={handlerMinus}
-                        className="col col-minus w-full"
+                        className="w-full col col-minus"
                       >
                         <i className="fa fa-light fa-minus fa-xs"></i>
                       </button>
-                      <span className="col col-number w-full">{count}</span>
+                      <span className="w-full col col-number">{count}</span>
                       <button
                         onClick={handlerPlus}
-                        className="col col-plus w-full"
+                        className="w-full col col-plus"
                       >
                         <i className="fa fa-light fa-plus fa-xs"></i>
                       </button>
