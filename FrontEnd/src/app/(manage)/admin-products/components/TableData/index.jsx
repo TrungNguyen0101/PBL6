@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Popconfirm, Table, message } from 'antd';
 import './styled.scss';
 import axios from 'axios';
+import { getAllBook } from '@/services/bookService';
 
 const TableData = ({ handleOnEdit, listBook }) => {
   const columns = [
@@ -103,8 +104,9 @@ const TableData = ({ handleOnEdit, listBook }) => {
     try {
       setIsLoading(true);
       const hanldeGetAllBooks = async () => {
-        const { data } = await axios.get('http://localhost:3030/api/book');
-        setData(data.data.books);
+        // const { data } = await axios.get('http://localhost:3030/api/book');
+        const { data } = await getAllBook();
+        setData(data.books);
         setIsLoading(false);
       };
       hanldeGetAllBooks();

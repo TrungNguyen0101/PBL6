@@ -50,7 +50,7 @@ export default function FirstForm() {
     formState: { errors },
   } = useForm({
     mode: 'onChange',
-    // resolver: yupResolver(schema),
+    resolver: yupResolver(schema),
     defaultValues: {},
   });
 
@@ -60,28 +60,28 @@ export default function FirstForm() {
   const dataErrorMainImage = useSelector((state) => state.form.errorMainImage);
 
   const hanlderFirstForm = (values) => {
-    // if (dataMainImage?.length > 0) {
-    const newValues = { ...values };
+    if (dataMainImage?.length > 0) {
+      const newValues = { ...values };
 
-    const stringFromDate = (date) => format(date, 'yyyy-MM-dd');
-    const dateToSerialize = stringFromDate(new Date(newValues.datePicker));
-    const price = getValues('price');
-    newValues.datePicker = dateToSerialize;
-    newValues.mainImage = dataMainImage;
-    newValues.price = price;
-    if (newValues.category.value) {
-      newValues.category = newValues.category.value;
+      const stringFromDate = (date) => format(date, 'yyyy-MM-dd');
+      const dateToSerialize = stringFromDate(new Date(newValues.datePicker));
+      const price = getValues('price');
+      newValues.datePicker = dateToSerialize;
+      newValues.mainImage = dataMainImage;
+      newValues.price = price;
+      if (newValues.category.value) {
+        newValues.category = newValues.category.value;
+      }
+
+      dispatch(saveFirstForm(newValues));
+      dispatch(nextForm());
+
+      message.config({
+        duration: 2, // Độ dài mili giây của mỗi message (2 giây)
+        maxCount: 1, // Số lượng message tối đa hiển thị cùng một lúc
+      });
+      message.success("The first form's data has been saved!");
     }
-
-    dispatch(saveFirstForm(newValues));
-    dispatch(nextForm());
-
-    message.config({
-      duration: 2, // Độ dài mili giây của mỗi message (2 giây)
-      maxCount: 1, // Số lượng message tối đa hiển thị cùng một lúc
-    });
-    message.success("The first form's data has been saved!");
-    // }
   };
 
   const hanleCancel = () => {

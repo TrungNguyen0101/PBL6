@@ -25,6 +25,7 @@ import UploadImageDesc from '@/components/UploadImage/UploadImageDesc';
 import SelectInputLanguage from '@/components/SelectInputLanguage';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { postBook } from '@/services/bookService';
 const schema = yup
   .object({
     publisher: yup.string().required('Please enter ublisher'),
@@ -62,19 +63,20 @@ export default function SecondForm({ isEdit, book }) {
             'file: SecondForm.jsx:61 ~ hanlderSecondForm ~ newValues:',
             newValues
           );
-          const result = await axios.post(
-            'http://localhost:3030/api/book/insert',
-            newValues
-          );
-          if (result.data.data.errCode === 0) {
-            message.success(result.data.data.errMessage);
+          // const result = await axios.post(
+          //   'http://localhost:3030/api/book/insert',
+          //   newValues
+          // );
+          const result = await postBook(newValues);
+          if (result.data.errCode === 0) {
+            message.success(result.data.errMessage);
             dispatch(saveDescImage([]));
             dispatch(saveFirstForm({}));
             dispatch(saveMainImage([]));
             dispatch(prevForm());
             dispatch(offCheckAdd());
           } else {
-            message.success(result.data.data.errMessage);
+            message.success(result.data.errMessage);
           }
         }
       } else {
@@ -104,8 +106,10 @@ export default function SecondForm({ isEdit, book }) {
       dispatch(
         saveErrorDescImage('*Please upload at least 4 description photos')
       );
+    } else {
+      dispatch(saveErrorDescImage(''));
     }
-  }, []);
+  }, [dataDescImage]);
 
   function isObjectEmpty(obj) {
     obj = obj ?? {};
