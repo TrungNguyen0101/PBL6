@@ -43,7 +43,7 @@ export default function ProductPage() {
   const hanldeGetAllBooks = async () => {
     // const { data } = await axios.get('http://host:3030/api/book');
     const { data } = await getAllBook();
-    setListBook(data.data.books);
+    setListBook(data.books);
   };
 
   const handleCheckAdd = () => {
