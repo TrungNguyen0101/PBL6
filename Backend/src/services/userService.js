@@ -296,8 +296,52 @@ const verifyCode = async (data, code) => {
     }
     return userData;
 }
-const addUserByAdmin = async () => {
-
+const addUserByAdmin = async (admin, data) => {
+    const userData = {};
+    try {
+        if (admin.roleID === "1") {
+            const user = await db.User.findOne({ email: data.email }).exec();
+            if (user) {
+                userData.status = 500;
+                userData.message = "User already exists"
+                return userData;
+            }
+            let hashPassword = await bcrypt.hashSync(data.password, salt);
+            if (data.roleID === "1") {
+                await db.User.create({
+                    username: data.username,
+                    email: data.email,
+                    password: hashPassword,
+                    roleID: data.roleID,
+                    phoneNumber: data.phoneNumber,
+                    verificationCode: "",
+                    isVerified: true,
+                })
+                userData.status = 200;
+                userData.message = "Create user succeed";
+                return userData;
+            }
+            await db.User.create({
+                username: data.username,
+                email: data.email,
+                password: hashPassword,
+                roleID: data.roleID,
+                phoneNumber: data.phoneNumber,
+                verificationCode: "",
+                isVerified: false,
+            })
+            userData.status = 200;
+            userData.message = "Create user succeed";
+            return userData;
+        }
+        userData.status = 500;
+        userData.message = "You are not an admin";
+        return userData;
+    } catch (e) {
+        userData.status = 500;
+        userData.message = "Require inter parameter!";
+    }
+    return userData;
 }
 const changePassword = async (user, newpassword, oldpassword) => {
     let data = {};
