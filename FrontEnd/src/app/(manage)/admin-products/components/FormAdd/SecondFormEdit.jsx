@@ -72,10 +72,6 @@ export default function SecondFormEdit({
           const newValues = { ...dataFirstForm, ...values };
           newValues.descImage = dataDescImage;
 
-          console.log(
-            'file: SecondForm.jsx:61 ~ hanlderSecondForm ~ newValues:',
-            newValues
-          );
           // const result = await axios.post(
           //   'http://localhost:3030/api/book/insert',
           //   newValues
@@ -101,6 +97,7 @@ export default function SecondFormEdit({
           //   newValues
           // );
           const result = await putBook(newValues);
+
           if (result.data.errCode === 0) {
             message.success('Updated book successfully');
             handleOffEdit();
@@ -148,13 +145,12 @@ export default function SecondFormEdit({
     if (!isObjectEmpty(book)) {
       setValue('publisher', book.publisher);
       setValue('infomation', book.infomation);
+      setValue('discount', book.discount);
       setValue('language', book.language);
       dispatch(saveDescImage(book.descImage));
     }
   }, [book]);
-  useEffect(() => {
-    setValue('discount', 0);
-  }, []);
+
   return (
     <div className="pt-[5px]">
       <form className="px-[20px]" onSubmit={handleSubmit(hanlderSecondForm)}>

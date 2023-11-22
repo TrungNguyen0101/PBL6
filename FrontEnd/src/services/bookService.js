@@ -10,6 +10,6 @@ const postBook = (data) => {
   return instance.post(`book/insert`, data);
 };
 const putBook = (data) => {
-  return instance.put(`book`, data);
+  return instance.put('book', data);
 };
 export { getAllBook, getBookById, postBook, putBook };
