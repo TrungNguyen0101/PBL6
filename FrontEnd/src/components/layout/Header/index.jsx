@@ -65,7 +65,7 @@ export default function Header() {
               href={routes.PROFILE}
               className="border border-[#b08fff] w-max p-2 flex items-center justify-center rounded-md font-semibold text-sm"
             >
-              Hello, welcome back {auth?.username}
+              Hello, welcome back {auth?.user?.username}
             </Link>
             <Button kind="primary" onClick={handleLogout}>
               Logout

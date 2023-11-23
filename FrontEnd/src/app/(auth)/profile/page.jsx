@@ -26,7 +26,7 @@ const ProfilePage = () => {
     const res = await updateInforUser(values.username, values.phoneNumber);
     if (res.status === 200) {
       toast.success(res.errMessage);
-      sessionStorage.setItem('auth', JSON.stringify(res?.user));
+      sessionStorage.setItem('auth', JSON.stringify(res));
       window.location.reload(false);
     }
   };
@@ -38,9 +38,9 @@ const ProfilePage = () => {
   }, []);
   useEffect(() => {
     reset({
-      email: auth?.email,
-      username: auth?.username,
-      phoneNumber: auth?.phoneNumber,
+      email: auth?.user?.email,
+      username: auth?.user?.username,
+      phoneNumber: auth?.user?.phoneNumber,
     });
   }, [auth]);
   return (
@@ -56,8 +56,7 @@ const ProfilePage = () => {
         <div className="w-[500px] bg-white mx-auto p-4 rounded-md mb-2">
           <h2 className="text-2xl font-semibold text-center">Xác thực</h2>
           <h3 className="flex items-center justify-center mb-2 text-sm font-semibold gap-x-1">
-            Tài khoản của bạn:{' '}
-            {auth?.user?.isVerified
+            {auth?.isVerified
               ? 'Tài khoản của bạn đã được xác thực'
               : 'Tài khoản của bạn chưa được xác thực'}
             {auth?.user?.isVerified && <FaCheck color="green" size="15px" />}

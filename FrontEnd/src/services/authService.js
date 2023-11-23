@@ -38,6 +38,13 @@ const verifyCode = (code) => {
   });
 };
 
+const changePassword = (oldpassword, newpassword) => {
+  return instance.post('user/change-password', {
+    oldpassword,
+    newpassword,
+  });
+};
+
 export {
   postSignIn,
   postSignUp,
@@ -45,4 +52,5 @@ export {
   forgotPassword,
   sendCodeVerify,
   verifyCode,
+  changePassword,
 };

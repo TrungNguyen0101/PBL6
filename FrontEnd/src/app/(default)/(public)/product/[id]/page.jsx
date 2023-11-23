@@ -29,7 +29,9 @@ const ProductDetail = () => {
   useEffect(() => {
     try {
       const handleGetBookByID = async () => {
-        const result = await axios.get(`http://localhost:3030/api/book/${id}`);
+        const result = await axios.get(
+          `https://nthdv-pbl6.up.railway.app/api/book/${id}`
+        );
         if (result.data.data.book) {
           setBook(result.data.data.book);
         }
@@ -39,7 +41,6 @@ const ProductDetail = () => {
       console.log('file: page.jsx:37 ~ useEffect ~ error:', error);
     }
   }, []);
-  console.log('check book', book);
   return (
     <section className="content">
       <div className="content-wrapper">
@@ -81,11 +82,6 @@ const ProductDetail = () => {
               height={600}
               className="product-img"
             ></Image>
-            {/* <img
-              src="https://i.ebayimg.com/images/g/8vIAAOSwztNg1quw/s-l1600.jpg"
-              alt=""
-              className="product-img"
-            /> */}
             <div className="product-labels">
               <span className="product-onsale">-33%</span>
               <span className="product-feature">HOT</span>

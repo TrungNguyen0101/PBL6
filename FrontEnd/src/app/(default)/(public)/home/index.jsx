@@ -30,7 +30,7 @@ export default function Home() {
         <div className="w-full p-4 mt-10 bg-white rounded-lg">
           <div className="flex items-center pb-2 border-b border-b-gray-500 gap-x-2">
             <BsFillBookFill size="15px" color="#6d4eec" />
-            <Heading>Phổ biến</Heading>
+            <Heading>Tất cả sách</Heading>
           </div>
           <BookList />
         </div>
@@ -50,7 +50,7 @@ export default function Home() {
         </div>
         <span className="flex justify-end mt-3">
           <Link
-            href={routes.HOME}
+            href={routes.ALLBOOK}
             className="inline-block py-1 text-xs px-4 bg-[#6d4eec] text-white rounded-3xl hover:bg-opacity-70 transition-all"
           >
             Discover all

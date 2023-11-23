@@ -1,17 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getBookByCategory } from '@/services/bookService';
+import { useSearchParams } from 'next/navigation';
 import BookCard from '@/components/BookCard';
-import ReactPaginate from 'react-paginate';
-import { getAllBookWithPagination } from '@/services/bookService';
 
-const AllBookPage = () => {
+const BookByCategoryPage = () => {
   const [listBook, setListBook] = useState([]);
+  const searchParam = useSearchParams();
+  const category = searchParam.get('value');
   const handleGetAllBook = async () => {
-    const res = await getAllBookWithPagination(1, 100000);
-    console.log(res);
-    if (res?.data) {
-      setListBook(res?.data?.books);
+    const res = await getBookByCategory(category);
+    if (res && res?.data?.errCode === 0) {
+      setListBook(res?.data?.book);
     }
   };
   useEffect(() => {
@@ -32,17 +33,8 @@ const AllBookPage = () => {
             <BookCard key={book._id} data={book}></BookCard>
           ))}
       </div>
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel="next >"
-        // onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        pageCount={20}
-        previousLabel="< previous"
-        renderOnZeroPageCount={null}
-      />
     </div>
   );
 };
 
-export default AllBookPage;
+export default BookByCategoryPage;

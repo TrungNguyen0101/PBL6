@@ -1,32 +1,33 @@
-import routes from '@/constant/routes';
 import React from 'react';
 import Link from 'next/link';
-import { AiFillStar } from 'react-icons/ai';
 import '../../styles/BookItem.scss';
 
-const BookItem = () => {
+const BookItem = ({ data }) => {
   return (
     <>
       <div className="rounded-lg book-item">
-        <Link href={routes.HOME}>
-          <img
-            src="https://images.unsplash.com/photo-1682685797661-9e0c87f59c60?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-            alt=""
-            className="object-cover w-full h-full rounded-lg"
-          />
+        <Link href={`/product/${data._id}`}>
+          {data?.descImage?.length > 0 &&
+            data?.descImage
+              ?.slice(0, 1)
+              ?.map((img, index) => (
+                <img
+                  key={index}
+                  src={img?.url}
+                  alt=""
+                  className="object-cover w-full h-[140px] rounded-lg"
+                />
+              ))}
         </Link>
       </div>
-      <div className="p-1 font-semibold">
+      <div className="py-2 font-semibold">
+        <p className="mb-1 text-sm leading-5">{data?.booktitle}</p>
         <div className="flex items-center justify-between">
-          <Link href={routes.HOME}>
-            <span>Star wars Jedi</span>
-          </Link>
-          <span className="flex items-center gap-x-[2px] text-sm">
-            5
-            <AiFillStar color="#eabe12" />
+          <span className="text-[#bc1313dd] text-xs">{data?.author}</span>
+          <span className="text-[#bc1313dd] text-xs font-semibold">
+            {data?.price}
           </span>
         </div>
-        <span className="text-[#bc1313dd] text-xs">20.000</span>
       </div>
     </>
   );
