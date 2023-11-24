@@ -69,7 +69,7 @@ const handleRegister = async (data) => {
             username: data.username,
             email: data.email,
             password: hashPassword,
-            roleID: "2",
+            roleID: "3",
             phoneNumber: "",
             verificationCode: ""
         })
@@ -296,8 +296,52 @@ const verifyCode = async (data, code) => {
     }
     return userData;
 }
-const addUserByAdmin = async () => {
-
+const addUserByAdmin = async (admin, data) => {
+    const userData = {};
+    try {
+        if (admin.roleID === "1") {
+            const user = await db.User.findOne({ email: data.email }).exec();
+            if (user) {
+                userData.status = 500;
+                userData.message = "User already exists"
+                return userData;
+            }
+            let hashPassword = await bcrypt.hashSync(data.password, salt);
+            if (data.roleID === "1") {
+                await db.User.create({
+                    username: data.username,
+                    email: data.email,
+                    password: hashPassword,
+                    roleID: data.roleID,
+                    phoneNumber: data.phoneNumber,
+                    verificationCode: "",
+                    isVerified: true,
+                })
+                userData.status = 200;
+                userData.message = "Create user succeed";
+                return userData;
+            }
+            await db.User.create({
+                username: data.username,
+                email: data.email,
+                password: hashPassword,
+                roleID: data.roleID,
+                phoneNumber: data.phoneNumber,
+                verificationCode: "",
+                isVerified: false,
+            })
+            userData.status = 200;
+            userData.message = "Create user succeed";
+            return userData;
+        }
+        userData.status = 500;
+        userData.message = "You are not an admin";
+        return userData;
+    } catch (e) {
+        userData.status = 500;
+        userData.message = "Require inter parameter!";
+    }
+    return userData;
 }
 const changePassword = async (user, newpassword, oldpassword) => {
     let data = {};
@@ -323,6 +367,46 @@ const changePassword = async (user, newpassword, oldpassword) => {
     }
     return data;
 }
+const getAllAccount = async (data) => {
+    let userData = {};
+    try {
+        if (data.roleID === "1") {
+            const account = await db.User.find();
+            userData.account = account;
+            userData.status = 200;
+            userData.message = "Get all account";
+            return userData;
+        }
+        userData.status = 500;
+        userData.message = "You are not an admin";
+        return userData;
+    } catch (e) {
+        userData.status = 500;
+        userData.message = e;
+    }
+    return userData;
+}
+const getCountByRole = async (data) => {
+    let userData = {};
+    try {
+        if (data.roleID === "1") {
+            const countsByRole = await db.User.aggregate([
+                { $group: { _id: "$roleID", totalaccount: { $sum: 1 } } },
+            ]);
+            userData.status = 200;
+            userData.message = "Get count by role";
+            userData.countsByRole = countsByRole;
+            return userData;
+        }
+        userData.status = 500;
+        userData.message = "You are not an admin";
+        return userData;
+    } catch (e) {
+        userData.status = 500;
+        userData.message = e;
+    }
+    return userData;
+}
 module.exports = {
     handleLogin,
     handleRegister,
@@ -332,5 +416,7 @@ module.exports = {
     sendCodeVerifyUser,
     verifyCode,
     addUserByAdmin,
-    changePassword
+    changePassword,
+    getAllAccount,
+    getCountByRole,
 }

@@ -3,7 +3,8 @@ const bookController = require("./bookController");
 
 async function getAllBooks(req, res) {
   try {
-    const book = await bookService.getAllBooks();
+    let body = req.query;
+    const book = await bookService.getAllBooks(body);
     res.status(200).json({
       message: "get all succeed",
       data: book,
@@ -27,10 +28,22 @@ async function getBookById(req, res) {
     });
   }
 }
+async function deleteBook(req, res) {
+  try {
+    const book = await bookService.deleteBook(req.params);
+    res.status(200).json({
+      message: "delete succeed",
+      data: book,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "failed",
+    });
+  }
+}
 async function getBookByCategory(req, res) {
   try {
-    console.log(req.body);
-    const book = await bookService.getBookByCategory(req.body);
+    const book = await bookService.getBookByCategory(req.query);
     res.status(200).json({
       message: "get book by id succeed",
       data: book,
@@ -71,6 +84,7 @@ async function insertBook(req, res) {
 module.exports = {
   getAllBooks: getAllBooks,
   getBookById: getBookById,
+  deleteBook: deleteBook,
   getBookByCategory: getBookByCategory,
   updateBook: updateBook,
   insertBook: insertBook,

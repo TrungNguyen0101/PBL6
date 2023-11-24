@@ -152,14 +152,22 @@ const handleVerifyUser = async (req, res) => {
     }
 }
 const handleAddUserByAdmin = async (req, res) => {
-    let roleID = req.body.roleID;
-    if (!roleID) {
-        return res.status(500).json({
-            status: 500,
-            message: "Missing inputs parameter",
+    let admin = req.User.User;
+    let user = req.body;
+    console.log(admin, user)
+    let data = await userService.addUserByAdmin(admin, user);
+    if (data.status === 200) {
+        return res.status(200).json({
+            status: data.status,
+            message: data.message,
         })
     }
-    let data = await userService.addUserByAdmin();
+    else {
+        return res.status(500).json({
+            status: data.status,
+            message: data.message
+        })
+    }
 }
 const handleChangePassword = async (req, res) => {
     let user = req.User.User;
@@ -185,8 +193,35 @@ const handleChangePassword = async (req, res) => {
         })
     }
 }
-const handle = async (req, res) => {
-
+const handleGetAllAccount = async (req, res) => {
+    let admin = req.User.User;
+    let data = await userService.getAllAccount(admin);
+    if (data.status === 200) {
+        return res.status(200).json({
+            account: data.account,
+            status: data.status,
+            message: data.message
+        })
+    }
+    return res.status(500).json({
+        status: data.status,
+        message: data.message
+    })
+}
+const handleCountByRole = async (req, res) => {
+    let admin = req.User.User;
+    let data = await userService.getCountByRole(admin);
+    if (data.status === 200) {
+        return res.status(200).json({
+            data: data.countsByRole,
+            status: data.status,
+            message: data.message
+        })
+    }
+    return res.status(500).json({
+        status: data.status,
+        message: data.message
+    })
 }
 module.exports = {
     handleLogin,
@@ -198,5 +233,6 @@ module.exports = {
     handleSendCodeVerify,
     handleAddUserByAdmin,
     handleChangePassword,
-    handle
+    handleGetAllAccount,
+    handleCountByRole
 }

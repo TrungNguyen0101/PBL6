@@ -25,6 +25,7 @@ import UploadImageDesc from '@/components/UploadImage/UploadImageDesc';
 import SelectInputLanguage from '@/components/SelectInputLanguage';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { postBook, putBook } from '@/services/bookService';
 const schema = yup
   .object({
     publisher: yup.string().required('Please enter ublisher'),
@@ -71,33 +72,33 @@ export default function SecondFormEdit({
           const newValues = { ...dataFirstForm, ...values };
           newValues.descImage = dataDescImage;
 
-          console.log(
-            'file: SecondForm.jsx:61 ~ hanlderSecondForm ~ newValues:',
-            newValues
-          );
-          const result = await axios.post(
-            'http://localhost:3030/api/book/insert',
-            newValues
-          );
-          if (result.data.data.errCode === 0) {
-            message.success(result.data.data.errMessage);
+          // const result = await axios.post(
+          //   'http://localhost:3030/api/book/insert',
+          //   newValues
+          // );
+          const result = await postBook(newValues);
+
+          if (result.data.errCode === 0) {
+            message.success(result.data.errMessage);
             dispatch(saveDescImage([]));
             dispatch(saveFirstForm({}));
             dispatch(saveMainImage([]));
             dispatch(prevForm());
             dispatch(offCheckAdd());
           } else {
-            message.success(result.data.data.errMessage);
+            message.success(result.data.errMessage);
           }
         } else {
           const newValues = { ...dataFirstFormEdit, ...values };
           newValues.descImage = dataDescImage;
           newValues.id = idBook;
-          const result = await axios.put(
-            'http://localhost:3030/api/book',
-            newValues
-          );
-          if (result.data.data.errCode === 0) {
+          // const result = await axios.put(
+          //   'http://localhost:3030/api/book',
+          //   newValues
+          // );
+          const result = await putBook(newValues);
+
+          if (result.data.errCode === 0) {
             message.success('Updated book successfully');
             handleOffEdit();
             hanldeGetAllBooks();
@@ -120,11 +121,17 @@ export default function SecondFormEdit({
   };
 
   useEffect(() => {
-    if (dataDescImage.length < 4) {
+    if (dataDescImage?.length < 4) {
       dispatch(
         saveErrorDescImage('*Please upload at least 4 description photos')
       );
+    } else {
+      dispatch(saveErrorDescImage(''));
     }
+  }, [dataDescImage]);
+
+  useEffect(() => {
+    dispatch(saveDescImage(book.descImage));
   }, []);
 
   function isObjectEmpty(obj) {
@@ -138,13 +145,12 @@ export default function SecondFormEdit({
     if (!isObjectEmpty(book)) {
       setValue('publisher', book.publisher);
       setValue('infomation', book.infomation);
+      setValue('discount', book.discount);
       setValue('language', book.language);
       dispatch(saveDescImage(book.descImage));
     }
   }, [book]);
-  useEffect(() => {
-    setValue('discount', 0);
-  }, []);
+
   return (
     <div className="pt-[5px]">
       <form className="px-[20px]" onSubmit={handleSubmit(hanlderSecondForm)}>

@@ -100,7 +100,7 @@ const UploadImageDesc = () => {
     }
   }, [fileList]);
   useEffect(() => {
-    if (datadescImage.length > 0) {
+    if (datadescImage?.length > 0) {
       setFileList(datadescImage);
     }
   }, [datadescImage]);

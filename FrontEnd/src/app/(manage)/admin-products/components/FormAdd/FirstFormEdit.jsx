@@ -66,26 +66,26 @@ export default function FirstFormEdit({ handleOffEdit, isEdit, book }) {
   const [bookEdit, setBookEdit] = useState({});
 
   const hanlderFirstForm = (values) => {
-    // if (dataMainImage?.length > 0) {
-    const newValues = { ...values };
-    const stringFromDate = (date) => format(date, 'yyyy-MM-dd');
-    const dateToSerialize = stringFromDate(new Date(newValues.datePicker));
-    const price = getValues('price');
-    newValues.datePicker = dateToSerialize;
-    newValues.mainImage = dataMainImage;
-    newValues.price = price;
-    if (newValues.category.value) {
-      newValues.category = newValues.category.value;
-    } else {
-    }
-    dispatch(saveFirstFormEdit(newValues));
-    dispatch(nextForm());
+    if (dataMainImage?.length > 0) {
+      const newValues = { ...values };
+      const stringFromDate = (date) => format(date, 'yyyy-MM-dd');
+      const dateToSerialize = stringFromDate(new Date(newValues.datePicker));
+      const price = getValues('price');
+      newValues.datePicker = dateToSerialize;
+      newValues.mainImage = dataMainImage;
+      newValues.price = price;
+      if (newValues.category.value) {
+        newValues.category = newValues.category.value;
+      } else {
+      }
+      dispatch(saveFirstFormEdit(newValues));
+      dispatch(nextForm());
 
-    message.config({
-      duration: 2, // Độ dài mili giây của mỗi message (2 giây)
-      maxCount: 1, // Số lượng message tối đa hiển thị cùng một lúc
-    });
-    // }
+      message.config({
+        duration: 2, // Độ dài mili giây của mỗi message (2 giây)
+        maxCount: 1, // Số lượng message tối đa hiển thị cùng một lúc
+      });
+    }
   };
 
   const hanleCancel = () => {
@@ -138,7 +138,7 @@ export default function FirstFormEdit({ handleOffEdit, isEdit, book }) {
     } else {
       dispatch(saveErrorMainImage(''));
     }
-  }, [dataMainImage]);
+  }, [dataMainImage, bookEdit]);
 
   useEffect(() => {
     dispatch(saveMainImage(book.mainImage));
