@@ -49,11 +49,16 @@ export default function SignInPage() {
   const handleSignIn = async (values) => {
     const res = await postSignIn(values.email, values.password);
     console.log(res);
-    if (res.status === 200) {
+    if (res.status === 200 && res?.user?.roleID === '1') {
+      toast.success(res.message);
+      router.push(routes.DASHBOARD);
+      sessionStorage.setItem('token', res.access_token);
+      sessionStorage.setItem('auth', JSON.stringify(res));
+    } else if (res.status === 200 && res?.user?.roleID === '3') {
       toast.success(res.message);
       router.push(routes.HOME);
       sessionStorage.setItem('token', res.access_token);
-      sessionStorage.setItem('auth', JSON.stringify(res?.user));
+      sessionStorage.setItem('auth', JSON.stringify(res));
     } else if (res?.response?.status === 500) {
       toast.error(res?.response?.message);
     } else if (res?.response?.status === 500) {
