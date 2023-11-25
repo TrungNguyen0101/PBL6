@@ -48,7 +48,6 @@ export default function SignInPage() {
   });
   const handleSignIn = async (values) => {
     const res = await postSignIn(values.email, values.password);
-    console.log(res);
     if (res.status === 200 && res?.user?.roleID === '1') {
       toast.success(res.message);
       router.push(routes.DASHBOARD);
@@ -95,7 +94,7 @@ export default function SignInPage() {
         </>
         <Link
           href={routes.FORGOTTEN}
-          className="flex justify-end text-xs font-semibold transition-all -translate-y-3 hover:opacity-70"
+          className="flex justify-end text-xs font-semibold transition-all -translate-y-[2px] hover:opacity-70"
         >
           Bạn đã quên mật khẩu?
         </Link>

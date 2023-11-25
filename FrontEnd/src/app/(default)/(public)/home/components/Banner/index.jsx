@@ -4,14 +4,14 @@ import { useState } from 'react';
 import BannerItem from '../BannerItem';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { getAllBook } from '@/services/bookService';
+import { getAllBookWithPagination } from '@/services/bookService';
 import { useEffect } from 'react';
 
 const Banner = () => {
   const [listBook, setListBook] = useState([]);
   const fectchBannerBook = async () => {
-    const res = await getAllBook();
-    if (res && res?.data?.errCode === 0) {
+    const res = await getAllBookWithPagination(1, 4);
+    if (res && res?.data) {
       setListBook(res?.data?.books);
     }
   };

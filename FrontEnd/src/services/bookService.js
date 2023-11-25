@@ -7,7 +7,7 @@ const getAllBook = () => {
   return instance.get('book?limit=1000');
 };
 
-const getAllBookWithPagination = (page, limit) => {
+const getAllBookWithPagination = (page = 1, limit) => {
   return instance.get(`book?page=${page}&limit=${limit}`);
 };
 
@@ -27,5 +27,12 @@ const putBook = (data) => {
 const deleteBook = (id) => {
   return instance.delete(`book/${id}`);
 };
-export { getAllBook, getBookById, postBook, putBook, deleteBook, getBookByCategory, getAllBookWithPagination };
-
+export {
+  getAllBook,
+  getBookById,
+  postBook,
+  putBook,
+  deleteBook,
+  getBookByCategory,
+  getAllBookWithPagination,
+};
