@@ -3,20 +3,20 @@ import Link from 'next/link';
 import Heading from '@/components/Heading';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import CategoryHumorous from './components/CategoryColumn/CategoryHumorous';
-import CategoryColumnLove from './components/CategoryColumn/CategoryColumnLove';
-import CategoryColumnLiterature from './components/CategoryColumn/CategoryColumnLiterature';
 import CategoryColumnHorror from './components/CategoryColumn/CategoryColumnHorror';
 import Category from './components/Category';
 import Banner from './components/Banner';
 import { BsFillBookmarkFill, BsFillBookFill } from 'react-icons/bs';
 import BookList from '@/components/BookList';
+import CategoryColumnAction from './components/CategoryColumn/CategoryColumnAction';
+import CategoryColumnRomance from './components/CategoryColumn/CategoryColumnRomance';
+import CategoryComedy from './components/CategoryColumn/CategoryComedy';
 
 export default function Home() {
   return (
     <main>
       <Header />
-      <div>
+      <div className="banner">
         <Banner />
       </div>
       <div className="mt-10 wrapper-content">
@@ -36,16 +36,16 @@ export default function Home() {
         </div>
         <div className="flex mt-10 gap-x-5">
           <div className="w-1/4">
-            <CategoryColumnLove />
+            <CategoryColumnAction />
           </div>
           <div className="w-1/4">
             <CategoryColumnHorror />
           </div>
           <div className="w-1/4">
-            <CategoryHumorous />
+            <CategoryComedy />
           </div>
           <div className="w-1/4">
-            <CategoryColumnLiterature />
+            <CategoryColumnRomance />
           </div>
         </div>
         <span className="flex justify-end mt-3">

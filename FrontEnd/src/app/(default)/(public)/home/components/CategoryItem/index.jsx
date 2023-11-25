@@ -2,7 +2,6 @@ import Link from 'next/link';
 import '../../../../../../styles/CategoryItem.scss';
 
 const CategoryItem = ({ category }) => {
-  console.log('categoryItem', category);
   return (
     <>
       <div className="rounded-lg category-item">
