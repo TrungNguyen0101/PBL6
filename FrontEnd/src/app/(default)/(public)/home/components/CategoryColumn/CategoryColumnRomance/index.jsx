@@ -1,28 +1,27 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CategoryColumnContent from '../CategoryColumnContent';
 import { getBookByCategory } from '@/services/bookService';
-import { useEffect } from 'react';
 
-const CategoryColumnHorror = () => {
-  const [listBookHorror, setListBookHorror] = useState([]);
-  const fetchBookByHorror = async () => {
-    const res = await getBookByCategory('Horror');
+const CategoryColumnRomance = () => {
+  const [listBookRomance, setListBookRomance] = useState([]);
+  const fetchBookByRomance = async () => {
+    const res = await getBookByCategory('Romance');
     if (res && res?.data?.errCode === 0) {
-      setListBookHorror(res?.data?.book);
+      setListBookRomance(res?.data?.book);
     }
   };
   useEffect(() => {
-    fetchBookByHorror();
+    fetchBookByRomance();
   }, []);
   return (
     <>
-      <h1 className="mb-3 font-semibold">Kinh Dị</h1>
+      <h1 className="mb-3 font-semibold">Lãng Mạn</h1>
       <div className="flex w-full gap-x-3">
         <div className="flex flex-col w-full bg-white rounded-lg">
-          {listBookHorror?.length > 0 &&
-            listBookHorror
+          {listBookRomance?.length > 0 &&
+            listBookRomance
               ?.slice(0, 5)
               ?.map((book, index) => (
                 <CategoryColumnContent key={index} data={book} />
@@ -33,4 +32,4 @@ const CategoryColumnHorror = () => {
   );
 };
 
-export default CategoryColumnHorror;
+export default CategoryColumnRomance;

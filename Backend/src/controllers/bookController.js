@@ -3,7 +3,8 @@ const bookController = require("./bookController");
 
 async function getAllBooks(req, res) {
   try {
-    const book = await bookService.getAllBooks();
+    let body = req.query;
+    const book = await bookService.getAllBooks(body);
     res.status(200).json({
       message: "get all succeed",
       data: book,

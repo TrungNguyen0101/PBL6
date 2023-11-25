@@ -20,17 +20,14 @@ const BookCard = ({ data }) => {
               ))}
         </Link>
       </div>
-      <div className="p-1 font-semibold">
+      <div className="py-2 font-semibold">
+        <p className="mb-2 text-sm leading-5">{data?.booktitle}</p>
         <div className="flex items-center justify-between">
-          <Link href={`/product/${data._id}`}>
-            <span className="cursor-pointer">{data?.booktitle}</span>
-          </Link>
-          <span className="flex items-center gap-x-[2px] text-sm">
-            {data?.quantity}
-            <AiFillStar color="#eabe12" />
+          <span className="text-[#bc1313dd] text-sm">{data?.author}</span>
+          <span className="text-[#bc1313dd] text-xs font-semibold">
+            {data?.price}
           </span>
         </div>
-        <span className="text-[#bc1313dd] text-xs">{data?.price}</span>
       </div>
     </div>
   );

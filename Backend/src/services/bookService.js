@@ -59,18 +59,34 @@ const updateBook = async (data) => {
   }
   return bookData;
 };
-const getAllBooks = async () => {
-  let bookData = {};
+const getAllBooks = async (body) => {
   try {
-    const book = await db.Book.find();
-    bookData.books = book;
-    bookData.errCode = 0;
-    bookData.errMessage = "Get all book succeed";
-  } catch (e) {
-    bookData.errCode = 2;
-    bookData.errMessage = "Get all book failed";
+    let bookData = {};
+    const { page, limit } = body;
+    const parsedPage = parseInt(page) || 1;
+    const parsedLimit = parseInt(limit) || 10;
+    const skip = (parsedPage - 1) * parsedLimit;
+    const totalCount = await Book.countDocuments({
+
+    });
+    const totalPages = Math.ceil(totalCount / parsedLimit);
+
+    const books = await Book.find({})
+      .skip(skip)
+      .limit(parsedLimit)
+
+    return bookData = {
+      page: parsedPage,
+      limit: parsedLimit,
+      totalPages,
+      totalCount,
+      books,
+    }
   }
-  return bookData;
+  catch (error) {
+    console.error('Error retrieving reviews', error);
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 const getBookById = async (id) => {
   let bookData = {};
