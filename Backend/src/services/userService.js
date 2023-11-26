@@ -33,7 +33,8 @@ const handleLogin = async (data) => {
                         phoneNumber: user.phoneNumber,
                         email: user.email,
                         roleID: user.roleID,
-                        isVerified: user.isVerified
+                        isVerified: user.isVerified,
+                        avatar: user.avatar,
                     }
                 }
             }
@@ -71,7 +72,8 @@ const handleRegister = async (data) => {
             password: hashPassword,
             roleID: "3",
             phoneNumber: "",
-            verificationCode: ""
+            verificationCode: "",
+            avatar: ""
         })
         userData.status = 200;
         userData.message = "Create users succeed";
@@ -96,17 +98,15 @@ const handleUpdateUser = async (user, data) => {
                 users.phoneNumber = data.phoneNumber;
                 users.avatar = data.avatar;
                 await users.save();
+                userData.user = users
                 userData.status = 200;
                 userData.message = "Update user succeeds"
-                return {
-                    ...userData,
-                    user: users
-                }
             }
             else {
                 userData.errCode = 404;
                 userData.message = "User's not found!"
             }
+            return userData;
         }
         else {
             userData.errCode = 500;
