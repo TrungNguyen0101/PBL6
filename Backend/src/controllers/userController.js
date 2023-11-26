@@ -63,7 +63,17 @@ const handleUpdateUser = async (req, res) => {
         })
     }
     let message = await userService.handleUpdateUser(user, data);
-    return res.status(200).json(message);
+    if (message.status === 200) {
+        return res.status(200).json({
+            user: data.user,
+            status: data.status,
+            message: data.message
+        })
+    }
+    return res.status(500).json({
+        status: data.status,
+        message: data.message
+    })
 }
 const handleGetUserById = async (req, res) => {
     let idUser = req.params.id;
