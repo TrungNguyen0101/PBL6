@@ -129,7 +129,6 @@ const TableData = ({ handleOnEdit, listBook, hanldeGetAllBooks }) => {
     try {
       setIsLoading(true);
       const hanldeGetAllBooks = async () => {
-        // const { data } = await axios.get('http://localhost:3030/api/book');
         const { data } = await getAllBook();
         setData(data?.books);
         setIsLoading(false);

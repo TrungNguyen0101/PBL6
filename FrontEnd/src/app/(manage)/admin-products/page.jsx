@@ -31,9 +31,6 @@ export default function ProductPage() {
   const [listBook, setListBook] = useState([]);
 
   const hanleGetBookById = async (idBook) => {
-    // const { data } = await axios.get(
-    //   `http://localhost:3030/api/book/${idBook}`
-    // );
     const { data } = await getBookById(idBook);
     if (data) {
       setBook(data.book);
