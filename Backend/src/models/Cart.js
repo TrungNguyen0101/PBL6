@@ -10,5 +10,5 @@ const CartSchema = new Schema({
     Payment_Method: { type: String },
     Order_Address: { type: String },
     TotalPrice: { type: String },
-})
+},{ timestamps: true, })
 module.exports = mongoose.model('Cart', CartSchema)
