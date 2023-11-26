@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 initWebRoutes(app);
-// route(app);
+
 const port = process.env.PORT || 3030;
 app.listen(port, async () => {
     await db.connect();

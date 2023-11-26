@@ -1,12 +1,15 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import routes from '@/constant/routes';
 import ChartBar from '../components/chart/CharBar';
+import classNames from 'classnames';
 const Page = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
-    <>
+    <div className={`${isLoading ? 'cursor-wait' : ''}`}>
       <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-y-[20px]  gap-x-[20px]">
         <div className="text-white">
           <div className="p-[20px] bg-[#17a2b8] rounded-t-lg ">
@@ -16,7 +19,11 @@ const Page = () => {
           <Link
             as={routes.ACCOUNT}
             href={routes.ACCOUNT}
-            className="bg-[#1591a5] text-center rounded-b-lg py-[3px] flex gap-x-[10px] items-center justify-center cursor-pointer duration-300 hover:text-black"
+            onClick={() => setIsLoading(true)}
+            className={classNames(
+              'bg-[#1591a5] text-center rounded-b-lg py-[3px] flex gap-x-[10px] items-center justify-center cursor-pointer duration-300 hover:text-black',
+              { 'cursor-wait': isLoading }
+            )}
           >
             <span className="text-[20px]">See more</span>
             <div>
@@ -42,7 +49,11 @@ const Page = () => {
           <Link
             as={routes.PRODUCT}
             href={routes.PRODUCT}
-            className="bg-[#c6303e] text-center rounded-b-lg py-[3px] flex gap-x-[10px] items-center justify-center cursor-pointer duration-300 hover:text-black"
+            onClick={() => setIsLoading(true)}
+            className={classNames(
+              'bg-[#c6303e] text-center rounded-b-lg py-[3px] flex gap-x-[10px] items-center justify-center cursor-pointer duration-300 hover:text-black',
+              { 'cursor-wait': isLoading }
+            )}
           >
             <span className="text-[20px]">See more</span>
             <div>
@@ -68,7 +79,11 @@ const Page = () => {
           <Link
             as={routes.ORDER}
             href={routes.ORDER}
-            className="bg-[#e5ad06] text-center rounded-b-lg py-[3px] flex gap-x-[10px] items-center justify-center cursor-pointer duration-300 hover:text-black"
+            onClick={() => setIsLoading(true)}
+            className={classNames(
+              'bg-[#e5ad06] text-center rounded-b-lg py-[3px] flex gap-x-[10px] items-center justify-center cursor-pointer duration-300 hover:text-black',
+              { 'cursor-wait': isLoading }
+            )}
           >
             <span className="text-[20px]">See more</span>
             <div>
@@ -117,7 +132,7 @@ const Page = () => {
       <div className="flex items-center justify-center w-full mt-[50px]">
         <ChartBar></ChartBar>
       </div>
-    </>
+    </div>
   );
 };
 

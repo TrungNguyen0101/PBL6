@@ -133,7 +133,7 @@ body {
 /* <!-- Start product-content area --> */
 .product-content {
   width: 100%;
-  margin: 20px 20px 20px 30px;
+  margin: 0px 20px 20px 30px;
   width: auto;
 }
 
@@ -244,6 +244,7 @@ body {
   font-size: 17px;
   font-weight: 600;
   margin-bottom: 15px;
+  text-align: justify;
 }
 
 .content-detail .product-information .orther-information {
@@ -281,7 +282,7 @@ body {
 
 .content-detail .product-purchase-table {
   background-color: var(--product-purchase-table);
-  padding: 40px;
+  padding: 40px 20px;
   border-radius: 10px;
   /* font-family: 'Roboto', sans-serif; */
 }
@@ -349,9 +350,8 @@ body {
 }
 
 .content-detail .product-purchase-table .product-payment .product-number {
-  overflow: hidden;
-  display: table;
-  width: 95%;
+  display: flex;
+  width: 100%;
   height: 40px;
   vertical-align: middle;
   text-align: center;
@@ -359,7 +359,6 @@ body {
 }
 
 .content-detail .product-purchase-table .product-payment .product-number .col {
-  display: table-cell;
   padding: 6px;
   vertical-align: middle;
   text-align: center;
@@ -373,7 +372,7 @@ body {
   border-top: var(--line-color) solid 2px;
   border-bottom: var(--line-color) solid 2px;
   color: var(--fontcolor);
-  font-size: 13px;
+  display: inline-block;
 }
 
 .content-detail
@@ -387,6 +386,8 @@ body {
   color: var(--fontcolor);
   font-weight: 100;
   font-size: 11px;
+  height: 100% !important;
+  display: inline-block;
 }
 
 .content-detail
@@ -400,6 +401,8 @@ body {
   color: var(--fontcolor);
   font-weight: 100;
   font-size: 11px;
+  height: 100% !important;
+  display: inline-block;
 }
 
 .content-detail
@@ -554,11 +557,9 @@ body {
 /* <!-- Start Description area --> */
 .description-wrapper {
   margin: 0px 20px;
+  padding: 30px;
   background-color: var(--bcg-description-color);
-}
-
-.description-wrapper h1 {
-  margin-top: 70px;
+  border-radius: 8px;
 }
 
 .directory-name h1 {
@@ -568,13 +569,9 @@ body {
   color: var(--black);
 }
 
-.description-wrapper h1 {
-  margin-top: 70px;
-}
-
 .description-wrapper .description-slider {
-  margin: 40px 0px;
-  height: 260px;
+  margin: 60px 0px;
+  // height: 260px;
 }
 
 .description-wrapper .description-detail h2 {
@@ -628,6 +625,7 @@ body {
   margin-bottom: 15px;
   border: var(--black) solid 1px;
   border-radius: 30px;
+  height: 500px;
 }
 
 /* <!-- End Description area --> */
@@ -813,12 +811,11 @@ body {
 /* <!-- Start Customer Reviews --> */
 .customerReviews-wrapper {
   display: grid;
-  grid-template-rows: 4% 62% 34%;
-  margin: 80px 20px;
+  grid-template-rows: 4% 62%;
+  margin: 20px 20px;
   background-color: var(--bcg-detail-color);
   border-radius: 5px;
   padding: 20px;
-  height: 1200px;
 }
 
 .customerReviews-wrapper .total {
@@ -1080,43 +1077,29 @@ input[type='checkbox'] {
   width: 100%;
   display: grid;
   grid-template-columns: 49% 49%;
-  overflow: hidden;
   margin-top: 25px;
   gap: 0 18px;
 }
 
 .customerReviews-wrapper .comments-area .review-box .review-card {
-  overflow: hidden;
   background-color: rgb(255, 255, 255);
   border: #979494c0 solid 1px;
   border-radius: 10px;
   padding: 20px;
   position: relative;
 }
-
-.customerReviews-wrapper .comments-area .review-box .review-card .card-top {
+.card-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.customerReviews-wrapper
-  .comments-area
-  .review-box
-  .review-card
-  .card-top
-  .profile {
+.profile {
   display: flex;
   align-items: center;
 }
 
-.customerReviews-wrapper
-  .comments-area
-  .review-box
-  .review-card
-  .card-top
-  .profile
-  .profile-image {
+.profile-image {
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -1127,51 +1110,24 @@ input[type='checkbox'] {
   transition: 0.3s;
 }
 
-.customerReviews-wrapper
-  .comments-area
-  .review-box
-  .review-card
-  .card-top
-  .profile
-  .profile-image
-  img {
+.profile-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
 }
 
-.customerReviews-wrapper
-  .comments-area
-  .review-box
-  .review-card
-  .card-top
-  .profile
-  .profile-name {
+.profile-name {
   margin-left: 20px;
   line-height: 22px;
 }
 
-.customerReviews-wrapper
-  .comments-area
-  .review-box
-  .review-card
-  .card-top
-  .profile
-  .profile-name
-  .likes
-  i {
+.likes i {
   margin-top: 10px;
   color: var(--star-color);
 }
 
-.customerReviews-wrapper
-  .comments-area
-  .review-box
-  .review-card
-  .card-top
-  .profile
-  .comment-date {
+.comment-date {
   position: absolute;
   top: 0;
   right: 0;
@@ -1181,13 +1137,12 @@ input[type='checkbox'] {
   color: var(--fontcolor);
 }
 
-.customerReviews-wrapper .comments-area .review-box .review-card .card-main p {
+.card-main p {
   margin-top: 10px;
   color: var(--fontcolor);
   font-size: 16px;
 }
-
-.customerReviews-wrapper .comments-area .review-box .review-card .card-footer {
+.card-footer {
   margin-top: 10px;
   display: flex;
   align-items: center;
@@ -1198,21 +1153,11 @@ input[type='checkbox'] {
   cursor: pointer;
 }
 
-.customerReviews-wrapper
-  .comments-area
-  .review-box
-  .review-card
-  .card-footer
-  .like:hover {
+.card-footer .like:hover {
   color: var(--like-hover);
 }
 
-.customerReviews-wrapper
-  .comments-area
-  .review-box
-  .review-card
-  .card-footer
-  .unlike:hover {
+.unlike:hover {
   color: var(--bcg-add);
 }
 
