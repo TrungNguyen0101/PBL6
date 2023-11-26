@@ -94,6 +94,7 @@ const handleUpdateUser = async (user, data) => {
             if (users) {
                 users.username = data.username;
                 users.phoneNumber = data.phoneNumber;
+                users.avatar = data.avatar;
                 await users.save();
                 userData.status = 200;
                 userData.message = "Update user succeeds"
