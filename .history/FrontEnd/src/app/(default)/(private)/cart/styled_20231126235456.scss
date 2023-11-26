@@ -121,7 +121,7 @@ body {
 <!--  CART-TABLE -->
 <!-- *********************88--> */
 .cart-table {
-  background-color: var(--bcg-description-color);
+  background-color: beige;
   margin-left: -25px;
   margin-right: -25px;
   display: flex;
@@ -362,7 +362,4 @@ li {
 
 .checkout-button a {
   color: var(--bcg-detail-color);
-}
-input[type='radio'] {
-  margin-left: 8px;
 }

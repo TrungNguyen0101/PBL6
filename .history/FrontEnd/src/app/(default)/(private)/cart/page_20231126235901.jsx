@@ -2,7 +2,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import './styled.scss';
 export default function Cart() {
-  const [count, setCount] = useState(1);
   const handlerMinus = useCallback(() => {
     if (count === 1) {
       setCount(1);
@@ -13,7 +12,19 @@ export default function Cart() {
   const handlerPlus = useCallback(() => {
     setCount(count + 1);
   }, [count]);
-
+  useEffect(() => {
+    try {
+      const handleGetBookByID = async () => {
+        const result = await axios.get(`http://localhost:3030/api/book/${id}`);
+        if (result.data.data.book) {
+          setBook(result.data.data.book);
+        }
+      };
+      handleGetBookByID();
+    } catch (error) {
+      console.log('file: page.jsx:37 ~ useEffect ~ error:', error);
+    }
+  }, []);
   return (
     <section className="cart-wrapper">
       {/* <!-- ********** -->
@@ -107,19 +118,15 @@ export default function Cart() {
                   </td>
                   <td className="quantity">
                     <div className="col-wrap product-number">
-                      <button
-                        onClick={handlerMinus}
-                        className="col col-minus w-full"
-                      >
+                      <div className="col col-minus">
                         <i className="fa fa-light fa-minus fa-xs"></i>
-                      </button>
-                      <span className="col col-number w-full">{count}</span>
-                      <button
-                        onClick={handlerPlus}
-                        className="col col-plus w-full"
-                      >
+                      </div>
+                      <div className="col col-number">
+                        <span>20</span>
+                      </div>
+                      <div className="col col-plus">
                         <i className="fa fa-light fa-plus fa-xs"></i>
-                      </button>
+                      </div>
                     </div>
                   </td>
                   <td className="price-amount amount-sub">
@@ -153,65 +160,15 @@ export default function Cart() {
                   </td>
                   <td className="quantity">
                     <div className="col-wrap product-number">
-                      <button
-                        onClick={handlerMinus}
-                        className="col col-minus w-full"
-                      >
+                      <div className="col col-minus">
                         <i className="fa fa-light fa-minus fa-xs"></i>
-                      </button>
-                      <span className="col col-number w-full">{count}</span>
-                      <button
-                        onClick={handlerPlus}
-                        className="col col-plus w-full"
-                      >
+                      </div>
+                      <div className="col col-number">
+                        <span>20</span>
+                      </div>
+                      <div className="col col-plus">
                         <i className="fa fa-light fa-plus fa-xs"></i>
-                      </button>
-                    </div>
-                  </td>
-                  <td className="price-amount amount-sub">
-                    <span>$39.9</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="product-remove">
-                    <button>
-                      <i className="fa fa-times" aria-hidden="true"></i>
-                    </button>
-                  </td>
-                  <td className="product-thumbnail">
-                    <a href="#">
-                      <img
-                        src="https://img.starbiz.com/resize/750x-/2020/07/16/doraemon-movies-download-3-9a6b.jpg"
-                        alt=""
-                        className="item-img"
-                      />
-                    </a>
-                  </td>
-                  <td className="product-name">
-                    <a href="https://woodmart.xtemos.com/games/product/red-dead-redemption-2/?attribute_pa_platform=nintendo-switch&amp;attribute_pa_edition=standart">
-                      <span>
-                        Red Dead Redemption 2 - Nintendo Switch, Standart
-                      </span>
-                    </a>
-                  </td>
-                  <td className="price-amount amount">
-                    <span>$39.9</span>
-                  </td>
-                  <td className="quantity">
-                    <div className="col-wrap product-number">
-                      <button
-                        onClick={handlerMinus}
-                        className="col col-minus w-full"
-                      >
-                        <i className="fa fa-light fa-minus fa-xs"></i>
-                      </button>
-                      <span className="col col-number w-full">{count}</span>
-                      <button
-                        onClick={handlerPlus}
-                        className="col col-plus w-full"
-                      >
-                        <i className="fa fa-light fa-plus fa-xs"></i>
-                      </button>
+                      </div>
                     </div>
                   </td>
                   <td className="price-amount amount-sub">
@@ -248,6 +205,7 @@ export default function Cart() {
                             className="shipping_method"
                             id="flat"
                             value="Flat_rate"
+                            checked="checked"
                             name="shipping_method"
                           ></input>
                         </li>

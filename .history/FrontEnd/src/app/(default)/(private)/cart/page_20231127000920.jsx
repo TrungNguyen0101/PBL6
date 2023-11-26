@@ -271,6 +271,26 @@ export default function Cart() {
                             name="shipping_method"
                           ></input>
                         </li>
+                        <li>
+                          <label for="local">Giao Hàng Hỏa Tốc</label>
+                          <input
+                            type="radio"
+                            className="shipping_method"
+                            id="local"
+                            value="Local_pickup"
+                            name="shipping_method"
+                          ></input>
+                        </li>
+                        <li>
+                          <label for="local">Giao Hàng Hỏa Tốc</label>
+                          <input
+                            type="radio"
+                            className="shipping_method"
+                            id="local"
+                            value="Local_pickup"
+                            name="shipping_method"
+                          ></input>
+                        </li>
                       </ul>
 
                       <p className="shipping-destination">

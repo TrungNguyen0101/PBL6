@@ -117,6 +117,63 @@ body {
   margin-bottom: 40px !important;
 }
 
+.checkout-steps li {
+  display: inline-block;
+  margin-block: 5px;
+  color: var(--wd-title-color);
+  text-transform: uppercase;
+  font-weight: var(--wd-title-font-weight);
+  font-style: var(--wd-title-font-style);
+  font-size: 22px;
+  font-family: var(--wd-title-font);
+  line-height: 1.2;
+}
+
+.checkout-steps li:after {
+  margin: 0 10px;
+  font-weight: 400;
+  font-size: 85%;
+  opacity: 0.7;
+  content: '/';
+  font-family: 'Roboto', sans-serif;
+}
+
+.checkout-steps li a {
+  display: inline-block;
+  color: inherit;
+  opacity: 0.7;
+  transition: all 0.25s ease;
+  touch-action: manipulation;
+}
+
+.checkout-steps .step-active a,
+.checkout-steps .step-active > span {
+  opacity: 1;
+}
+
+.checkout-steps .step-active span:after {
+  width: 100%;
+}
+
+.checkout-steps li span {
+  position: relative;
+  display: block;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 150;
+  font-weight: 20px;
+}
+
+.checkout-steps li span:after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 0px;
+  height: 2px;
+  background-color: var(--bcg-add-hover);
+  transition: width 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
 /* <!-- ******************** -->
 <!--  CART-TABLE -->
 <!-- *********************88--> */
@@ -303,14 +360,13 @@ td.product-name a span:hover {
 <!-- *********************88--> */
 .cart-totals {
   margin-left: 20px;
-  height: min-content;
+  height: 480px;
   width: 463.325px;
   position: relative;
   align-items: stretch;
   padding-top: 30px !important;
   padding-right: 30px !important;
   padding-left: 30px !important;
-  padding-bottom: 50px !important;
   background-color: #f7f7f7 !important;
   border-radius: 5px !important;
 }
@@ -362,7 +418,4 @@ li {
 
 .checkout-button a {
   color: var(--bcg-detail-color);
-}
-input[type='radio'] {
-  margin-left: 8px;
 }
