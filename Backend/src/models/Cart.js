@@ -1,14 +1,15 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require("mongodb");
 
-const CartSchema = new Schema({
-    id: { type: ObjectId },
-    ID_Account: { type: String },
-    OrderDate: { type: Date },
-    Status: { type: String },
-    Payment_Method: { type: String },
-    Order_Address: { type: String },
-    TotalPrice: { type: String },
-},{ timestamps: true, })
-module.exports = mongoose.model('Cart', CartSchema)
+const CartSchema = new Schema(
+  {
+    IdAccount: { type: String },
+    Book: { type: Object },
+    status: { type: Number, default: 0 },
+    PriceDiscount: { type: String },
+    Count: { type: Number },
+  },
+  { timestamps: true }
+);
+module.exports = mongoose.model("Cart", CartSchema);

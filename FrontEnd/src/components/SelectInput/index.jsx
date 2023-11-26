@@ -3,6 +3,7 @@ import { Select } from 'antd';
 import { useController } from 'react-hook-form';
 import './styled.scss';
 import axios from 'axios';
+import { getAllCategory } from '@/services/categories';
 const SelectInput = ({ name, control, isIcon, className, ...props }) => {
   const { field } = useController({
     name,
@@ -14,8 +15,9 @@ const SelectInput = ({ name, control, isIcon, className, ...props }) => {
   useEffect(() => {
     try {
       const hanldeGetAllBooks = async () => {
-        const { data } = await axios.get('http://localhost:3030/api/category');
-        setData(data.data.categories);
+        // const { data } = await axios.get('http://localhost:3030/api/category');
+        const { data } = await getAllCategory();
+        setData(data.categories);
       };
       hanldeGetAllBooks();
     } catch (error) {}
