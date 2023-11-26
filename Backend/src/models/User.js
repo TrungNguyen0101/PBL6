@@ -16,11 +16,8 @@ const User = new Schema({
     },
     isVerified: { type: Boolean, default: false },
     verificationCode: { type: String },
-})
+}, { timestamps: true, })
 
 module.exports = mongoose.model('User', User);
 
 
-/*
-
-*/
