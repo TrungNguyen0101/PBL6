@@ -24,7 +24,10 @@ const ProductDetail = () => {
   const { id } = useParams();
   const parsedDate = new Date(book !== undefined && book?.datePicker);
   const formattedDate = format(parsedDate, 'dd/MM/yyyy');
-  const account = JSON.parse(sessionStorage.getItem('auth'));
+  const account =
+    typeof window !== 'undefined'
+      ? JSON.parse(sessionStorage?.getItem('auth'))
+      : null;
   const priceDiscount =
     book?.discount !== 0 ? (book?.price * (100 - book?.discount)) / 100 : '';
 
