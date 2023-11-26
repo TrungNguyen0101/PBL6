@@ -86,9 +86,8 @@ const getAllBooks = async (body) => {
 const getAllBooksByDiscount = async (body) => {
   try {
     let bookData = {};
-    const { page, limit } = body;
-    const parsedPage = parseInt(page) || 1;
-    const parsedLimit = parseInt(limit) || 6;
+    const parsedPage = 1;
+    const parsedLimit = 6;
     const skip = (parsedPage - 1) * parsedLimit;
     const totalCount = await Book.countDocuments({});
     const totalPages = Math.ceil(totalCount / parsedLimit);
