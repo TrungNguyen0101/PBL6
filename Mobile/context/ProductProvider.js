@@ -11,10 +11,8 @@ function ProductProvider({ children }) {
     const fetchData = useCallback(async () => {
         setIsLoading(true);
         try {
-            const response = await get('/products');
-            if (response) {
-                setProducts(response?.data);
-            }
+            const response = await get('/book?page=1&&limit=1000');
+            setProducts(response?.data?.data?.books);
         } catch (err) {
             console.error("Error fetching data:", err);
         } finally {

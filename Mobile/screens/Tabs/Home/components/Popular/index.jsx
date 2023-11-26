@@ -27,19 +27,17 @@ export default function Popular({ title, showIcon }) {
                     <FlatList
                         data={products}
                         renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => navigateToProduct(item.id)}>
-                                <ProductInHomePageCard product={item} />
-                            </TouchableOpacity>
+                            <ProductInHomePageCard product={item} />
                         )}
-                        keyExtractor={(item) => `${item.id}`}
+                        keyExtractor={(item) => `${item?._id}`}
                         horizontal
                         pagingEnabled
                     />
                 )}
             </View>
-            <TouchableOpacity style={styles.discoverBtn} onPress={() => navigation.navigate('AllProducts')}>
+            <TouchableOpacity style={[styles.discoverBtn, { marginTop: 12 }]} onPress={() => navigation.navigate('AllProducts', { headerName: 'Sản phẩm' })}>
                 <Text style={styles.discoverBtnText}>Discover all</Text>
             </TouchableOpacity>
-        </View>
+        </View >
     );
 }

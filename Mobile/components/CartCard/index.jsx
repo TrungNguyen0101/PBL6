@@ -11,7 +11,7 @@ export default function CartCard({ name, quantity = 1, price, image }) {
                 <Text style={{ fontSize: 24 }}>{name}</Text>
                 <Text style={{ fontSize: 18 }}>${price}</Text>
                 <View style={{
-                    flexDirection: 'row', alignItems: 'center', gap: 8
+                    flexDirection: 'row', alignItems: 'center', gap: 12
                 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         < TouchableOpacity style={{ borderWidth: 1, borderColor: colors.blackColor, paddingHorizontal: 8 }}>
@@ -22,7 +22,7 @@ export default function CartCard({ name, quantity = 1, price, image }) {
                             <Text style={{ fontSize: 20 }}>+</Text>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={{ paddingHorizontal: 12, backgroundColor: 'red', borderWidth: 1, borderColor: colors.blackColor }}>
+                    <TouchableOpacity style={{ paddingHorizontal: 12, paddingVertical: 2, backgroundColor: 'red', borderWidth: 1, borderColor: colors.blackColor, borderRadius: 8 }}>
                         <Text style={{ color: colors.whiteColor, fontSize: 20 }}>Delete</Text>
                     </TouchableOpacity>
                 </View>

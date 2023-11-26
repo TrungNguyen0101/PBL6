@@ -1,7 +1,9 @@
 // axios-config.js
 import axios from 'axios';
 
-const baseURL = 'https://fakestoreapi.com';
+// const baseURL = 'http://localhost:3030/api';
+const baseURL = 'https://nthdv-pbl6.up.railway.app/api';
+// const baseURL = 'https://fakestoreapi.com';
 
 const axiosInstance = axios.create({
   baseURL,

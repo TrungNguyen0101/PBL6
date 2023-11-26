@@ -27,6 +27,7 @@ import ListProductByCategory from './screens/ListProductByCategory'
 import Profile from './screens/Profile';
 import DetailProduct from './screens/DetailProduct';
 import Checkout from './screens/Checkout';
+import ListAllProduct from './screens/ListAllProduct';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -46,6 +47,11 @@ export default function App() {
               <Stack.Screen
                 name="CategoryProduct"
                 component={ListProductByCategory}
+                options={({ route }) => ({ title: route.params.headerName })}
+              />
+              <Stack.Screen
+                name="AllProducts"
+                component={ListAllProduct}
                 options={({ route }) => ({ title: route.params.headerName })}
               />
               <Stack.Screen

@@ -1,7 +1,8 @@
-import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useContext } from 'react'
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { post } from '../../../../axios-config'
 
 // Context
 import { AuthContext } from '../../../../context/AuthProvider'
@@ -9,7 +10,7 @@ import { AuthContext } from '../../../../context/AuthProvider'
 import colors from '../../../../contains/colors';
 
 export default function ChangePasswordForm({ styles }) {
-    const { user } = useContext(AuthContext)
+    const { accessToken } = useContext(AuthContext)
 
     const validationSchema = yup.object().shape({
         password: yup
@@ -48,7 +49,40 @@ export default function ChangePasswordForm({ styles }) {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            // Handle form submission here
+            try {
+                const formData = {
+                    oldpassword: values.password,
+                    newpassword: values.newPassword,
+                }
+                const response = post('/user/change-password', formData, {
+                    headers: {
+                        Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+                    },
+                })
+                if (response) {
+                    Alert.alert(
+                        'Thông báo',
+                        'Đổi mật khẩu thành công',
+                        [
+                            {
+                                text: 'Đóng',
+                                style: 'cancel'
+                            }
+                        ]
+                    )
+                }
+            } catch (err) {
+                Alert.alert(
+                    'Thông báo',
+                    err?.message,
+                    [
+                        {
+                            text: 'Đóng',
+                            style: 'cancel'
+                        }
+                    ]
+                )
+            }
             console.log('Submitted:', values);
         },
     });

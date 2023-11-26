@@ -4,14 +4,14 @@ import ProductByCategoryCard from '../../components/ProductByCategoryCard';
 import styles from './styles';
 import { get } from '../../axios-config';
 
-export default function ListProductByCategory({ route }) {
-    const { categoryName } = route.params;
+export default function ListAllProduct({ route }) {
     const [filteredProducts, setFilteredProducts] = useState([]);
 
     const fetchData = async () => {
         try {
-            const response = await get(`/book/book-by-category?value=${categoryName}`)
+            const response = await get(`/book?limit=6&page=1`)
             setFilteredProducts(response?.data?.data?.book)
+            console.log(response?.data?.data?.book)
         } catch (err) {
             console.log(err?.message)
         }

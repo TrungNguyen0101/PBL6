@@ -143,7 +143,7 @@ const ProductDetail = () => {
               className="pr-[20px]"
               onClick={() => setRouteLoading(true)}
             >
-              <Badge count={0} showZero>
+              <Badge count={orderLength} showZero>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="32"

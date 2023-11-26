@@ -4,7 +4,6 @@ export const StateContext = createContext();
 
 function StateProvider({ children }) {
     const [StateEnableUpdate, setStateEnableUpdate] = useState(false)
-
     const contextValue = useMemo(() => ({
         StateEnableUpdate,
         setStateEnableUpdate,
