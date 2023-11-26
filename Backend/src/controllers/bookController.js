@@ -17,8 +17,8 @@ async function getAllBooks(req, res) {
 }
 async function getAllBooksByDiscount(req, res) {
   try {
-    let body = req.query;
-    const book = await bookService.getAllBooksByDiscount(body);
+    // let body = req.query;
+    const book = await bookService.getAllBooksByDiscount();
     res.status(200).json({
       message: "get all succeed",
       data: book,

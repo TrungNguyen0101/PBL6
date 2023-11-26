@@ -59,10 +59,6 @@ export default function SecondForm({ isEdit, book }) {
           const newValues = { ...dataFirstForm, ...values };
           newValues.descImage = dataDescImage;
 
-          // const result = await axios.post(
-          //   'http://localhost:3030/api/book/insert',
-          //   newValues
-          // );
           const result = await postBook(newValues);
           if (result.data.errCode === 0) {
             message.success(result.data.errMessage);

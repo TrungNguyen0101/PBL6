@@ -11,15 +11,18 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import { getAllBooksByDiscount, getBookById } from '@/services/bookService';
 import LoadingPage from '@/components/LoadingPage';
-import { postOrder } from '@/services/orderService';
+import { getOrderByAccount, postOrder } from '@/services/orderService';
 import { toast } from 'react-toastify';
 import Raiting from '@/components/Raiting';
+import { Avatar, Badge } from 'antd';
 
 const ProductDetail = () => {
+  const [routeLoading, setRouteLoading] = useState(false);
   const [value, setValue] = useState(0);
+  const [orderLength, setOrderLength] = useState(0);
   const [book, setBook] = useState();
   const [bookDiscount, setBookDiscount] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(1);
   const { id } = useParams();
   const parsedDate = new Date(book !== undefined && book?.datePicker);
@@ -42,30 +45,48 @@ const ProductDetail = () => {
     setCount(count + 1);
   }, [count]);
 
+  const handleGetLengthCart = async () => {
+    const { data } = await getOrderByAccount(account?.user?._id);
+    if (data?.order?.length > 0) {
+      setOrderLength(data?.order?.length);
+    }
+  };
+
   const handleAddCart = async () => {
-    const formData = {
-      IdAccount: account?.user?._id,
-      Book: book,
-      PriceDiscount:
-        priceDiscount !== ''
-          ? priceDiscount.toFixed(2)
-          : book?.price.toFixed(2),
-      Count: count,
-    };
-    const result = await postOrder(formData);
-    if (result?.data?.errCode === 200) {
-      toast.success('Add book to cart successfully');
-    } else {
-      toast.error('Add book to cart fail');
+    try {
+      if (account) {
+        const formData = {
+          IdAccount: account?.user?._id,
+          Book: book,
+          PriceDiscount:
+            priceDiscount !== ''
+              ? priceDiscount.toFixed(2)
+              : book?.price.toFixed(2),
+          Count: count,
+        };
+        const result = await postOrder(formData);
+        if (result?.data?.errCode === 200) {
+          toast.success('Add book to cart successfully');
+          handleGetLengthCart();
+        } else {
+          toast.error('Add book to cart fail');
+        }
+      } else {
+        toast.error('Please log in');
+      }
+    } catch (error) {
+      toast.success('Add book to cart fail');
     }
   };
 
   useEffect(() => {
     try {
       const handleGetBookByDiscount = async () => {
+        setIsLoading(true);
         const result = await getAllBooksByDiscount();
-        if (result.data.books.length > 0) {
-          setBookDiscount(result.data.books);
+        if (result?.data?.length > 0) {
+          setBookDiscount(result.data);
+          setIsLoading(false);
         }
       };
       handleGetBookByDiscount();
@@ -73,13 +94,11 @@ const ProductDetail = () => {
       console.log('file: page.jsx:37 ~ useEffect ~ error:', error);
     }
   }, []);
+
   useEffect(() => {
     try {
       const handleGetBookByID = async () => {
         setIsLoading(true);
-        // const result = await axios.get(
-        //   `https://nthdv-pbl6.up.railway.app/api/book/${id}`
-        // );
         const result = await getBookById(id);
         if (result.data.book) {
           setBook(result.data.book);
@@ -91,6 +110,11 @@ const ProductDetail = () => {
       console.log('file: page.jsx:37 ~ useEffect ~ error:', error);
     }
   }, []);
+
+  useEffect(() => {
+    handleGetLengthCart();
+  }, [orderLength]);
+
   return (
     <section className="content">
       {isLoading ? (
@@ -98,23 +122,41 @@ const ProductDetail = () => {
           <LoadingPage></LoadingPage>
         </div>
       ) : (
-        <div className="content-wrapper">
+        <div className={`content-wrapper ${routeLoading ? 'cursor-wait' : ''}`}>
           {/* <!-- Start main detail area --> */}
           {/* <!-- Start header-detail area --> */}
           <div className="header-detail pt-[15px]">
             <div className="path-detail">
               <nav className="product-path">
-                <Link href="/" className="home">
+                <Link
+                  href="/"
+                  className="home"
+                  onClick={() => setRouteLoading(true)}
+                >
                   Home /
                 </Link>
                 <span className="product-name">{book?.booktitle}</span>
               </nav>
             </div>
-            <div className="product-management">
-              <i className="fa fa-angle-left product-pre"></i>
-              <i className="fa fa-th-large product-large"></i>
-              <i className="fa fa-angle-right product-next"></i>
-            </div>
+            <Link
+              href="/cart"
+              className="pr-[20px]"
+              onClick={() => setRouteLoading(true)}
+            >
+              <Badge count={0} showZero>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M11 9V6H8V4h3V1h2v3h3v2h-3v3zM7 22q-.825 0-1.412-.587T5 20q0-.825.588-1.412T7 18q.825 0 1.413.588T9 20q0 .825-.587 1.413T7 22m10 0q-.825 0-1.412-.587T15 20q0-.825.588-1.412T17 18q.825 0 1.413.588T19 20q0 .825-.587 1.413T17 22M1 4V2h3.275l4.25 9h7l3.9-7H21.7l-4.4 7.95q-.275.5-.737.775T15.55 13H8.1L7 15h12v2H7q-1.125 0-1.713-.975T5.25 14.05L6.6 11.6L3 4z"
+                  />
+                </svg>
+              </Badge>
+            </Link>
           </div>
           {/* <!-- End header-detail area --> */}
           <div className="detail-wrapper">
@@ -124,6 +166,7 @@ const ProductDetail = () => {
                 src={book?.mainImage[0]?.url}
                 width={400}
                 height={600}
+                alt="product-view"
                 className="product-img"
               ></Image>
               <div className="product-labels">
@@ -280,6 +323,7 @@ const ProductDetail = () => {
                         <Image
                           src={descImg.url}
                           width={400}
+                          alt="desc image"
                           height={600}
                           className="object-cover w-full h-[300px] rounded-md"
                         />
@@ -297,6 +341,7 @@ const ProductDetail = () => {
                   <Image
                     src={book?.descImage[3]?.url}
                     width={500}
+                    alt="image"
                     height={500}
                     className="story-summary-img"
                   ></Image>
@@ -350,7 +395,7 @@ const ProductDetail = () => {
                     <span className="language-value value">
                       {book?.language.length > 0 &&
                         book?.language.map((item, index) => (
-                          <span id={index}>
+                          <span key={index}>
                             {item}
                             {index !== book?.language.length - 1 ? ' , ' : '.'}
                           </span>
@@ -369,17 +414,22 @@ const ProductDetail = () => {
               <div className="discounted-content">
                 {bookDiscount?.length > 0 &&
                   bookDiscount.map((item) => (
-                    <div className="discounted-items" id="1">
+                    <div className="discounted-items" key={item._id}>
                       <div className="item-view">
-                        <img
+                        <Image
                           src={item.mainImage[0].url}
-                          alt=""
+                          width={500}
+                          height={500}
+                          alt="discount image"
                           className="item-img"
                         />
                       </div>
                       <div className="item-content">
                         <div className="item-name">
-                          <Link href={`/product/${item._id}`}>
+                          <Link
+                            href={`/product/${item._id}`}
+                            onClick={() => setRouteLoading(true)}
+                          >
                             <span>{item.booktitle}</span>
                           </Link>
                         </div>
@@ -567,153 +617,11 @@ const ProductDetail = () => {
                   <div className="card-top">
                     <div className="profile">
                       <div className="profile-image">
-                        <img
-                          src="https://scontent.fdad3-5.fna.fbcdn.net/v/t1.15752-9/386468103_338193505413038_6568528634758558596_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=mO4aVhbiUSwAX-_aHWB&_nc_ht=scontent.fdad3-5.fna&oh=03_AdQxCI07syAu1NyPMubFrDIW0wNnz4iBJx29OMX-Lw3iCw&oe=65577F67"
-                          alt=""
-                        />
-                      </div>
-                      <div className="profile-name">
-                        <strong>My Nguyen</strong>
-                        <div className="likes">
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                        </div>
-                      </div>
-                      <div className="comment-date">
-                        <span>July 6 ,2023</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card-main">
-                    <p>
-                      A seemingly elegant design can quickly begin to bloat with
-                      unexpected content or break under the weight of actual
-                      activity. Fake data can ensure a nice looking layout but
-                      it doesn’t reflect what a living, breathing application
-                      must endure. Real data does.
-                    </p>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="bg-[#f8f8f8] review-card p-[10px] rounded-lg">
-                  <div className="card-top">
-                    <div className="profile">
-                      <div className="profile-image">
-                        <img
-                          src="https://scontent.fdad3-5.fna.fbcdn.net/v/t1.15752-9/386468103_338193505413038_6568528634758558596_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=mO4aVhbiUSwAX-_aHWB&_nc_ht=scontent.fdad3-5.fna&oh=03_AdQxCI07syAu1NyPMubFrDIW0wNnz4iBJx29OMX-Lw3iCw&oe=65577F67"
-                          alt=""
-                        />
-                      </div>
-                      <div className="profile-name">
-                        <strong>My Nguyen</strong>
-                        <div className="likes">
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                        </div>
-                      </div>
-                      <div className="comment-date">
-                        <span>July 6 ,2023</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card-main">
-                    <p>
-                      A seemingly elegant design can quickly begin to bloat with
-                      unexpected content or break under the weight of actual
-                      activity. Fake data can ensure a nice looking layout but
-                      it doesn’t reflect what a living, breathing application
-                      must endure. Real data does.
-                    </p>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="bg-[#f8f8f8] review-card p-[10px] rounded-lg">
-                  <div className="card-top">
-                    <div className="profile">
-                      <div className="profile-image">
-                        <img
-                          src="https://scontent.fdad3-5.fna.fbcdn.net/v/t1.15752-9/386468103_338193505413038_6568528634758558596_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=mO4aVhbiUSwAX-_aHWB&_nc_ht=scontent.fdad3-5.fna&oh=03_AdQxCI07syAu1NyPMubFrDIW0wNnz4iBJx29OMX-Lw3iCw&oe=65577F67"
-                          alt=""
-                        />
-                      </div>
-                      <div className="profile-name">
-                        <strong>My Nguyen</strong>
-                        <div className="likes">
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                        </div>
-                      </div>
-                      <div className="comment-date">
-                        <span>July 6 ,2023</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card-main">
-                    <p>
-                      A seemingly elegant design can quickly begin to bloat with
-                      unexpected content or break under the weight of actual
-                      activity. Fake data can ensure a nice looking layout but
-                      it doesn’t reflect what a living, breathing application
-                      must endure. Real data does.
-                    </p>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="bg-[#f8f8f8] review-card p-[10px] rounded-lg">
-                  <div className="card-top">
-                    <div className="profile">
-                      <div className="profile-image">
-                        <img
-                          src="https://scontent.fdad3-5.fna.fbcdn.net/v/t1.15752-9/386468103_338193505413038_6568528634758558596_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=mO4aVhbiUSwAX-_aHWB&_nc_ht=scontent.fdad3-5.fna&oh=03_AdQxCI07syAu1NyPMubFrDIW0wNnz4iBJx29OMX-Lw3iCw&oe=65577F67"
-                          alt=""
-                        />
-                      </div>
-                      <div className="profile-name">
-                        <strong>My Nguyen</strong>
-                        <div className="likes">
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                        </div>
-                      </div>
-                      <div className="comment-date">
-                        <span>July 6 ,2023</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card-main">
-                    <p>
-                      A seemingly elegant design can quickly begin to bloat with
-                      unexpected content or break under the weight of actual
-                      activity. Fake data can ensure a nice looking layout but
-                      it doesn’t reflect what a living, breathing application
-                      must endure. Real data does.
-                    </p>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="bg-[#f8f8f8] review-card p-[10px] rounded-lg">
-                  <div className="card-top">
-                    <div className="profile">
-                      <div className="profile-image">
-                        <img
-                          src="https://scontent.fdad3-5.fna.fbcdn.net/v/t1.15752-9/386468103_338193505413038_6568528634758558596_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=8cd0a2&_nc_ohc=mO4aVhbiUSwAX-_aHWB&_nc_ht=scontent.fdad3-5.fna&oh=03_AdQxCI07syAu1NyPMubFrDIW0wNnz4iBJx29OMX-Lw3iCw&oe=65577F67"
-                          alt=""
+                        <Image
+                          src={book?.mainImage[0]?.url}
+                          alt="123"
+                          width={100}
+                          height={100}
                         />
                       </div>
                       <div className="profile-name">

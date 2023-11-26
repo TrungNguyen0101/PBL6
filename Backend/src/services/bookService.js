@@ -83,26 +83,10 @@ const getAllBooks = async (body) => {
     res.status(500).json({ error: "Server error" });
   }
 };
-const getAllBooksByDiscount = async (body) => {
+const getAllBooksByDiscount = async () => {
   try {
-    let bookData = {};
-    const parsedPage = 1;
-    const parsedLimit = 6;
-    const skip = (parsedPage - 1) * parsedLimit;
-    const totalCount = await Book.countDocuments({});
-    const totalPages = Math.ceil(totalCount / parsedLimit);
-
-    const books = await Book.find({ discount: { $ne: 0 } })
-      .skip(skip)
-      .limit(parsedLimit);
-
-    return (bookData = {
-      page: parsedPage,
-      limit: parsedLimit,
-      totalPages,
-      totalCount,
-      books,
-    });
+    const books = await db.Book.find({ discount: { $ne: 0 } });
+    return books;
   } catch (error) {
     console.error("Error retrieving reviews", error);
     res.status(500).json({ error: "Server error" });

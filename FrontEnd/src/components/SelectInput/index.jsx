@@ -15,7 +15,6 @@ const SelectInput = ({ name, control, isIcon, className, ...props }) => {
   useEffect(() => {
     try {
       const hanldeGetAllBooks = async () => {
-        // const { data } = await axios.get('http://localhost:3030/api/category');
         const { data } = await getAllCategory();
         setData(data.categories);
       };
