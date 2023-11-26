@@ -53,21 +53,29 @@ const ProductDetail = () => {
   };
 
   const handleAddCart = async () => {
-    const formData = {
-      IdAccount: account?.user?._id,
-      Book: book,
-      PriceDiscount:
-        priceDiscount !== ''
-          ? priceDiscount.toFixed(2)
-          : book?.price.toFixed(2),
-      Count: count,
-    };
-    const result = await postOrder(formData);
-    if (result?.data?.errCode === 200) {
-      toast.success('Add book to cart successfully');
-      handleGetLengthCart();
-    } else {
-      toast.error('Please log in');
+    try {
+      if (account) {
+        const formData = {
+          IdAccount: account?.user?._id,
+          Book: book,
+          PriceDiscount:
+            priceDiscount !== ''
+              ? priceDiscount.toFixed(2)
+              : book?.price.toFixed(2),
+          Count: count,
+        };
+        const result = await postOrder(formData);
+        if (result?.data?.errCode === 200) {
+          toast.success('Add book to cart successfully');
+          handleGetLengthCart();
+        } else {
+          toast.error('Add book to cart fail');
+        }
+      } else {
+        toast.error('Please log in');
+      }
+    } catch (error) {
+      toast.success('Add book to cart fail');
     }
   };
 
@@ -135,7 +143,7 @@ const ProductDetail = () => {
               className="pr-[20px]"
               onClick={() => setRouteLoading(true)}
             >
-              <Badge count={orderLength}>
+              <Badge count={0} showZero>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="32"
