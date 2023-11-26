@@ -90,7 +90,7 @@ const handleUpdateUser = async (user, data) => {
             return userData;
         }
         let users = await db.User.findOne({ email: user.User.email }).exec();
-        if (users._id.toString() === user.id || user.User.roleID === "0") {
+        if (users._id.toString() === user.id) {
             if (users) {
                 users.username = data.username;
                 users.phoneNumber = data.phoneNumber;
