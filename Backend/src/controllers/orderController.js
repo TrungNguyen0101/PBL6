@@ -28,22 +28,22 @@ async function insertOrder(req, res) {
   }
 }
 async function deleteOrder(req, res) {
-    try {
-      const order = await orderService.deleteOrder(req.params);
-      res.status(200).json({
-        message: "delete succeed",
-        data: order,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: "failed",
-      });
-    }
+  try {
+    const order = await orderService.deleteOrder(req.params);
+    res.status(200).json({
+      message: "delete succeed",
+      data: order,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "failed",
+    });
   }
+}
 
 module.exports = {
   insertOrder: insertOrder,
-  updateOrder: updateOrder,
+  // updateOrder: updateOrder,
   getOrderByIdAccount: getOrderByIdAccount,
   deleteOrder: deleteOrder,
 };

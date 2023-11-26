@@ -15,6 +15,20 @@ async function getAllBooks(req, res) {
     });
   }
 }
+async function getAllBooksByDiscount(req, res) {
+  try {
+    let body = req.query;
+    const book = await bookService.getAllBooksByDiscount(body);
+    res.status(200).json({
+      message: "get all succeed",
+      data: book,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "failed",
+    });
+  }
+}
 async function getBookById(req, res) {
   try {
     const book = await bookService.getBookById(req.params);
@@ -86,6 +100,7 @@ module.exports = {
   getBookById: getBookById,
   deleteBook: deleteBook,
   getBookByCategory: getBookByCategory,
+  getAllBooksByDiscount: getAllBooksByDiscount,
   updateBook: updateBook,
   insertBook: insertBook,
 };

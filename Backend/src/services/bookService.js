@@ -66,26 +66,47 @@ const getAllBooks = async (body) => {
     const parsedPage = parseInt(page) || 1;
     const parsedLimit = parseInt(limit) || 10;
     const skip = (parsedPage - 1) * parsedLimit;
-    const totalCount = await Book.countDocuments({
-
-    });
+    const totalCount = await Book.countDocuments({});
     const totalPages = Math.ceil(totalCount / parsedLimit);
 
-    const books = await Book.find({})
-      .skip(skip)
-      .limit(parsedLimit)
+    const books = await Book.find({}).skip(skip).limit(parsedLimit);
 
-    return bookData = {
+    return (bookData = {
       page: parsedPage,
       limit: parsedLimit,
       totalPages,
       totalCount,
       books,
-    }
+    });
+  } catch (error) {
+    console.error("Error retrieving reviews", error);
+    res.status(500).json({ error: "Server error" });
   }
-  catch (error) {
-    console.error('Error retrieving reviews', error);
-    res.status(500).json({ error: 'Server error' });
+};
+const getAllBooksByDiscount = async (body) => {
+  try {
+    let bookData = {};
+    const { page, limit } = body;
+    const parsedPage = parseInt(page) || 1;
+    const parsedLimit = parseInt(limit) || 6;
+    const skip = (parsedPage - 1) * parsedLimit;
+    const totalCount = await Book.countDocuments({});
+    const totalPages = Math.ceil(totalCount / parsedLimit);
+
+    const books = await Book.find({ discount: { $ne: 0 } })
+      .skip(skip)
+      .limit(parsedLimit);
+
+    return (bookData = {
+      page: parsedPage,
+      limit: parsedLimit,
+      totalPages,
+      totalCount,
+      books,
+    });
+  } catch (error) {
+    console.error("Error retrieving reviews", error);
+    res.status(500).json({ error: "Server error" });
   }
 };
 const getBookById = async (id) => {
@@ -121,4 +142,5 @@ module.exports = {
   getAllBooks: getAllBooks,
   getBookById: getBookById,
   getBookByCategory: getBookByCategory,
+  getAllBooksByDiscount: getAllBooksByDiscount,
 };

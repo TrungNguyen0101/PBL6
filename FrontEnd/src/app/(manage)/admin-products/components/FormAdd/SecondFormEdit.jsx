@@ -77,6 +77,10 @@ export default function SecondFormEdit({
           //   newValues
           // );
           const result = await postBook(newValues);
+          console.log(
+            'file: SecondFormEdit.jsx:80 ~ hanlderSecondForm ~ result:',
+            result
+          );
 
           if (result.data.errCode === 0) {
             message.success(result.data.errMessage);
