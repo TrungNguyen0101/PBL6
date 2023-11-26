@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
   },
   title: {
-    color: colors.primaryColor,
+    color: colors.blackColor,
     fontSize: 24,
     fontWeight: 'bold',
   },

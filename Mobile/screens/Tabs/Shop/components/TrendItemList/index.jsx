@@ -4,7 +4,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import styles from '../VoucherList/styles'
 import colors from '../../../../../contains/colors'
-import CategoryProductCard from '../../../../../components/CategoryProductCard';
+import CategoryProductCard from '../../../../../components/ProductByCategoryCard';
 import { ProductContext } from '../../../../../context/ProductProvider';
 export default function TrendItemList() {
 

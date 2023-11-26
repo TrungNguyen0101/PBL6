@@ -1,4 +1,4 @@
-import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useContext } from 'react'
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -7,9 +7,10 @@ import * as yup from 'yup';
 import { AuthContext } from '../../../../context/AuthProvider'
 import { StateContext } from '../../../../context/StateProvider';
 import colors from '../../../../contains/colors';
+import { put } from '../../../../axios-config';
 
 export default function ProfileUpdateForm({ styles }) {
-    const { user } = useContext(AuthContext)
+    const { user, accessToken, setUser } = useContext(AuthContext)
     const { StateEnableUpdate, setStateEnableUpdate } = useContext(StateContext)
 
     const handleChangeStateUpdate = () => {
@@ -21,7 +22,7 @@ export default function ProfileUpdateForm({ styles }) {
             .string()
             .email('Please enter valid email address')
             .required('Please enter your email address'),
-        phone: yup.string().matches(
+        phoneNumber: yup.string().matches(
             /^[0-9]{10}$/,
             'Invalid phone number'
         ).required('Phone number is required'),
@@ -31,11 +32,46 @@ export default function ProfileUpdateForm({ styles }) {
     const formik = useFormik({
         initialValues: {
             email: user?.email,
-            phone: user?.phone,
+            phoneNumber: user?.phoneNumber,
             username: user?.username,
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
+            try {
+                const formData = {
+                    username: values.username,
+                    phoneNumber: values.phoneNumber,
+                }
+                const response = put('/user/update', formData, {
+                    headers: {
+                        Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+                    },
+                })
+                if (response) {
+                    setUser(response?.data?.user);
+                    Alert.alert(
+                        'Thông báo',
+                        'Cập nhật thành công',
+                        [
+                            {
+                                text: 'Đóng',
+                                style: 'cancel'
+                            }
+                        ]
+                    )
+                }
+            } catch (err) {
+                Alert.alert(
+                    'Thông báo',
+                    err?.message,
+                    [
+                        {
+                            text: 'Đóng',
+                            style: 'cancel'
+                        }
+                    ]
+                )
+            }
             // Handle form submission here
             console.log('Submitted:', values);
         },
@@ -77,14 +113,14 @@ export default function ProfileUpdateForm({ styles }) {
                 <Text style={styles.info}>Phone:</Text>
                 <TextInput
                     style={styles.infoInput}
-                    onChangeText={formik.handleChange('phone')}
-                    onBlur={formik.handleBlur('phone')}
-                    value={formik.values.phone}
+                    onChangeText={formik.handleChange('phoneNumber')}
+                    onBlur={formik.handleBlur('phoneNumber')}
+                    value={formik.values.phoneNumber}
                     editable={StateEnableUpdate}
                 />
             </View>
-            {formik.touched.phone && formik.errors.phone ? (
-                <Text style={styles.errorText}>{formik.errors.phone}</Text>
+            {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
+                <Text style={styles.errorText}>{formik.errors.phoneNumber}</Text>
             ) : null}
             {StateEnableUpdate ?
                 (

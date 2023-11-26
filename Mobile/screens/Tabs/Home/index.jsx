@@ -25,7 +25,7 @@ export default function Home() {
             case 'category':
               return <CategorySection />;
             case 'popular':
-              return <Popular />;
+              return <Popular title={'Phổ biến'} showIcon={true} />;
             default:
               return null;
           }

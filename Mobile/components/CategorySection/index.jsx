@@ -21,14 +21,13 @@ export default function CategorySection() {
   const getData = async () => {
     setIsLoading(true);
     try {
-      const response = await get('/products/categories')
-      if (response) {
-        const categoryObjects = response.data.map((category, index) => ({
-          id: index + 1,
-          name: category,
-        }));
-        setCategories(categoryObjects);
-      }
+      const response = await get('/category')
+      const categoryObjects = response?.data?.data?.categories.map((category, index) => ({
+        id: index + 1,
+        label: category?.label,
+        value: category?.value,
+      }));
+      setCategories(categoryObjects);
     } catch (error) {
       throw error
     } finally {
@@ -43,7 +42,7 @@ export default function CategorySection() {
   return (
     <View style={[styles.container, { height: screenHeight * 0.3 }]}>
       <View style={styles.titleWrapper}>
-        <FontAwesome name="bookmark" size={24} color={colors.primaryColor} />
+        <FontAwesome name="bookmark" size={24} color={colors.blackColor} />
         <Text style={styles.title}>Thể loại</Text>
       </View>
       {isLoading ? (
@@ -54,9 +53,9 @@ export default function CategorySection() {
           renderItem={({ item }) => <CategoryCard
             category={item}
             navigation={navigation}
-            onPress={() => navigation?.navigate('CategoryProduct', { headerName: item.name, categoryName: item.name })}
+            onPress={() => navigation?.navigate('CategoryProduct', { headerName: item?.label, categoryName: item?.label })}
           />}
-          keyExtractor={(item) => `${item.id}`}
+          keyExtractor={(item) => `${item?.id}`}
           horizontal
           pagingEnabled
         />)}
