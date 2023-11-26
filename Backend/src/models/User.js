@@ -4,6 +4,7 @@ const { ObjectId } = require('mongodb');
 
 const User = new Schema({
     id: { type: ObjectId },
+    avatar: { type: String, default: false },
     username: {
         type: String,
         require: true,
@@ -16,11 +17,8 @@ const User = new Schema({
     },
     isVerified: { type: Boolean, default: false },
     verificationCode: { type: String },
-})
+}, { timestamps: true, })
 
 module.exports = mongoose.model('User', User);
 
 
-/*
-
-*/
