@@ -1,25 +1,3 @@
-const { commentService } = require("../services");
-// const handleCreateComment = async (req, res) => {
-//     let id_book = req.params.id_book;
-//     let id_user = req.User.User._id;
-//     let comment = req.body.comment;
-//     if (!id_book || !id_user || !comment) {
-//         return res.status(500).json({
-//             status: 500,
-//             message: "Missing inputs parameter",
-//         })
-//     }
-//     let data = await commentService.createComment(id_user, id_book, comment);
-//     if (data.status === 200) {
-//         return res.status(200).json({
-//             message: "Comment successfully added",
-//             data: data.comment
-//         })
-//     }
-//     return res.status(500).json({
-//         message: "Comment failed added",
-//     })
-// }
 const BookComment = require("../models/Comment.js")
 const Book = require("../models/Book.js");
 const mongoose = require('mongoose');
@@ -125,7 +103,6 @@ const create = async (req, res) => {
                 data: {}
             });
         } else {
-
             try {
                 const v = new Validator(req.body, {
                     comment: 'required',
@@ -134,14 +111,13 @@ const create = async (req, res) => {
                 if (!matched) {
                     return res.status(422).send(v.errors);
                 }
-
                 let newCommentDocument = new BookComment({
                     comment: req.body.comment,
                     id_book: id_book,
                     id_user: req.User.User._id
                 });
-
                 let commentData = await newCommentDocument.save();
+                console.log(commentData)
                 const validObjectId = mongoose.Types.ObjectId.isValid(commentData._id);
                 if (validObjectId) {
                     await Book.updateOne(
@@ -151,8 +127,6 @@ const create = async (req, res) => {
                         }
                     )
                 }
-
-
                 let query = [
                     {
                         $lookup:
@@ -171,23 +145,17 @@ const create = async (req, res) => {
                     },
 
                 ];
-
                 let comments = await BookComment.aggregate(query);
-
                 return res.status(200).send({
                     message: 'Comment successfully added',
                     data: comments[0]
                 });
-
-
             } catch (err) {
                 return res.status(400).send({
                     message: err.message,
                     data: err
                 });
             }
-
-
         }
     }).catch((err) => {
         return res.status(400).send({
@@ -195,7 +163,6 @@ const create = async (req, res) => {
             data: err
         });
     })
-
 }
 
 // exports.update = async (req, res) => {
@@ -350,6 +317,5 @@ const create = async (req, res) => {
 
 // }
 module.exports = {
-    // handleCreateComment
     create, list
 };

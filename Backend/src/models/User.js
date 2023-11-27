@@ -9,7 +9,7 @@ const User = new Schema({
         type: String,
         require: true,
     },
-    phoneNumber: { type: String },
+    phoneNumber: { type: Number },
     email: { type: String, },
     password: { type: String, require: true },
     roleID: {
