@@ -28,6 +28,20 @@ const montserrat = Montserrat({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <script>
+          {(function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            var f = d.getElementsByTagName(s)[0],
+              j = d.createElement(s),
+              dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+          })(window, document, 'script', 'dataLayer', 'GTM-WV3P6XBH')}
+        </script>
+      </head>
       <body
         className={classNames(
           inter.variable,
@@ -38,6 +52,14 @@ export default function RootLayout({ children }) {
         <Provider store={store}>{children}</Provider>
         <ToastContainer autoClose={1000} />
         <Backtop />
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-WV3P6XBH"
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"
+          ></iframe>
+        </noscript>
       </body>
     </html>
   );
