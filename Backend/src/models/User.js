@@ -4,7 +4,7 @@ const { ObjectId } = require('mongodb');
 
 const User = new Schema({
     id: { type: ObjectId },
-    avatar: { type: String, default: false },
+    avatar: { type: String },
     username: {
         type: String,
         require: true,
