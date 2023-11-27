@@ -86,11 +86,7 @@ const handleRegister = async (data) => {
 const handleUpdateUser = async (user, data) => {
     let userData = {};
     try {
-        if (!user) {
-            userData.status = 500;
-            userData.message = "Missing required parameter";
-            return userData;
-        }
+        if (!data.avatar) data.avatar = "";
         let users = await db.User.findOne({ email: user.User.email }).exec();
         if (users._id.toString() === user.id) {
             if (users) {
