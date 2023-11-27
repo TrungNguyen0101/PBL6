@@ -56,7 +56,7 @@ const handleRegister = async (req, res) => {
 const handleUpdateUser = async (req, res) => {
     const user = req.User;
     const data = req.body;
-    if (!data) {
+    if (!data || !user) {
         return res.status(500).json({
             status: 500,
             message: "Missing inputs parameter",
@@ -65,14 +65,14 @@ const handleUpdateUser = async (req, res) => {
     let message = await userService.handleUpdateUser(user, data);
     if (message.status === 200) {
         return res.status(200).json({
-            user: data.user,
-            status: data.status,
-            message: data.message
+            user: message.user,
+            status: message.status,
+            message: message.message
         })
     }
     return res.status(500).json({
-        status: data.status,
-        message: data.message
+        status: message.status,
+        message: message.message
     })
 }
 const handleGetUserById = async (req, res) => {
