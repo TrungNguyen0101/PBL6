@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <Script>
+        {/* <Script>
           {typeof window !== 'undefined' &&
             (function (w, d, s, l, i) {
               w[l] = w[l] || [];
@@ -42,7 +42,21 @@ export default function RootLayout({ children }) {
               j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
               f.parentNode.insertBefore(j, f);
             })(window, document, 'script', 'dataLayer', 'GTM-WV3P6XBH')}
-        </Script>
+        </Script> */}
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-Y35FP8XXTL"></Script>
+        <Script
+            id="clarity_script"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+            
+              gtag('config', 'G-Y35FP8XXTL');
+            `,
+            }}
+          />
       </head>
       <body
         className={classNames(
@@ -54,14 +68,6 @@ export default function RootLayout({ children }) {
         <Provider store={store}>{children}</Provider>
         <ToastContainer autoClose={1000} />
         <Backtop />
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-WV3P6XBH"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          ></iframe>
-        </noscript>
       </body>
     </html>
   );
