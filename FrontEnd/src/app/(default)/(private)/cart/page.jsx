@@ -1,228 +1,59 @@
 'use client';
 import React, { useCallback, useEffect, useState } from 'react';
 import './styled.scss';
+import { getOrderByAccount } from '@/services/orderService';
+import CartItem from './CartItem';
 export default function Cart() {
-  const [count, setCount] = useState(1);
-  const handlerMinus = useCallback(() => {
-    if (count === 1) {
-      setCount(1);
-    } else {
-      setCount(count - 1);
-    }
-  }, [count]);
-  const handlerPlus = useCallback(() => {
-    setCount(count + 1);
-  }, [count]);
+  const [order, setOder] = useState([]);
+  const accountID =
+    typeof window !== 'undefined'
+      ? JSON.parse(sessionStorage?.getItem('auth')).user._id
+      : null;
+
+  useEffect(() => {
+    const handleGetCartByAccount = async (id) => {
+      const { data } = await getOrderByAccount(id);
+      if (data.order.length > 0) {
+        setOder(data.order);
+      }
+    };
+    handleGetCartByAccount(accountID);
+  }, []);
 
   return (
     <section className="cart-wrapper">
       {/* <!-- ********** -->
   <!--  CART-TABLE -->
   <!-- ********** --> */}
-      <div className="cart-table">
-        <div className="product-list">
+      <div className="cart-table flex items-start justify-between bg-[#f7f7f7]">
+        <div className="bg-white product-list w-[70%] max-h-[500px] overflow-y-auto">
           <div className="cart-table-section">
             <table className="table-shop">
               <thead>
                 <tr>
-                  <th className="product-remove">&nbsp;</th>
-                  <th className="product-thumbnail">&nbsp;</th>
-                  <th className="product-name">Product</th>
-                  <th className="product-price">Price</th>
-                  <th className="product-quantity">Quantity</th>
-                  <th className="product-subtotal">Subtotal</th>
+                  {/* <th className="product-remove">&nbsp;</th> */}
+                  <th className="p-0">&nbsp;</th>
+                  <th className="pr-0 product-name">Product</th>
+                  <th className="px-0 product-price">Price</th>
+                  {/* <th className="whitespace-nowrap product-price">
+                      Sale price
+                    </th> */}
+                  <th className="pl-[15px]  product-quantity">Quantity</th>
+                  <th className="pl-[10px] text-left product-subtotal">
+                    Subtotal
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td className="product-remove">
-                    <button>
-                      <i className="fa fa-times" aria-hidden="true"></i>
-                    </button>
-                  </td>
-                  <td className="product-thumbnail">
-                    <a href="#">
-                      <img
-                        src="https://img.starbiz.com/resize/750x-/2020/07/16/doraemon-movies-download-3-9a6b.jpg"
-                        alt=""
-                        className="item-img"
-                      />
-                    </a>
-                  </td>
-                  <td className="product-name">
-                    <a href="https://woodmart.xtemos.com/games/product/red-dead-redemption-2/?attribute_pa_platform=nintendo-switch&amp;attribute_pa_edition=standart">
-                      <span>
-                        Red Dead Redemption 2 - Nintendo Switch, Standart
-                      </span>
-                    </a>
-                  </td>
-                  <td className="price-amount amount">
-                    <span>$39.9</span>
-                  </td>
-                  <td className="quantity">
-                    <div className="col-wrap product-number">
-                      <button
-                        onClick={handlerMinus}
-                        className="col col-minus w-full"
-                      >
-                        <i className="fa fa-light fa-minus fa-xs"></i>
-                      </button>
-                      <span className="col col-number w-full">{count}</span>
-                      <button
-                        onClick={handlerPlus}
-                        className="col col-plus w-full"
-                      >
-                        <i className="fa fa-light fa-plus fa-xs"></i>
-                      </button>
-                    </div>
-                  </td>
-                  <td className="price-amount amount-sub">
-                    <span>$39.9</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="product-remove">
-                    <button>
-                      <i className="fa fa-times" aria-hidden="true"></i>
-                    </button>
-                  </td>
-                  <td className="product-thumbnail">
-                    <a href="#">
-                      <img
-                        src="https://img.starbiz.com/resize/750x-/2020/07/16/doraemon-movies-download-3-9a6b.jpg"
-                        alt=""
-                        className="item-img"
-                      />
-                    </a>
-                  </td>
-                  <td className="product-name">
-                    <a href="https://woodmart.xtemos.com/games/product/red-dead-redemption-2/?attribute_pa_platform=nintendo-switch&amp;attribute_pa_edition=standart">
-                      <span>
-                        Red Dead Redemption 2 - Nintendo Switch, Standart
-                      </span>
-                    </a>
-                  </td>
-                  <td className="price-amount amount">
-                    <span>$39.9</span>
-                  </td>
-                  <td className="quantity">
-                    <div className="col-wrap product-number">
-                      <button
-                        onClick={handlerMinus}
-                        className="col col-minus w-full"
-                      >
-                        <i className="fa fa-light fa-minus fa-xs"></i>
-                      </button>
-                      <span className="col col-number w-full">{count}</span>
-                      <button
-                        onClick={handlerPlus}
-                        className="col col-plus w-full"
-                      >
-                        <i className="fa fa-light fa-plus fa-xs"></i>
-                      </button>
-                    </div>
-                  </td>
-                  <td className="price-amount amount-sub">
-                    <span>$39.9</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="product-remove">
-                    <button>
-                      <i className="fa fa-times" aria-hidden="true"></i>
-                    </button>
-                  </td>
-                  <td className="product-thumbnail">
-                    <a href="#">
-                      <img
-                        src="https://img.starbiz.com/resize/750x-/2020/07/16/doraemon-movies-download-3-9a6b.jpg"
-                        alt=""
-                        className="item-img"
-                      />
-                    </a>
-                  </td>
-                  <td className="product-name">
-                    <a href="https://woodmart.xtemos.com/games/product/red-dead-redemption-2/?attribute_pa_platform=nintendo-switch&amp;attribute_pa_edition=standart">
-                      <span>
-                        Red Dead Redemption 2 - Nintendo Switch, Standart
-                      </span>
-                    </a>
-                  </td>
-                  <td className="price-amount amount">
-                    <span>$39.9</span>
-                  </td>
-                  <td className="quantity">
-                    <div className="col-wrap product-number">
-                      <button
-                        onClick={handlerMinus}
-                        className="col col-minus w-full"
-                      >
-                        <i className="fa fa-light fa-minus fa-xs"></i>
-                      </button>
-                      <span className="col col-number w-full">{count}</span>
-                      <button
-                        onClick={handlerPlus}
-                        className="col col-plus w-full"
-                      >
-                        <i className="fa fa-light fa-plus fa-xs"></i>
-                      </button>
-                    </div>
-                  </td>
-                  <td className="price-amount amount-sub">
-                    <span>$39.9</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="product-remove">
-                    <button>
-                      <i className="fa fa-times" aria-hidden="true"></i>
-                    </button>
-                  </td>
-                  <td className="product-thumbnail">
-                    <a href="#">
-                      <img
-                        src="https://img.starbiz.com/resize/750x-/2020/07/16/doraemon-movies-download-3-9a6b.jpg"
-                        alt=""
-                        className="item-img"
-                      />
-                    </a>
-                  </td>
-                  <td className="product-name">
-                    <a href="https://woodmart.xtemos.com/games/product/red-dead-redemption-2/?attribute_pa_platform=nintendo-switch&amp;attribute_pa_edition=standart">
-                      <span>
-                        Red Dead Redemption 2 - Nintendo Switch, Standart
-                      </span>
-                    </a>
-                  </td>
-                  <td className="price-amount amount">
-                    <span>$39.9</span>
-                  </td>
-                  <td className="quantity">
-                    <div className="col-wrap product-number">
-                      <button
-                        onClick={handlerMinus}
-                        className="col col-minus w-full"
-                      >
-                        <i className="fa fa-light fa-minus fa-xs"></i>
-                      </button>
-                      <span className="col col-number w-full">{count}</span>
-                      <button
-                        onClick={handlerPlus}
-                        className="col col-plus w-full"
-                      >
-                        <i className="fa fa-light fa-plus fa-xs"></i>
-                      </button>
-                    </div>
-                  </td>
-                  <td className="price-amount amount-sub">
-                    <span>$39.9</span>
-                  </td>
-                </tr>
+                {order.length > 0 &&
+                  order?.map((item) => (
+                    <CartItem key={item._id} cart={item}></CartItem>
+                  ))}
               </tbody>
             </table>
           </div>
         </div>
-        <div className="cart-totals">
+        <div className="bg-white cart-totals w-[28%]">
           <div className="liner-continer">
             <h4 className="title">Cart totals</h4>
           </div>
