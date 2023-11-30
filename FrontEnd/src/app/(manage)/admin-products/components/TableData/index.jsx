@@ -5,6 +5,7 @@ import './styled.scss';
 import axios from 'axios';
 import { deleteBook, getAllBook } from '@/services/bookService';
 import Link from 'next/link';
+import LoadingPage from '@/components/LoadingPage';
 
 const TableData = ({ handleOnEdit, listBook, hanldeGetAllBooks }) => {
   const columns = [
@@ -128,7 +129,6 @@ const TableData = ({ handleOnEdit, listBook, hanldeGetAllBooks }) => {
     try {
       setIsLoading(true);
       const hanldeGetAllBooks = async () => {
-        // const { data } = await axios.get('http://localhost:3030/api/book');
         const { data } = await getAllBook();
         setData(data?.books);
         setIsLoading(false);
@@ -147,7 +147,9 @@ const TableData = ({ handleOnEdit, listBook, hanldeGetAllBooks }) => {
   return (
     <div className="max-h-[400px]">
       {isLoading ? (
-        <div></div>
+        <div className="mx-auto mt-10 w-max">
+          <LoadingPage></LoadingPage>
+        </div>
       ) : (
         <Table
           columns={columns}
@@ -155,8 +157,8 @@ const TableData = ({ handleOnEdit, listBook, hanldeGetAllBooks }) => {
           className="max-h-[400px]"
           pagination={{
             showSizeChanger: true, // Hiển thị tùy chọn lựa chọn pageSize
-            pageSizeOptions: ['4', '8', '12'], // Các tùy chọn pageSize
-            defaultPageSize: 4, // Kích thước mặc định của pageSize
+            pageSizeOptions: ['3', '6', '9'], // Các tùy chọn pageSize
+            defaultPageSize: 3, // Kích thước mặc định của pageSize
           }}
           scroll={{
             x: 800,

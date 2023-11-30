@@ -26,6 +26,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.2.0",
     "mongoose": "^7.6.4",
+    "node-input-validator": "^4.5.1",
     "nodemailer": "^6.9.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",

@@ -1,6 +1,7 @@
 const colors = {
   primaryColor: '#6d4eec',
   linearGradientColor: '#ffd452',
+  orangeColor: '#d34848',
   bgColor: '#fff',
   textColor: '#000',
   whiteColor: '#fff',

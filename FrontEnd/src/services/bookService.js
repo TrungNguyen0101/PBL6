@@ -6,6 +6,9 @@ import instance from '../utils/axiosCustomize';
 const getAllBook = () => {
   return instance.get('book?limit=1000');
 };
+const getAllBooksByDiscount = () => {
+  return instance.get('book/book-by-discount');
+};
 
 const getAllBookWithPagination = (page = 1, limit) => {
   return instance.get(`book?page=${page}&limit=${limit}`);
@@ -35,4 +38,5 @@ export {
   deleteBook,
   getBookByCategory,
   getAllBookWithPagination,
+  getAllBooksByDiscount,
 };

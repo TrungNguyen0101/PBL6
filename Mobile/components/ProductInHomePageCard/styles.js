@@ -9,16 +9,14 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 0 },
     marginRight: 20,
+    borderRadius: 8,
   },
   container: {
-    marginBottom: 20,
     borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
     backgroundColor: colors.whiteColor,
   },
   img: {
-    height: 250,
+    height: 200,
   },
   info: {
     padding: 8,

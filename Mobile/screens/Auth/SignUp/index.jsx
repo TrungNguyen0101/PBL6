@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, KeyboardAvoidingView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -6,6 +6,8 @@ import { FontAwesome, AntDesign } from '@expo/vector-icons';
 
 import styles from './styles';
 import Background from '../../../assets/Image/Auth/background.gif';
+
+import { post } from '../../../axios-config'
 
 export default function SignUp({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -46,13 +48,36 @@ export default function SignUp({ navigation }) {
     onSubmit: async (values) => {
       setIsLoading(true);
       try {
-        console.log('Logging in with:');
-        console.log('Username:', values.username);
-        console.log('Email:', values.email);
-        console.log('Password:', values.password);
-        console.log('Confirm Password:', values.confirmPassword);
+        const formData = {
+          username: values.username,
+          email: values.email,
+          password: values.password
+        }
+
+        const response = await post('/user/register', formData);
+        if (response) {
+          Alert.alert(
+            'Thông báo',
+            'Đăng ký tài khoản thành công',
+            [
+              {
+                text: 'Đóng',
+                onPress: () => { navigation.navigate('SignIn') }
+              }
+            ]
+          )
+        }
       } catch (error) {
-        console.error('Login error:', error);
+        Alert.alert(
+          'Lỗi',
+          error?.message,
+          [
+            {
+              text: 'Đóng',
+              style: 'cancel'
+            }
+          ]
+        )
       } finally {
         setTimeout(() => {
           setIsLoading(false);

@@ -72,11 +72,11 @@ export default function SecondFormEdit({
           const newValues = { ...dataFirstForm, ...values };
           newValues.descImage = dataDescImage;
 
-          // const result = await axios.post(
-          //   'http://localhost:3030/api/book/insert',
-          //   newValues
-          // );
           const result = await postBook(newValues);
+          console.log(
+            'file: SecondFormEdit.jsx:80 ~ hanlderSecondForm ~ result:',
+            result
+          );
 
           if (result.data.errCode === 0) {
             message.success(result.data.errMessage);
@@ -92,10 +92,6 @@ export default function SecondFormEdit({
           const newValues = { ...dataFirstFormEdit, ...values };
           newValues.descImage = dataDescImage;
           newValues.id = idBook;
-          // const result = await axios.put(
-          //   'http://localhost:3030/api/book',
-          //   newValues
-          // );
           const result = await putBook(newValues);
 
           if (result.data.errCode === 0) {

@@ -1,5 +1,5 @@
 import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
@@ -7,27 +7,12 @@ import { FontAwesome, AntDesign } from '@expo/vector-icons';
 import styles from './styles';
 import Background from '../../../assets/Image/Auth/background.gif';
 import { AuthContext } from '../../../context/AuthProvider';
-import { get } from '../../../axios-config';
+import { post } from '../../../axios-config';
 
 export default function SignIn({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isHidePassword, setIsHidePassword] = useState(true);
-  const { setUser } = useContext(AuthContext)
-  const [userFetch, setUserFetch] = useState([])
-  const fetchData = async () => {
-    try {
-      const response = await get('/users');
-      if (response) {
-        setUserFetch(response.data)
-      }
-    } catch (err) {
-      throw err
-    }
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, [])
+  const { setUser, setAccessToken } = useContext(AuthContext)
 
   const formik = useFormik({
     initialValues: {
@@ -56,10 +41,14 @@ export default function SignIn({ navigation }) {
     onSubmit: async (values) => {
       setIsLoading(true);
       try {
-        const user = userFetch.find(user => user.email === values.email && user.password === values.password);
-
-        if (user) {
-          setUser(user);
+        const formData = {
+          email: values.email,
+          password: values.password
+        }
+        const response = await post('/user/login', formData)
+        if (response) {
+          setUser(response?.data?.user);
+          setAccessToken(response?.data?.access_token)
           Alert.alert(
             "Thông báo",
             "Đăng nhập thành công",
@@ -70,19 +59,17 @@ export default function SignIn({ navigation }) {
               }
             ]
           );
-        } else {
-          Alert.alert(
-            "Thông báo",
-            "Tài khoản hoặc mật khẩu không chính xác",
-            [
-              {
-                text: "Đóng",
-              }
-            ]
-          );
         }
       } catch (error) {
-        console.error('Login error:', error);
+        Alert.alert(
+          "Thông báo",
+          "Tài khoản hoặc mật khẩu không chính xác",
+          [
+            {
+              text: "Đóng",
+            }
+          ]
+        );
       } finally {
         setTimeout(() => {
           setIsLoading(false);

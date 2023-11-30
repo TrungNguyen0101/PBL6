@@ -3,30 +3,31 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-//color & icon
+// color & icon
 import colors from './contains/colors';
-import { AntDesign, FontAwesome, Ionicons, SimpleLineIcons } from '@expo/vector-icons';
+import { FontAwesome, Ionicons, SimpleLineIcons } from '@expo/vector-icons';
 
-//Provider
+// Provider
 import AuthProvider from './context/AuthProvider';
 import ProductProvider from './context/ProductProvider';
 import StateProvider from './context/StateProvider';
 
-//Auth screen
+// Auth screen
 import SignIn from './screens/Auth/SignIn';
 import SignUp from './screens/Auth/SignUp';
 
-//Tab
+// Tab
 import Cart from './screens/Tabs/Cart';
 import Settings from './screens/Tabs/Settings';
 import Home from './screens/Tabs/Home';
-import Favorites from './screens/Tabs/Favorites';
 import Shop from './screens/Tabs/Shop';
 
-//Screens
-import CategoryProduct from './screens/CategoryProduct'
+// Screens
+import ListProductByCategory from './screens/ListProductByCategory'
 import Profile from './screens/Profile';
 import DetailProduct from './screens/DetailProduct';
+import Checkout from './screens/Checkout';
+import ListAllProduct from './screens/ListAllProduct';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -45,7 +46,12 @@ export default function App() {
               />
               <Stack.Screen
                 name="CategoryProduct"
-                component={CategoryProduct}
+                component={ListProductByCategory}
+                options={({ route }) => ({ title: route.params.headerName })}
+              />
+              <Stack.Screen
+                name="AllProducts"
+                component={ListAllProduct}
                 options={({ route }) => ({ title: route.params.headerName })}
               />
               <Stack.Screen
@@ -66,6 +72,11 @@ export default function App() {
               <Stack.Screen
                 name="DetailProduct"
                 component={DetailProduct}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Checkout"
+                component={Checkout}
                 options={{ headerShown: false }}
               />
             </Stack.Navigator>
@@ -98,12 +109,6 @@ function TabsComponent() {
           } else {
             return <SimpleLineIcons name="handbag" size={24} color={color} />
           }
-        } else if (route.name === 'Favorites') {
-          if (focused) {
-            return <AntDesign name="heart" size={24} color={color} />
-          } else {
-            return <AntDesign name="hearto" size={24} color={color} />
-          }
         } else if (route.name === 'Settings') {
           if (focused) {
             return <Ionicons name="settings" size={24} color={color} />
@@ -120,7 +125,6 @@ function TabsComponent() {
       <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
       <Tab.Screen name="Shop" component={Shop} options={{ headerShown: false }} />
       <Tab.Screen name="Cart" component={Cart} options={{ headerShown: false }} />
-      <Tab.Screen name="Favorites" component={Favorites} options={{ headerShown: false }} />
       <Tab.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
     </Tab.Navigator>
   );

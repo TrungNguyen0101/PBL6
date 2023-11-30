@@ -5,18 +5,20 @@ import { useNavigation } from '@react-navigation/native';
 
 import colors from '../../../../../contains/colors';
 import styles from './styles';
-import HomeProductCard from '../../../../../components/HomeProductCard';
+import ProductInHomePageCard from '../../../../../components/ProductInHomePageCard';
 import { ProductContext } from '../../../../../context/ProductProvider';
 
-export default function Popular() {
+export default function Popular({ title, showIcon }) {
     const { products, isLoading } = useContext(ProductContext);
     const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
             <View style={styles.titleWrapper}>
-                <FontAwesome5 name="book-open" size={24} color={colors.primaryColor} />
-                <Text style={styles.title}>Phổ biến</Text>
+                {showIcon ?
+                    <FontAwesome5 name="book-open" size={24} color={colors.blackColor} />
+                    : ''}
+                <Text style={styles.title}>{title}</Text>
             </View>
             <View>
                 {isLoading ? (
@@ -25,19 +27,17 @@ export default function Popular() {
                     <FlatList
                         data={products}
                         renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => navigateToProduct(item.id)}>
-                                <HomeProductCard product={item} />
-                            </TouchableOpacity>
+                            <ProductInHomePageCard product={item} />
                         )}
-                        keyExtractor={(item) => `${item.id}`}
+                        keyExtractor={(item) => `${item?._id}`}
                         horizontal
                         pagingEnabled
                     />
                 )}
             </View>
-            <TouchableOpacity style={styles.discoverBtn} onPress={() => navigation.navigate('AllProducts')}>
+            <TouchableOpacity style={[styles.discoverBtn, { marginTop: 12 }]} onPress={() => navigation.navigate('AllProducts', { headerName: 'Sản phẩm' })}>
                 <Text style={styles.discoverBtnText}>Discover all</Text>
             </TouchableOpacity>
-        </View>
+        </View >
     );
 }
