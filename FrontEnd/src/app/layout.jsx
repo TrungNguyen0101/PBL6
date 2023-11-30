@@ -28,13 +28,7 @@ const montserrat = Montserrat({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={classNames(
-          inter.variable,
-          montserrat.variable,
-          'flex flex-col min-h-screen'
-        )}
-      >
+      <body className="dark:bg-slate-900">
         <Provider store={store}>{children}</Provider>
         <ToastContainer autoClose={1000} />
         <Backtop />
@@ -42,3 +36,8 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+/* className={classNames(
+          inter.variable,
+          montserrat.variable,
+          'flex flex-col min-h-screen'
+        )} */

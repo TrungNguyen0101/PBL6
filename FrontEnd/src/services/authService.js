@@ -15,10 +15,11 @@ const postSignUp = (username, email, password) => {
   });
 };
 
-const updateInforUser = (username, phoneNumber) => {
+const updateInforUser = (username, phoneNumber, avatar) => {
   return instance.put('user/update', {
     username,
     phoneNumber,
+    avatar,
   });
 };
 

@@ -5,8 +5,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper';
 import { getAllBookWithPagination } from '@/services/bookService';
 import { useEffect } from 'react';
+import Link from 'next/link';
 import '../../styles/SwiperButton.scss';
 import BookItem from '../BookItem';
+import routes from '@/constant/routes';
 
 const BookList = () => {
   const [listBook, setListBook] = useState([]);
@@ -30,12 +32,20 @@ const BookList = () => {
         pagination={{ clickable: true }}
       >
         {listBook?.length > 0 &&
-          listBook?.map((book, index) => (
+          listBook?.slice(0, 11)?.map((book, index) => (
             <SwiperSlide key={index}>
               <BookItem data={book} />
             </SwiperSlide>
           ))}
       </Swiper>
+      <span className="flex justify-end mt-7">
+        <Link
+          href={routes.ALLBOOK}
+          className="inline-block py-1 text-xs px-4 bg-[#6d4eec] text-white rounded-3xl hover:bg-opacity-70 transition-all"
+        >
+          Discover all
+        </Link>
+      </span>
     </div>
   );
 };

@@ -1,3 +1,5 @@
+'use client';
+
 import routes from '@/constant/routes';
 import Link from 'next/link';
 import Heading from '@/components/Heading';

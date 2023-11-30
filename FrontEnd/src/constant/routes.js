@@ -9,6 +9,7 @@ const routes = {
   REGISTER: '/sign-up',
   FORGOTTEN: '/forgotten',
   VERIFYCODE: '/verify-code',
+  CHANGEPASSWORD: '/change-password',
 
   // Private
 

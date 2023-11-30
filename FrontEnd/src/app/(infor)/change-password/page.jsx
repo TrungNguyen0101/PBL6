@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Button from '@/components/Button';
-import Header from '@/components/layout/Header';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -37,12 +36,10 @@ const ChangePasswordPage = () => {
       toast.success(res.message);
     }
   };
-
   return (
     <>
-      <Header></Header>
       <form
-        className="w-[800px] bg-[#f2f3f4] shadow-xl mx-auto mt-5 rounded-md p-8"
+        className="w-[800px] bg-[#f2f3f4] shadow-xl rounded-md p-8"
         onSubmit={handleSubmit(handleChangePassword)}
       >
         <h1 className="mb-3 text-2xl font-semibold text-center">
