@@ -6,7 +6,7 @@ const CategoryColumnContent = ({ data }) => {
     <>
       <div className="p-3 flex items-center gap-x-[10px]">
         {data?.descImage?.length > 0 &&
-          data?.descImage?.slice(0, 1)?.map((img, index) => (
+          data?.mainImage?.slice(0, 1)?.map((img, index) => (
             <Link
               className="w-[30%] h-[100px]"
               href={`/product/${data._id}`}

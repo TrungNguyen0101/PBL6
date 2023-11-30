@@ -3,24 +3,16 @@
 import Link from 'next/link';
 import routes from '@/constant/routes';
 import Button from '@/components/Button';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 import Image from 'next/image';
 import logo from '../../../assets/logo.png';
+import InforLogin from '@/components/InforLogin';
 
 export default function Header() {
   const pathname = usePathname();
-  const router = useRouter();
   const [auth, setAuth] = useState(null);
-  const handleLogout = () => {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('auth');
-    setAuth(null);
-    toast.success('Đăng xuất thành công');
-    router.push(routes.LOGIN);
-  };
   useEffect(() => {
     const auth = sessionStorage.getItem('auth');
     if (auth) {
@@ -59,15 +51,7 @@ export default function Header() {
       <div className="flex ml-auto gap-x-3">
         {auth ? (
           <>
-            <Link
-              href={routes.PROFILE}
-              className="border border-[#b08fff] w-max p-2 flex items-center justify-center rounded-md font-semibold text-sm"
-            >
-              Hello, welcome back {auth?.user?.username}
-            </Link>
-            <Button kind="primary" onClick={handleLogout}>
-              Logout
-            </Button>
+            <InforLogin />
           </>
         ) : (
           <>

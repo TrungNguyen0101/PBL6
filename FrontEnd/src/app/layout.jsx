@@ -43,20 +43,37 @@ export default function RootLayout({ children }) {
               f.parentNode.insertBefore(j, f);
             })(window, document, 'script', 'dataLayer', 'GTM-WV3P6XBH')}
         </Script> */}
+
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-Y35FP8XXTL"
+        ></Script>
+        <Script
+          id="clarity_script"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+
         <Script async src="https://www.googletagmanager.com/gtag/js?id=G-Y35FP8XXTL"></Script>
         <Script
             id="clarity_script"
             strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: `
+
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
             
               gtag('config', 'G-Y35FP8XXTL');
             `,
+
+          }}
+        />
+
             }}
           />
+
       </head>
       <body
         className={classNames(
