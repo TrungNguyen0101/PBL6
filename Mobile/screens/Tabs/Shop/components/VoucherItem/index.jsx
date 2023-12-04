@@ -8,7 +8,7 @@ export default function VoucherItem({ name, img, min, max }) {
     <View style={styles.wrapper}>
       <View style={styles.brandWrapper}>
         <Image style={styles.brandImg} source={img} />
-        <Text style={styles.brandName}>{name}</Text>
+        <Text style={[styles.brandName, { textAlign: 'center' }]}>{name}</Text>
       </View>
       <View style={styles.discountWrapper}>
         <Text style={styles.discountMin}>Giảm {min}</Text>

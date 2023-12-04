@@ -1,18 +1,18 @@
 import { ActivityIndicator, Dimensions, FlatList, Text, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 import styles from './styles';
+import colors from '../../../../../contains/colors';
 
 //axios
+import { get } from '../../../../../axios-config';
 
 //component
-import { useNavigation } from '@react-navigation/native';
-import colors from '../../contains/colors';
-import { get } from '../../axios-config';
-import CategoryCard from '../CategoryCard';
+import CategoryCard from '../../../../../components/CategoryCard';
 
-export default function CategorySection() {
+export default function Category() {
   const [categories, setCategories] = useState([])
   const navigation = useNavigation()
   const screenHeight = Dimensions.get('window').height
@@ -42,7 +42,7 @@ export default function CategorySection() {
   return (
     <View style={[styles.container, { height: screenHeight * 0.3 }]}>
       <View style={styles.titleWrapper}>
-        <FontAwesome name="bookmark" size={24} color={colors.blackColor} />
+        <FontAwesome name="bookmark" size={24} color={colors.primaryColor} />
         <Text style={styles.title}>Thể loại</Text>
       </View>
       {isLoading ? (
@@ -50,11 +50,13 @@ export default function CategorySection() {
       ) : (
         <FlatList
           data={categories}
-          renderItem={({ item }) => <CategoryCard
-            category={item}
-            navigation={navigation}
-            onPress={() => navigation?.navigate('CategoryProduct', { headerName: item?.label, categoryName: item?.label })}
-          />}
+          renderItem={({ item }) => (
+            <CategoryCard
+              category={item}
+              navigation={navigation}
+              onPress={() => navigation?.navigate('CategoryProduct', { headerName: item?.label, categoryName: item?.label })}
+            />
+          )}
           keyExtractor={(item) => `${item?.id}`}
           horizontal
           pagingEnabled

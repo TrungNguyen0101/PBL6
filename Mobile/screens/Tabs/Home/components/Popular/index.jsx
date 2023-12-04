@@ -8,17 +8,15 @@ import styles from './styles';
 import ProductInHomePageCard from '../../../../../components/ProductInHomePageCard';
 import { ProductContext } from '../../../../../context/ProductProvider';
 
-export default function Popular({ title, showIcon }) {
+export default function Popular() {
     const { products, isLoading } = useContext(ProductContext);
     const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
             <View style={styles.titleWrapper}>
-                {showIcon ?
-                    <FontAwesome5 name="book-open" size={24} color={colors.blackColor} />
-                    : ''}
-                <Text style={styles.title}>{title}</Text>
+                <FontAwesome5 name="book-open" size={24} color={colors.primaryColor} />
+                <Text style={styles.title}>Phổ biến</Text>
             </View>
             <View>
                 {isLoading ? (

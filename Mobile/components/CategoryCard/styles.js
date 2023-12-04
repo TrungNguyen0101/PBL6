@@ -27,13 +27,13 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   title: {
-    color: colors.whiteColor,
-    fontSize: 18,
+    color: colors.grayColor,
+    fontSize: 22,
     fontWeight: 'bold',
     alignItems: 'flex-end',
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 6,
+    textShadowColor: 'rgba(0, 0, 0, 1)',
+    textShadowOffset: { width: 1.5, height: 1.5 },
+    textShadowRadius: 16,
   },
 });
 

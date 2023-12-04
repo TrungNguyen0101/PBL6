@@ -8,7 +8,7 @@ import styles from './styles'
 import Banner from './components/Banner'
 import Popular from './components/Popular'
 import Search from './components/Search'
-import CategorySection from '../../../components/CategorySection'
+import Category from './components/Category'
 
 export default function Home() {
   return (
@@ -23,9 +23,9 @@ export default function Home() {
             case 'search':
               return <Search />;
             case 'category':
-              return <CategorySection />;
+              return <Category />;
             case 'popular':
-              return <Popular title={'Phổ biến'} showIcon={true} />;
+              return <Popular />;
             default:
               return null;
           }

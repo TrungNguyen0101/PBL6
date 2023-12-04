@@ -3,7 +3,7 @@ import styles from './styles';
 
 import VoucherList from './components/VoucherList';
 import TrendItemList from './components/TrendItemList';
-import CategorySection from '../../../components/CategorySection';
+import Category from '../Home/components/Category';
 
 export default function Shop() {
   const screenHeight = Dimensions.get('window').height
@@ -17,7 +17,7 @@ export default function Shop() {
         renderItem={({ item }) => {
           switch (item) {
             case 'category':
-              return <CategorySection />;
+              return <Category />;
             case 'trendItemList':
               return <TrendItemList />;
             case 'voucherList':
