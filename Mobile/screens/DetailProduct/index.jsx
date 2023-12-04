@@ -13,7 +13,6 @@ export default function DetailProduct() {
             <ScrollView style={{ flex: 1 }}>
                 <Overview />
                 <ListRate />
-                <Popular title={"Có thể bạn cũng thích"} />
             </ScrollView>
             <Filter />
         </SafeAreaView >

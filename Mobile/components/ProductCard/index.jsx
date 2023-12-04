@@ -5,14 +5,17 @@ import colors from '../../contains/colors'
 import { useNavigation } from '@react-navigation/native'
 import { ProductContext } from '../../context/ProductProvider'
 
-export default function ProductByCategoryCard({ product }) {
+export default function ProductCard({ product }) {
     const { setProductId } = useContext(ProductContext)
     const navigation = useNavigation()
+
+    const handleNavigateDetail = () => {
+        setProductId(product?._id)
+        navigation.navigate('DetailProduct')
+    }
+
     return (
-        <TouchableOpacity style={styles.shadow} onPress={() => {
-            setProductId(product?._id)
-            navigation.navigate('DetailProduct')
-        }}>
+        <TouchableOpacity style={styles.shadow} onPress={handleNavigateDetail}>
             <View style={styles.container}>
                 <Image style={styles.img} resizeMode="cover" source={{ uri: product?.mainImage[0].url }} />
                 <View style={styles.info}>

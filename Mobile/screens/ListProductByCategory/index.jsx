@@ -1,8 +1,8 @@
 import { FlatList, View } from 'react-native';
 import { useEffect, useState } from 'react';
-import ProductByCategoryCard from '../../components/ProductByCategoryCard';
 import styles from './styles';
 import { get } from '../../axios-config';
+import ProductCard from '../../components/ProductCard';
 
 export default function ListProductByCategory({ route }) {
     const { categoryName } = route.params;
@@ -27,13 +27,14 @@ export default function ListProductByCategory({ route }) {
                 data={filteredProducts}
                 numColumns={2}
                 contentContainerStyle={styles.container}
-                renderItem={({ item }) => (
-                    <View style={styles.innerWrapper}>
-                        <ProductByCategoryCard product={item} />
+                renderItem={({ item, index }) => (
+                    <View style={[styles.innerWrapper, index === filteredProducts.length - 1 && index % 2 === 0 ? { maxWidth: '50%' } : {}]}>
+                        <ProductCard product={item} />
                     </View>
                 )}
                 keyExtractor={(item) => `${item._id}`}
             />
         </View>
+
     );
 }

@@ -8,31 +8,31 @@ import VoucherItem from '../VoucherItem';
 const vouchers = [
   {
     id: 1,
-    name: 'Chanel',
+    name: 'Nhà xuất bản trẻ',
     minDiscount: '15%',
     maxDiscount: '15k',
-    img: require('../../../../../assets/Image/Brand/Chanel.jpg')
+    img: require('../../../../../assets/Image/Brand/bt.png')
   },
   {
     id: 2,
-    name: 'Starbucks',
+    name: 'Kim Đồng',
     minDiscount: '10%',
     maxDiscount: '25k',
-    img: require('../../../../../assets/Image/Brand/starbucks.jpg')
+    img: require('../../../../../assets/Image/Brand/kd.jpg')
   },
   {
     id: 3,
-    name: 'Nike',
+    name: 'Kho văn hay',
     minDiscount: '50%',
     maxDiscount: '250k',
-    img: require('../../../../../assets/Image/Brand/nike.jpg')
+    img: require('../../../../../assets/Image/Brand/kvh.jpg')
   },
   {
     id: 4,
-    name: 'Calvin Klein',
+    name: 'Vay tiền đi',
     minDiscount: '20%',
     maxDiscount: '25k',
-    img: require('../../../../../assets/Image/Brand/calvinKlein.jpg')
+    img: require('../../../../../assets/Image/Brand/vtd.jpg')
   },
 ]
 export default function VoucherList() {
@@ -46,7 +46,7 @@ export default function VoucherList() {
         data={vouchers}
         renderItem={({ item }) =>
           <View style={{ flex: 1, marginHorizontal: 8 }}>
-            <VoucherItem 
+            <VoucherItem
               name={item.name}
               img={item.img}
               min={item.minDiscount}

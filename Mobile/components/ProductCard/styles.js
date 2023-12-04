@@ -5,13 +5,13 @@ import colors from '../../contains/colors';
 const styles = StyleSheet.create({
   shadow: {
     shadowColor: colors.blackColor,
-    shadowOpacity: 0.1,
+    shadowOpacity: 1,
     shadowRadius: 12,
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: { width: 1, height: 1 },
     flex: 1,
   },
   container: {
-    marginBottom: 20,
+    marginBottom: 12,
     borderRadius: 4,
     backgroundColor: colors.whiteColor,
     overflow: 'hidden',
@@ -34,17 +34,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#888',
     flex: 1,
-  },
-  cartBtn: {
-    paddingHorizontal: 24,
-    paddingVertical: 4,
-    backgroundColor: colors.primaryColor,
-    borderRadius: 6,
-  },
-  cartText: {
-    textTransform: 'uppercase',
-    fontSize: 16,
-    color: colors.whiteColor,
   },
 });
 

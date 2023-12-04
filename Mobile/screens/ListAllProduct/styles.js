@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.grayColor,
   },
   container: {
-    paddingVertical: 8,
+    paddingTop: 4,
   },
   innerWrapper: {
     flex: 1,
