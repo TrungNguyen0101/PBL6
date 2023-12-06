@@ -1,20 +1,23 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import '../style/styled.scss';
-import { useParams } from 'next/navigation';
-import axios from 'axios';
-import { format, parseISO } from 'date-fns';
+import Raiting from '@/components/Raiting';
+import LoadingPage from '@/components/LoadingPage';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-import { getAllBooksByDiscount, getBookById } from '@/services/bookService';
-import LoadingPage from '@/components/LoadingPage';
-import { getOrderByAccount, postOrder } from '@/services/orderService';
+import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
-import Raiting from '@/components/Raiting';
-import { Avatar, Badge } from 'antd';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper';
+import { getOrderByAccount, postOrder } from '@/services/orderService';
+import { getAllCommentByBook, postComment } from '@/services/commentService';
+import { getAllBooksByDiscount, getBookById } from '@/services/bookService';
+import { format } from 'date-fns';
+import { Badge } from 'antd';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import '../style/styled.scss';
+import '../style/SwiperButton.scss';
+import { da } from 'date-fns/locale';
 
 const ProductDetail = () => {
   const [routeLoading, setRouteLoading] = useState(false);
@@ -24,6 +27,8 @@ const ProductDetail = () => {
   const [bookDiscount, setBookDiscount] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(1);
+  const [listCommentByBook, setListCommentByBook] = useState([]);
+  const [comment, setComment] = useState('');
   const { id } = useParams();
   const parsedDate = new Date(book !== undefined && book?.datePicker);
   const formattedDate = format(parsedDate, 'dd/MM/yyyy');
@@ -79,6 +84,21 @@ const ProductDetail = () => {
     }
   };
 
+  const fetchAllCommentByBook = async () => {
+    const res = await getAllCommentByBook(id);
+    if (res && res?.data) {
+      setListCommentByBook(res?.data?.comments);
+    }
+    console.log('check res', res);
+  };
+  const handleAddComment = async () => {
+    const res = await postComment(id, comment);
+    if (res && res.data) {
+      fetchAllCommentByBook();
+      setComment('');
+      toast.success(res.message);
+    }
+  };
   useEffect(() => {
     try {
       const handleGetBookByDiscount = async () => {
@@ -115,6 +135,11 @@ const ProductDetail = () => {
     handleGetLengthCart();
   }, [orderLength]);
 
+  useEffect(() => {
+    fetchAllCommentByBook();
+  }, []);
+  const date = new Date('2023-12-06T14:17:25.387Z');
+  console.log('date', date);
   return (
     <section className="content">
       {isLoading ? (
@@ -580,9 +605,10 @@ const ProductDetail = () => {
                       rows="8"
                       required
                       className="resize-none"
+                      onChange={(event) => setComment(event.target.value)}
                     ></textarea>
                   </p>
-                  <button className="form-submit">
+                  <button className="form-submit" onClick={handleAddComment}>
                     <input
                       name="submit"
                       type="submit"
@@ -596,60 +622,68 @@ const ProductDetail = () => {
             </div>
           </div>
           {/* <!-- End Customer Reviews -->/ */}
-          <div className="px-[20px]">
+          <div className="px-[20px] list-comment">
             <div className="reviews-heading mb-[10px]">
               <h3 className="label-comment">
                 Reviews for
-                <span className="font-semibold"> {book?.booktitle}</span>
+                <span className="font-semibold">{book?.booktitle}</span>
               </h3>
             </div>
             <Swiper
-              modules={[Pagination]}
+              modules={[Navigation, Pagination]}
               spaceBetween={20}
-              slidesPerView={2}
-              // navigation
+              slidesPerView={3}
+              navigation
               grabCursor={'true'}
-              pagination={{ clickable: true }}
               className="pb-[40px]"
             >
-              <SwiperSlide>
-                <div className="bg-[#f8f8f8] review-card p-[10px] rounded-lg">
-                  <div className="card-top">
-                    <div className="profile">
-                      <div className="profile-image">
-                        <Image
-                          src={book?.mainImage[0]?.url}
-                          alt="123"
-                          width={100}
-                          height={100}
-                        />
-                      </div>
-                      <div className="profile-name">
-                        <strong>My Nguyen</strong>
-                        <div className="likes">
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
+              {listCommentByBook?.length > 0 &&
+                listCommentByBook?.map((cmt, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="bg-[#f8f8f8] review-card p-[10px] rounded-lg">
+                      <div className="card-top">
+                        <div className="profile">
+                          <div className="profile-image">
+                            <Image
+                              src={cmt?.user?.avatar}
+                              alt=""
+                              width={100}
+                              height={100}
+                            />
+                          </div>
+                          <div className="profile-name">
+                            <strong>{cmt?.user?.username}</strong>
+                            <div className="likes">
+                              <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
+                              <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
+                              <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
+                              <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
+                              <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
+                            </div>
+                          </div>
+                          <div className="comment-date">
+                            <span>
+                              {`${new Date(cmt?.createdAt).getDate()}-${
+                                new Date(cmt?.createdAt).getMonth() + 1
+                              }-${new Date(cmt?.createdAt).getFullYear()}`}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                      <div className="comment-date">
-                        <span>July 6 ,2023</span>
+                      <div className="card-main">
+                        <p>{cmt?.comment}</p>
+                      </div>
+                      <div className="flex mt-1 cursor-pointer gap-x-2">
+                        <span title="Edit">
+                          <FaEdit />
+                        </span>
+                        <span title="Delete">
+                          <FaTrashAlt />
+                        </span>
                       </div>
                     </div>
-                  </div>
-                  <div className="card-main">
-                    <p>
-                      A seemingly elegant design can quickly begin to bloat with
-                      unexpected content or break under the weight of actual
-                      activity. Fake data can ensure a nice looking layout but
-                      it doesn’t reflect what a living, breathing application
-                      must endure. Real data does.
-                    </p>
-                  </div>
-                </div>
-              </SwiperSlide>
+                  </SwiperSlide>
+                ))}
             </Swiper>
           </div>
         </div>
