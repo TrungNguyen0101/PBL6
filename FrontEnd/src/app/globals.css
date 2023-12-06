@@ -12,7 +12,8 @@
     padding: 0 20px;
   }
   .book-list .swiper,
-  .category-list .swiper {
+  .category-list .swiper,
+  .list-comment .swiper {
     height: 100%;
   }
   .button-next,
