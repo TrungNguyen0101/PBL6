@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
-import colors from '../../../contains/colors';
+import colors from '../../../contains/colors'
 
 const styles = StyleSheet.create({
   container: {
@@ -88,6 +88,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     gap: 8,
   },
-});
+})
 
-export default styles;
+export default styles

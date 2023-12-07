@@ -1,19 +1,24 @@
-import React, { createContext, useMemo, useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { createContext, useMemo, useState } from 'react'
 
-export const StateContext = createContext();
+export const StateContext = createContext()
 
 function StateProvider({ children }) {
-    const [StateEnableUpdate, setStateEnableUpdate] = useState(false)
-    const contextValue = useMemo(() => ({
-        StateEnableUpdate,
-        setStateEnableUpdate,
-    }), [StateEnableUpdate]);
+  const [StateEnableUpdate, setStateEnableUpdate] = useState(false)
 
-    return (
-        <StateContext.Provider value={contextValue}>
-            {children}
-        </StateContext.Provider>
-    );
+  const contextValue = useMemo(
+    () => ({
+      StateEnableUpdate,
+      setStateEnableUpdate,
+    }),
+    [StateEnableUpdate],
+  )
+
+  return (
+    <StateContext.Provider value={contextValue}>
+      {children}
+    </StateContext.Provider>
+  )
 }
 
-export default StateProvider;
+export default StateProvider

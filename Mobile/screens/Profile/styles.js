@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
-import colors from '../../contains/colors';
+import colors from '../../contains/colors'
 
 const styles = StyleSheet.create({
   backWrapper: {
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     flex: 3,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: colors.blackColor
+    borderColor: colors.blackColor,
   },
   errorText: {
     alignSelf: 'flex-end',
@@ -73,6 +73,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
-});
+})
 
-export default styles;
+export default styles

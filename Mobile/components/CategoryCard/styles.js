@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
-import colors from '../../contains/colors';
+import colors from '../../contains/colors'
 
 const styles = StyleSheet.create({
   container: {
@@ -35,6 +35,6 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: 1.5, height: 1.5 },
     textShadowRadius: 16,
   },
-});
+})
 
-export default styles;
+export default styles

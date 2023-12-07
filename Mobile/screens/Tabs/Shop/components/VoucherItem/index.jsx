@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 

@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
-import colors from '../../../../../contains/colors';
+import colors from '../../../../../contains/colors'
 
 const styles = StyleSheet.create({
   titleWrapper: {
@@ -18,6 +18,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
-});
+})
 
-export default styles;
+export default styles

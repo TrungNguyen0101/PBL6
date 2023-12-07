@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
-import colors from '../../../../../contains/colors';
+import colors from '../../../../../contains/colors'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
     color: colors.whiteColor,
     fontWeight: '500',
   },
-});
+})
 
-export default styles;
+export default styles

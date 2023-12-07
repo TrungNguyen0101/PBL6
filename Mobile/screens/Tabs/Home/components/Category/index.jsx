@@ -1,42 +1,51 @@
-import { ActivityIndicator, Dimensions, FlatList, Text, View } from 'react-native';
-import { useEffect, useState } from 'react';
-import { FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+/* eslint-disable react/react-in-jsx-scope */
+import {
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  Text,
+  View,
+} from 'react-native'
+import { useEffect, useState } from 'react'
+import { FontAwesome } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
-import styles from './styles';
-import colors from '../../../../../contains/colors';
+import styles from './styles'
+import colors from '../../../../../contains/colors'
 
 //axios
-import { get } from '../../../../../axios-config';
+import { get } from '../../../../../axios-config'
 
 //component
-import CategoryCard from '../../../../../components/CategoryCard';
+import CategoryCard from '../../../../../components/CategoryCard'
 
 export default function Category() {
   const [categories, setCategories] = useState([])
   const navigation = useNavigation()
   const screenHeight = Dimensions.get('window').height
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true)
 
   const getData = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       const response = await get('/category')
-      const categoryObjects = response?.data?.data?.categories.map((category, index) => ({
-        id: index + 1,
-        label: category?.label,
-        value: category?.value,
-      }));
-      setCategories(categoryObjects);
+      const categoryObjects = response?.data?.data?.categories.map(
+        (category, index) => ({
+          id: index + 1,
+          label: category?.label,
+          value: category?.value,
+        }),
+      )
+      setCategories(categoryObjects)
     } catch (error) {
-      throw error
+      console.log(error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
   }
 
   useEffect(() => {
-    getData();
+    getData()
   }, [])
 
   return (
@@ -54,14 +63,19 @@ export default function Category() {
             <CategoryCard
               category={item}
               navigation={navigation}
-              onPress={() => navigation?.navigate('CategoryProduct', { headerName: item?.label, categoryName: item?.label })}
+              onPress={() =>
+                navigation?.navigate('CategoryProduct', {
+                  headerName: item?.label,
+                  categoryName: item?.label,
+                })
+              }
             />
           )}
           keyExtractor={(item) => `${item?.id}`}
           horizontal
           pagingEnabled
-        />)}
+        />
+      )}
     </View>
-  );
+  )
 }
-
