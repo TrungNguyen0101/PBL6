@@ -1,13 +1,12 @@
 import { ActivityIndicator, FlatList, Text, View } from 'react-native'
 import React, { useContext } from 'react'
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons'
 
 import styles from '../VoucherList/styles'
 import colors from '../../../../../contains/colors'
-import { ProductContext } from '../../../../../context/ProductProvider';
-import ProductCard from '../../../../../components/ProductCard';
+import { ProductContext } from '../../../../../context/ProductProvider'
+import ProductCard from '../../../../../components/ProductCard'
 export default function TrendItemList() {
-
   const { products, isLoading } = useContext(ProductContext)
   return (
     <View style={{ flex: 2 }}>
@@ -30,13 +29,11 @@ export default function TrendItemList() {
                 </View>
               )
             }
-            return;
-          }
-          }
+            return
+          }}
           keyExtractor={(item) => `${item._id}`}
         />
       )}
     </View>
-  );
-
+  )
 }

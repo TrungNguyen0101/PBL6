@@ -19,15 +19,15 @@ export default function Home() {
         renderItem={({ item }) => {
           switch (item) {
             case 'banner':
-              return <Banner />;
+              return <Banner />
             case 'search':
-              return <Search />;
+              return <Search />
             case 'category':
-              return <Category />;
+              return <Category />
             case 'popular':
-              return <Popular />;
+              return <Popular />
             default:
-              return null;
+              return null
           }
         }}
       />
