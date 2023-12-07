@@ -122,19 +122,15 @@ body {
 <!-- *********************88--> */
 .cart-table {
   background-color: var(--bcg-description-color);
-  margin-left: -25px;
-  margin-right: -25px;
   display: flex;
-  flex-wrap: wrap;
-  padding: 40px 30px;
+  padding: 20px;
 }
 
 .product-list {
   -webkit-box-align: stretch;
   align-items: stretch;
-  padding: 25px;
+  padding: 15px;
   width: 65%;
-  margin-top: 23px !important;
 }
 
 .cart-table-section > .cart {
@@ -182,7 +178,7 @@ th.product-thumbnail {
 
 th.product-name {
   text-align: left;
-  width: 500px;
+  // width: 500px;
 }
 
 table td {
@@ -204,7 +200,7 @@ td.product-remove button {
 
 td.product-thumbnail > a {
   display: block;
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 td.product-thumbnail img {
@@ -302,16 +298,10 @@ td.product-name a span:hover {
 <!--  cart-totals -->
 <!-- *********************88--> */
 .cart-totals {
-  margin-left: 20px;
   height: min-content;
-  width: 463.325px;
   position: relative;
   align-items: stretch;
-  padding-top: 30px !important;
-  padding-right: 30px !important;
-  padding-left: 30px !important;
-  padding-bottom: 50px !important;
-  background-color: #f7f7f7 !important;
+  padding: 15px;
   border-radius: 5px !important;
 }
 

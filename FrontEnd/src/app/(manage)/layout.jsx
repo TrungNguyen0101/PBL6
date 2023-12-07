@@ -1,6 +1,11 @@
+'use client';
+import { useState } from 'react';
 import { Overlay } from './components/Overlay';
 import { TopBar } from './components/TopBar';
 import { Sidebar } from './components/sidebar/Sidebar';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 const style = {
   container: 'bg-gray-900 h-screen overflow-hidden relative',
@@ -9,6 +14,16 @@ const style = {
 };
 
 function LayoutAdmin({ children }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    const auth = JSON.parse(sessionStorage.getItem('auth'));
+    if (auth?.user?.roleID !== '1') {
+      router.push('/');
+      toast.error('You do not have access');
+    }
+  }, []);
+
   return (
     <div className={style.container}>
       <div className="flex items-start">

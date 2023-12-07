@@ -1,14 +1,15 @@
-'use client'
+'use client';
 
 import React from 'react';
 import Button from '@/components/Button';
-import Header from '@/components/layout/Header';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import InputTogglePassword from '@/components/InputTogglePassword';
 import { changePassword } from '@/services/authService';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import routes from '@/constant/routes';
 
 const schema = yup
   .object({
@@ -17,6 +18,7 @@ const schema = yup
   .required();
 
 const ChangePasswordPage = () => {
+  const router = useRouter();
   const {
     handleSubmit,
     control,
@@ -27,32 +29,31 @@ const ChangePasswordPage = () => {
   });
   const handleChangePassword = async (values) => {
     const res = await changePassword(values.oldPassword, values.newPassword);
-    console.log("check res,", res);
-    // console.log(values);
     if (res.status === 500) {
       toast.error(res.message);
-    }
-    else if (res.status === 200) {
+    } else if (res.status === 200) {
+      router.push(routes.HOME);
       toast.success(res.message);
     }
   };
-
   return (
     <>
-      <Header></Header>
       <form
-        className="w-[800px] bg-[#f2f3f4] shadow-xl mx-auto mt-5 rounded-md p-8"
+        className="w-[800px] bg-[#f2f3f4] shadow-xl rounded-md p-8"
         onSubmit={handleSubmit(handleChangePassword)}
       >
         <h1 className="mb-3 text-2xl font-semibold text-center">
           Đổi mật khẩu
         </h1>
-        <p className='font-semibold text-sm text-center mb-3'>Mật khẩu của bạn phải có ít nhất 6 ký tự, bao gồm cả chữ số, chữ cái và ký tự đặc biệt</p>
+        <p className="mb-3 text-sm font-semibold text-center">
+          Mật khẩu của bạn phải có ít nhất 6 ký tự, bao gồm cả chữ số, chữ cái
+          và ký tự đặc biệt
+        </p>
         <>
           <InputTogglePassword
             name="oldPassword"
             control={control}
-            label='Nhập mật khẩu hiện tại'
+            label="Nhập mật khẩu hiện tại"
           />
           <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
             {errors?.oldPassword && errors.oldPassword.message}
@@ -62,7 +63,7 @@ const ChangePasswordPage = () => {
           <InputTogglePassword
             name="newPassword"
             control={control}
-            label='Nhập mật khẩu mới'
+            label="Nhập mật khẩu mới"
           />
           <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
             {errors?.newPassword && errors.newPassword.message}
@@ -72,7 +73,7 @@ const ChangePasswordPage = () => {
           <InputTogglePassword
             name="repeatPassword"
             control={control}
-            label='Nhập lại mật khẩu mới'
+            label="Nhập lại mật khẩu mới"
           />
           <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
             {errors?.repeatPassword && errors.repeatPassword.message}

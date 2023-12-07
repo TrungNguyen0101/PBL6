@@ -1,34 +1,30 @@
-import routes from '@/constant/routes';
-import Link from 'next/link';
 import React from 'react';
-import { AiFillStar } from 'react-icons/ai';
+import Link from 'next/link';
 
-const CategoryColumnContent = () => {
+const CategoryColumnContent = ({ data }) => {
   return (
     <>
-      <div class="p-3 flex items-start gap-x-2" id="1">
-        <div class="w-[70px] h-[90px]">
-          <img
-            src="https://gamek.mediacdn.vn/133514250583805952/2021/3/18/cona7-1616045526983664603292.jpg"
-            alt=""
-            class="w-full h-full object-cover"
-          />
-        </div>
-        <div class="item-content">
-          <div class="item-name">
-            <Link href={routes.HOME}>
-              <span>Conan Movie 20</span>
+      <div className="p-3 flex items-center gap-x-[10px]">
+        {data?.descImage?.length > 0 &&
+          data?.mainImage?.slice(0, 1)?.map((img, index) => (
+            <Link
+              className="w-[30%] h-[100px]"
+              href={`/product/${data._id}`}
+              key={index}
+            >
+              <img
+                src={img?.url}
+                alt=""
+                className="object-cover w-full h-full rounded-md"
+              />
             </Link>
+          ))}
+        <div className="font-semibold w-[70%]">
+          <p className="mb-1 text-sm leading-5">{data?.booktitle}</p>
+          <div className="flex items-center justify-between">
+            <p className="text-[#bc1313dd] text-xs">{data?.author}</p>
+            <p className="text-[#bc1313dd] text-xs">{data?.price}</p>
           </div>
-          <div class="item-review">
-            <p className="flex items-center gap-x-[2px]">
-              5
-              <AiFillStar color="#eabe12" />
-            </p>
-          </div>
-          <>
-            <span className="text-[#bc1313dd]">$49.99</span>
-          </>
         </div>
       </div>
     </>

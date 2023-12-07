@@ -18,6 +18,7 @@ import {
 import LoadingAnt from '@/components/Loading';
 import ModalAnt from '@/components/ModalAnt';
 import axios from 'axios';
+import { getAllBook, getBookById } from '@/services/bookService';
 
 export default function ProductPage() {
   const checkAdd = useSelector((state) => state.form.checkAdd);
@@ -30,17 +31,16 @@ export default function ProductPage() {
   const [listBook, setListBook] = useState([]);
 
   const hanleGetBookById = async (idBook) => {
-    const { data } = await axios.get(
-      `http://localhost:3030/api/book/${idBook}`
-    );
-    if (data?.data) {
-      setBook(data.data.book);
+    const { data } = await getBookById(idBook);
+    if (data) {
+      setBook(data.book);
     }
   };
 
   const hanldeGetAllBooks = async () => {
-    const { data } = await axios.get('http://localhost:3030/api/book');
-    setListBook(data.data.books);
+    // const { data } = await axios.get('http://host:3030/api/book');
+    const { data } = await getAllBook();
+    setListBook(data.books);
   };
 
   const handleCheckAdd = () => {
@@ -65,6 +65,7 @@ export default function ProductPage() {
       dispatch(prevForm());
     }
   };
+
   return (
     <>
       {!checkAdd ? (
@@ -83,6 +84,7 @@ export default function ProductPage() {
           <TableData
             handleOnEdit={handleOnEdit}
             listBook={listBook}
+            hanldeGetAllBooks={hanldeGetAllBooks}
           ></TableData>
         </div>
       ) : (

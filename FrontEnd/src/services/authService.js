@@ -15,10 +15,11 @@ const postSignUp = (username, email, password) => {
   });
 };
 
-const updateInforUser = (username, phoneNumber) => {
+const updateInforUser = (username, phoneNumber, avatar) => {
   return instance.put('user/update', {
     username,
     phoneNumber,
+    avatar,
   });
 };
 
@@ -28,6 +29,9 @@ const forgotPassword = (email) => {
   });
 };
 
+const getAllAccount = () => {
+  return instance.get('user/getallaccount');
+};
 const sendCodeVerify = () => {
   return instance.post('user/sendcode-verify');
 };
@@ -38,6 +42,13 @@ const verifyCode = (code) => {
   });
 };
 
+const changePassword = (oldpassword, newpassword) => {
+  return instance.post('user/change-password', {
+    oldpassword,
+    newpassword,
+  });
+};
+
 export {
   postSignIn,
   postSignUp,
@@ -45,4 +56,6 @@ export {
   forgotPassword,
   sendCodeVerify,
   verifyCode,
+  changePassword,
+  getAllAccount,
 };

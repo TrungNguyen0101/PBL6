@@ -3,8 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { Button, Popconfirm, Table, message } from 'antd';
 import './styled.scss';
 import axios from 'axios';
+import { deleteBook, getAllBook } from '@/services/bookService';
+import Link from 'next/link';
+import LoadingPage from '@/components/LoadingPage';
 
-const TableData = ({ handleOnEdit, listBook }) => {
+const TableData = ({ handleOnEdit, listBook, hanldeGetAllBooks }) => {
   const columns = [
     {
       title: 'Title',
@@ -43,13 +46,12 @@ const TableData = ({ handleOnEdit, listBook }) => {
       key: 'quantity',
       width: 10,
     },
-
     {
       title: 'Action',
       key: 'action',
       width: 10,
       render: (text, record) => (
-        <div className="flex items-center gap-x-[10px] pl-[-10px] ml-[-10px]">
+        <div className="flex items-center gap-x-[10px] ">
           <Popconfirm
             title="Are you sure to delete this record?"
             onConfirm={() => handleDelete(record._id)}
@@ -57,7 +59,7 @@ const TableData = ({ handleOnEdit, listBook }) => {
             okText="Yes"
             cancelText="No"
           >
-            <Button type="danger" size="small">
+            <Button type="danger" size="small" className="p-0">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="22"
@@ -84,15 +86,39 @@ const TableData = ({ handleOnEdit, listBook }) => {
               />
             </svg>
           </button>
+          <Link href={`product/${record._id}`}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 48 48"
+            >
+              <g fill="none">
+                <path
+                  d="M29 24.048a5 5 0 1 1-1.748-3.798a1.5 1.5 0 1 0 .547.547A4.98 4.98 0 0 1 29 24.046z"
+                  fill="currentColor"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M44 24.048s-11-12-19.947-12c-8.948 0-20.053 12-20.053 12s11.105 12 20.053 12c8.947 0 19.947-12 19.947-12zM7.255 23.62c-.158.15-.306.292-.444.427a59.368 59.368 0 0 0 5.08 4.416a43.151 43.151 0 0 0 3.518 2.455A10.954 10.954 0 0 1 13 24.048c0-2.6.902-4.988 2.41-6.87a43.176 43.176 0 0 0-3.518 2.454a59.368 59.368 0 0 0-4.637 3.989zm28.9 4.846a42.227 42.227 0 0 1-3.64 2.546A10.955 10.955 0 0 0 35 24.048c0-2.643-.932-5.068-2.485-6.965a42.227 42.227 0 0 1 3.64 2.545a58.582 58.582 0 0 1 5.047 4.42l-.446.433a58.582 58.582 0 0 1-4.6 3.986zM24 33.047a9 9 0 1 0 0-18a9 9 0 0 0 0 18z"
+                  fill="currentColor"
+                />
+              </g>
+            </svg>
+          </Link>
         </div>
       ),
     },
   ];
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const handleDelete = (rowId) => {
-    const updatedData = data.filter((row) => row._id !== rowId);
-    setData(updatedData);
+  const handleDelete = async (rowId) => {
+    const result = await deleteBook(rowId);
+    console.log('file: index.jsx:117 ~ handleDelete ~ result:', result);
+    // const updatedData = data.filter((row) => row._id !== rowId);
+    // setData(updatedData);
+    hanldeGetAllBooks();
     message.success('Record deleted successfully');
   };
   const handleEdit = (rowId) => {
@@ -103,8 +129,8 @@ const TableData = ({ handleOnEdit, listBook }) => {
     try {
       setIsLoading(true);
       const hanldeGetAllBooks = async () => {
-        const { data } = await axios.get('http://localhost:3030/api/book');
-        setData(data.data.books);
+        const { data } = await getAllBook();
+        setData(data?.books);
         setIsLoading(false);
       };
       hanldeGetAllBooks();
@@ -121,7 +147,9 @@ const TableData = ({ handleOnEdit, listBook }) => {
   return (
     <div className="max-h-[400px]">
       {isLoading ? (
-        <div></div>
+        <div className="mx-auto mt-10 w-max">
+          <LoadingPage></LoadingPage>
+        </div>
       ) : (
         <Table
           columns={columns}
@@ -129,8 +157,8 @@ const TableData = ({ handleOnEdit, listBook }) => {
           className="max-h-[400px]"
           pagination={{
             showSizeChanger: true, // Hiển thị tùy chọn lựa chọn pageSize
-            pageSizeOptions: ['4', '8', '12'], // Các tùy chọn pageSize
-            defaultPageSize: 4, // Kích thước mặc định của pageSize
+            pageSizeOptions: ['3', '6', '9'], // Các tùy chọn pageSize
+            defaultPageSize: 3, // Kích thước mặc định của pageSize
           }}
           scroll={{
             x: 800,
