@@ -11,6 +11,7 @@ import 'swiper/scss/pagination';
 import 'swiper/css/navigation';
 import 'swiper/scss';
 import '../../node_modules/nprogress/nprogress.css';
+import 'sweetalert2/src/sweetalert2.scss';
 import { ToastContainer } from 'react-toastify';
 import { Provider } from 'react-redux';
 import store from '@/redux/store';
