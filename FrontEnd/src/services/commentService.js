@@ -10,4 +10,8 @@ const postComment = (idBook, comment) => {
   });
 };
 
-export { getAllCommentByBook, postComment };
+const deleteCommnet = (idComment) => {
+  return instance.delete(`book/comments/${idComment}/delete`);
+};
+
+export { getAllCommentByBook, postComment, deleteCommnet };

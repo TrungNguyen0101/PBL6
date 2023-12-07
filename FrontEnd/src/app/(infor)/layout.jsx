@@ -5,7 +5,7 @@ export default function AuthLayout({ children }) {
   return (
     <div>
       <Header />
-      <div className="flex items-start pl-[200px] gap-x-5 mt-5">
+      <div className="flex items-start justify-center gap-x-5 mt-5">
         <Sidebar />
         {children}
       </div>

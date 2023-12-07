@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Raiting from '@/components/Raiting';
 import LoadingPage from '@/components/LoadingPage';
 import Link from 'next/link';
@@ -10,7 +10,11 @@ import { toast } from 'react-toastify';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper';
 import { getOrderByAccount, postOrder } from '@/services/orderService';
-import { getAllCommentByBook, postComment } from '@/services/commentService';
+import {
+  deleteCommnet,
+  getAllCommentByBook,
+  postComment,
+} from '@/services/commentService';
 import { getAllBooksByDiscount, getBookById } from '@/services/bookService';
 import { format } from 'date-fns';
 import { Badge } from 'antd';
@@ -18,6 +22,7 @@ import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import '../style/styled.scss';
 import '../style/SwiperButton.scss';
 import { da } from 'date-fns/locale';
+import Swal from 'sweetalert2';
 
 const ProductDetail = () => {
   const [routeLoading, setRouteLoading] = useState(false);
@@ -29,6 +34,8 @@ const ProductDetail = () => {
   const [count, setCount] = useState(1);
   const [listCommentByBook, setListCommentByBook] = useState([]);
   const [comment, setComment] = useState('');
+  const [auth, setAuth] = useState(null);
+  const cmtRef = useRef();
   const { id } = useParams();
   const parsedDate = new Date(book !== undefined && book?.datePicker);
   const formattedDate = format(parsedDate, 'dd/MM/yyyy');
@@ -89,15 +96,53 @@ const ProductDetail = () => {
     if (res && res?.data) {
       setListCommentByBook(res?.data?.comments);
     }
-    console.log('check res', res);
   };
   const handleAddComment = async () => {
+    const auth = sessionStorage.getItem('auth');
+    if (!auth) {
+      toast.warning('Vui lòng đăng nhập!!!');
+      return;
+    }
     const res = await postComment(id, comment);
     if (res && res.data) {
       fetchAllCommentByBook();
       setComment('');
+      cmtRef.current.value = '';
       toast.success(res.message);
     }
+  };
+  const handleDeleteComment = (idComment) => {
+    const auth = sessionStorage.getItem('auth');
+    if (!auth) {
+      toast.warning('Bạn chưa đăng nhập!!!');
+      return;
+    }
+    Swal.fire({
+      title: 'Bạn có muốn xóa comment này?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Vâng, hãy xóa nó!',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await deleteCommnet(idComment);
+        if (res && res.message === 'Comment successfully deleted') {
+          Swal.fire({
+            title: 'Xóa!',
+            text: 'Comment đã được xóa!',
+            icon: 'success',
+          });
+          fetchAllCommentByBook();
+        } else {
+          Swal.fire({
+            title: 'Xóa!',
+            text: 'Comment chưa được xóa!',
+            icon: 'error',
+          });
+        }
+      }
+    });
   };
   useEffect(() => {
     try {
@@ -138,8 +183,13 @@ const ProductDetail = () => {
   useEffect(() => {
     fetchAllCommentByBook();
   }, []);
-  const date = new Date('2023-12-06T14:17:25.387Z');
-  console.log('date', date);
+
+  useEffect(() => {
+    const auth = sessionStorage.getItem('auth');
+    if (auth) {
+      setAuth(JSON.parse(auth));
+    }
+  }, []);
   return (
     <section className="content">
       {isLoading ? (
@@ -599,6 +649,7 @@ const ProductDetail = () => {
                       <span className="require">*</span>
                     </label>
                     <textarea
+                      ref={cmtRef}
                       name="comment"
                       id="comment"
                       cols="45"
@@ -670,16 +721,17 @@ const ProductDetail = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="card-main">
+                      <div className="card-main flex items-center gap-x-5 justify-between">
                         <p>{cmt?.comment}</p>
-                      </div>
-                      <div className="flex mt-1 cursor-pointer gap-x-2">
-                        <span title="Edit">
-                          <FaEdit />
-                        </span>
-                        <span title="Delete">
-                          <FaTrashAlt />
-                        </span>
+                        {auth?.user?._id === cmt?.id_user && (
+                          <span
+                            title="Delete"
+                            className="mt-[5px] cursor-pointer"
+                            onClick={() => handleDeleteComment(cmt?._id)}
+                          >
+                            <FaTrashAlt />
+                          </span>
+                        )}
                       </div>
                     </div>
                   </SwiperSlide>
