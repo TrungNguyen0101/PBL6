@@ -29,6 +29,9 @@ const forgotPassword = (email) => {
   });
 };
 
+const getAllAccount = () => {
+  return instance.get('user/getallaccount');
+};
 const sendCodeVerify = () => {
   return instance.post('user/sendcode-verify');
 };
@@ -54,4 +57,5 @@ export {
   sendCodeVerify,
   verifyCode,
   changePassword,
+  getAllAccount,
 };
