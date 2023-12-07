@@ -4,7 +4,8 @@ let $ = require('jquery');
 const request = require('request');
 const moment = require('moment');
 const vnpayConfig = require('../config/vnpay')
-
+const db = require("../models/index")
+const middleware = require("../utils/middleware.js");
 router.get('/', function (req, res, next) {
     res.render('orderlist', { title: 'Danh sách đơn hàng' });
 });
@@ -55,9 +56,7 @@ router.post('/create_payment_url', function (req, res, next) {
     if (bankCode !== null && bankCode !== '') {
         vnp_Params['vnp_BankCode'] = bankCode;
     }
-
     vnp_Params = sortObject(vnp_Params);
-    console.log(vnp_Params)
     let querystring = require('qs');
     let signData = querystring.stringify(vnp_Params, { encode: false });
     let crypto = require("crypto");
@@ -71,7 +70,6 @@ router.post('/create_payment_url', function (req, res, next) {
 
 router.get('/vnpay_return', function (req, res, next) {
     let vnp_Params = req.query;
-
     let secureHash = vnp_Params['vnp_SecureHash'];
 
     delete vnp_Params['vnp_SecureHash'];
@@ -79,9 +77,8 @@ router.get('/vnpay_return', function (req, res, next) {
 
     vnp_Params = sortObject(vnp_Params);
 
-    let config = require('config');
-    let tmnCode = config.get('vnp_TmnCode');
-    let secretKey = config.get('vnp_HashSecret');
+    let tmnCode = vnpayConfig.vnp_TmnCode;
+    let secretKey = vnpayConfig.vnp_HashSecret;
 
     let querystring = require('qs');
     let signData = querystring.stringify(vnp_Params, { encode: false });
@@ -91,7 +88,6 @@ router.get('/vnpay_return', function (req, res, next) {
 
     if (secureHash === signed) {
         //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-
         res.render('success', { code: vnp_Params['vnp_ResponseCode'] })
     } else {
         res.render('success', { code: '97' })
