@@ -5,13 +5,13 @@ import { Pie } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip } from 'chart.js';
 Chart.register(ArcElement, Tooltip);
 
-function ChartPie() {
+function ChartPie({role}) {
   const data = {
-    labels: ['Admin', 'Manage', 'User'],
+    labels: ['Admin', 'User'],
     datasets: [
       {
         label: 'Total Account',
-        data: [5, 10, 20],
+        data: [role.role1, role.role3],
         backgroundColor: [
           'rgb(255, 99, 132)',
           'rgb(54, 162, 235)',
@@ -73,13 +73,13 @@ function ChartPie() {
       </div>
       <figcaption className="flex flex-wrap items-center gap-x-[15px] mt-[10px] gap-y-[10px]">
         <div className="flex items-center gap-x-[10px]">
-          <div className="bg-[#ffcd56] w-[50px] h-[20px]" />
+          <div className="bg-[#36a2eb] w-[50px] h-[20px]" />
           <span>User</span>
         </div>
-        <div className="flex items-center gap-x-[10px]">
+        {/* <div className="flex items-center gap-x-[10px]">
           <div className="bg-[#36a2eb] w-[50px] h-[20px]" />
           <span>Manage</span>
-        </div>
+        </div> */}
         <div className="flex items-center gap-x-[10px]">
           <div className="bg-[#ff6384] w-[50px] h-[20px]" />
           <span>Admin</span>
