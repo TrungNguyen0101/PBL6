@@ -5,7 +5,7 @@ import Raiting from '@/components/Raiting';
 import LoadingPage from '@/components/LoadingPage';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper';
@@ -25,6 +25,7 @@ import { da } from 'date-fns/locale';
 import Swal from 'sweetalert2';
 
 const ProductDetail = () => {
+  const router = useRouter();
   const [routeLoading, setRouteLoading] = useState(false);
   const [value, setValue] = useState(0);
   const [orderLength, setOrderLength] = useState(0);
@@ -35,7 +36,6 @@ const ProductDetail = () => {
   const [listCommentByBook, setListCommentByBook] = useState([]);
   const [comment, setComment] = useState('');
   const [auth, setAuth] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const cmtRef = useRef();
   const { id } = useParams();
   const parsedDate = new Date(book !== undefined && book?.datePicker);
@@ -365,7 +365,7 @@ const ProductDetail = () => {
                     </div>
                     <button
                       className="product-buy"
-                      onClick={() => setIsModalOpen(!isModalOpen)}
+                      onClick={() => router.push('/check-out')}
                     >
                       <span className="buy-text">Buy Now</span>
                     </button>
