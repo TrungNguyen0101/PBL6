@@ -69,7 +69,7 @@ router.post('/create_payment_url', function (req, res, next) {
     vnp_Params['vnp_SecureHash'] = signed;
     vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
 
-    res.redirect(vnpUrl)
+    return vnpUrl;
 });
 
 router.get('/vnpay_return', async function (req, res, next) {
