@@ -16,7 +16,7 @@ export default function Cart() {
 
   const handleGetCartByAccount = async (id) => {
     const { data } = await getOrderByAccount(id);
-    if (data.order.length > 0) {
+    if (data?.order?.length > 0) {
       setOder(data.order);
     }
   };
@@ -55,6 +55,7 @@ export default function Cart() {
                       key={item._id}
                       cart={item}
                       _id={item._id}
+                      checked={item.status}
                       handleGetCartByAccount={handleGetCartByAccount}
                     ></CartItem>
                   ))}

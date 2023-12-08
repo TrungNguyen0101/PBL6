@@ -9,12 +9,10 @@ const insertOrder = async (data) => {
     });
     if (!order) {
       const order = await db.Order.create(data);
-      console.log("add");
       orderData.order = order;
       orderData.errCode = 200;
       orderData.errMessage = "Create order succeed";
     } else {
-      console.log("update");
       const countUpdate = parseInt(order?.Count) + parseInt(data?.Count);
       const result = await order.updateOne({
         Count: countUpdate,
@@ -37,11 +35,21 @@ const updateOrder = async (data) => {
       "Book._id": data?.BookId,
     });
     if (order) {
-      const result = await order.updateOne({
-        Count: data.Count,
-      });
-      orderData.order = result;
-      orderData.errCode = 200;
+      if (data.status === undefined) {
+        const result = await order.updateOne({
+          Count: data.Count,
+        });
+        orderData.order = result;
+        orderData.errCode = 200;
+      } else {
+        console.log(data.status);
+
+        const result = await order.updateOne({
+          status: data.status,
+        });
+        orderData.order = result;
+        orderData.errCode = 200;
+      }
     }
   } catch (e) {
     console.log("file: orderService.js:13 ~ insertOrder ~ e:", e);

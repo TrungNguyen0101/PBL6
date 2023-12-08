@@ -31,7 +31,7 @@ async function updateOrder(req, res) {
   try {
     const order = await orderService.updateOrder(req.body);
     res.status(200).json({
-      message: "insert succeed",
+      message: "update succeed",
       data: order,
     });
   } catch (error) {

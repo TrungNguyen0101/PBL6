@@ -10,7 +10,7 @@ import {
 import { toast } from 'react-toastify';
 import { Popconfirm } from 'antd';
 
-const CartItem = ({ cart, _id, handleGetCartByAccount }) => {
+const CartItem = ({ cart, _id, handleGetCartByAccount, checked }) => {
   const accountID =
     typeof window !== 'undefined'
       ? JSON.parse(sessionStorage?.getItem('auth')).user._id
@@ -18,16 +18,24 @@ const CartItem = ({ cart, _id, handleGetCartByAccount }) => {
   const [count, setCount] = useState(cart.Count);
   const [order, setOrder] = useState({});
 
-  const handleUpdateOrder = async (id, count) => {
+  const handleUpdateOrder = async (id, count, status) => {
     try {
       const result = await getOrderById(id);
       if (result && result.data && result.data.order && result.data.order[0]) {
         const data = result.data.order[0];
-        const kq = await updateOrder({
-          IdAccount: data.IdAccount,
-          BookId: data.Book._id,
-          Count: count,
-        });
+        if (status === undefined) {
+          const kq = await updateOrder({
+            IdAccount: data.IdAccount,
+            BookId: data.Book._id,
+            Count: count,
+          });
+        } else {
+          const kq = await updateOrder({
+            IdAccount: data.IdAccount,
+            BookId: data.Book._id,
+            status: status,
+          });
+        }
       }
     } catch (error) {
       // Xử lý lỗi nếu có
@@ -35,10 +43,9 @@ const CartItem = ({ cart, _id, handleGetCartByAccount }) => {
     }
   };
   const handleDelete = async () => {
-    handleGetCartByAccount(accountID);
     const result = await deleteOrder(_id);
     toast.success('Delete product successfully');
-    console.log(result);
+    handleGetCartByAccount(accountID);
   };
 
   const handlerMinus = useCallback(() => {
@@ -57,10 +64,20 @@ const CartItem = ({ cart, _id, handleGetCartByAccount }) => {
     setCount(resultCount);
   }, [count]);
 
+  const handleCheckboxChange = async (event) => {
+    const checked = event.target.checked;
+    await handleUpdateOrder(_id, count, checked);
+    await handleGetCartByAccount(accountID);
+  };
   return (
     <tr>
       <td className="p-0">
-        <input type="checkbox"></input>
+        <input
+          type="checkbox"
+          onChange={handleCheckboxChange}
+          checked={checked}
+          // onClick={handleUpdateOrder(_id, count, 1)}
+        ></input>
       </td>
       <td className="">
         <div className="flex flex-row items-center gap-x-[10px]">
@@ -72,9 +89,17 @@ const CartItem = ({ cart, _id, handleGetCartByAccount }) => {
               height={200}
               className="item-img max-w-[80px] object-cover"
             />
-            <button className="absolute top-[-15px] right-[-10px] z-40">
-              <i className="fa fa-times" aria-hidden="true"></i>
-            </button>
+            <Popconfirm
+              title="Delete the book"
+              description="Are you sure to delete this book?"
+              onConfirm={handleDelete}
+              okText="Yes"
+              cancelText="No"
+            >
+              <button className="absolute top-[-15px] right-[-10px] z-40">
+                <i className="fa fa-times" aria-hidden="true"></i>
+              </button>
+            </Popconfirm>
           </div>
           <span className="">{cart?.Book.booktitle}</span>
         </div>
