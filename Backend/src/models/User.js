@@ -17,6 +17,7 @@ const User = new Schema({
     },
     isVerified: { type: Boolean, default: false },
     verificationCode: { type: String },
+    history: [{ type: mongoose.Schema.Types.ObjectId, ref: 'History' }],
 }, { timestamps: true, })
 
 module.exports = mongoose.model('User', User);

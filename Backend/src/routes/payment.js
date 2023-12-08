@@ -34,6 +34,8 @@ router.post('/create_payment_url', function (req, res, next) {
     let returnUrl = vnpayConfig.vnp_ReturnUrl;
     let orderId = moment(date).format('DDHHmmss');
     let amount = req.body.amount;
+    let phone = req.body.phone;
+    let address = req.body.address;
     let bankCode = req.body.bankCode;
     let locale = req.body.language;
     if (locale === null || locale === '') {
@@ -53,6 +55,8 @@ router.post('/create_payment_url', function (req, res, next) {
     vnp_Params['vnp_ReturnUrl'] = returnUrl;
     vnp_Params['vnp_IpAddr'] = ipAddr;
     vnp_Params['vnp_CreateDate'] = createDate;
+    vnp_Params['phone'] = phone;
+    vnp_Params['address'] = address;
     if (bankCode !== null && bankCode !== '') {
         vnp_Params['vnp_BankCode'] = bankCode;
     }
