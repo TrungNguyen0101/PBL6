@@ -3,13 +3,18 @@ const db = require("../models/index.js");
 const insertOrder = async (data) => {
   let orderData = {};
   try {
-    const order = await db.Order.findOne({ "Book._id": data?.Book._id });
+    const order = await db.Order.findOne({
+      IdAccount: data?.IdAccount,
+      "Book._id": data?.Book._id,
+    });
     if (!order) {
       const order = await db.Order.create(data);
+      console.log("add");
       orderData.order = order;
       orderData.errCode = 200;
       orderData.errMessage = "Create order succeed";
     } else {
+      console.log("update");
       const countUpdate = parseInt(order?.Count) + parseInt(data?.Count);
       const result = await order.updateOne({
         Count: countUpdate,
