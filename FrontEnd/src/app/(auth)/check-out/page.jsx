@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import Header from '@/components/layout/Header';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useSelector, useDispatch } from 'react-redux';
 import { postPayment } from '@/services/paymentService';
 
 const CheckOutPage = () => {
@@ -11,8 +10,6 @@ const CheckOutPage = () => {
   const [listLocation, setListLocation] = useState([]);
   const [isShowListLocation, setIsShowListLocation] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
-  const priceBook = useSelector((state) => state.getPriceBook.price);
-  console.log(priceBook);
   const fetchAllLocation = async () => {
     const res = await axios.get(
       `https://rsapi.goong.io/Place/AutoComplete?api_key=GS65AY8rHZnAKAMvfwP8tZvMNaszJrCS1bZM6NYg&input=${location}`
@@ -26,10 +23,14 @@ const CheckOutPage = () => {
     setIsShowListLocation(true);
   };
   const handleCheckOut = async () => {
-    if (!phoneNumber || !location) {
-      toast.warning('Bạn chưa đăng nhập!!!');
+    if (!phoneNumber) {
+      toast.warning('Vui lòng nhập số điện thoại!!!');
+      return;
+    } else if (!location) {
+      toast.warning('Vui lòng nhập địa chỉ');
       return;
     }
+    const priceBook = sessionStorage.getItem('priceBook');
     const res = await postPayment(priceBook, phoneNumber, location, '');
     console.log('check res:', res);
   };

@@ -23,14 +23,9 @@ import '../style/styled.scss';
 import '../style/SwiperButton.scss';
 import { da } from 'date-fns/locale';
 import Swal from 'sweetalert2';
-import { useSelector, useDispatch } from 'react-redux';
-import { getPrice } from '@/redux/reducers/priceReducer';
 
 const ProductDetail = () => {
   const router = useRouter();
-  const priceBook = useSelector((state) => state.getPriceBook.price);
-  const dispatch = useDispatch();
-  console.log('Check priceBook', priceBook);
   const [routeLoading, setRouteLoading] = useState(false);
   const [value, setValue] = useState(0);
   const [orderLength, setOrderLength] = useState(0);
@@ -151,8 +146,20 @@ const ProductDetail = () => {
     });
   };
   const handleBuyNow = (price) => {
+    const auth = sessionStorage.getItem('auth');
+    const parseAuth = JSON.parse(auth);
+    if (!auth) {
+      toast.error('Bạn chưa đăng nhập!!!');
+      return;
+    } else if (!parseAuth?.user?.isVerified) {
+      toast.warning(
+        'Tài khoản của bạn chưa được xác thực nên không thể mua sách. Vui lòng xác thực tài khoản!!!'
+      );
+      return;
+    }
     router.push('/check-out');
-    dispatch(getPrice(price));
+    sessionStorage.setItem('priceBook', Number(price * count));
+    sessionStorage.setItem('count', Number(count));
   };
   useEffect(() => {
     try {
