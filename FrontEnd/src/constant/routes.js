@@ -24,6 +24,7 @@ const routes = {
 
   // BOOK
   ALLBOOK: '/all-book',
+  CUSTOMERHISTORY: '/customer-history',
 };
 
 export default routes;

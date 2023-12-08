@@ -82,7 +82,7 @@ const InforLogin = () => {
             Đổi mật khẩu
           </Link>
           <Link
-            href={routes.PROFILE}
+            href={routes.CUSTOMERHISTORY}
             className="hover:text-[#6d4eec] transition-all flex items-center gap-x-2"
           >
             <FaShoppingCart />
