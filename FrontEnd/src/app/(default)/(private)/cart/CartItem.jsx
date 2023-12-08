@@ -2,20 +2,61 @@
 
 import React, { useCallback, useState } from 'react';
 import Image from 'next/image';
+import {
+  deleteOrder,
+  getOrderById,
+  updateOrder,
+} from '@/services/orderService';
+import { toast } from 'react-toastify';
+import { Popconfirm } from 'antd';
 
-const CartItem = ({ cart }) => {
+const CartItem = ({ cart, _id, handleGetCartByAccount }) => {
+  const accountID =
+    typeof window !== 'undefined'
+      ? JSON.parse(sessionStorage?.getItem('auth')).user._id
+      : null;
   const [count, setCount] = useState(cart.Count);
+  const [order, setOrder] = useState({});
+
+  const handleUpdateOrder = async (id, count) => {
+    try {
+      const result = await getOrderById(id);
+      if (result && result.data && result.data.order && result.data.order[0]) {
+        const data = result.data.order[0];
+        const kq = await updateOrder({
+          IdAccount: data.IdAccount,
+          BookId: data.Book._id,
+          Count: count,
+        });
+      }
+    } catch (error) {
+      // Xử lý lỗi nếu có
+      console.error('Error:', error);
+    }
+  };
+  const handleDelete = async () => {
+    handleGetCartByAccount(accountID);
+    const result = await deleteOrder(_id);
+    toast.success('Delete product successfully');
+    console.log(result);
+  };
 
   const handlerMinus = useCallback(() => {
     if (count === 1) {
-      setCount(1);
+      return;
     } else {
-      setCount(count - 1);
+      let resultCount = count - 1;
+      handleUpdateOrder(_id, resultCount);
+      setCount(resultCount);
     }
   }, [count]);
+
   const handlerPlus = useCallback(() => {
-    setCount(count + 1);
+    let resultCount = count + 1;
+    handleUpdateOrder(_id, resultCount);
+    setCount(resultCount);
   }, [count]);
+
   return (
     <tr>
       <td className="p-0">
@@ -50,12 +91,29 @@ const CartItem = ({ cart }) => {
                   </td> */}
       <td className="pl-[15px] quantity">
         <div className="col-wrap product-number">
-          <button
-            onClick={handlerMinus}
-            className="justify-center w-full col col-minus"
-          >
-            <i className="fa fa-light fa-minus fa-xs "></i>
-          </button>
+          {count === 1 ? (
+            <Popconfirm
+              title="Delete the book"
+              description="Are you sure to delete this book?"
+              onConfirm={handleDelete}
+              okText="Yes"
+              cancelText="No"
+            >
+              <button
+                onClick={handlerMinus}
+                className="justify-center w-full col col-minus"
+              >
+                <i className="fa fa-light fa-minus fa-xs "></i>
+              </button>
+            </Popconfirm>
+          ) : (
+            <button
+              onClick={handlerMinus}
+              className="justify-center w-full col col-minus"
+            >
+              <i className="fa fa-light fa-minus fa-xs "></i>
+            </button>
+          )}
           <span className="justify-center w-full col col-number">{count}</span>
           <button
             onClick={handlerPlus}

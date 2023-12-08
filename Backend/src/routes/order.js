@@ -4,7 +4,8 @@ const { orderController } = require("../controllers/index.js");
 const middleware = require("../utils/middleware.js");
 
 router.get("/", middleware.authMiddleWare, orderController.getOrderByIdAccount);
-// router.patch("/update", categoryController.handleUpdateCategory);
+router.get("/:id", middleware.authMiddleWare, orderController.getOrderById);
+router.put("/update", middleware.authMiddleWare, orderController.updateOrder);
 router.delete("/:id", orderController.deleteOrder);
 router.post("/insert", middleware.authMiddleWare, orderController.insertOrder);
 
