@@ -18,7 +18,7 @@ import {
 import { getAllBooksByDiscount, getBookById } from '@/services/bookService';
 import { format } from 'date-fns';
 import { Badge } from 'antd';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaTrashAlt } from 'react-icons/fa';
 import '../style/styled.scss';
 import '../style/SwiperButton.scss';
 import { da } from 'date-fns/locale';
@@ -145,6 +145,22 @@ const ProductDetail = () => {
       }
     });
   };
+  const handleBuyNow = (price) => {
+    const auth = sessionStorage.getItem('auth');
+    const parseAuth = JSON.parse(auth);
+    if (!auth) {
+      toast.error('Bạn chưa đăng nhập!!!');
+      return;
+    } else if (!parseAuth?.user?.isVerified) {
+      toast.warning(
+        'Tài khoản của bạn chưa được xác thực nên không thể mua sách. Vui lòng xác thực tài khoản!!!'
+      );
+      return;
+    }
+    router.push('/check-out');
+    sessionStorage.setItem('priceBook', Number(price * count));
+    sessionStorage.setItem('count', Number(count));
+  };
   useEffect(() => {
     try {
       const handleGetBookByDiscount = async () => {
@@ -191,6 +207,8 @@ const ProductDetail = () => {
       setAuth(JSON.parse(auth));
     }
   }, []);
+  // console.log('check book', book);
+  // console.log(((100 - book?.discount) / 100) * book?.price);
   return (
     <section className="content">
       {isLoading ? (
@@ -363,12 +381,31 @@ const ProductDetail = () => {
                         <span className="add-text">Add To Cart</span>
                       </button>
                     </div>
-                    <button
+                    {book?.discount !== 0 ? (
+                      <button
+                        className="product-buy"
+                        onClick={() =>
+                          handleBuyNow(
+                            ((100 - book?.discount) / 100) * book?.price
+                          )
+                        }
+                      >
+                        <span className="buy-text">Buy Now</span>
+                      </button>
+                    ) : (
+                      <button
+                        className="product-buy"
+                        onClick={() => handleBuyNow(book?.price?.toFixed(2))}
+                      >
+                        <span className="buy-text">Buy Now</span>
+                      </button>
+                    )}
+                    {/* <button
                       className="product-buy"
-                      onClick={() => router.push('/check-out')}
+                      onClick={() => handleBuyNow(book?.price?.toFixed(2))}
                     >
                       <span className="buy-text">Buy Now</span>
-                    </button>
+                    </button> */}
                   </div>
                   <button className="favorite-product mt-[20px] flex justify-center items-center gap-x-[10px] m-atuo">
                     <i className="fa fa-heart-o icon-heart"></i>
@@ -725,7 +762,7 @@ const ProductDetail = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="card-main flex items-center gap-x-5 justify-between">
+                      <div className="flex items-center justify-between card-main gap-x-5">
                         <p>{cmt?.comment}</p>
                         {auth?.user?._id === cmt?.id_user && (
                           <span
