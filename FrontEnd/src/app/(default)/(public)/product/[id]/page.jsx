@@ -35,6 +35,7 @@ const ProductDetail = () => {
   const [listCommentByBook, setListCommentByBook] = useState([]);
   const [comment, setComment] = useState('');
   const [auth, setAuth] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const cmtRef = useRef();
   const { id } = useParams();
   const parsedDate = new Date(book !== undefined && book?.datePicker);
@@ -362,7 +363,10 @@ const ProductDetail = () => {
                         <span className="add-text">Add To Cart</span>
                       </button>
                     </div>
-                    <button className="product-buy">
+                    <button
+                      className="product-buy"
+                      onClick={() => setIsModalOpen(!isModalOpen)}
+                    >
                       <span className="buy-text">Buy Now</span>
                     </button>
                   </div>

@@ -1,0 +1,123 @@
+'use client';
+import React, { useEffect, useState } from 'react';
+import Header from '@/components/layout/Header';
+import axios from 'axios';
+
+const CheckOutPage = () => {
+  const [location, setLocation] = useState('');
+  const [listLocation, setListLocation] = useState([]);
+  const [isShowListLocation, setIsShowListLocation] = useState(false);
+  const fetchAllLocation = async () => {
+    const res = await axios.get(
+      `https://rsapi.goong.io/Place/AutoComplete?api_key=GS65AY8rHZnAKAMvfwP8tZvMNaszJrCS1bZM6NYg&input=${location}`
+    );
+    if (res && res?.status === 200) {
+      setListLocation(res?.data?.predictions);
+    }
+  };
+  const handleOnChangeLocation = (event) => {
+    setLocation(event.target.value);
+    setIsShowListLocation(true);
+  };
+  useEffect(() => {
+    fetchAllLocation();
+  }, [location]);
+  useEffect(() => {
+    const listLocation = document.querySelectorAll('.location-item');
+    function getLocation(e) {
+      for (let i = 0; i < listLocation.length; i++) {
+        if (e.target === listLocation[i]) {
+          setLocation(listLocation[i].textContent);
+          setIsShowListLocation(false);
+        }
+      }
+    }
+    listLocation.forEach((item) => item.addEventListener('click', getLocation));
+  }, [location]);
+  return (
+    <>
+      <Header></Header>
+      <div className="w-[800px] mx-auto">
+        <div className="mt-10">
+          <div className="mb-7">
+            <h2 className="font-semibold text-2xl mb-2">1. Điền thông tin</h2>
+            <div className="flex gap-x-3">
+              <div className="flex flex-col gap-y-2 w-1/2">
+                <label htmlFor="phone-number" className="font-semibold">
+                  Nhập số điện thoại
+                </label>
+                <input
+                  id="phone-number"
+                  type="text"
+                  placeholder="Số điện thoại"
+                  className="p-2 outline-none rounded text-base"
+                />
+              </div>
+              <div className="relative flex flex-col w-1/2 gap-y-2">
+                <label htmlFor="location" className="font-semibold">
+                  Nhập địa chỉ
+                </label>
+                <input
+                  id="location"
+                  value={location}
+                  type="text"
+                  className="rounded p-2 text-base outline-none"
+                  placeholder="Enter a location"
+                  onChange={(event) => handleOnChangeLocation(event)}
+                />
+                {isShowListLocation && location && (
+                  <div className="absolute w-full h-[150px] top-full translate-y-[10px] bg-white shadow-xl rounded p-4 overflow-auto list-location">
+                    {listLocation?.length > 0 &&
+                      listLocation?.map((d, index) => (
+                        <div
+                          key={index}
+                          className="cursor-pointer location-item bg-transparent hover:bg-[#eee] p-[5px]"
+                        >
+                          {d?.description}
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div>
+            <h2 className="font-semibold text-2xl mb-2">
+              2. Chọn phương thức thanh toán
+            </h2>
+            <div>
+              <div className="flex items-center gap-x-1 mb-1">
+                <input
+                  type="radio"
+                  name="checkout"
+                  id="direct"
+                  defaultChecked={true}
+                  className="cursor-pointer"
+                />
+                <label htmlFor="direct" className="cursor-pointer">
+                  Thanh toán khi nhận hàng
+                </label>
+              </div>
+              <div className="flex items-center gap-x-1 cursor-pointer">
+                <input
+                  type="radio"
+                  name="checkout"
+                  id="bank"
+                  className="cursor-pointer"
+                />
+                <label htmlFor="bank" className="cursor-pointer">
+                  Thanh toán qua VNPAY
+                </label>
+              </div>
+            </div>
+            <button className="bg-[#1677ff] text-white font-semibold py-[6px] px-3 rounded block w-max mx-auto mt-2 hover:bg-opacity-70 transition-all">
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default CheckOutPage;
