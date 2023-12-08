@@ -120,7 +120,7 @@ router.get('/vnpay_ipn', function (req, res, next) {
     let hmac = crypto.createHmac("sha512", secretKey);
     let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");
 
-    let paymentStatus = '0'; // Giả sử '0' là trạng thái khởi tạo giao dịch, chưa có IPN. Trạng thái này được lưu khi yêu cầu thanh toán chuyển hướng sang Cổng thanh toán VNPAY tại đầu khởi tạo đơn hàng.
+    let paymentStatus = vnp_Params['vnp_TransactionStatus'];; // Giả sử '0' là trạng thái khởi tạo giao dịch, chưa có IPN. Trạng thái này được lưu khi yêu cầu thanh toán chuyển hướng sang Cổng thanh toán VNPAY tại đầu khởi tạo đơn hàng.
     //let paymentStatus = '1'; // Giả sử '1' là trạng thái thành công bạn cập nhật sau IPN được gọi và trả kết quả về nó
     //let paymentStatus = '2'; // Giả sử '2' là trạng thái thất bại bạn cập nhật sau IPN được gọi và trả kết quả về nó
 
@@ -132,17 +132,15 @@ router.get('/vnpay_ipn', function (req, res, next) {
             if (checkAmount) {
                 if (paymentStatus == "0") { //kiểm tra tình trạng giao dịch trước khi cập nhật tình trạng thanh toán
                     if (rspCode == "00") {
-
                         //paymentStatus = '1'
                         // Ở đây cập nhật trạng thái giao dịch thanh toán thành công vào CSDL của bạn
                         res.status(200).json({ RspCode: '00', Message: 'Success' })
                     }
                     else {
-
                         //that bai
                         //paymentStatus = '2'
                         // Ở đây cập nhật trạng thái giao dịch thanh toán thất bại vào CSDL của bạn
-                        res.status(200).json({ RspCode: '00', Message: 'Success' })
+                        res.status(200).json({ RspCode: '02', Message: 'Failed' })
                     }
                 }
                 else {
@@ -302,6 +300,5 @@ function sortObject(obj) {
     }
     return sorted;
 }
-
 
 module.exports = router;
