@@ -18,14 +18,19 @@ import {
 import { getAllBooksByDiscount, getBookById } from '@/services/bookService';
 import { format } from 'date-fns';
 import { Badge } from 'antd';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaTrashAlt } from 'react-icons/fa';
 import '../style/styled.scss';
 import '../style/SwiperButton.scss';
 import { da } from 'date-fns/locale';
 import Swal from 'sweetalert2';
+import { useSelector, useDispatch } from 'react-redux';
+import { getPrice } from '@/redux/reducers/priceReducer';
 
 const ProductDetail = () => {
   const router = useRouter();
+  const priceBook = useSelector((state) => state.getPriceBook.price);
+  const dispatch = useDispatch();
+  console.log('Check priceBook', priceBook);
   const [routeLoading, setRouteLoading] = useState(false);
   const [value, setValue] = useState(0);
   const [orderLength, setOrderLength] = useState(0);
@@ -145,6 +150,10 @@ const ProductDetail = () => {
       }
     });
   };
+  const handleBuyNow = (price) => {
+    router.push('/check-out');
+    dispatch(getPrice(price));
+  };
   useEffect(() => {
     try {
       const handleGetBookByDiscount = async () => {
@@ -191,6 +200,8 @@ const ProductDetail = () => {
       setAuth(JSON.parse(auth));
     }
   }, []);
+  // console.log('check book', book);
+  // console.log(((100 - book?.discount) / 100) * book?.price);
   return (
     <section className="content">
       {isLoading ? (
@@ -363,12 +374,31 @@ const ProductDetail = () => {
                         <span className="add-text">Add To Cart</span>
                       </button>
                     </div>
-                    <button
+                    {book?.discount !== 0 ? (
+                      <button
+                        className="product-buy"
+                        onClick={() =>
+                          handleBuyNow(
+                            ((100 - book?.discount) / 100) * book?.price
+                          )
+                        }
+                      >
+                        <span className="buy-text">Buy Now</span>
+                      </button>
+                    ) : (
+                      <button
+                        className="product-buy"
+                        onClick={() => handleBuyNow(book?.price?.toFixed(2))}
+                      >
+                        <span className="buy-text">Buy Now</span>
+                      </button>
+                    )}
+                    {/* <button
                       className="product-buy"
-                      onClick={() => router.push('/check-out')}
+                      onClick={() => handleBuyNow(book?.price?.toFixed(2))}
                     >
                       <span className="buy-text">Buy Now</span>
-                    </button>
+                    </button> */}
                   </div>
                   <button className="favorite-product mt-[20px] flex justify-center items-center gap-x-[10px] m-atuo">
                     <i className="fa fa-heart-o icon-heart"></i>
@@ -725,7 +755,7 @@ const ProductDetail = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="card-main flex items-center gap-x-5 justify-between">
+                      <div className="flex items-center justify-between card-main gap-x-5">
                         <p>{cmt?.comment}</p>
                         {auth?.user?._id === cmt?.id_user && (
                           <span

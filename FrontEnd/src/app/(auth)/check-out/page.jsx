@@ -2,11 +2,17 @@
 import React, { useEffect, useState } from 'react';
 import Header from '@/components/layout/Header';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from 'react-redux';
+import { postPayment } from '@/services/paymentService';
 
 const CheckOutPage = () => {
   const [location, setLocation] = useState('');
   const [listLocation, setListLocation] = useState([]);
   const [isShowListLocation, setIsShowListLocation] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const priceBook = useSelector((state) => state.getPriceBook.price);
+  console.log(priceBook);
   const fetchAllLocation = async () => {
     const res = await axios.get(
       `https://rsapi.goong.io/Place/AutoComplete?api_key=GS65AY8rHZnAKAMvfwP8tZvMNaszJrCS1bZM6NYg&input=${location}`
@@ -18,6 +24,14 @@ const CheckOutPage = () => {
   const handleOnChangeLocation = (event) => {
     setLocation(event.target.value);
     setIsShowListLocation(true);
+  };
+  const handleCheckOut = async () => {
+    if (!phoneNumber || !location) {
+      toast.warning('Bạn chưa đăng nhập!!!');
+      return;
+    }
+    const res = await postPayment(priceBook, phoneNumber, location, '');
+    console.log('check res:', res);
   };
   useEffect(() => {
     fetchAllLocation();
@@ -40,17 +54,19 @@ const CheckOutPage = () => {
       <div className="w-[800px] mx-auto">
         <div className="mt-10">
           <div className="mb-7">
-            <h2 className="font-semibold text-2xl mb-2">1. Điền thông tin</h2>
+            <h2 className="mb-2 text-2xl font-semibold">1. Điền thông tin</h2>
             <div className="flex gap-x-3">
-              <div className="flex flex-col gap-y-2 w-1/2">
+              <div className="flex flex-col w-1/2 gap-y-2">
                 <label htmlFor="phone-number" className="font-semibold">
                   Nhập số điện thoại
                 </label>
                 <input
+                  value={phoneNumber}
                   id="phone-number"
                   type="text"
                   placeholder="Số điện thoại"
-                  className="p-2 outline-none rounded text-base"
+                  className="p-2 text-base rounded outline-none"
+                  onChange={(event) => setPhoneNumber(event.target.value)}
                 />
               </div>
               <div className="relative flex flex-col w-1/2 gap-y-2">
@@ -61,7 +77,7 @@ const CheckOutPage = () => {
                   id="location"
                   value={location}
                   type="text"
-                  className="rounded p-2 text-base outline-none"
+                  className="p-2 text-base rounded outline-none"
                   placeholder="Enter a location"
                   onChange={(event) => handleOnChangeLocation(event)}
                 />
@@ -82,11 +98,11 @@ const CheckOutPage = () => {
             </div>
           </div>
           <div>
-            <h2 className="font-semibold text-2xl mb-2">
+            <h2 className="mb-2 text-2xl font-semibold">
               2. Chọn phương thức thanh toán
             </h2>
             <div>
-              <div className="flex items-center gap-x-1 mb-1">
+              <div className="flex items-center mb-1 gap-x-1">
                 <input
                   type="radio"
                   name="checkout"
@@ -98,7 +114,7 @@ const CheckOutPage = () => {
                   Thanh toán khi nhận hàng
                 </label>
               </div>
-              <div className="flex items-center gap-x-1 cursor-pointer">
+              <div className="flex items-center cursor-pointer gap-x-1">
                 <input
                   type="radio"
                   name="checkout"
@@ -110,7 +126,10 @@ const CheckOutPage = () => {
                 </label>
               </div>
             </div>
-            <button className="bg-[#1677ff] text-white font-semibold py-[6px] px-3 rounded block w-max mx-auto mt-2 hover:bg-opacity-70 transition-all">
+            <button
+              className="bg-[#1677ff] text-white font-semibold py-[6px] px-3 rounded block w-max mx-auto mt-2 hover:bg-opacity-70 transition-all"
+              onClick={handleCheckOut}
+            >
               Xác nhận
             </button>
           </div>
