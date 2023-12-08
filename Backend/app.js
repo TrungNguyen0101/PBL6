@@ -12,11 +12,9 @@ require("dotenv").config();
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
 app.use(cors());
-// HKH
 
 app.use('/', express.static(path.join(__dirname, 'lib')))
 // app.use('/', express.static(path.join(__dirname, 'lib')), swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-
 // middleware test
 app.use(
     express.urlencoded({
@@ -28,6 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 initWebRoutes(app);
 app.set('views', path.join(__dirname, 'src', 'views'));
