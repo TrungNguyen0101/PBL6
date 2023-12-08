@@ -13,21 +13,10 @@ const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
 
 
-const corsOptions = {
-    origin: 'http://localhost:3000', // Hoặc có thể là một mảng ['http://localhost:3000', 'https://example.com']
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    optionsSuccessStatus: 200,
-};
 
-app.use(cors(corsOptions));
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
+
+app.use(cors());
+app.enableCors({ origin: '*' });
 app.use('/', express.static(path.join(__dirname, 'lib')))
 // app.use('/', express.static(path.join(__dirname, 'lib')), swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
