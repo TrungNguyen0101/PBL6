@@ -55,8 +55,8 @@ router.post('/create_payment_url', function (req, res, next) {
     vnp_Params['vnp_ReturnUrl'] = returnUrl;
     vnp_Params['vnp_IpAddr'] = ipAddr;
     vnp_Params['vnp_CreateDate'] = createDate;
-    vnp_Params['phone'] = phone;
-    vnp_Params['address'] = address;
+    // vnp_Params['phone'] = phone;
+    // vnp_Params['address'] = address;
     if (bankCode !== null && bankCode !== '') {
         vnp_Params['vnp_BankCode'] = bankCode;
     }
@@ -68,7 +68,6 @@ router.post('/create_payment_url', function (req, res, next) {
     let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");
     vnp_Params['vnp_SecureHash'] = signed;
     vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
-
     return res.status(200).send({
         message: 'Successfully',
         data: vnpUrl
