@@ -30,6 +30,7 @@ const ModalAnt = ({
         title="Edit Book"
         // onOk={handleOk}
         onCancel={handleCancel}
+        width="90%" // Đặt độ rộng là 90%
         footer={null}
       >
         <StepFormEdit

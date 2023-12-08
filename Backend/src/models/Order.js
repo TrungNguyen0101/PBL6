@@ -5,7 +5,7 @@ const { ObjectId } = require("mongodb");
 const OrderSchema = new Schema({
   IdAccount: { type: String },
   Book: { type: Object },
-  status: { type: Number, default: 0 },
+  status: { type: Boolean, default: false },
   PriceDiscount: { type: String },
   Count: { type: Number },
 });

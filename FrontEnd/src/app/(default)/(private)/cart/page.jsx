@@ -1,7 +1,11 @@
 'use client';
 import React, { useCallback, useEffect, useState } from 'react';
 import './styled.scss';
-import { getOrderByAccount } from '@/services/orderService';
+import {
+  getOrderByAccount,
+  getOrderById,
+  updateOrder,
+} from '@/services/orderService';
 import CartItem from './CartItem';
 export default function Cart() {
   const [order, setOder] = useState([]);
@@ -10,13 +14,13 @@ export default function Cart() {
       ? JSON.parse(sessionStorage?.getItem('auth')).user._id
       : null;
 
+  const handleGetCartByAccount = async (id) => {
+    const { data } = await getOrderByAccount(id);
+    if (data?.order?.length > 0) {
+      setOder(data.order);
+    }
+  };
   useEffect(() => {
-    const handleGetCartByAccount = async (id) => {
-      const { data } = await getOrderByAccount(id);
-      if (data.order.length > 0) {
-        setOder(data.order);
-      }
-    };
     handleGetCartByAccount(accountID);
   }, []);
 
@@ -47,7 +51,13 @@ export default function Cart() {
               <tbody>
                 {order.length > 0 &&
                   order?.map((item) => (
-                    <CartItem key={item._id} cart={item}></CartItem>
+                    <CartItem
+                      key={item._id}
+                      cart={item}
+                      _id={item._id}
+                      checked={item.status}
+                      handleGetCartByAccount={handleGetCartByAccount}
+                    ></CartItem>
                   ))}
               </tbody>
             </table>
