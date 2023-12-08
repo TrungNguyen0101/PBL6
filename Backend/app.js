@@ -11,6 +11,8 @@ const swaggerUi = require('swagger-ui-express');
 require("dotenv").config();
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
+var debug = require('debug')('backend:server');
+var http = require('http');
 app.use(cors());
 
 app.use('/', express.static(path.join(__dirname, 'lib')))
@@ -31,8 +33,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 initWebRoutes(app);
 app.set('views', path.join(__dirname, 'src', 'views'));
 app.set('view engine', 'jade');
-const port = process.env.PORT || 3030;
-app.listen(port, async () => {
+var port = normalizePort(process.env.PORT || '3030');
+app.set('port', port);
+var server = http.createServer(app);
+server.listen(port, async () => {
     await db.connect();
     console.log(`Api is running on port ${port}`)
 })
+
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
