@@ -11,15 +11,10 @@ const swaggerUi = require('swagger-ui-express');
 require("dotenv").config();
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
-
-
-
-
 app.use(cors());
-app.enableCors({ origin: '*' });
+
 app.use('/', express.static(path.join(__dirname, 'lib')))
 // app.use('/', express.static(path.join(__dirname, 'lib')), swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-
 // middleware test
 app.use(
     express.urlencoded({
