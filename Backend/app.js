@@ -11,8 +11,16 @@ const swaggerUi = require('swagger-ui-express');
 require("dotenv").config();
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
-app.use(cors());
-// HKH
+
+
+const corsOptions = {
+    origin: 'http://localhost:3000', // Hoặc có thể là một mảng ['http://localhost:3000', 'https://example.com']
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
