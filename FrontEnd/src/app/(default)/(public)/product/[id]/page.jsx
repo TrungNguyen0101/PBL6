@@ -160,6 +160,7 @@ const ProductDetail = () => {
     router.push('/check-out');
     sessionStorage.setItem('priceBook', Number(price * count));
     sessionStorage.setItem('count', Number(count));
+    sessionStorage.setItem('idBook', book?._id);
   };
   useEffect(() => {
     try {
@@ -207,8 +208,7 @@ const ProductDetail = () => {
       setAuth(JSON.parse(auth));
     }
   }, []);
-  // console.log('check book', book);
-  // console.log(((100 - book?.discount) / 100) * book?.price);
+  console.log('check book', book);
   return (
     <section className="content">
       {isLoading ? (
