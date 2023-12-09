@@ -34,7 +34,7 @@ router.post('/create_payment_url', middleware.authMiddleWare, function (req, res
     process.env.TZ = 'Asia/Ho_Chi_Minh';
     let date = new Date();
     let createDate = moment(date).format('YYYYMMDDHHmmss');
-    let ipAddr = '0.0.0.0'
+    let ipAddr = '0.0.0.0/0'
     let tmnCode = vnpayConfig.vnp_TmnCode;
     let secretKey = vnpayConfig.vnp_HashSecret;
     let vnpUrl = vnpayConfig.vnp_Url;
