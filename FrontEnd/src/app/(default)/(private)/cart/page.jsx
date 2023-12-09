@@ -36,7 +36,9 @@ export default function Cart() {
       }, 0);
       const booksWithCount = data?.order.map((item) => {
         const { Book, Count } = item;
-        return { ...Book, Count }; // Tạo đối tượng mới chứa thông tin sách và Count
+        const totalPrice = parseFloat(Book.price) * parseInt(Count); // Tính tổng giá tiền
+
+        return { ...Book, Count, price: totalPrice }; // Tạo đối tượng mới chứa thông tin sách và Count
       });
       setPayment({
         book: booksWithCount,
