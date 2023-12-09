@@ -127,7 +127,7 @@ router.get('/vnpay_ipn', async function (req, res, next) {
     let hmac = crypto.createHmac("sha512", secretKey);
     let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");
 
-    let paymentStatus = vnp_Params['vnp_TransactionStatus'];; // Giả sử '0' là trạng thái khởi tạo giao dịch, chưa có IPN. Trạng thái này được lưu khi yêu cầu thanh toán chuyển hướng sang Cổng thanh toán VNPAY tại đầu khởi tạo đơn hàng.
+    let paymentStatus = '0';; // Giả sử '0' là trạng thái khởi tạo giao dịch, chưa có IPN. Trạng thái này được lưu khi yêu cầu thanh toán chuyển hướng sang Cổng thanh toán VNPAY tại đầu khởi tạo đơn hàng.
     //let paymentStatus = '1'; // Giả sử '1' là trạng thái thành công bạn cập nhật sau IPN được gọi và trả kết quả về nó
     //let paymentStatus = '2'; // Giả sử '2' là trạng thái thất bại bạn cập nhật sau IPN được gọi và trả kết quả về nó
 
@@ -136,7 +136,7 @@ router.get('/vnpay_ipn', async function (req, res, next) {
     if (secureHash === signed) {
         if (checkOrderId) {
             if (checkAmount) {
-                if (paymentStatus == "00") {
+                if (paymentStatus == "0") {
                     if (rspCode == "00") {
                         // Save successful payment information to the database
                         await db.Payment.create({
@@ -172,13 +172,13 @@ router.get('/vnpay_ipn', async function (req, res, next) {
                         });
 
                         // Respond to the client
-                        res.status(200).json({ RspCode: '02', Message: 'Failed' });
+                        res.status(200).json({ RspCode: '00', Message: 'Failed' });
                     }
                 } else {
                     // Save payment information for other statuses if needed
 
                     // Respond to the client
-                    res.status(200).json({ RspCode: '02', Message: 'This order has been updated to the payment status' });
+                    res.status(200).json({ RspCode: '24', Message: 'This order has been updated to the payment status' });
                 }
             } else {
                 res.status(200).json({ RspCode: '04', Message: 'Amount invalid' });
@@ -330,5 +330,14 @@ function sortObject(obj) {
     }
     return sorted;
 }
+
+
+router.get("/getAllPayment", async function (req, res, next) {
+    const payments = await db.Payment.find({});
+    console.log(payments)
+    return res.send({
+        data: payments
+    })
+})
 
 module.exports = router;
