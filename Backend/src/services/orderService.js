@@ -84,11 +84,13 @@ const updatePaymentOrder = async (data) => {
     const order = await db.Order.findOne({
       IdAccount: data?.IdAccount,
       "Book._id": data?.BookId,
+      isPayment: false,
     });
     if (order) {
       const result = await order.updateOne({
         isPayment: true,
       });
+      console.log(result);
     }
     orderData.errCode = 200;
     orderData.errMessage = "Create order success";
