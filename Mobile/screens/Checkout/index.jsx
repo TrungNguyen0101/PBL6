@@ -14,7 +14,8 @@ import Toast from 'react-native-toast-message'
 export default function Cart() {
   const screenHeight = Dimensions.get('window').height
   const navigation = useNavigation()
-  const { shipPrice, totalPrice, addressCheckout, cart, shipMethod } = useContext(CheckoutContext)
+  const { shipPrice, totalPrice, addressCheckout, cart, shipMethod } =
+    useContext(CheckoutContext)
   const { user, accessToken } = useContext(AuthContext)
   const handlePay = async () => {
     try {
@@ -31,38 +32,43 @@ export default function Cart() {
         ])
         return
       }
-      if (!addressCheckout?.name || !addressCheckout?.address || !addressCheckout?.phone) {
+      if (
+        !addressCheckout?.name ||
+        !addressCheckout?.address ||
+        !addressCheckout?.phone
+      ) {
         Toast?.show({
-          type: "error",
+          type: 'error',
           text1: 'Thông báo',
-          text2: 'Bạn chưa nhập thông tin nhận hàng'
+          text2: 'Bạn chưa nhập thông tin nhận hàng',
         })
-        return;
+        return
       }
-      if (shipMethod.value === "vnpay") {
-        const newCartData = cart?.map(x => {
-          return {
-            ...x.Book,
-            Count: x.Count,
-          }
-        })
-        const formData = {
-          amount: Number(totalPrice + shipPrice),
-          phone: addressCheckout?.phone,
-          address: addressCheckout?.address,
-          bankCode: '',
-          language: 'vn',
-          cart: newCartData,
-        }
-        const response = await post('/payment/create_payment_url', formData, {
-          headers: {
-            Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
-          },
-        })
-        if (response) {
-          const urlPayment = response?.data?.data
-          navigation.navigate('WebViewScreen', { url: urlPayment })
-        }
+      if (shipMethod.value === 'vnpay') {
+        console.log(cart)
+        // const newCartData = cart?.map((x) => {
+        //   return {
+        //     ...x.Book,
+        //     Count: x.Count,
+        //   }
+        // })
+        // const formData = {
+        //   amount: Number(totalPrice + shipPrice),
+        //   phone: addressCheckout?.phone,
+        //   address: addressCheckout?.address,
+        //   bankCode: '',
+        //   language: 'vn',
+        //   cart: newCartData,
+        // }
+        // const response = await post('/payment/create_payment_url', formData, {
+        //   headers: {
+        //     Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+        //   },
+        // })
+        // if (response) {
+        //   const urlPayment = response?.data?.data
+        //   navigation.navigate('WebViewScreen', { url: urlPayment })
+        // }
       }
     } catch (error) {
       console.log(error)

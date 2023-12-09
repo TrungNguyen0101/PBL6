@@ -74,6 +74,27 @@ const updateAllStatusOrder = async (data) => {
   return orderData;
 };
 
+const updateStatusPaymentOrder = async (data) => {
+  let orderData = {};
+  try {
+    const order = await db.Order.findOne({
+      _id: data?.id,
+    });
+    if (order) {
+      const result = await order.updateOne({
+        isPayment: true
+      });
+      orderData.order = result;
+      orderData.errCode = 200;
+    }
+  } catch (e) {
+    console.log("file: orderService.js:13 ~ insertOrder ~ e:", e);
+    orderData.errCode = 500;
+    orderData.errMessage = "Create order failed";
+  }
+  return orderData;
+};
+
 const getOrderById = async (bookId) => {
   let orderData = {};
   try {
@@ -144,4 +165,5 @@ module.exports = {
   getOrderById: getOrderById,
   updateAllStatusOrder: updateAllStatusOrder,
   getOrderByAcountStatus: getOrderByAcountStatus,
+  updateStatusPaymentOrder: updateStatusPaymentOrder,
 };
