@@ -381,5 +381,24 @@ router.get("/getAllPayment", async function (req, res, next) {
         data: payments
     })
 })
-
+router.post("/update_state", async function (req, res, next) {
+    let orderId = req.body.orderId;
+    let status = req.body.status;
+    const data = await db.Payment.findOne({ orderId: orderId }).exec();
+    if (!data) {
+        return res.status(404).send({
+            error: 'Document not found',
+        });
+    }
+    await db.Payment.updateOne(
+        { orderId: orderId },
+        {
+            $set: { status: status }
+        }
+    );
+    const updatedData = await db.Payment.findOne({ orderId: orderId }).exec();
+    return res.send({
+        data: updatedData
+    });
+})
 module.exports = router;
