@@ -217,6 +217,19 @@ const ProductDetail = () => {
         </div>
       ) : (
         <div className={`content-wrapper ${routeLoading ? 'cursor-wait' : ''}`}>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@500&display=swap"
+            rel="stylesheet"
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Merienda+One&family=Nunito:wght@200;300;400;500;600&display=swap"
+          />
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+          />
+
           {/* <!-- Start main detail area --> */}
           {/* <!-- Start header-detail area --> */}
           <div className="header-detail pt-[15px]">
