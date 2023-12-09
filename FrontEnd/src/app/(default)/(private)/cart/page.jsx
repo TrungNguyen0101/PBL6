@@ -3,15 +3,19 @@ import React, { useCallback, useEffect, useState } from 'react';
 import './styled.scss';
 import {
   getOrderByAccount,
+  getOrderByAccountStatus,
   getOrderById,
+  updateAllStatusOrder,
   updateOrder,
 } from '@/services/orderService';
 import CartItem from './CartItem';
+import { Switch } from 'antd';
 export default function Cart() {
   const [order, setOder] = useState([]);
+  const [isChecked, setIschecked] = useState(false);
   const accountID =
     typeof window !== 'undefined'
-      ? JSON.parse(sessionStorage?.getItem('auth')).user._id
+      ? JSON.parse(sessionStorage?.getItem('auth'))?.user._id
       : null;
 
   const handleGetCartByAccount = async (id) => {
@@ -20,10 +24,33 @@ export default function Cart() {
       setOder(data.order);
     }
   };
+  const handleGetCartByAccountStatus = async (id) => {
+    const { data } = await getOrderByAccountStatus(id);
+    // if (data?.order?.length > 0) {
+    //   setOder(data.order);
+    // }
+  };
   useEffect(() => {
-    handleGetCartByAccount(accountID);
+    const handleChangeOffStatus = async () => {
+      const result = await updateAllStatusOrder({
+        IdAccount: accountID,
+        status: false,
+      });
+      await handleGetCartByAccount(accountID);
+    };
+    handleChangeOffStatus();
   }, []);
 
+  const onChange = async (checked) => {
+    console.log(`switch to ${checked}`);
+    setIschecked(checked);
+    const result = await updateAllStatusOrder({
+      IdAccount: accountID,
+      status: checked,
+    });
+    handleGetCartByAccount(accountID);
+    handleGetCartByAccountStatus(accountID);
+  };
   return (
     <section className="cart-wrapper">
       {/* <!-- ********** -->
@@ -36,7 +63,13 @@ export default function Cart() {
               <thead>
                 <tr>
                   {/* <th className="product-remove">&nbsp;</th> */}
-                  <th className="p-0">&nbsp;</th>
+                  <th className="p-0">
+                    <Switch
+                      defaultChecked={false}
+                      onChange={onChange}
+                      className={`${isChecked ? '' : 'bg-[#00000073]'}`}
+                    />
+                  </th>
                   <th className="pr-0 product-name">Product</th>
                   <th className="px-0 product-price">Price</th>
                   {/* <th className="whitespace-nowrap product-price">
@@ -57,6 +90,9 @@ export default function Cart() {
                       _id={item._id}
                       checked={item.status}
                       handleGetCartByAccount={handleGetCartByAccount}
+                      handleGetCartByAccountStatus={
+                        handleGetCartByAccountStatus
+                      }
                     ></CartItem>
                   ))}
               </tbody>

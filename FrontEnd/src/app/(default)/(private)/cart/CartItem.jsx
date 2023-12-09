@@ -10,13 +10,20 @@ import {
 import { toast } from 'react-toastify';
 import { Popconfirm } from 'antd';
 
-const CartItem = ({ cart, _id, handleGetCartByAccount, checked }) => {
+const CartItem = ({
+  cart,
+  _id,
+  handleGetCartByAccount,
+  handleGetCartByAccountStatus,
+  checked,
+}) => {
   const accountID =
     typeof window !== 'undefined'
       ? JSON.parse(sessionStorage?.getItem('auth')).user._id
       : null;
   const [count, setCount] = useState(cart.Count);
   const [order, setOrder] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const handleUpdateOrder = async (id, count, status) => {
     try {
@@ -65,18 +72,20 @@ const CartItem = ({ cart, _id, handleGetCartByAccount, checked }) => {
   }, [count]);
 
   const handleCheckboxChange = async (event) => {
+    setLoading(true);
     const checked = event.target.checked;
     await handleUpdateOrder(_id, count, checked);
     await handleGetCartByAccount(accountID);
+    await handleGetCartByAccountStatus(accountID);
+    setLoading(false);
   };
   return (
-    <tr>
-      <td className="p-0">
+    <tr className={`${loading ? 'cursor-wait' : ''}`}>
+      <td className="p-0 text-center">
         <input
           type="checkbox"
           onChange={handleCheckboxChange}
           checked={checked}
-          // onClick={handleUpdateOrder(_id, count, 1)}
         ></input>
       </td>
       <td className="">

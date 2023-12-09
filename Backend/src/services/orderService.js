@@ -42,8 +42,6 @@ const updateOrder = async (data) => {
         orderData.order = result;
         orderData.errCode = 200;
       } else {
-        console.log(data.status);
-
         const result = await order.updateOne({
           status: data.status,
         });
@@ -51,6 +49,23 @@ const updateOrder = async (data) => {
         orderData.errCode = 200;
       }
     }
+  } catch (e) {
+    console.log("file: orderService.js:13 ~ insertOrder ~ e:", e);
+    orderData.errCode = 500;
+    orderData.errMessage = "Create order failed";
+  }
+  return orderData;
+};
+const updateAllStatusOrder = async (data) => {
+  let orderData = {};
+  try {
+    const orders = await db.Order.updateMany(
+      {
+        IdAccount: data?.IdAccount,
+        isPayment: false,
+      },
+      { $set: { status: data.status } }
+    );
   } catch (e) {
     console.log("file: orderService.js:13 ~ insertOrder ~ e:", e);
     orderData.errCode = 500;
@@ -72,10 +87,30 @@ const getOrderById = async (bookId) => {
   }
   return orderData;
 };
+const getOrderByAcountStatus = async (ID_Account) => {
+  let orderData = {};
+  try {
+    const order = await db.Order.find({
+      IdAccount: ID_Account.id,
+      status: true,
+    });
+    orderData.order = order;
+    orderData.errCode = 0;
+    orderData.errMessage = "Get all order succeed";
+  } catch (e) {
+    orderData.errCode = 2;
+    orderData.errMessage = "Get all order failed";
+  }
+  return orderData;
+};
+
 const getOrderByIdAccount = async (ID_Account) => {
   let orderData = {};
   try {
-    const order = await db.Order.find({ IdAccount: ID_Account.id });
+    const order = await db.Order.find({
+      IdAccount: ID_Account.id,
+      isPayment: false,
+    });
     orderData.order = order;
     orderData.errCode = 0;
     orderData.errMessage = "Get all order succeed";
@@ -107,4 +142,6 @@ module.exports = {
   getOrderByIdAccount: getOrderByIdAccount,
   deleteOrder: deleteOrder,
   getOrderById: getOrderById,
+  updateAllStatusOrder: updateAllStatusOrder,
+  getOrderByAcountStatus: getOrderByAcountStatus,
 };
