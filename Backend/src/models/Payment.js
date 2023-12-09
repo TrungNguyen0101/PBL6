@@ -14,6 +14,7 @@ const Payment = new Schema({
     user: { type: Object },
     phone: { type: String },
     address: { type: String },
+    status: { type: Number, default: 1 },
     time: { type: String }
 }, { timestamps: true, })
 
