@@ -12,9 +12,11 @@ const CheckOutPage = () => {
   const router = useRouter();
   const [location, setLocation] = useState('');
   const [listLocation, setListLocation] = useState([]);
+
   const [isShowListLocation, setIsShowListLocation] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [book, setBook] = useState(null);
+
   const fetchAllLocation = async () => {
     const res = await axios.get(
       `https://rsapi.goong.io/Place/AutoComplete?api_key=GS65AY8rHZnAKAMvfwP8tZvMNaszJrCS1bZM6NYg&input=${location}`
@@ -42,7 +44,6 @@ const CheckOutPage = () => {
       });
     }
   };
-  console.log('book', book);
   const handleOnChangeLocation = (event) => {
     setLocation(event.target.value);
     setIsShowListLocation(true);
@@ -93,6 +94,7 @@ const CheckOutPage = () => {
     }
     listLocation.forEach((item) => item.addEventListener('click', getLocation));
   }, [location]);
+
   return (
     <>
       <Header></Header>
