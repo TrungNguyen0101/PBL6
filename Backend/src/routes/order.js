@@ -20,6 +20,9 @@ router.put(
   "/update-payment",
   middleware.authMiddleWare,
   orderController.updatePaymentOrder
+  "/update-status-payment",
+  middleware.authMiddleWare,
+  orderController.updateStatusPaymentOrder
 );
 router.delete("/:id", orderController.deleteOrder);
 router.post("/insert", middleware.authMiddleWare, orderController.insertOrder);

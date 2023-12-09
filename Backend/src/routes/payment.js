@@ -152,9 +152,38 @@ router.get('/vnpay_ipn', async function (req, res, next) {
                             user: userManage,
                             time: vnp_Params['vnp_PayDate'],
                         });
+                        const ids = cartManage.map(item => item._id);
+                        console.log(ids[0]);
+                        for (i = 0; i < ids.length; i++) {
+                            const book = await db.Book.findById(ids[i]);
 
+                            if (book) {
+                                // Update the quantity field
+                                book.quantity = parseInt(book.quantity) - 1;
+
+                                // Save the updated document
+                                await book.save();
+                                console.log(`Quantity updated for book with _id ${ids[i]}`);
+                            } else {
+                                console.log(`Book with _id ${ids[i]} not found`);
+                            }
+                        }
                         // Respond to the client
-                        res.status(200).json({ RspCode: '00', Message: 'Success' });
+                        res.status(200).json({
+                            orderId: orderId,
+                            totalmoney: vnp_Params['vnp_Amount'],
+                            note: vnp_Params['vnp_OrderInfo'],
+                            vnp_response_code: vnp_Params['vnp_ResponseCode'],
+                            code_vnpay: vnp_Params['vnp_TransactionNo'],
+                            code_bank: vnp_Params['vnp_BankCode'],
+                            cart: cartManage,
+                            phone: phoneManage,
+                            address: addressManage,
+                            user: userManage,
+                            time: vnp_Params['vnp_PayDate'],
+                            RspCode: '00',
+                            Message: 'Success'
+                        });
                     } else {
                         // Save failed payment information to the database
                         await db.Payment.create({
@@ -172,7 +201,20 @@ router.get('/vnpay_ipn', async function (req, res, next) {
                         });
 
                         // Respond to the client
-                        res.status(200).json({ RspCode: '00', Message: 'Failed' });
+                        res.status(200).json({
+                            orderId: orderId,
+                            totalmoney: vnp_Params['vnp_Amount'],
+                            note: vnp_Params['vnp_OrderInfo'],
+                            vnp_response_code: vnp_Params['vnp_ResponseCode'],
+                            code_vnpay: vnp_Params['vnp_TransactionNo'],
+                            code_bank: vnp_Params['vnp_BankCode'],
+                            cart: cartManage,
+                            phone: phoneManage,
+                            address: addressManage,
+                            user: userManage,
+                            time: vnp_Params['vnp_PayDate'],
+                            RspCode: '00', Message: 'Failed'
+                        });
                     }
                 } else {
                     // Save payment information for other statuses if needed
@@ -339,5 +381,24 @@ router.get("/getAllPayment", async function (req, res, next) {
         data: payments
     })
 })
-
+router.post("/update_state", async function (req, res, next) {
+    let orderId = req.body.orderId;
+    let status = req.body.status;
+    const data = await db.Payment.findOne({ orderId: orderId }).exec();
+    if (!data) {
+        return res.status(404).send({
+            error: 'Document not found',
+        });
+    }
+    await db.Payment.updateOne(
+        { orderId: orderId },
+        {
+            $set: { status: status }
+        }
+    );
+    const updatedData = await db.Payment.findOne({ orderId: orderId }).exec();
+    return res.send({
+        data: updatedData
+    });
+})
 module.exports = router;

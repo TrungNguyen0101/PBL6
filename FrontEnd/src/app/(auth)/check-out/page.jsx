@@ -15,8 +15,6 @@ const CheckOutPage = () => {
   const [isShowListLocation, setIsShowListLocation] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [book, setBook] = useState(null);
-  const idBook = sessionStorage.getItem('idBook');
-  if (!idBook) return;
   const fetchAllLocation = async () => {
     const res = await axios.get(
       `https://rsapi.goong.io/Place/AutoComplete?api_key=GS65AY8rHZnAKAMvfwP8tZvMNaszJrCS1bZM6NYg&input=${location}`
@@ -26,10 +24,11 @@ const CheckOutPage = () => {
     }
   };
   const fetchBookById = async () => {
+    const idBook = sessionStorage.getItem('idBook');
+    if (!idBook) return;
     const res = await getBookById(idBook);
     const count = sessionStorage.getItem('count');
     const priceBook = sessionStorage.getItem('priceBook');
-    // if (check === true) return;
     if (res && res?.data && res?.data?.book) {
       setBook({
         book: [
@@ -43,6 +42,7 @@ const CheckOutPage = () => {
       });
     }
   };
+  console.log('book', book);
   const handleOnChangeLocation = (event) => {
     setLocation(event.target.value);
     setIsShowListLocation(true);
@@ -63,9 +63,8 @@ const CheckOutPage = () => {
       'vn',
       book?.book
     );
-    console.log('check', res);
     if (res && res?.data) {
-      // router.push(res?.data);
+      router.push(res?.data);
     }
   };
   useEffect(() => {
@@ -74,15 +73,14 @@ const CheckOutPage = () => {
   useEffect(() => {
     const check = sessionStorage.getItem('check');
     const bookList = sessionStorage.getItem('bookList');
-    console.log('first', check);
+    const idBook = sessionStorage.getItem('idBook');
+    if (!idBook) return;
     if (JSON.parse(check) === false) {
-      console.log(1);
       fetchBookById();
     } else {
-      console.log(2);
       setBook(JSON.parse(bookList));
     }
-  }, [idBook]);
+  }, []);
   useEffect(() => {
     const listLocation = document.querySelectorAll('.location-item');
     function getLocation(e) {

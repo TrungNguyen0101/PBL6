@@ -92,6 +92,19 @@ const updatePaymentOrder = async (data) => {
     }
     orderData.errCode = 200;
     orderData.errMessage = "Create order success";
+const updateStatusPaymentOrder = async (data) => {
+  let orderData = {};
+  try {
+    const order = await db.Order.findOne({
+      _id: data?.id,
+    });
+    if (order) {
+      const result = await order.updateOne({
+        isPayment: true
+      });
+      orderData.order = result;
+      orderData.errCode = 200;
+    }
   } catch (e) {
     console.log("file: orderService.js:13 ~ insertOrder ~ e:", e);
     orderData.errCode = 500;
@@ -172,4 +185,5 @@ module.exports = {
   updateAllStatusOrder: updateAllStatusOrder,
   getOrderByAcountStatus: getOrderByAcountStatus,
   updatePaymentOrder: updatePaymentOrder,
+  updateStatusPaymentOrder: updateStatusPaymentOrder,
 };

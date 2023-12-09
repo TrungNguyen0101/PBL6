@@ -34,7 +34,7 @@ export default function ProfileUpdateForm({ styles }) {
   const formik = useFormik({
     initialValues: {
       email: user?.email,
-      phoneNumber: String('0' + user?.phoneNumber),
+      phoneNumber: user?.phoneNumber ? String('0' + user?.phoneNumber) : '',
       username: user?.username,
     },
     validationSchema: validationSchema,

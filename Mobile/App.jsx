@@ -32,6 +32,9 @@ import ListAllProduct from './screens/ListAllProduct'
 import CheckoutProvider from './context/CheckoutProvider'
 import Comments from './screens/Comments'
 import ForgetPassword from './screens/Auth/ForgetPassword'
+import PaymentMethod from './screens/PaymentMethod'
+import PaymentAddress from './screens/PaymentAddress'
+import WebViewScreen from './screens/WebView'
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -50,7 +53,7 @@ const toastConfig = {
         fontWeight: '700',
       }}
       text2Style={{
-        fontSize: 16,
+        fontSize: 17,
         fontWeight: '700',
       }}
     />
@@ -64,7 +67,7 @@ const toastConfig = {
         fontWeight: '700',
       }}
       text2Style={{
-        fontSize: 15,
+        fontSize: 17,
       }}
     />
   ),
@@ -127,6 +130,21 @@ export default function App() {
                   name="Comments"
                   component={Comments}
                   options={({ route }) => ({ title: route.params.headerName })}
+                />
+                <Stack.Screen
+                  name="PaymentMethod"
+                  component={PaymentMethod}
+                  options={({ route }) => ({ title: route.params.headerName })}
+                />
+                <Stack.Screen
+                  name="PaymentAddress"
+                  component={PaymentAddress}
+                  options={({ route }) => ({ title: route.params.headerName })}
+                />
+                <Stack.Screen
+                  name="WebViewScreen"
+                  component={WebViewScreen}
+                  options={{ headerShown: false }}
                 />
               </Stack.Navigator>
             </NavigationContainer>

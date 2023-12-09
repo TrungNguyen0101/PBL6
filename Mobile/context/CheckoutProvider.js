@@ -9,7 +9,7 @@ export const CheckoutContext = createContext()
 function CheckoutProvider({ children }) {
     const { user, accessToken } = useContext(AuthContext)
     const [cart, setCart] = useState(null)
-    const [shipPrice, setShipPrice] = useState(5)
+    const [shipPrice, setShipPrice] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
     const [shipMethod, setShipMethod] = useState({
         label: 'Thanh toán khi nhận hàng',
@@ -19,9 +19,7 @@ function CheckoutProvider({ children }) {
     const [addressCheckout, setAddressCheckout] = useState({
         name: '',
         address: '',
-        precinct: '',
-        urban: '',
-        city: '',
+        phone: ''
     })
 
     const handleSumTotalPrice = useCallback(() => {
@@ -48,7 +46,7 @@ function CheckoutProvider({ children }) {
     }, [accessToken, user])
 
     useEffect(() => {
-        setShipPrice(5)
+        setShipPrice(0)
         setTotalPrice(0)
         handleSumTotalPrice()
     }, [handleSumTotalPrice])
