@@ -139,6 +139,7 @@ router.get('/vnpay_ipn', async function (req, res, next) {
                 if (paymentStatus == "0") {
                     if (rspCode == "00") {
                         // Save successful payment information to the database
+
                         await db.Payment.create({
                             orderId: orderId,
                             totalmoney: vnp_Params['vnp_Amount'],
@@ -218,7 +219,6 @@ router.get('/vnpay_ipn', async function (req, res, next) {
                     }
                 } else {
                     // Save payment information for other statuses if needed
-
                     // Respond to the client
                     res.status(200).json({ RspCode: '24', Message: 'This order has been updated to the payment status' });
                 }
