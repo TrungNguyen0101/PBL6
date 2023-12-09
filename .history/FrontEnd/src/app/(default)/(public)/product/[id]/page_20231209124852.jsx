@@ -360,24 +360,15 @@ const ProductDetail = () => {
                     {book?.discount !== 0 ? (
                       <>
                         <span className="old-price">
-                          {book?.price
-                            .toFixed(0)
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
-                          đ
+                          ${book?.price.toFixed(2)}
                         </span>
                         <span className="current-price">
-                          {priceDiscount
-                            .toFixed(0)
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
-                          đ
+                          ${priceDiscount.toFixed(2)}
                         </span>
                       </>
                     ) : (
                       <span className="current-price">
-                        {book?.price
-                          .toFixed(0)
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}{' '}
-                        đ
+                        ${book?.price.toFixed(2)}
                       </span>
                     )}
                   </div>
