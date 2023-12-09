@@ -52,8 +52,8 @@ const CartItem = ({
   const handleDelete = async () => {
     const result = await deleteOrder(_id);
     toast.success('Delete product successfully');
-    handleGetCartByAccount(accountID);
-    handleGetCartByAccountStatus(accountID);
+    await handleGetCartByAccount(accountID);
+    await handleGetCartByAccountStatus(accountID);
   };
 
   const handlerMinus = useCallback(async () => {

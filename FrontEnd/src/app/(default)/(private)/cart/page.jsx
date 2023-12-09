@@ -27,6 +27,8 @@ export default function Cart() {
     const { data } = await getOrderByAccount(id);
     if (data?.order?.length > 0) {
       setOder(data.order);
+    } else {
+      setOder({});
     }
   };
   const handleGetCartByAccountStatus = async (id) => {
