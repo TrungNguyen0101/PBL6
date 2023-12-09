@@ -7,6 +7,15 @@ const vnpayConfig = require('../config/vnpay')
 const db = require("../models/index")
 const middleware = require("../utils/middleware.js");
 var cartManage;
+var userManage;
+var phoneManage;
+var addressManage
+function getDataPayment(cart, user, phone, address) {
+    cartManage = cart;
+    userManage = user;
+    phoneManage = phone;
+    addressManage = address;
+}
 router.get('/', function (req, res, next) {
     res.render('orderlist', { title: 'Danh sách đơn hàng' });
 });
@@ -21,14 +30,11 @@ router.get('/refund', function (req, res, next) {
     let desc = 'Hoan tien GD thanh toan';
     res.render('refund', { title: 'Hoàn tiền giao dịch thanh toán' })
 });
-router.post('/create_payment_url', function (req, res, next) {
+router.post('/create_payment_url', middleware.authMiddleWare, function (req, res, next) {
     process.env.TZ = 'Asia/Ho_Chi_Minh';
     let date = new Date();
     let createDate = moment(date).format('YYYYMMDDHHmmss');
-    let ipAddr = req.headers['x-forwarded-for'] ||
-        req.connection.remoteAddress ||
-        req.socket.remoteAddress ||
-        req.connection.socket.remoteAddress;
+    let ipAddr = '0.0.0.0'
     let tmnCode = vnpayConfig.vnp_TmnCode;
     let secretKey = vnpayConfig.vnp_HashSecret;
     let vnpUrl = vnpayConfig.vnp_Url;
@@ -37,6 +43,9 @@ router.post('/create_payment_url', function (req, res, next) {
     let amount = req.body.amount;
     let bankCode = req.body.bankCode;
     let cart = req.body.cart;
+    let user = req.User.User;
+    let phone = req.body.phone;
+    let address = req.body.address;
     let locale = req.body.language;
     if (locale === null || locale === '') {
         locale = 'vn';
@@ -60,7 +69,7 @@ router.post('/create_payment_url', function (req, res, next) {
     if (bankCode !== null && bankCode !== '') {
         vnp_Params['vnp_BankCode'] = bankCode;
     }
-    updateCart(cart)
+    getDataPayment(cart, user, phone, address)
     vnp_Params = sortObject(vnp_Params);
     let querystring = require('qs');
     let signData = querystring.stringify(vnp_Params, { encode: false });
@@ -99,9 +108,7 @@ router.get('/vnpay_return', async function (req, res, next) {
         res.render('success', { code: '97' })
     }
 });
-function updateCart(cart) {
-    cartManage = cart;
-}
+
 router.get('/vnpay_ipn', async function (req, res, next) {
     let vnp_Params = req.query;
     let secureHash = vnp_Params['vnp_SecureHash'];
@@ -140,6 +147,9 @@ router.get('/vnpay_ipn', async function (req, res, next) {
                             code_vnpay: vnp_Params['vnp_TransactionNo'],
                             code_bank: vnp_Params['vnp_BankCode'],
                             cart: cartManage,
+                            phone: phoneManage,
+                            address: addressManage,
+                            user: userManage,
                             time: vnp_Params['vnp_PayDate'],
                         });
 
@@ -155,6 +165,9 @@ router.get('/vnpay_ipn', async function (req, res, next) {
                             code_vnpay: vnp_Params['vnp_TransactionNo'],
                             code_bank: vnp_Params['vnp_BankCode'],
                             cart: cartManage,
+                            phone: phoneManage,
+                            address: addressManage,
+                            user: userManage,
                             time: vnp_Params['vnp_PayDate']
                         });
 
