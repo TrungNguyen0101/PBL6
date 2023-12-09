@@ -6,6 +6,9 @@ const postOrder = (data) => {
 const updateOrder = (data) => {
   return instance.put(`order/update`, data);
 };
+const updatePayment = (data) => {
+  return instance.put(`order/update-payment`, data);
+};
 const updateAllStatusOrder = (data) => {
   return instance.put(`order/update-status`, data);
 };
@@ -29,4 +32,5 @@ export {
   deleteOrder,
   updateAllStatusOrder,
   getOrderByAccountStatus,
+  updatePayment,
 };

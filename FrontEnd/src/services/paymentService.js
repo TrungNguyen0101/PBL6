@@ -10,5 +10,8 @@ const postPayment = (amount, phone, address, bankCode, language, cart) => {
     cart,
   });
 };
+const getAllPayment = () => {
+  return instance.get('payment/getAllPayment');
+};
 
-export { postPayment };
+export { postPayment, getAllPayment };
