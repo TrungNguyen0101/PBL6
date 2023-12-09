@@ -4,12 +4,18 @@ import Header from '@/components/layout/Header';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { postPayment } from '@/services/paymentService';
+import { useRouter } from 'next/navigation';
+import { getBookById } from '@/services/bookService';
+import TableAnt from '@/components/TableAnt';
 
 const CheckOutPage = () => {
+  const router = useRouter();
   const [location, setLocation] = useState('');
   const [listLocation, setListLocation] = useState([]);
   const [isShowListLocation, setIsShowListLocation] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [book, setBook] = useState(null);
+  const idBook = sessionStorage.getItem('idBook');
   const fetchAllLocation = async () => {
     const res = await axios.get(
       `https://rsapi.goong.io/Place/AutoComplete?api_key=GS65AY8rHZnAKAMvfwP8tZvMNaszJrCS1bZM6NYg&input=${location}`
@@ -17,6 +23,18 @@ const CheckOutPage = () => {
     if (res && res?.status === 200) {
       setListLocation(res?.data?.predictions);
     }
+  };
+  const fetchBookById = async () => {
+    const res = await getBookById(idBook);
+    const count = sessionStorage.getItem('count');
+    if (res && res?.data && res?.data?.book) {
+      setBook({
+        ...res?.data?.book,
+        Count: count,
+        price: count * res?.data?.book?.price,
+      });
+    }
+    console.log('check book id:', res);
   };
   const handleOnChangeLocation = (event) => {
     setLocation(event.target.value);
@@ -31,12 +49,18 @@ const CheckOutPage = () => {
       return;
     }
     const priceBook = sessionStorage.getItem('priceBook');
-    const res = await postPayment(priceBook, phoneNumber, location, '');
+    const res = await postPayment(priceBook, phoneNumber, location, '', 'vn');
+    if (res && res?.data) {
+      router.push(res?.data);
+    }
     console.log('check res:', res);
   };
   useEffect(() => {
     fetchAllLocation();
   }, [location]);
+  useEffect(() => {
+    fetchBookById();
+  }, [idBook]);
   useEffect(() => {
     const listLocation = document.querySelectorAll('.location-item');
     function getLocation(e) {
@@ -52,8 +76,9 @@ const CheckOutPage = () => {
   return (
     <>
       <Header></Header>
-      <div className="w-[800px] mx-auto">
-        <div className="mt-10">
+      <div className="mt-7 w-[850px] mx-auto">
+        <TableAnt dataAccount={[book, book, book]} />
+        <div className="mx-auto">
           <div className="mb-7">
             <h2 className="mb-2 text-2xl font-semibold">1. Điền thông tin</h2>
             <div className="flex gap-x-3">
