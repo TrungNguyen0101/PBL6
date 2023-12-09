@@ -3,19 +3,27 @@ import React from 'react';
 import { Table, Button, Popconfirm, message } from 'antd';
 // import './styled.scss';
 import { useEffect } from 'react';
+import { useState } from 'react';
 
 const TableAnt = ({ dataAccount }) => {
-  console.log('dataAccount', dataAccount);
   const [data, setData] = React.useState([]);
-  console.log('check data', data);
+
   useEffect(() => {
     const handleGetAllAccount = async () => {
+      const newData = dataAccount?.book?.map((x) => {
+        return {
+          ...x,
+          price: Number((x.price * (100 - x.discount)) / 100),
+        };
+      });
+      console.log('new Data', newData);
       if (dataAccount?.book?.length > 0) {
-        setData(dataAccount.book);
+        setData(newData);
       }
     };
     handleGetAllAccount();
   }, [dataAccount?.book]);
+
   const columns = [
     {
       title: 'Title',
