@@ -159,7 +159,6 @@ const ProductDetail = () => {
       return;
     }
     router.push('/check-out');
-    sessionStorage.setItem('priceBook', Number(price * count));
     sessionStorage.setItem('count', Number(count));
     sessionStorage.setItem('idBook', book?._id);
   };
