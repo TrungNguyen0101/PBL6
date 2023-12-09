@@ -152,8 +152,8 @@ router.get('/vnpay_ipn', async function (req, res, next) {
                             user: userManage,
                             time: vnp_Params['vnp_PayDate'],
                         });
-                        const ids = cartManage.map(item => item._id);
-                        console.log(ids[0]);
+
+                        const ids = cartManage?.map(item => item._id);
                         for (i = 0; i < ids.length; i++) {
                             const book = await db.Book.findById(ids[i]);
 
@@ -163,9 +163,6 @@ router.get('/vnpay_ipn', async function (req, res, next) {
 
                                 // Save the updated document
                                 await book.save();
-                                console.log(`Quantity updated for book with _id ${ids[i]}`);
-                            } else {
-                                console.log(`Book with _id ${ids[i]} not found`);
                             }
                         }
                         // Respond to the client
