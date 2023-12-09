@@ -139,6 +139,7 @@ router.get('/vnpay_ipn', async function (req, res, next) {
                 if (paymentStatus == "0") {
                     if (rspCode == "00") {
                         // Save successful payment information to the database
+
                         await db.Payment.create({
                             orderId: orderId,
                             totalmoney: vnp_Params['vnp_Amount'],
@@ -184,7 +185,7 @@ router.get('/vnpay_ipn', async function (req, res, next) {
                             RspCode: '00',
                             Message: 'Success'
                         });
-                    } else {
+                    } else if (rspCode == "02") {
                         // Save failed payment information to the database
                         await db.Payment.create({
                             orderId: orderId,
