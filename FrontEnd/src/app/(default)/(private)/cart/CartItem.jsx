@@ -118,9 +118,17 @@ const CartItem = ({
       </td>
       <td className="p-0 text-center price-amount amount">
         <div className="flex items-center gap-x-[10px]">
-          <span className="line-through">${cart?.Book.price}</span>
+          <span className="line-through">
+            {cart?.Book.price?.toLocaleString('it-IT', {
+              style: 'currency',
+              currency: 'VND',
+            })}
+          </span>
           <span className="text-red-500">
-            ${parseFloat(cart?.PriceDiscount)}
+            {parseFloat(cart?.PriceDiscount)?.toLocaleString('it-IT', {
+              style: 'currency',
+              currency: 'VND',
+            })}
           </span>
         </div>
       </td>
@@ -161,7 +169,12 @@ const CartItem = ({
         </div>
       </td>
       <td className="p-[10px] text-left price-amount amount-sub">
-        <span className="">${parseFloat(cart?.PriceDiscount) * count}</span>
+        <span className="">
+          {(parseFloat(cart?.PriceDiscount) * count)?.toLocaleString('it-IT', {
+            style: 'currency',
+            currency: 'VND',
+          })}
+        </span>
       </td>
     </tr>
   );
