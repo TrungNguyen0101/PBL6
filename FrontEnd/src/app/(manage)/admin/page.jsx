@@ -52,7 +52,7 @@ const Page = () => {
   }, []);
 
   return (
-    <div className={`${isLoading ? 'cursor-wait' : ''}`}>
+    <div className={`${isLoading ? 'cursor-wait' : ''} overflow-auto`}>
       <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-y-[20px]  gap-x-[20px]">
         <div className="text-white">
           <div className="p-[20px] bg-[#17a2b8] rounded-t-lg ">
@@ -172,7 +172,7 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="flex items-center justify-center w-full mt-[50px]">
+      <div className="flex items-center justify-center w-full mt-[50px]  overflow-auto">
         <ChartBar></ChartBar>
       </div>
     </div>
