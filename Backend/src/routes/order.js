@@ -16,6 +16,11 @@ router.put(
   middleware.authMiddleWare,
   orderController.updateAllStatusOrder
 );
+router.put(
+  "/update-payment",
+  middleware.authMiddleWare,
+  orderController.updatePaymentOrder
+);
 router.delete("/:id", orderController.deleteOrder);
 router.post("/insert", middleware.authMiddleWare, orderController.insertOrder);
 

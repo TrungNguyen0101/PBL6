@@ -6,13 +6,16 @@ const insertOrder = async (data) => {
     const order = await db.Order.findOne({
       IdAccount: data?.IdAccount,
       "Book._id": data?.Book._id,
+      isPayment: false,
     });
     if (!order) {
+      console.log(1);
       const order = await db.Order.create(data);
       orderData.order = order;
       orderData.errCode = 200;
       orderData.errMessage = "Create order succeed";
     } else {
+      console.log(2);
       const countUpdate = parseInt(order?.Count) + parseInt(data?.Count);
       const result = await order.updateOne({
         Count: countUpdate,
@@ -33,6 +36,7 @@ const updateOrder = async (data) => {
     const order = await db.Order.findOne({
       IdAccount: data?.IdAccount,
       "Book._id": data?.BookId,
+      isPayment: false,
     });
     if (order) {
       if (data.status === undefined) {
@@ -74,6 +78,28 @@ const updateAllStatusOrder = async (data) => {
   return orderData;
 };
 
+const updatePaymentOrder = async (data) => {
+  let orderData = {};
+  try {
+    const order = await db.Order.findOne({
+      IdAccount: data?.IdAccount,
+      "Book._id": data?.BookId,
+    });
+    if (order) {
+      const result = await order.updateOne({
+        isPayment: true,
+      });
+    }
+    orderData.errCode = 200;
+    orderData.errMessage = "Create order success";
+  } catch (e) {
+    console.log("file: orderService.js:13 ~ insertOrder ~ e:", e);
+    orderData.errCode = 500;
+    orderData.errMessage = "Create order failed";
+  }
+  return orderData;
+};
+
 const getOrderById = async (bookId) => {
   let orderData = {};
   try {
@@ -93,6 +119,7 @@ const getOrderByAcountStatus = async (ID_Account) => {
     const order = await db.Order.find({
       IdAccount: ID_Account.id,
       status: true,
+      isPayment: false,
     });
     orderData.order = order;
     orderData.errCode = 0;
@@ -144,4 +171,5 @@ module.exports = {
   getOrderById: getOrderById,
   updateAllStatusOrder: updateAllStatusOrder,
   getOrderByAcountStatus: getOrderByAcountStatus,
+  updatePaymentOrder: updatePaymentOrder,
 };

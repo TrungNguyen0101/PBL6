@@ -7,6 +7,7 @@ import {
   getOrderById,
   updateAllStatusOrder,
   updateOrder,
+  updatePayment,
 } from '@/services/orderService';
 import CartItem from './CartItem';
 import { Switch } from 'antd';
@@ -15,6 +16,7 @@ export default function Cart() {
   const router = useRouter();
   const [order, setOder] = useState([]);
   const [payment, setPayment] = useState({});
+  const [orderStatusTrue, setOrderStatusTrue] = useState({});
   const [isChecked, setIschecked] = useState(false);
   const accountID =
     typeof window !== 'undefined'
@@ -30,6 +32,7 @@ export default function Cart() {
   const handleGetCartByAccountStatus = async (id) => {
     const { data } = await getOrderByAccountStatus(id);
     if (data?.order.length > 0) {
+      setOrderStatusTrue(data.order);
       const orders = data?.order;
       const total = orders.reduce((acc, order) => {
         const priceDiscount = parseFloat(order.PriceDiscount);
@@ -74,9 +77,25 @@ export default function Cart() {
     handleGetCartByAccountStatus(accountID);
   };
 
+  async function updatePayments() {
+    try {
+      const promises = orderStatusTrue.map(async (item) => {
+        const kq = await updatePayment({
+          IdAccount: accountID,
+          BookId: item.Book._id,
+        });
+        return kq; // Assuming you want to return something after updatePayment
+      });
+      const results = await Promise.all(promises);
+      console.log('All payments updated:', results);
+    } catch (error) {
+      console.error('Error updating payments:', error);
+    }
+  }
   const handleCheckout = () => {
     sessionStorage.setItem('bookList', JSON.stringify(payment));
     sessionStorage.setItem('check', true);
+    updatePayments();
     router.push('/check-out');
     console.log(payment);
   };
