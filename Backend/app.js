@@ -13,6 +13,7 @@ const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
 var debug = require('debug')('backend:server');
 var http = require('http');
+const session = require('express-session');
 app.use(cors());
 
 app.use('/', express.static(path.join(__dirname, 'lib')))
@@ -28,7 +29,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(session({
+    secret: 'EXAMPLEkeyHERE1', // Replace with a strong, random secret
+    resave: false,
+    saveUninitialized: true
+}));
 
 initWebRoutes(app);
 app.set('views', path.join(__dirname, 'src', 'views'));

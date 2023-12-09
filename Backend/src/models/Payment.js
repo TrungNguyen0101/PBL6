@@ -10,6 +10,7 @@ const Payment = new Schema({
     vnp_response_code: { type: Number },
     code_vnpay: { type: Number },
     code_bank: { type: String },
+    cart : {type: Array},
     time: { type: String }
 }, { timestamps: true, })
 

@@ -6,6 +6,7 @@ const moment = require('moment');
 const vnpayConfig = require('../config/vnpay')
 const db = require("../models/index")
 const middleware = require("../utils/middleware.js");
+var cartManage;
 router.get('/', function (req, res, next) {
     res.render('orderlist', { title: 'Danh sách đơn hàng' });
 });
@@ -34,9 +35,8 @@ router.post('/create_payment_url', function (req, res, next) {
     let returnUrl = vnpayConfig.vnp_ReturnUrl;
     let orderId = moment(date).format('DDHHmmss');
     let amount = req.body.amount;
-    let phone = req.body.phone;
-    let address = req.body.address;
     let bankCode = req.body.bankCode;
+    let cart = req.body.cart;
     let locale = req.body.language;
     if (locale === null || locale === '') {
         locale = 'vn';
@@ -60,6 +60,7 @@ router.post('/create_payment_url', function (req, res, next) {
     if (bankCode !== null && bankCode !== '') {
         vnp_Params['vnp_BankCode'] = bankCode;
     }
+    updateCart(cart)
     vnp_Params = sortObject(vnp_Params);
     let querystring = require('qs');
     let signData = querystring.stringify(vnp_Params, { encode: false });
@@ -97,18 +98,11 @@ router.get('/vnpay_return', async function (req, res, next) {
     } else {
         res.render('success', { code: '97' })
     }
-    await db.Payment.create({
-        orderId: vnp_Params['vnp_TxnRef'],
-        totalmoney: vnp_Params['vnp_Amount'] / 100,
-        note: vnp_Params['vnp_OrderInfo'],
-        vnp_response_code: vnp_Params['vnp_ResponseCode'],
-        code_vnpay: vnp_Params['vnp_TransactionNo'],
-        code_bank: vnp_Params['vnp_BankCode'],
-        time: vnp_Params['vnp_PayDate']
-    })
 });
-
-router.get('/vnpay_ipn', function (req, res, next) {
+function updateCart(cart) {
+    cartManage = cart;
+}
+router.get('/vnpay_ipn', async function (req, res, next) {
     let vnp_Params = req.query;
     let secureHash = vnp_Params['vnp_SecureHash'];
 
@@ -132,40 +126,57 @@ router.get('/vnpay_ipn', function (req, res, next) {
 
     let checkOrderId = true; // Mã đơn hàng "giá trị của vnp_TxnRef" VNPAY phản hồi tồn tại trong CSDL của bạn
     let checkAmount = true; // Kiểm tra số tiền "giá trị của vnp_Amout/100" trùng khớp với số tiền của đơn hàng trong CSDL của bạn
-
-    if (secureHash === signed) { //kiểm tra checksum
+    if (secureHash === signed) {
         if (checkOrderId) {
             if (checkAmount) {
-                if (paymentStatus == "0") { //kiểm tra tình trạng giao dịch trước khi cập nhật tình trạng thanh toán
+                if (paymentStatus == "00") {
                     if (rspCode == "00") {
-                        //paymentStatus = '1'
-                        // Ở đây cập nhật trạng thái giao dịch thanh toán thành công vào CSDL của bạn
-                        res.status(200).json({ RspCode: '00', Message: 'Success' })
+                        // Save successful payment information to the database
+                        await db.Payment.create({
+                            orderId: orderId,
+                            totalmoney: vnp_Params['vnp_Amount'],
+                            note: vnp_Params['vnp_OrderInfo'],
+                            vnp_response_code: vnp_Params['vnp_ResponseCode'],
+                            code_vnpay: vnp_Params['vnp_TransactionNo'],
+                            code_bank: vnp_Params['vnp_BankCode'],
+                            cart: cartManage,
+                            time: vnp_Params['vnp_PayDate'],
+                        });
+
+                        // Respond to the client
+                        res.status(200).json({ RspCode: '00', Message: 'Success' });
+                    } else {
+                        // Save failed payment information to the database
+                        await db.Payment.create({
+                            orderId: orderId,
+                            totalmoney: vnp_Params['vnp_Amount'],
+                            note: vnp_Params['vnp_OrderInfo'],
+                            vnp_response_code: vnp_Params['vnp_ResponseCode'],
+                            code_vnpay: vnp_Params['vnp_TransactionNo'],
+                            code_bank: vnp_Params['vnp_BankCode'],
+                            cart: cartManage,
+                            time: vnp_Params['vnp_PayDate']
+                        });
+
+                        // Respond to the client
+                        res.status(200).json({ RspCode: '02', Message: 'Failed' });
                     }
-                    else {
-                        //that bai
-                        //paymentStatus = '2'
-                        // Ở đây cập nhật trạng thái giao dịch thanh toán thất bại vào CSDL của bạn
-                        res.status(200).json({ RspCode: '02', Message: 'Failed' })
-                    }
+                } else {
+                    // Save payment information for other statuses if needed
+
+                    // Respond to the client
+                    res.status(200).json({ RspCode: '02', Message: 'This order has been updated to the payment status' });
                 }
-                else {
-                    res.status(200).json({ RspCode: '02', Message: 'This order has been updated to the payment status' })
-                }
+            } else {
+                res.status(200).json({ RspCode: '04', Message: 'Amount invalid' });
             }
-            else {
-                res.status(200).json({ RspCode: '04', Message: 'Amount invalid' })
-            }
+        } else {
+            res.status(200).json({ RspCode: '01', Message: 'Order not found' });
         }
-        else {
-            res.status(200).json({ RspCode: '01', Message: 'Order not found' })
-        }
-    }
-    else {
-        res.status(200).json({ RspCode: '97', Message: 'Checksum failed' })
+    } else {
+        res.status(200).json({ RspCode: '97', Message: 'Checksum failed' });
     }
 });
-
 router.post('/querydr', function (req, res, next) {
 
     process.env.TZ = 'Asia/Ho_Chi_Minh';
