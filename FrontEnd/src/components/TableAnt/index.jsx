@@ -5,16 +5,17 @@ import { Table, Button, Popconfirm, message } from 'antd';
 import { useEffect } from 'react';
 
 const TableAnt = ({ dataAccount }) => {
-  console.log(dataAccount);
+  console.log('dataAccount', dataAccount);
   const [data, setData] = React.useState([]);
+  console.log('check data', data);
   useEffect(() => {
     const handleGetAllAccount = async () => {
-      if (dataAccount.length > 0) {
-        setData(dataAccount);
+      if (dataAccount?.book?.length > 0) {
+        setData(dataAccount.book);
       }
     };
     handleGetAllAccount();
-  }, [dataAccount]);
+  }, [dataAccount?.book]);
   const columns = [
     {
       title: 'Title',

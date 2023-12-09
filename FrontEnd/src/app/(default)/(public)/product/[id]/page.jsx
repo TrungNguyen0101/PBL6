@@ -146,6 +146,7 @@ const ProductDetail = () => {
     });
   };
   const handleBuyNow = (price) => {
+    sessionStorage.setItem('check', false);
     const auth = sessionStorage.getItem('auth');
     const parseAuth = JSON.parse(auth);
     if (!auth) {
@@ -360,24 +361,24 @@ const ProductDetail = () => {
                     {book?.discount !== 0 ? (
                       <>
                         <span className="old-price">
-                          {book?.price
-                            .toFixed(0)
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
-                          đ
+                          {book?.price?.toLocaleString('it-IT', {
+                            style: 'currency',
+                            currency: 'VND',
+                          })}
                         </span>
                         <span className="current-price">
-                          {priceDiscount
-                            .toFixed(0)
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
-                          đ
+                          {priceDiscount?.toLocaleString('it-IT', {
+                            style: 'currency',
+                            currency: 'VND',
+                          })}
                         </span>
                       </>
                     ) : (
                       <span className="current-price">
-                        {book?.price
-                          .toFixed(0)
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}{' '}
-                        đ
+                        {book?.price?.toLocaleString('it-IT', {
+                          style: 'currency',
+                          currency: 'VND',
+                        })}
                       </span>
                     )}
                   </div>
@@ -580,10 +581,10 @@ const ProductDetail = () => {
                         </div>
                         <div className="item-price">
                           <span>
-                            {item.price
-                              .toFixed(0)
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
-                            đ
+                            {item?.price?.toLocaleString('it-IT', {
+                              style: 'currency',
+                              currency: 'VND',
+                            })}
                           </span>
                         </div>
                       </div>

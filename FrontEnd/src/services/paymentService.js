@@ -1,12 +1,13 @@
 import instance from '../utils/axiosCustomize';
 
-const postPayment = (amount, phone, address, bankCode, language) => {
+const postPayment = (totalMoney, phone, address, bankCode, language, cart) => {
   return instance.post('payment/create_payment_url', {
-    amount,
+    totalMoney,
     phone,
     address,
     bankCode,
     language,
+    cart,
   });
 };
 

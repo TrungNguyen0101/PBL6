@@ -16,6 +16,7 @@ const CheckOutPage = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [book, setBook] = useState(null);
   const idBook = sessionStorage.getItem('idBook');
+  if (!idBook) return;
   const fetchAllLocation = async () => {
     const res = await axios.get(
       `https://rsapi.goong.io/Place/AutoComplete?api_key=GS65AY8rHZnAKAMvfwP8tZvMNaszJrCS1bZM6NYg&input=${location}`
@@ -27,14 +28,20 @@ const CheckOutPage = () => {
   const fetchBookById = async () => {
     const res = await getBookById(idBook);
     const count = sessionStorage.getItem('count');
+    const priceBook = sessionStorage.getItem('priceBook');
+    // if (check === true) return;
     if (res && res?.data && res?.data?.book) {
       setBook({
-        ...res?.data?.book,
-        Count: count,
-        price: count * res?.data?.book?.price,
+        book: [
+          {
+            ...res?.data?.book,
+            Count: count,
+            price: count * res?.data?.book?.price,
+          },
+        ],
+        totalMoney: priceBook,
       });
     }
-    console.log('check book id:', res);
   };
   const handleOnChangeLocation = (event) => {
     setLocation(event.target.value);
@@ -48,18 +55,33 @@ const CheckOutPage = () => {
       toast.warning('Vui lòng nhập địa chỉ');
       return;
     }
-    const priceBook = sessionStorage.getItem('priceBook');
-    const res = await postPayment(priceBook, phoneNumber, location, '', 'vn');
+    const res = await postPayment(
+      book?.totalMoney,
+      phoneNumber,
+      location,
+      '',
+      'vn',
+      book?.book
+    );
+    console.log('check', res);
     if (res && res?.data) {
-      router.push(res?.data);
+      // router.push(res?.data);
     }
-    console.log('check res:', res);
   };
   useEffect(() => {
     fetchAllLocation();
   }, [location]);
   useEffect(() => {
-    fetchBookById();
+    const check = sessionStorage.getItem('check');
+    const bookList = sessionStorage.getItem('bookList');
+    console.log('first', check);
+    if (JSON.parse(check) === false) {
+      console.log(1);
+      fetchBookById();
+    } else {
+      console.log(2);
+      setBook(JSON.parse(bookList));
+    }
   }, [idBook]);
   useEffect(() => {
     const listLocation = document.querySelectorAll('.location-item');
@@ -77,7 +99,7 @@ const CheckOutPage = () => {
     <>
       <Header></Header>
       <div className="mt-7 w-[850px] mx-auto">
-        <TableAnt dataAccount={[book, book, book]} />
+        <TableAnt dataAccount={book} />
         <div className="mx-auto">
           <div className="mb-7">
             <h2 className="mb-2 text-2xl font-semibold">1. Điền thông tin</h2>

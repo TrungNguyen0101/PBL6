@@ -10,7 +10,9 @@ import {
 } from '@/services/orderService';
 import CartItem from './CartItem';
 import { Switch } from 'antd';
+import { useRouter } from 'next/navigation';
 export default function Cart() {
+  const router = useRouter();
   const [order, setOder] = useState([]);
   const [payment, setPayment] = useState({});
   const [isChecked, setIschecked] = useState(false);
@@ -73,6 +75,9 @@ export default function Cart() {
   };
 
   const handleCheckout = () => {
+    sessionStorage.setItem('bookList', JSON.stringify(payment));
+    sessionStorage.setItem('check', true);
+    router.push('/check-out');
     console.log(payment);
   };
   return (
@@ -135,7 +140,12 @@ export default function Cart() {
                     <th>Total</th>
                     <td>
                       <span>
-                        {payment.totalMoney ? payment.totalMoney : 0} đ
+                        {payment.totalMoney
+                          ? payment.totalMoney?.toLocaleString('it-IT', {
+                              style: 'currency',
+                              currency: 'VND',
+                            })
+                          : 0}
                       </span>
                     </td>
                   </tr>
@@ -143,7 +153,7 @@ export default function Cart() {
               </table>
               <div className="wc-proceed-to-checkout">
                 <button
-                  className="checkout-button text-white"
+                  className="text-white checkout-button"
                   onClick={handleCheckout}
                 >
                   Proceed to checkout
