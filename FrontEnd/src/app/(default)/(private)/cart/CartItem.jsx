@@ -53,22 +53,25 @@ const CartItem = ({
     const result = await deleteOrder(_id);
     toast.success('Delete product successfully');
     handleGetCartByAccount(accountID);
+    handleGetCartByAccountStatus(accountID);
   };
 
-  const handlerMinus = useCallback(() => {
+  const handlerMinus = useCallback(async () => {
     if (count === 1) {
       return;
     } else {
       let resultCount = count - 1;
-      handleUpdateOrder(_id, resultCount);
+      await handleUpdateOrder(_id, resultCount);
       setCount(resultCount);
+      await handleGetCartByAccountStatus(accountID);
     }
   }, [count]);
 
-  const handlerPlus = useCallback(() => {
+  const handlerPlus = useCallback(async () => {
     let resultCount = count + 1;
-    handleUpdateOrder(_id, resultCount);
+    await handleUpdateOrder(_id, resultCount);
     setCount(resultCount);
+    await handleGetCartByAccountStatus(accountID);
   }, [count]);
 
   const handleCheckboxChange = async (event) => {
@@ -115,9 +118,9 @@ const CartItem = ({
       </td>
       <td className="p-0 text-center price-amount amount">
         <div className="flex items-center gap-x-[10px]">
-          <span className="line-through">${cart?.Book.price?.toFixed(2)}</span>
+          <span className="line-through">${cart?.Book.price}</span>
           <span className="text-red-500">
-            ${parseFloat(cart?.PriceDiscount).toFixed(2)}
+            ${parseFloat(cart?.PriceDiscount)}
           </span>
         </div>
       </td>
@@ -158,9 +161,7 @@ const CartItem = ({
         </div>
       </td>
       <td className="p-[10px] text-left price-amount amount-sub">
-        <span className="">
-          ${(parseFloat(cart?.PriceDiscount) * count).toFixed(2)}
-        </span>
+        <span className="">${parseFloat(cart?.PriceDiscount) * count}</span>
       </td>
     </tr>
   );

@@ -12,6 +12,7 @@ import CartItem from './CartItem';
 import { Switch } from 'antd';
 export default function Cart() {
   const [order, setOder] = useState([]);
+  const [payment, setPayment] = useState({});
   const [isChecked, setIschecked] = useState(false);
   const accountID =
     typeof window !== 'undefined'
@@ -26,9 +27,24 @@ export default function Cart() {
   };
   const handleGetCartByAccountStatus = async (id) => {
     const { data } = await getOrderByAccountStatus(id);
-    // if (data?.order?.length > 0) {
-    //   setOder(data.order);
-    // }
+    if (data?.order.length > 0) {
+      const orders = data?.order;
+      const total = orders.reduce((acc, order) => {
+        const priceDiscount = parseFloat(order.PriceDiscount);
+        acc += order.Count * priceDiscount;
+        return acc;
+      }, 0);
+      const books = data?.order.map((item) => item.Book);
+      setPayment({
+        book: books,
+        totalMoney: total,
+      });
+    } else {
+      setPayment({
+        book: {},
+        totalMoney: 0,
+      });
+    }
   };
   useEffect(() => {
     const handleChangeOffStatus = async () => {
@@ -42,7 +58,6 @@ export default function Cart() {
   }, []);
 
   const onChange = async (checked) => {
-    console.log(`switch to ${checked}`);
     setIschecked(checked);
     const result = await updateAllStatusOrder({
       IdAccount: accountID,
@@ -50,6 +65,10 @@ export default function Cart() {
     });
     handleGetCartByAccount(accountID);
     handleGetCartByAccountStatus(accountID);
+  };
+
+  const handleCheckout = () => {
+    console.log(payment);
   };
   return (
     <section className="cart-wrapper">
@@ -107,66 +126,22 @@ export default function Cart() {
             <div className="cart-totals-inner">
               <table className="table-shop">
                 <tbody>
-                  <tr className="cart-subtotal">
-                    <th>Subtotal</th>
-                    <td>
-                      {' '}
-                      <span>$39.9</span>
-                    </td>
-                  </tr>
-                  <tr className="shipping">
-                    <th>Shipping</th>
-                    <td>
-                      <ul className="shipping_medthod">
-                        <li>
-                          <label for="flat">Giao Hàng Nhanh</label>
-                          <input
-                            type="radio"
-                            className="shipping_method"
-                            id="flat"
-                            value="Flat_rate"
-                            name="shipping_method"
-                          ></input>
-                        </li>
-                        <li>
-                          <label for="free">Giao Hàng Tiết Kiệm</label>
-                          <input
-                            type="radio"
-                            className="shipping_method"
-                            id="free"
-                            value="Free_shipping"
-                            name="shipping_method"
-                          ></input>
-                        </li>
-                        <li>
-                          <label for="local">Giao Hàng Hỏa Tốc</label>
-                          <input
-                            type="radio"
-                            className="shipping_method"
-                            id="local"
-                            value="Local_pickup"
-                            name="shipping_method"
-                          ></input>
-                        </li>
-                      </ul>
-
-                      <p className="shipping-destination">
-                        Shipping options will be updated during checkout.{' '}
-                      </p>
-                    </td>
-                  </tr>
                   <tr className="order-total">
                     <th>Total</th>
                     <td>
-                      {' '}
-                      <span>$39.9</span>
+                      <span>
+                        {payment.totalMoney ? payment.totalMoney : 0} đ
+                      </span>
                     </td>
                   </tr>
                 </tbody>
               </table>
               <div className="wc-proceed-to-checkout">
-                <button className="checkout-button">
-                  <a href="#">Proceed to checkout</a>
+                <button
+                  className="checkout-button text-white"
+                  onClick={handleCheckout}
+                >
+                  Proceed to checkout
                 </button>
               </div>
             </div>
