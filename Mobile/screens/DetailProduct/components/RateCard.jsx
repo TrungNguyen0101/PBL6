@@ -68,7 +68,7 @@ export default function RateCard({
             justifyContent: 'space-between',
           }}
         >
-          <Text>{format(new Date(createdAt), 'dd/mm/yyyy hh:mm')}</Text>
+          <Text>{format(new Date(createdAt), 'dd/MM/yyyy hh:mm')}</Text>
           {userId === user?._id && user ? (
             <TouchableOpacity
               onPress={handleDeleteComment}

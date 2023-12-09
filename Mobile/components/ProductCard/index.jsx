@@ -38,18 +38,27 @@ export default function ProductCard({ product }) {
                   },
                 ]}
               >
-                ${product?.price}
+                {product?.price.toLocaleString('it-IT', {
+                  style: 'currency',
+                  currency: 'VND',
+                })}
               </Text>
               <Text style={styles.price}>
-                $
+
                 {Number(
                   (product?.price * (100 - product?.discount)) / 100,
-                ).toFixed(2)}
+                ).toLocaleString('it-IT', {
+                  style: 'currency',
+                  currency: 'VND',
+                })}
               </Text>
             </View>
           ) : (
             <View>
-              <Text style={styles.price}>${product?.price}</Text>
+              <Text style={styles.price}>{product?.price.toLocaleString('it-IT', {
+                style: 'currency',
+                currency: 'VND',
+              })}</Text>
             </View>
           )}
         </View>

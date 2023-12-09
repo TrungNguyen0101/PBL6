@@ -9,21 +9,18 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { FontAwesome, AntDesign } from '@expo/vector-icons'
+import { AntDesign } from '@expo/vector-icons'
 
 import styles from './styles'
 import Background from '../../../assets/Image/Auth/background.gif'
-import { AuthContext } from '../../../context/AuthProvider'
-import { post } from '../../../axios-config'
 import Toast from 'react-native-toast-message'
+import { post } from '../../../axios-config'
 
 export default function ForgetPassword({ navigation }) {
     const [isLoading, setIsLoading] = useState(false)
-    const [isHidePassword, setIsHidePassword] = useState(true)
-    const { setUser, setAccessToken } = useContext(AuthContext)
 
     const formik = useFormik({
         initialValues: {
@@ -35,7 +32,6 @@ export default function ForgetPassword({ navigation }) {
                     .string()
                     .email('Please enter valid email address')
                     .required('Please enter your email address'),
-
             })
             .required(),
         onSubmit: async (values) => {
@@ -44,7 +40,14 @@ export default function ForgetPassword({ navigation }) {
                 const formData = {
                     email: values.email,
                 }
-
+                const response = await post('/user/forgot-password', formData)
+                if (response) {
+                    Toast?.show({
+                        type: 'success',
+                        text1: 'Thông báo',
+                        text2: 'Mật khẩu đã gửi về email'
+                    })
+                }
             } catch (error) {
                 Toast.show({
                     type: 'error',

@@ -57,7 +57,6 @@ export default function CommentForm() {
                     },
                 )
                 if (response) {
-                    console.log(response)
                     Toast.show({
                         type: 'success',
                         text1: 'Thông báo',

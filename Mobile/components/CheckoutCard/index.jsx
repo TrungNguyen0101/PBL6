@@ -23,7 +23,10 @@ export default function CheckoutCard({ name, quantity = 1, price, image }) {
       <View style={{ gap: 4 }}>
         <Text style={{ fontSize: 18, maxWidth: '95%' }}>{name}</Text>
         <Text style={{ fontSize: 18, color: colors.orangeColor }}>
-          ${price}
+          {Number(price).toLocaleString('it-IT', {
+            style: 'currency',
+            currency: 'VND',
+          })}
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
           <Text style={{ fontSize: 16 }}>Số lượng: </Text>

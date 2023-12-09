@@ -97,7 +97,10 @@ export default function Overview() {
                 },
               ]}
             >
-              ${productDetail?.price}
+              {productDetail?.price.toLocaleString('it-IT', {
+                style: 'currency',
+                currency: 'VND',
+              })}
             </Text>
             <Text
               style={{
@@ -106,10 +109,12 @@ export default function Overview() {
                 color: colors.orangeColor,
               }}
             >
-              $
               {Number(
                 (productDetail?.price * (100 - productDetail?.discount)) / 100,
-              ).toFixed(2)}
+              ).toLocaleString('it-IT', {
+                style: 'currency',
+                currency: 'VND',
+              })}
             </Text>
           </View>
         ) : (

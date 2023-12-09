@@ -33,7 +33,10 @@ export default function PayDetail() {
         }}
       >
         <Text style={{ fontSize: 16 }}>Tổng tiền hàng</Text>
-        <Text style={{ fontSize: 16 }}>${totalPrice}</Text>
+        <Text style={{ fontSize: 16 }}>{totalPrice.toLocaleString('it-IT', {
+          style: 'currency',
+          currency: 'VND',
+        })}</Text>
       </View>
       <View
         style={{
@@ -43,7 +46,10 @@ export default function PayDetail() {
         }}
       >
         <Text style={{ fontSize: 16 }}>Tổng tiền phí vận chuyển</Text>
-        <Text style={{ fontSize: 16 }}>${shipPrice}</Text>
+        <Text style={{ fontSize: 16 }}>{shipPrice.toLocaleString('it-IT', {
+          style: 'currency',
+          currency: 'VND',
+        })}</Text>
       </View>
       <View
         style={{
@@ -54,7 +60,10 @@ export default function PayDetail() {
       >
         <Text style={{ fontSize: 20 }}>Tổng thanh toán</Text>
         <Text style={{ fontSize: 20, color: colors.orangeColor }}>
-          ${totalPrice + shipPrice}
+          {Number(totalPrice + shipPrice).toLocaleString('it-IT', {
+            style: 'currency',
+            currency: 'VND',
+          })}
         </Text>
       </View>
     </View>

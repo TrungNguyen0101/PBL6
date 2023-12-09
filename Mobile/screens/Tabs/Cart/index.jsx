@@ -19,19 +19,15 @@ import { CheckoutContext } from '../../../context/CheckoutProvider'
 export default function Cart() {
   const navigation = useNavigation()
   const screenHeight = Dimensions.get('window').height
-  const { user, accessToken } = useContext(AuthContext)
-  const { cart, totalPrice } = useContext(CheckoutContext)
+  const { user } = useContext(AuthContext)
+  const { cart, totalPrice, fetchCartData } = useContext(CheckoutContext)
+  useEffect(() => {
+    fetchCartData()
+  }, [fetchCartData])
 
   useEffect(() => {
     if (!user) {
       Alert.alert('Thông báo', 'Bạn cần phải đăng nhập', [
-        {
-          text: 'Đóng',
-          style: 'cancel',
-          onPress: () => {
-            navigation.navigate('Home')
-          },
-        },
         {
           text: 'Đăng nhập',
           onPress: () => {
@@ -40,7 +36,7 @@ export default function Cart() {
         },
       ])
     }
-  }, [accessToken, navigation, user])
+  }, [navigation, user])
 
   return (
     <View style={{ flex: 1 }}>
@@ -68,6 +64,8 @@ export default function Cart() {
             cart?.map((book) => (
               <CartCard
                 key={book?._id}
+                idOrder={book?._id}
+                id={book?.Book?._id}
                 image={book?.Book?.mainImage[0]?.url}
                 quantity={book?.Count}
                 name={book?.Book?.booktitle}
@@ -107,7 +105,10 @@ export default function Cart() {
               fontWeight: 'bold',
             }}
           >
-            &{totalPrice}
+            {totalPrice.toLocaleString('it-IT', {
+              style: 'currency',
+              currency: 'VND',
+            })}
           </Text>
         </View>
         <TouchableOpacity
