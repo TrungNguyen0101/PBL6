@@ -19,12 +19,13 @@ import Background from '../../../assets/Image/Auth/background.gif'
 import { AuthContext } from '../../../context/AuthProvider'
 import { post } from '../../../axios-config'
 import Toast from 'react-native-toast-message'
+import { CheckoutContext } from '../../../context/CheckoutProvider'
 
 export default function SignIn({ navigation }) {
   const [isLoading, setIsLoading] = useState(false)
   const [isHidePassword, setIsHidePassword] = useState(true)
   const { setUser, setAccessToken } = useContext(AuthContext)
-
+  const { setAddressCheckout } = useContext(CheckoutContext)
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -60,6 +61,11 @@ export default function SignIn({ navigation }) {
         if (response) {
           setUser(response?.data?.user)
           setAccessToken(response?.data?.access_token)
+          setAddressCheckout({
+            name: '',
+            address: '',
+            phone: ''
+          })
           Toast.show({
             type: 'success',
             text1: 'Thông báo',

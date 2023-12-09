@@ -73,6 +73,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
+  hidePassword: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    textAlignVertical: 'center',
+    height: '100%',
+    paddingHorizontal: 16,
+  },
 })
 
 export default styles

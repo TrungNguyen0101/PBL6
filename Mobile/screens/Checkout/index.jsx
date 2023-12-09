@@ -1,4 +1,4 @@
-import { Dimensions, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext } from 'react'
 import colors from '../../contains/colors'
 
@@ -7,12 +7,67 @@ import ListProductCheckout from './components/ListProductCheckout'
 import Description from './components/Description'
 import { useNavigation } from '@react-navigation/native'
 import { CheckoutContext } from '../../context/CheckoutProvider'
+import { AuthContext } from '../../context/AuthProvider'
+import { post } from '../../axios-config'
+import Toast from 'react-native-toast-message'
 
 export default function Cart() {
   const screenHeight = Dimensions.get('window').height
   const navigation = useNavigation()
-  const { shipPrice, totalPrice } = useContext(CheckoutContext)
-
+  const { shipPrice, totalPrice, addressCheckout, cart, shipMethod } = useContext(CheckoutContext)
+  const { user, accessToken } = useContext(AuthContext)
+  const handlePay = async () => {
+    try {
+      if (!user?.isVerified) {
+        Alert.alert('Thông báo', 'Tài khoản của bạn chưa xác thực', [
+          {
+            text: 'Đóng',
+            style: 'cancel',
+          },
+          {
+            text: 'Xác thực',
+            onPress: () => navigation.navigate('Profile'),
+          },
+        ])
+        return
+      }
+      if (!addressCheckout?.name || !addressCheckout?.address || !addressCheckout?.phone) {
+        Toast?.show({
+          type: "error",
+          text1: 'Thông báo',
+          text2: 'Bạn chưa nhập thông tin nhận hàng'
+        })
+        return;
+      }
+      if (shipMethod.value === "vnpay") {
+        const newCartData = cart?.map(x => {
+          return {
+            ...x.Book,
+            Count: x.Count,
+          }
+        })
+        const formData = {
+          amount: Number(totalPrice + shipPrice),
+          phone: addressCheckout?.phone,
+          address: addressCheckout?.address,
+          bankCode: '',
+          language: 'vn',
+          cart: newCartData,
+        }
+        const response = await post('/payment/create_payment_url', formData, {
+          headers: {
+            Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+          },
+        })
+        if (response) {
+          const urlPayment = response?.data?.data
+          navigation.navigate('WebViewScreen', { url: urlPayment })
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <View style={{ flex: 1, minHeight: screenHeight }}>
       <TouchableOpacity
@@ -37,7 +92,11 @@ export default function Cart() {
       >
         <Text style={{ fontSize: 20, color: colors.blackColor }}>Checkout</Text>
       </View>
-      <Address name={'Phan Hoàng Quốc Tú'} address={'186 Phan Đình Phùng'} />
+      <Address
+        name={addressCheckout?.name}
+        phone={addressCheckout?.phone}
+        address={addressCheckout?.address}
+      />
       <ListProductCheckout />
       <Description />
       <View
@@ -66,10 +125,14 @@ export default function Cart() {
               fontWeight: 'bold',
             }}
           >
-            ${shipPrice + totalPrice}
+            {Number(shipPrice + totalPrice).toLocaleString('it-IT', {
+              style: 'currency',
+              currency: 'VND',
+            })}
           </Text>
         </View>
         <TouchableOpacity
+          onPress={handlePay}
           style={{
             flex: 1,
             backgroundColor: colors.orangeColor,
