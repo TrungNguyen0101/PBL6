@@ -8,7 +8,7 @@ import Field from '../Field';
 import Input from '../Input';
 import Label from '../Label';
 import { toast } from 'react-toastify';
-import { postSignUp } from '@/services/authService';
+import { postSignUp, postSignUp123 } from '@/services/authService';
 const schema = yup
   .object({
     username: yup.string().required('Please enter your username'),
@@ -55,19 +55,18 @@ const ModelAccount = ({ active, handleOffActive, handleGetAllAccount }) => {
 
   const hanlderFirstForm = async (value) => {
     console.log(value);
-    const result = await postSignUp(
+    const result = await postSignUp123(
       value.username,
       value.email,
       value.password
-      );
-      if(result.status ===200){
-        toast.success("Created account admin successfully");
-        handleGetAllAccount();
-      }
-      else{
-        toast.error("Created account admin fail");
-      }
-      handleCancel()
+    );
+    if (result.status === 200) {
+      toast.success('Created account admin successfully');
+      handleGetAllAccount();
+    } else {
+      toast.error('Created account admin fail');
+    }
+    handleCancel();
   };
   return (
     <div className="w-[500px]-h-[300px]">

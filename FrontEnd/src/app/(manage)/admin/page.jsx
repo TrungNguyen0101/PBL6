@@ -10,11 +10,13 @@ import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { getAllAccount } from '@/services/authService';
 import { getAllBook } from '@/services/bookService';
+import { getAllPayment } from '@/services/paymentService';
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [lengthAccount, setLengthAccount] = useState(0);
   const [lengthProduct, setLengthProduct] = useState(0);
+  const [lengthOrdert, setLengthOrdert] = useState(0);
 
   // const account =
   //   typeof window !== 'undefined'
@@ -25,23 +27,30 @@ const Page = () => {
   //   router.push('/');
   //   toast.error("You do not have access");
   // }
-useEffect(() =>{
-  const handleGetAllAccount = async () => {
-    const result = await getAllAccount();
-    if (result?.account?.length > 0) {
-      setLengthAccount(result.account.length);
-    }
-  };
-  const handleGetAllBooks = async () => {
-    const { data } = await getAllBook();
-    if (data?.books.length > 0) {
-    setLengthProduct(data.books.length);
-    }
-  };
-  handleGetAllAccount()
-  handleGetAllBooks()
-},[])
- 
+  useEffect(() => {
+    const handleGetAllAccount = async () => {
+      const result = await getAllAccount();
+      if (result?.account?.length > 0) {
+        setLengthAccount(result.account.length);
+      }
+    };
+    const handleGetAllBooks = async () => {
+      const { data } = await getAllBook();
+      if (data?.books.length > 0) {
+        setLengthProduct(data.books.length);
+      }
+    };
+    const handleGetAllPayment = async () => {
+      const { data } = await getAllPayment();
+      if (data.length > 0) {
+        setLengthOrdert(data.length);
+      }
+    };
+    handleGetAllPayment();
+    handleGetAllAccount();
+    handleGetAllBooks();
+  }, []);
+
   return (
     <div className={`${isLoading ? 'cursor-wait' : ''}`}>
       <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-y-[20px]  gap-x-[20px]">
@@ -108,7 +117,7 @@ useEffect(() =>{
         <div className="text-white">
           <div className="p-[20px] bg-[#ffc107] rounded-t-lg ">
             <h2 className="text-[25px] font-semibold">Orders</h2>
-            <span className="text-[20px]">0+</span>
+            <span className="text-[20px]">{lengthOrdert}+</span>
           </div>
           <Link
             as={routes.ORDER}

@@ -13,5 +13,8 @@ const postPayment = (amount, phone, address, bankCode, language, cart) => {
 const getAllPayment = () => {
   return instance.get('payment/getAllPayment');
 };
+const updatePayment = (data) => {
+  return instance.post('payment/update_state', data);
+};
 
-export { postPayment, getAllPayment };
+export { postPayment, getAllPayment, updatePayment };

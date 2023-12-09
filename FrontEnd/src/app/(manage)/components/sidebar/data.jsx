@@ -5,6 +5,7 @@ import { OrderIcon } from './icons/OrderIcon';
 import { DocIcon } from './icons/DocIcon';
 import { SettingsIcon } from './icons/SettingsIcon';
 import routes from '@/constant/routes';
+import { CiLogout } from 'react-icons/ci';
 
 export const data = [
   {
@@ -28,13 +29,8 @@ export const data = [
     link: routes.ORDER,
   },
   {
-    title: 'Settings',
-    icon: <SettingsIcon />,
-    link: '/admin/settings',
-  },
-  {
-    title: 'Documentation',
-    icon: <DocIcon />,
-    link: '/admin/documentation',
+    title: 'Logout',
+    icon: <CiLogout size={26} />,
+    link: '/',
   },
 ];

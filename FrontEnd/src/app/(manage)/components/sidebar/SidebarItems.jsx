@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { data } from './data';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const style = {
   title: 'mx-4 text-sm whitespace-pre',
@@ -17,11 +18,18 @@ const style = {
 export function SidebarItems() {
   const { pathname } = useRouter();
   const collapsed = useSelector((state) => state.menu.collapsed);
-
+  const handleLogout = (title) => {
+    if (title === 'Logout') {
+      console.log(1);
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('auth');
+      toast.success('Đăng xuất thành công');
+    }
+  };
   return (
     <ul className="md:pl-3">
       {data.map((item) => (
-        <li key={item.title}>
+        <li key={item.title} onClick={() => handleLogout(item.title)}>
           <Link href={item.link} as={item.link}>
             <span className={style.link}>
               <div

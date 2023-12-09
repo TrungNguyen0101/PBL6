@@ -1,8 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Select, Table } from 'antd';
-import { getAllPayment } from '@/services/paymentService';
+import { getAllPayment, updatePayment } from '@/services/paymentService';
 import ModelOrder from '@/components/ModelOrder';
+import { toast } from 'react-toastify';
 
 const OrderPage = () => {
   const { Option } = Select;
@@ -35,8 +36,29 @@ const OrderPage = () => {
 
   const handleChangeStatus = (record, selectedStatus) => {
     // Thực hiện xử lý khi chọn status ở đây, có thể gửi request đến server, cập nhật dữ liệu, v.v.
-    console.log(`Order ID: ${record.orderId} - New Status: ${selectedStatus}`);
+    console.log(`Order ID: ${record.status} - New Status: ${selectedStatus}`);
     // Ví dụ: Cập nhật trạng thái của đơn hàng
+  };
+  const handleChangeStatus123 = async (record, selectedValue) => {
+    console.log('Selected Value:', selectedValue);
+    console.log('Selected Value:', record.orderId);
+    let state;
+    if (selectedValue === 'Prepare') {
+      state = 1;
+    } else if (selectedValue === 'Shipping') {
+      state = 2;
+    } else if (selectedValue === 'Successful') {
+      state = 3;
+    } else if (selectedValue === 'Fail') {
+      state = 4;
+    }
+    const result = await updatePayment({
+      orderId: record.orderId,
+      status: state,
+    });
+    if (result) {
+      toast.success('Edit successfuly');
+    }
   };
   const handleView = (rowId) => {
     const result = dataOld.filter((item) => item.orderId === rowId);
@@ -102,6 +124,7 @@ const OrderPage = () => {
         <Select
           defaultValue={getStatusText(record.status)}
           style={{ width: 120 }}
+          onChange={(value) => handleChangeStatus123(record, value)}
         >
           <Option
             value="Prepare"
