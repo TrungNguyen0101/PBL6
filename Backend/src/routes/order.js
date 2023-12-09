@@ -20,6 +20,8 @@ router.put(
   "/update-payment",
   middleware.authMiddleWare,
   orderController.updatePaymentOrder
+);
+router.put(
   "/update-status-payment",
   middleware.authMiddleWare,
   orderController.updateStatusPaymentOrder
