@@ -69,8 +69,16 @@ function ProductProvider({ children }) {
       setProductId,
       detailProduct,
       comments,
+      fetchCommentsProductData,
     }),
-    [products, isLoading, productId, detailProduct, comments],
+    [
+      products,
+      isLoading,
+      productId,
+      detailProduct,
+      comments,
+      fetchCommentsProductData,
+    ],
   )
 
   return (

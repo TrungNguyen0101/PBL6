@@ -154,6 +154,9 @@ export default function SignIn({ navigation }) {
               <Text style={styles.signUpLink}>Sign Up</Text>
             </TouchableOpacity>
           </View>
+          <TouchableOpacity onPress={() => navigation?.navigate('ForgetPassword')} style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 12 }}>
+            <Text>Forget Password?</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.returnHome}
             onPress={() => navigation.navigate('Home')}
