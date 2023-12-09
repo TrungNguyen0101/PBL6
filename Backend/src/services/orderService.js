@@ -92,6 +92,10 @@ const updatePaymentOrder = async (data) => {
     }
     orderData.errCode = 200;
     orderData.errMessage = "Create order success";
+  } catch (e) {
+    console.log(e);
+  }
+};
 const updateStatusPaymentOrder = async (data) => {
   let orderData = {};
   try {
@@ -100,7 +104,7 @@ const updateStatusPaymentOrder = async (data) => {
     });
     if (order) {
       const result = await order.updateOne({
-        isPayment: true
+        isPayment: true,
       });
       orderData.order = result;
       orderData.errCode = 200;
