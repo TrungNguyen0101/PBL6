@@ -579,12 +579,7 @@ const ProductDetail = () => {
                           <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
                         </div>
                         <div className="item-price">
-                          <span>
-                            {item.price
-                              .toFixed(0)
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, '.')}
-                            đ
-                          </span>
+                          <span>${item.price.toFixed(2)}</span>
                         </div>
                       </div>
                     </div>
