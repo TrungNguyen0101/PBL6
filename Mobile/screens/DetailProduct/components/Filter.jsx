@@ -12,7 +12,6 @@ import Toast from 'react-native-toast-message'
 export default function Filter({ book }) {
   const { user, accessToken } = useContext(AuthContext)
   const { fetchCartData } = useContext(CheckoutContext)
-
   const navigation = useNavigation()
 
   const handleAddCart = async () => {
@@ -39,14 +38,14 @@ export default function Filter({ book }) {
           Toast.show({
             type: 'success',
             text1: 'Thông báo',
-            text2: 'Thêm sách vào giỏ hàng thành công'
+            text2: 'Thêm sách vào giỏ hàng thành công',
           })
           return
         }
         Toast.show({
           type: 'error',
           text1: 'Thông báo',
-          text2: 'Thêm sách vào giỏ hàng thất bại'
+          text2: 'Thêm sách vào giỏ hàng thất bại',
         })
         return
       } else {
@@ -97,6 +96,9 @@ export default function Filter({ book }) {
           alignItems: 'center',
           justifyContent: 'center',
         }}
+        onPress={() =>
+          navigation?.navigate('Comments', { headerName: 'Đánh giá' })
+        }
       >
         <Text style={{ color: colors.whiteColor, fontSize: 16 }}>Đánh giá</Text>
       </TouchableOpacity>

@@ -4,10 +4,12 @@ import colors from '../../../contains/colors'
 
 import RateCard from './RateCard'
 import { ProductContext } from '../../../context/ProductProvider'
+import { useNavigation } from '@react-navigation/native'
 
 export default function ListRate() {
   const { comments } = useContext(ProductContext)
   const [isLoading, setIsLoading] = useState(true)
+  const navigation = useNavigation()
 
   useEffect(() => {
     if (comments) setIsLoading(false)
@@ -30,7 +32,11 @@ export default function ListRate() {
         <Text style={{ fontSize: 24, fontWeight: 'bold' }}>
           Đánh giá sản phẩm
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            navigation?.navigate('Comments', { headerName: 'Đánh giá' })
+          }
+        >
           <Text
             style={{
               fontSize: 18,

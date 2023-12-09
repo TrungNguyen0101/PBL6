@@ -30,6 +30,8 @@ import DetailProduct from './screens/DetailProduct'
 import Checkout from './screens/Checkout'
 import ListAllProduct from './screens/ListAllProduct'
 import CheckoutProvider from './context/CheckoutProvider'
+import Comments from './screens/Comments'
+import ForgetPassword from './screens/Auth/ForgetPassword'
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -97,6 +99,11 @@ export default function App() {
                   options={{ headerShown: false }}
                 />
                 <Stack.Screen
+                  name="ForgetPassword"
+                  component={ForgetPassword}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
                   name="SignUp"
                   component={SignUp}
                   options={{ headerShown: false }}
@@ -115,6 +122,11 @@ export default function App() {
                   name="Checkout"
                   component={Checkout}
                   options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Comments"
+                  component={Comments}
+                  options={({ route }) => ({ title: route.params.headerName })}
                 />
               </Stack.Navigator>
             </NavigationContainer>
