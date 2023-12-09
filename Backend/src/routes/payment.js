@@ -153,7 +153,7 @@ router.get('/vnpay_ipn', async function (req, res, next) {
                             time: vnp_Params['vnp_PayDate'],
                         });
 
-                        const ids = cartManage?.map(item => item._id);
+                        const ids = cartManage.map(item => item._id);
                         for (i = 0; i < ids.length; i++) {
                             const book = await db.Book.findById(ids[i]);
 
