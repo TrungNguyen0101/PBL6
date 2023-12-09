@@ -34,9 +34,12 @@ export default function Cart() {
         acc += order.Count * priceDiscount;
         return acc;
       }, 0);
-      const books = data?.order.map((item) => item.Book);
+      const booksWithCount = data?.order.map((item) => {
+        const { Book, Count } = item;
+        return { ...Book, Count }; // Tạo đối tượng mới chứa thông tin sách và Count
+      });
       setPayment({
-        book: books,
+        book: booksWithCount,
         totalMoney: total,
       });
     } else {
