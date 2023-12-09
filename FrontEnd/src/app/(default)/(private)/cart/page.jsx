@@ -34,7 +34,6 @@ export default function Cart() {
         acc += order.Count * priceDiscount;
         return acc;
       }, 0);
-      console.log(data?.order);
       const booksWithCount = data?.order.map((item) => {
         const { Book, Count } = item;
         return { ...Book, Count }; // Tạo đối tượng mới chứa thông tin sách và Count
