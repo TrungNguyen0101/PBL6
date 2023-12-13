@@ -7,12 +7,14 @@ import { postPayment } from '@/services/paymentService';
 import { useRouter } from 'next/navigation';
 import { getBookById } from '@/services/bookService';
 import TableAnt from '@/components/TableAnt';
+import { BsBank } from 'react-icons/bs';
+import { GiTakeMyMoney } from 'react-icons/gi';
 
 const CheckOutPage = () => {
   const router = useRouter();
   const [location, setLocation] = useState('');
   const [listLocation, setListLocation] = useState([]);
-
+  const [isCheck, setIsCheck] = useState(null);
   const [isShowListLocation, setIsShowListLocation] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [book, setBook] = useState(null);
@@ -48,7 +50,7 @@ const CheckOutPage = () => {
     setLocation(event.target.value);
     setIsShowListLocation(true);
   };
-  const handleCheckOut = async () => {
+  const handleCheckOutByVNPAY = async () => {
     if (!phoneNumber) {
       toast.warning('Vui lòng nhập số điện thoại!!!');
       return;
@@ -74,14 +76,13 @@ const CheckOutPage = () => {
   useEffect(() => {
     const check = sessionStorage.getItem('check');
     const bookList = sessionStorage.getItem('bookList');
-    const idBook = sessionStorage.getItem('idBook');
-    if (!idBook) return;
-    if (JSON.parse(check) === false) {
-      fetchBookById();
-    } else {
+    setIsCheck(check);
+    if (JSON.parse(check) === true) {
       setBook(JSON.parse(bookList));
+    } else if (JSON.parse(check) === false) {
+      fetchBookById();
     }
-  }, []);
+  }, [isCheck]);
   useEffect(() => {
     const listLocation = document.querySelectorAll('.location-item');
     function getLocation(e) {
@@ -94,11 +95,10 @@ const CheckOutPage = () => {
     }
     listLocation.forEach((item) => item.addEventListener('click', getLocation));
   }, [location]);
-
   return (
     <>
       <Header></Header>
-      <div className="mt-7 w-[850px] mx-auto">
+      <div className="mt-7 w-[850px] mx-auto bg-[#f2f3f4] shadow-xl rounded-md p-8">
         <TableAnt dataAccount={book} />
         <div className="mx-auto">
           <div className="mb-7">
@@ -150,36 +150,22 @@ const CheckOutPage = () => {
               2. Chọn phương thức thanh toán
             </h2>
             <div>
-              <div className="flex items-center mb-1 gap-x-1">
-                <input
-                  type="radio"
-                  name="checkout"
-                  id="direct"
-                  defaultChecked={true}
-                  className="cursor-pointer"
-                />
-                <label htmlFor="direct" className="cursor-pointer">
-                  Thanh toán khi nhận hàng
-                </label>
+              <div className="flex items-center cursor-pointer mb-[5px] gap-x-1 w-max hover:text-[#6d4eec] transition-all">
+                <span>
+                  <GiTakeMyMoney size="25px" />
+                </span>
+                <span className="font-semibold">Thanh toán trực tiếp</span>
               </div>
-              <div className="flex items-center cursor-pointer gap-x-1">
-                <input
-                  type="radio"
-                  name="checkout"
-                  id="bank"
-                  className="cursor-pointer"
-                />
-                <label htmlFor="bank" className="cursor-pointer">
-                  Thanh toán qua VNPAY
-                </label>
+              <div
+                className="flex items-center cursor-pointer gap-x-1 w-max hover:text-[#6d4eec] transition-all"
+                onClick={handleCheckOutByVNPAY}
+              >
+                <span>
+                  <BsBank size="20px" />
+                </span>
+                <span className="font-semibold">Thanh toán qua VNPAY</span>
               </div>
             </div>
-            <button
-              className="bg-[#1677ff] text-white font-semibold py-[6px] px-3 rounded block w-max mx-auto mt-2 hover:bg-opacity-70 transition-all"
-              onClick={handleCheckOut}
-            >
-              Xác nhận
-            </button>
           </div>
         </div>
       </div>
