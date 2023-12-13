@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { updateReducer } from '@/redux/reducers/updateInforReducer';
 import { updateInforUser } from '@/services/authService';
 import { toast } from 'react-toastify';
-import { FaCheck, FaImage, FaTrashAlt } from 'react-icons/fa';
+import { FaCheck, FaImage } from 'react-icons/fa';
 
 const ProfilePage = () => {
   const [auth, setAuth] = useState(null);
@@ -22,15 +22,24 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(false);
   const [loadingImage, setLoadingImage] = useState(true);
   const dispatch = useDispatch();
-  const {
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors },
-  } = useForm({
+  const { handleSubmit, control, reset } = useForm({
     mode: 'onChange',
   });
   const handleChangeInfor = async (values) => {
+    const inputPhoneNumber = document.querySelector('.input-phoneNumber');
+    if (
+      inputPhoneNumber.value.charAt(0) !== '0' ||
+      typeof inputPhoneNumber.value === 'string'
+    ) {
+      toast.error('Số điện thọai không hợp lệ');
+      return;
+    } else if (
+      inputPhoneNumber.value.length > 10 ||
+      inputPhoneNumber.value.length < 10
+    ) {
+      toast.error('Số điện thoại phải là số có 10 chữ số');
+      return;
+    }
     const res = await updateInforUser(
       values.username,
       values.phoneNumber,
@@ -94,6 +103,9 @@ const ProfilePage = () => {
     setPreviewAvatar(auth?.user?.avatar);
     setAvatar(auth?.user?.avatar);
   }, [auth]);
+  // useEffect(() => {
+
+  // }, []);
   return (
     <div>
       <form
@@ -196,6 +208,7 @@ const ProfilePage = () => {
               control={control}
               id="phoneNumber"
               placeholder="Enter your phone number"
+              className="input-phoneNumber"
             />
           </Field>
         </div>

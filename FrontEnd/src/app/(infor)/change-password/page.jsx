@@ -13,7 +13,21 @@ import routes from '@/constant/routes';
 
 const schema = yup
   .object({
-    forgotten: yup.string().required('Please enter your email'),
+    oldPassword: yup.string().required('Please enter your old password'),
+    newPassword: yup
+      .string()
+      .min(6, 'Your password must be at least 6 characters or greater')
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        {
+          message:
+            'Your password must have at least 1 uppercase, 1 lowercase, 1 special character',
+        }
+      ),
+    repeatPassword: yup
+      .string()
+      .oneOf([yup.ref('newPassword'), null], 'Password not matches')
+      .required('Please enter confirm your password'),
   })
   .required();
 
@@ -25,7 +39,7 @@ const ChangePasswordPage = () => {
     formState: { errors },
   } = useForm({
     mode: 'onChange',
-    // resolver: yupResolver(schema),
+    resolver: yupResolver(schema),
   });
   const handleChangePassword = async (values) => {
     const res = await changePassword(values.oldPassword, values.newPassword);
