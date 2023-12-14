@@ -133,8 +133,7 @@ router.get('/vnpay_ipn', async function (req, res, next) {
         delete vnp_Params['vnp_SecureHashType'];
         // Sort the remaining parameters for hash calculation
         const sortedParams = sortObject(vnp_Params);
-        let config = require('config');
-        let secretKey = config.get('vnp_HashSecret');
+        const secretKey = vnpayConfig.vnp_HashSecret;
         let querystring = require('qs');
         let signData = querystring.stringify(sortedParams, { encode: false });
         let crypto = require("crypto");
@@ -183,30 +182,30 @@ router.get('/vnpay_ipn', async function (req, res, next) {
         res.status(500).json({ RspCode: '99', Message: 'Internal Server Error' });
     }
 });
-async function handleSuccessfulPayment(orderId, vnp_Params) {
+async function handleSuccessfulPayment(orderId, sortedParams) {
     // Save successful payment information to the database
     await db.Payment.create({
         orderId: orderId,
-        totalmoney: vnp_Params['vnp_Amount'],
-        note: vnp_Params['vnp_OrderInfo'],
-        vnp_response_code: vnp_Params['vnp_ResponseCode'],
-        code_vnpay: vnp_Params['vnp_TransactionNo'],
-        code_bank: vnp_Params['vnp_BankCode'],
+        totalmoney: sortedParams['vnp_Amount'],
+        note: sortedParams['vnp_OrderInfo'],
+        vnp_response_code: sortedParams['vnp_ResponseCode'],
+        code_vnpay: sortedParams['vnp_TransactionNo'],
+        code_bank: sortedParams['vnp_BankCode'],
         // Add other fields as needed
     });
 
     // Update other related data in the database (e.g., book quantities)
 }
 
-async function handleFailedPayment(orderId, vnp_Params) {
+async function handleFailedPayment(orderId, sortedParams) {
     // Save failed payment information to the database
     await db.Payment.create({
         orderId: orderId,
-        totalmoney: vnp_Params['vnp_Amount'],
-        note: vnp_Params['vnp_OrderInfo'],
-        vnp_response_code: vnp_Params['vnp_ResponseCode'],
-        code_vnpay: vnp_Params['vnp_TransactionNo'],
-        code_bank: vnp_Params['vnp_BankCode'],
+        totalmoney: sortedParams['vnp_Amount'],
+        note: sortedParams['vnp_OrderInfo'],
+        vnp_response_code: sortedParams['vnp_ResponseCode'],
+        code_vnpay: sortedParams['vnp_TransactionNo'],
+        code_bank: sortedParams['vnp_BankCode'],
         // Add other fields as needed
     });
     // Additional error handling or logging if required
