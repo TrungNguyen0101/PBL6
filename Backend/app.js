@@ -24,6 +24,37 @@ app.use(
         extended: true,
     }),
 );
+app.get('/vnpay_return', async function (req, res) {
+    try {
+        const vnp_Params = req.query;
+        const secureHash = vnp_Params['vnp_SecureHash'];
+
+        // Remove unnecessary parameters for hash calculation
+        delete vnp_Params['vnp_SecureHash'];
+        delete vnp_Params['vnp_SecureHashType'];
+
+        // Sort the remaining parameters for hash calculation
+        const sortedParams = sortObject(vnp_Params);
+
+        const tmnCode = vnpayConfig.vnp_TmnCode;
+        const secretKey = vnpayConfig.vnp_HashSecret;
+
+        // Generate the hash
+        let querystring = require('qs');
+        let signData = querystring.stringify(sortedParams, { encode: false });
+        let crypto = require("crypto");
+        let hmac = crypto.createHmac("sha512", secretKey);
+        let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");
+        if (secureHash === signed) {
+            return res.json({ code: sortedParams['vnp_ResponseCode'], message: 'Success' });
+        } else {
+            return res.json({ code: '97', message: 'Checksum failed' });
+        }
+    } catch (error) {
+        console.error('Error processing VNPAY return:', error);
+        return res.json({ code: '99', message: 'Internal Server Error' });
+    }
+});
 app.get('/vnpay_ipn', async function (req, res, next) {
     try {
         const vnp_Params = req.query;
