@@ -6,6 +6,7 @@ const moment = require('moment');
 const vnpayConfig = require('../config/vnpay')
 const db = require("../models/index")
 const middleware = require("../utils/middleware.js");
+const { paymentController } = require("../controllers/index.js");
 var cartManage;
 var userManage;
 var phoneManage;
@@ -17,20 +18,6 @@ function getDataPayment(cart, user, phone, address) {
     phoneManage = phone;
     addressManage = address;
 }
-router.get('/', function (req, res, next) {
-    res.render('orderlist', { title: 'Danh sách đơn hàng' });
-});
-router.get('/create_payment_url', function (req, res, next) {
-    res.render('order', { title: 'Tạo mới đơn hàng', amount: 10000 })
-});
-router.get('/querydr', function (req, res, next) {
-    let desc = 'truy van ket qua thanh toan';
-    res.render('querydr', { title: 'Truy vấn kết quả thanh toán' })
-});
-router.get('/refund', function (req, res, next) {
-    let desc = 'Hoan tien GD thanh toan';
-    res.render('refund', { title: 'Hoàn tiền giao dịch thanh toán' })
-});
 router.post('/create_payment_url', middleware.authMiddleWare, function (req, res, next) {
     process.env.TZ = 'Asia/Ho_Chi_Minh';
     let date = new Date();
@@ -85,7 +72,6 @@ router.post('/create_payment_url', middleware.authMiddleWare, function (req, res
         data: vnpUrl
     });
 });
-
 router.get('/vnpay_return', async function (req, res) {
     try {
         const vnp_Params = req.query;
@@ -117,10 +103,7 @@ router.get('/vnpay_return', async function (req, res) {
         return res.json({ code: '99', message: 'Internal Server Error' });
     }
 });
-
-
-
-router.post('/vnpay_ipn', async function (req, res, next) {
+router.get('/vnpay_ipn', async function (req, res, next) {
     try {
         const vnp_Params = req.query;
         const secureHash = vnp_Params['vnp_SecureHash'];
@@ -199,7 +182,6 @@ async function handleSuccessfulPayment(orderId, sortedParams) {
     });
 
 }
-
 async function handleFailedPayment(orderId, sortedParams) {
     // Save failed payment information to the database
     await db.Payment.create({
@@ -217,8 +199,6 @@ async function handleFailedPayment(orderId, sortedParams) {
     });
     // Additional error handling or logging if required
 }
-
-
 function sortObject(obj) {
     let sorted = {};
     let str = [];
@@ -234,8 +214,6 @@ function sortObject(obj) {
     }
     return sorted;
 }
-
-
 router.get("/getAllPayment", async function (req, res, next) {
     const payments = await db.Payment.find({});
     console.log(payments)
@@ -263,4 +241,5 @@ router.post("/update_state", async function (req, res, next) {
         data: updatedData
     });
 })
+router.post("/payment_direct", middleware.authMiddleWare, paymentController.handlePaymentDirect);
 module.exports = router;
