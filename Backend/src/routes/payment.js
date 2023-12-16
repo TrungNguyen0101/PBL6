@@ -120,7 +120,7 @@ router.get('/vnpay_return', async function (req, res) {
 
 
 
-router.get('/vnpay_ipn', async function (req, res, next) {
+router.post('/vnpay_ipn', async function (req, res, next) {
     try {
         const vnp_Params = req.query;
         const secureHash = vnp_Params['vnp_SecureHash'];
@@ -187,6 +187,10 @@ async function handleSuccessfulPayment(orderId, sortedParams) {
     await db.Payment.create({
         orderId: orderId,
         totalmoney: sortedParams['vnp_Amount'],
+        cart: cartManage,
+        user: userManage,
+        phone: phoneManage,
+        address: addressManage,
         note: sortedParams['vnp_OrderInfo'],
         vnp_response_code: sortedParams['vnp_ResponseCode'],
         code_vnpay: sortedParams['vnp_TransactionNo'],
@@ -194,7 +198,6 @@ async function handleSuccessfulPayment(orderId, sortedParams) {
         // Add other fields as needed
     });
 
-    // Update other related data in the database (e.g., book quantities)
 }
 
 async function handleFailedPayment(orderId, sortedParams) {
@@ -202,6 +205,10 @@ async function handleFailedPayment(orderId, sortedParams) {
     await db.Payment.create({
         orderId: orderId,
         totalmoney: sortedParams['vnp_Amount'],
+        cart: cartManage,
+        user: userManage,
+        phone: phoneManage,
+        address: addressManage,
         note: sortedParams['vnp_OrderInfo'],
         vnp_response_code: sortedParams['vnp_ResponseCode'],
         code_vnpay: sortedParams['vnp_TransactionNo'],
