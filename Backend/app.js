@@ -13,7 +13,6 @@ const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
 var debug = require('debug')('backend:server');
 var http = require('http');
-const vnpayConfig = require('../config/vnpay')
 const session = require('express-session');
 app.use(cors());
 

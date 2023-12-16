@@ -4,11 +4,13 @@ const categoryService = require("./categoryService.js");
 const orderService = require("./orderService.js");
 const commentService = require("./commentService.js");
 const historyService = require("./historyService.js");
+const paymentService = require("./paymentService.js");
 module.exports = {
   userService,
   bookService,
   categoryService,
   orderService,
   commentService,
-  historyService
+  historyService,
+  paymentService
 };
