@@ -15,8 +15,7 @@ const InforLogin = () => {
   const [auth, setAuth] = useState(null);
   const updateInfor = useSelector((state) => state.updateInfor.isUpdate);
   const handleLogout = () => {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('auth');
+    sessionStorage.clear();
     setAuth(null);
     toast.success('Đăng xuất thành công');
     router.push(routes.LOGIN);
