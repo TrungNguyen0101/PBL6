@@ -122,8 +122,7 @@ export default function Checkout() {
           totalmoney: Number(totalPrice + shipPrice),
           phone: addressCheckout?.phone,
           address: addressCheckout?.address,
-          bankCode: '',
-          language: 'vn',
+          name: addressCheckout?.name,
           cart: newCartData,
         }
         const response = await post('/payment/payment_direct', formData, {

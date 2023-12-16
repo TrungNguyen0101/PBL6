@@ -75,7 +75,7 @@ export default function HistoryContractCard({
                     numberOfLines={1}
                     style={{ fontSize: 18, fontWeight: '500', maxWidth: '80%' }}
                 >
-                    {totalAmount.toLocaleString('it-IT', {
+                    {Number(totalAmount).toLocaleString('it-IT', {
                         style: 'currency',
                         currency: 'VND',
                     })}

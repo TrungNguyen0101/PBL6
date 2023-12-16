@@ -38,7 +38,7 @@ export default function HistoryContractDetail() {
         <Text style={{ fontSize: 20, color: colors.blackColor }}>Đơn hàng</Text>
       </View>
       <AddressContract
-        name={contract.user.email}
+        name={contract.name}
         phone={contract.phone}
         address={contract.address}
       />
