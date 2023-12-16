@@ -22,6 +22,25 @@ const handlePaymentDirect = async (req, res) => {
         message: result.message
     })
 }
+const handlePaymentHistory = async (req, res) => {
+    const user = req.User.User;
+    if (!user) {
+        return res.status(500).json({
+            errCode: 1,
+            message: "Missing inputs parameter",
+        })
+    }
+    let result = await paymentService.paymenHistory(user);
+    if (result.status === 200) {
+        return res.status(200).json({
+            data: result.data,
+            message: result.message
+        })
+    }
+    return res.status(500).json({
+        message: result.message
+    })
+}
 module.exports = {
-    handlePaymentDirect
+    handlePaymentDirect, handlePaymentHistory
 };
