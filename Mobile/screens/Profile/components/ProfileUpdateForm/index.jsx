@@ -60,8 +60,6 @@ export default function ProfileUpdateForm({ styles }) {
       } catch (err) {
         console.log(err)
       }
-      // Handle form submission here
-      console.log('Submitted:', values)
     },
   })
   return (

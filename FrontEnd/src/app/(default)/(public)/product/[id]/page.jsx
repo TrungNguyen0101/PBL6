@@ -159,11 +159,12 @@ const ProductDetail = () => {
       return;
     }
     router.push('/check-out');
-    const priceBook = sessionStorage.getItem('priceBook');
     sessionStorage.setItem('priceBook', Number(price * count));
     sessionStorage.setItem('count', Number(count));
     sessionStorage.setItem('idBook', book?._id);
+    sessionStorage.setItem('pricePerBook', Number(book?.price));
   };
+  console.log('details', book);
   useEffect(() => {
     try {
       const handleGetBookByDiscount = async () => {

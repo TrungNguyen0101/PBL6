@@ -6,6 +6,7 @@ const moment = require('moment');
 const vnpayConfig = require('../config/vnpay')
 const db = require("../models/index")
 const middleware = require("../utils/middleware.js");
+const { paymentController } = require("../controllers/index.js");
 var cartManage;
 var userManage;
 var phoneManage;
@@ -17,20 +18,6 @@ function getDataPayment(cart, user, phone, address) {
     phoneManage = phone;
     addressManage = address;
 }
-router.get('/', function (req, res, next) {
-    res.render('orderlist', { title: 'Danh sách đơn hàng' });
-});
-router.get('/create_payment_url', function (req, res, next) {
-    res.render('order', { title: 'Tạo mới đơn hàng', amount: 10000 })
-});
-router.get('/querydr', function (req, res, next) {
-    let desc = 'truy van ket qua thanh toan';
-    res.render('querydr', { title: 'Truy vấn kết quả thanh toán' })
-});
-router.get('/refund', function (req, res, next) {
-    let desc = 'Hoan tien GD thanh toan';
-    res.render('refund', { title: 'Hoàn tiền giao dịch thanh toán' })
-});
 router.post('/create_payment_url', middleware.authMiddleWare, function (req, res, next) {
     process.env.TZ = 'Asia/Ho_Chi_Minh';
     let date = new Date();
@@ -85,133 +72,133 @@ router.post('/create_payment_url', middleware.authMiddleWare, function (req, res
         data: vnpUrl
     });
 });
+router.get('/vnpay_return', async function (req, res) {
+    try {
+        const vnp_Params = req.query;
+        const secureHash = vnp_Params['vnp_SecureHash'];
 
-// router.get('/vnpay_return', async function (req, res) {
-//     try {
-//         const vnp_Params = req.query;
-//         const secureHash = vnp_Params['vnp_SecureHash'];
+        // Remove unnecessary parameters for hash calculation
+        delete vnp_Params['vnp_SecureHash'];
+        delete vnp_Params['vnp_SecureHashType'];
 
-//         // Remove unnecessary parameters for hash calculation
-//         delete vnp_Params['vnp_SecureHash'];
-//         delete vnp_Params['vnp_SecureHashType'];
+        // Sort the remaining parameters for hash calculation
+        const sortedParams = sortObject(vnp_Params);
 
-//         // Sort the remaining parameters for hash calculation
-//         const sortedParams = sortObject(vnp_Params);
+        const tmnCode = vnpayConfig.vnp_TmnCode;
+        const secretKey = vnpayConfig.vnp_HashSecret;
 
-//         const tmnCode = vnpayConfig.vnp_TmnCode;
-//         const secretKey = vnpayConfig.vnp_HashSecret;
+        // Generate the hash
+        let querystring = require('qs');
+        let signData = querystring.stringify(sortedParams, { encode: false });
+        let crypto = require("crypto");
+        let hmac = crypto.createHmac("sha512", secretKey);
+        let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");
+        if (secureHash === signed) {
+            return res.json({ code: sortedParams['vnp_ResponseCode'], message: 'Success' });
+        } else {
+            return res.json({ code: '97', message: 'Checksum failed' });
+        }
+    } catch (error) {
+        console.error('Error processing VNPAY return:', error);
+        return res.json({ code: '99', message: 'Internal Server Error' });
+    }
+});
+router.get('/vnpay_ipn', async function (req, res, next) {
+    try {
+        const vnp_Params = req.query;
+        const secureHash = vnp_Params['vnp_SecureHash'];
 
-//         // Generate the hash
-//         let querystring = require('qs');
-//         let signData = querystring.stringify(sortedParams, { encode: false });
-//         let crypto = require("crypto");
-//         let hmac = crypto.createHmac("sha512", secretKey);
-//         let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");
-//         if (secureHash === signed) {
-//             return res.json({ code: sortedParams['vnp_ResponseCode'], message: 'Success' });
-//         } else {
-//             return res.json({ code: '97', message: 'Checksum failed' });
-//         }
-//     } catch (error) {
-//         console.error('Error processing VNPAY return:', error);
-//         return res.json({ code: '99', message: 'Internal Server Error' });
-//     }
-// });
+        const orderId = vnp_Params['vnp_TxnRef'];
+        const rspCode = vnp_Params['vnp_ResponseCode'];
 
+        // Remove unnecessary parameters for hash calculation
+        delete vnp_Params['vnp_SecureHash'];
+        delete vnp_Params['vnp_SecureHashType'];
+        // Sort the remaining parameters for hash calculation
+        const sortedParams = sortObject(vnp_Params);
+        const secretKey = vnpayConfig.vnp_HashSecret;
+        let querystring = require('qs');
+        let signData = querystring.stringify(sortedParams, { encode: false });
+        let crypto = require("crypto");
+        let hmac = crypto.createHmac("sha512", secretKey);
+        let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");
 
+        // Assume paymentStatus is retrieved from your database or another source
+        let paymentStatus = '0'; // Default to '0' if not available
+        let checkOrderId = true; // Mã đơn hàng "giá trị của vnp_TxnRef" VNPAY phản hồi tồn tại trong CSDL của bạn
+        let checkAmount = true; // Kiểm tra số tiền "giá trị của vnp_Amout/100" trùng khớp với số tiền của đơn hàng trong CSDL của bạn
 
-// router.get('/vnpay_ipn', async function (req, res, next) {
-//     try {
-//         const vnp_Params = req.query;
-//         const secureHash = vnp_Params['vnp_SecureHash'];
+        if (secureHash === signed) {
+            // Perform additional checks if needed (e.g., checkOrderId, checkAmount)
+            if (checkOrderId) {
+                if (checkAmount) {
+                    if (paymentStatus === '0') {
+                        if (rspCode === '00') {
+                            // Payment successful
+                            await handleSuccessfulPayment(orderId, sortedParams);
+                            res.status(200).json({ RspCode: '00', Message: 'Success' });
+                        } else {
+                            // Payment failed
+                            await handleFailedPayment(orderId, sortedParams);
+                            res.status(200).json({ RspCode: '00', Message: 'Failed' });
+                        }
+                    } else {
+                        // Payment status already updated
+                        res.status(200).json({ RspCode: '24', Message: 'This order has been updated to the payment status' });
+                    }
+                }
+                else {
+                    res.status(200).json({ RspCode: '04', Message: 'Amount invalid' })
+                }
+            }
+            else {
+                res.status(200).json({ RspCode: '01', Message: 'Order not found' })
+            }
+            // Handle different payment statuses
 
-//         const orderId = vnp_Params['vnp_TxnRef'];
-//         const rspCode = vnp_Params['vnp_ResponseCode'];
+        } else {
+            // Checksum failed
+            res.status(200).json({ RspCode: '97', Message: 'Checksum failed' });
+        }
+    } catch (error) {
+        console.error('Error processing VNPAY IPN:', error);
+        res.status(500).json({ RspCode: '99', Message: 'Internal Server Error' });
+    }
+});
+async function handleSuccessfulPayment(orderId, sortedParams) {
+    // Save successful payment information to the database
+    await db.Payment.create({
+        orderId: orderId,
+        totalmoney: sortedParams['vnp_Amount'],
+        cart: cartManage,
+        user: userManage,
+        phone: phoneManage,
+        address: addressManage,
+        note: sortedParams['vnp_OrderInfo'],
+        vnp_response_code: sortedParams['vnp_ResponseCode'],
+        code_vnpay: sortedParams['vnp_TransactionNo'],
+        code_bank: sortedParams['vnp_BankCode'],
+        // Add other fields as needed
+    });
 
-//         // Remove unnecessary parameters for hash calculation
-//         delete vnp_Params['vnp_SecureHash'];
-//         delete vnp_Params['vnp_SecureHashType'];
-//         // Sort the remaining parameters for hash calculation
-//         const sortedParams = sortObject(vnp_Params);
-//         const secretKey = vnpayConfig.vnp_HashSecret;
-//         let querystring = require('qs');
-//         let signData = querystring.stringify(sortedParams, { encode: false });
-//         let crypto = require("crypto");
-//         let hmac = crypto.createHmac("sha512", secretKey);
-//         let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");
-
-//         // Assume paymentStatus is retrieved from your database or another source
-//         let paymentStatus = '0'; // Default to '0' if not available
-//         let checkOrderId = true; // Mã đơn hàng "giá trị của vnp_TxnRef" VNPAY phản hồi tồn tại trong CSDL của bạn
-//         let checkAmount = true; // Kiểm tra số tiền "giá trị của vnp_Amout/100" trùng khớp với số tiền của đơn hàng trong CSDL của bạn
-
-//         if (secureHash === signed) {
-//             // Perform additional checks if needed (e.g., checkOrderId, checkAmount)
-//             if (checkOrderId) {
-//                 if (checkAmount) {
-//                     if (paymentStatus === '0') {
-//                         if (rspCode === '00') {
-//                             // Payment successful
-//                             await handleSuccessfulPayment(orderId, sortedParams);
-//                             res.status(200).json({ RspCode: '00', Message: 'Success' });
-//                         } else {
-//                             // Payment failed
-//                             await handleFailedPayment(orderId, sortedParams);
-//                             res.status(200).json({ RspCode: '00', Message: 'Failed' });
-//                         }
-//                     } else {
-//                         // Payment status already updated
-//                         res.status(200).json({ RspCode: '24', Message: 'This order has been updated to the payment status' });
-//                     }
-//                 }
-//                 else {
-//                     res.status(200).json({ RspCode: '04', Message: 'Amount invalid' })
-//                 }
-//             }
-//             else {
-//                 res.status(200).json({ RspCode: '01', Message: 'Order not found' })
-//             }
-//             // Handle different payment statuses
-
-//         } else {
-//             // Checksum failed
-//             res.status(200).json({ RspCode: '97', Message: 'Checksum failed' });
-//         }
-//     } catch (error) {
-//         console.error('Error processing VNPAY IPN:', error);
-//         res.status(500).json({ RspCode: '99', Message: 'Internal Server Error' });
-//     }
-// });
-// async function handleSuccessfulPayment(orderId, sortedParams) {
-//     // Save successful payment information to the database
-//     await db.Payment.create({
-//         orderId: orderId,
-//         totalmoney: sortedParams['vnp_Amount'],
-//         note: sortedParams['vnp_OrderInfo'],
-//         vnp_response_code: sortedParams['vnp_ResponseCode'],
-//         code_vnpay: sortedParams['vnp_TransactionNo'],
-//         code_bank: sortedParams['vnp_BankCode'],
-//         // Add other fields as needed
-//     });
-
-//     // Update other related data in the database (e.g., book quantities)
-// }
-
-// async function handleFailedPayment(orderId, sortedParams) {
-//     // Save failed payment information to the database
-//     await db.Payment.create({
-//         orderId: orderId,
-//         totalmoney: sortedParams['vnp_Amount'],
-//         note: sortedParams['vnp_OrderInfo'],
-//         vnp_response_code: sortedParams['vnp_ResponseCode'],
-//         code_vnpay: sortedParams['vnp_TransactionNo'],
-//         code_bank: sortedParams['vnp_BankCode'],
-//         // Add other fields as needed
-//     });
-//     // Additional error handling or logging if required
-// }
-
-
+}
+async function handleFailedPayment(orderId, sortedParams) {
+    // Save failed payment information to the database
+    await db.Payment.create({
+        orderId: orderId,
+        totalmoney: sortedParams['vnp_Amount'],
+        cart: cartManage,
+        user: userManage,
+        phone: phoneManage,
+        address: addressManage,
+        note: sortedParams['vnp_OrderInfo'],
+        vnp_response_code: sortedParams['vnp_ResponseCode'],
+        code_vnpay: sortedParams['vnp_TransactionNo'],
+        code_bank: sortedParams['vnp_BankCode'],
+        // Add other fields as needed
+    });
+    // Additional error handling or logging if required
+}
 function sortObject(obj) {
     let sorted = {};
     let str = [];
@@ -227,11 +214,8 @@ function sortObject(obj) {
     }
     return sorted;
 }
-
-
 router.get("/getAllPayment", async function (req, res, next) {
     const payments = await db.Payment.find({});
-    console.log(payments)
     return res.send({
         data: payments
     })
@@ -256,4 +240,7 @@ router.post("/update_state", async function (req, res, next) {
         data: updatedData
     });
 })
+router.post("/payment_direct", middleware.authMiddleWare, paymentController.handlePaymentDirect);
+router.get("/payment_history", middleware.authMiddleWare, paymentController.handlePaymentHistory);
+router.get("/payment_history_succeed", paymentController.handlePaymentHistorySucceed);
 module.exports = router;

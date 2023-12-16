@@ -14,7 +14,7 @@ export default function CartCard({
   price,
   image,
   idOrder,
-  discountPrice,
+  discount,
 }) {
   const { user, accessToken } = useContext(AuthContext)
   const { fetchCartData } = useContext(CheckoutContext)
@@ -105,7 +105,7 @@ export default function CartCard({
       <Image style={{ width: 100, height: '100%' }} source={{ uri: image }} />
       <View style={{ gap: 4 }}>
         <Text style={{ fontSize: 20, maxWidth: '90%' }}>{name}</Text>
-        {discountPrice ? (
+        {discount ? (
           <View style={{ flexDirection: 'row', gap: 8 }}>
             <Text
               style={{
@@ -121,14 +121,16 @@ export default function CartCard({
               })}
             </Text>
             <Text style={{ fontSize: 18, color: colors.orangeColor }}>
-              {Number(discountPrice).toLocaleString('it-IT', {
+              {Number(
+                (price * (100 - discount)) / 100,
+              ).toLocaleString('it-IT', {
                 style: 'currency',
                 currency: 'VND',
               })}
             </Text>
           </View>
         ) : (
-          <Text style={{ fontSize: 18 }}>
+          <Text style={{ fontSize: 18, color: colors.orangeColor }}>
             {price.toLocaleString('it-IT', {
               style: 'currency',
               currency: 'VND',
