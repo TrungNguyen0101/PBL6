@@ -21,6 +21,7 @@ export default function Cart() {
   const screenHeight = Dimensions.get('window').height
   const { user } = useContext(AuthContext)
   const { cart, totalPrice, fetchCartData } = useContext(CheckoutContext)
+
   useEffect(() => {
     fetchCartData()
   }, [fetchCartData])
@@ -70,7 +71,7 @@ export default function Cart() {
                 quantity={book?.Count}
                 name={book?.Book?.booktitle}
                 price={book?.Book?.price}
-                discountPrice={book?.PriceDiscount}
+                discount={book?.Book?.discount}
               />
             ))
           ) : (

@@ -8,14 +8,20 @@ import Description from './components/Description'
 import { useNavigation } from '@react-navigation/native'
 import { CheckoutContext } from '../../context/CheckoutProvider'
 import { AuthContext } from '../../context/AuthProvider'
-import { post } from '../../axios-config'
+import { post, put } from '../../axios-config'
 import Toast from 'react-native-toast-message'
 
-export default function Cart() {
+export default function Checkout() {
   const screenHeight = Dimensions.get('window').height
   const navigation = useNavigation()
-  const { shipPrice, totalPrice, addressCheckout, cart, shipMethod } =
-    useContext(CheckoutContext)
+  const {
+    shipPrice,
+    totalPrice,
+    addressCheckout,
+    cart,
+    shipMethod,
+    fetchCartData,
+  } = useContext(CheckoutContext)
   const { user, accessToken } = useContext(AuthContext)
   const handlePay = async () => {
     try {
@@ -45,30 +51,94 @@ export default function Cart() {
         return
       }
       if (shipMethod.value === 'vnpay') {
-        console.log(cart)
-        // const newCartData = cart?.map((x) => {
-        //   return {
-        //     ...x.Book,
-        //     Count: x.Count,
-        //   }
-        // })
-        // const formData = {
-        //   amount: Number(totalPrice + shipPrice),
-        //   phone: addressCheckout?.phone,
-        //   address: addressCheckout?.address,
-        //   bankCode: '',
-        //   language: 'vn',
-        //   cart: newCartData,
-        // }
-        // const response = await post('/payment/create_payment_url', formData, {
-        //   headers: {
-        //     Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
-        //   },
-        // })
-        // if (response) {
-        //   const urlPayment = response?.data?.data
-        //   navigation.navigate('WebViewScreen', { url: urlPayment })
-        // }
+        const newCartData = cart?.map((x) => {
+          return {
+            ...x.Book,
+            Count: x.Count,
+          }
+        })
+        cart.map(async (x) => {
+          const updateResponse = await put(
+            '/order/update-status-payment',
+            {
+              id: x._id,
+            },
+            {
+              headers: {
+                Authorization: accessToken
+                  ? `Bearer ${accessToken}`
+                  : undefined,
+              },
+            },
+          )
+          if (updateResponse) {
+            fetchCartData()
+          }
+        })
+        const formData = {
+          amount: Number(totalPrice + shipPrice),
+          phone: addressCheckout?.phone,
+          address: addressCheckout?.address,
+          bankCode: '',
+          language: 'vn',
+          cart: newCartData,
+        }
+        const response = await post('/payment/create_payment_url', formData, {
+          headers: {
+            Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+          },
+        })
+        if (response) {
+          const urlPayment = response?.data?.data
+          navigation.navigate('WebViewScreen', { url: urlPayment })
+        }
+      }
+      if (shipMethod.value === 'cash') {
+        const newCartData = cart?.map((x) => {
+          return {
+            ...x.Book,
+            Count: x.Count,
+          }
+        })
+        cart.map(async (x) => {
+          const updateResponse = await put(
+            '/order/update-status-payment',
+            {
+              id: x._id,
+            },
+            {
+              headers: {
+                Authorization: accessToken
+                  ? `Bearer ${accessToken}`
+                  : undefined,
+              },
+            },
+          )
+          if (updateResponse) {
+            fetchCartData()
+          }
+        })
+        const formData = {
+          totalmoney: Number(totalPrice + shipPrice),
+          phone: addressCheckout?.phone,
+          address: addressCheckout?.address,
+          bankCode: '',
+          language: 'vn',
+          cart: newCartData,
+        }
+        const response = await post('/payment/payment_direct', formData, {
+          headers: {
+            Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+          },
+        })
+        if (response) {
+          Toast.show({
+            type: 'success',
+            text1: 'Thông báo',
+            text2: 'Đặt hàng thành công',
+          })
+          navigation.navigate('Home')
+        }
       }
     } catch (error) {
       console.log(error)

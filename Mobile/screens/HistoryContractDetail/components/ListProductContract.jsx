@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   ActivityIndicator,
   Dimensions,
@@ -6,18 +7,15 @@ import {
   Text,
   View,
 } from 'react-native'
-import React, { useContext } from 'react'
-
-import CheckoutCard from '../../../components/CheckoutCard'
+import React from 'react'
 
 import colors from '../../../contains/colors'
 
 import { Entypo } from '@expo/vector-icons'
-import { CheckoutContext } from '../../../context/CheckoutProvider'
+import ContractCard from '../../../components/ContractCard'
 
-export default function ListProductCheckout() {
+export default function ListProductContract({ data }) {
   const screenHeight = Dimensions.get('window').height
-  const { cart } = useContext(CheckoutContext)
 
   return (
     <SafeAreaView style={{ flex: 1, minHeight: screenHeight * 0.36 }}>
@@ -37,15 +35,15 @@ export default function ListProductCheckout() {
       <ScrollView
         style={{ flex: 1, backgroundColor: '#ccc', overflow: 'hidden' }}
       >
-        {cart ? (
-          cart?.map((book) => (
-            <CheckoutCard
+        {data ? (
+          data?.map((book) => (
+            <ContractCard
               key={book?._id}
-              image={book?.Book?.mainImage[0]?.url}
+              image={book?.mainImage[0]?.url}
               quantity={book?.Count}
-              name={book?.Book?.booktitle}
-              price={book?.Book?.price}
-              discount={book?.Book?.discount}
+              name={book?.booktitle}
+              price={book?.price}
+              discount={book?.discount}
             />
           ))
         ) : (
