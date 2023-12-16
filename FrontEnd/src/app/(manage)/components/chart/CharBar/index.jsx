@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 
@@ -9,20 +9,106 @@ import Chart from 'chart.js/auto';
 //   Tooltip,
 //   CategoryScale,
 //   LinearScale
-//   // LineController,
-//   // LineElement,
-//   // PointElement,
+// LineController,
+// LineElement,
+// PointElement,
 // );
 
-function ChartBar() {
+function ChartBar({ paymentStatus }) {
+  // console.log('file: index.jsx:18 ~ ChartBar ~ paymentStatus:', paymentStatus);
+  const [sortedMonths, setSortedMonths] = useState([]);
+  console.log('file: index.jsx:20 ~ ChartBar ~ sortedMonths:', sortedMonths);
+
+  useEffect(() => {
+    const handleData = () => {
+      const newData =
+        paymentStatus.length > 0 &&
+        paymentStatus.map((item) => {
+          const date = new Date(item.createdAt);
+          const monthName = new Intl.DateTimeFormat('en-US', {
+            month: 'long',
+          }).format(date);
+
+          return {
+            createdAt: monthName,
+            totalmoney: item.totalmoney,
+          };
+        });
+
+      const newData1 =
+        newData &&
+        newData?.reduce((acc, item) => {
+          const existingMonthIndex = acc.findIndex(
+            (entry) => entry.createdAt === item.createdAt
+          );
+
+          if (existingMonthIndex !== -1) {
+            acc[existingMonthIndex].totalmoney = (
+              parseInt(acc[existingMonthIndex].totalmoney) +
+              parseInt(item.totalmoney)
+            ).toString();
+          } else {
+            acc.push({
+              createdAt: item.createdAt,
+              totalmoney: item.totalmoney,
+            });
+          }
+
+          return acc;
+        }, []);
+
+      // Tính thời gian hiện tại
+      const currentDate = new Date();
+
+      // Tạo mảng 4 tháng gần nhất
+      const recentMonths = Array.from({ length: 4 }, (_, index) => {
+        const date = new Date(currentDate);
+        date.setMonth(currentDate.getMonth() - index);
+        return date.toLocaleString('default', { month: 'long' });
+      });
+
+      // Map qua mảng dữ liệu và trả về kết quả
+      const newData123 = recentMonths.map((month) => {
+        const dataForMonth =
+          newData1 && newData1?.find((item) => item.createdAt === month);
+
+        return {
+          createdAt: month,
+          totalmoney: dataForMonth ? dataForMonth.totalmoney : '0',
+        };
+      });
+
+      // Sắp xếp mảng theo tháng
+      newData123.sort((a, b) => {
+        const months = [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December',
+        ];
+        return months.indexOf(a.createdAt) - months.indexOf(b.createdAt);
+      });
+
+      setSortedMonths(newData123);
+    };
+    handleData();
+  }, [paymentStatus]);
+
   const data = {
-    labels: ['January', 'February', 'March', 'April', 'May'],
+    labels: sortedMonths.map((month) => month.createdAt),
     datasets: [
       {
         label: 'Sales',
-        data: [12, 19, 3, 5, 2],
+        data: sortedMonths.map((month) => month.totalmoney),
         backgroundColor: [
-          'rgba(255, 99, 132, 0.6)',
           'rgba(54, 162, 235, 0.6)',
           'rgba(255, 206, 86, 0.6)',
           'rgba(75, 192, 192, 0.6)',
@@ -37,8 +123,11 @@ function ChartBar() {
       tooltip: {
         callbacks: {
           label: (context) => {
-            const value = context.raw.toFixed(2); // Làm tròn giá trị đến 2 chữ số thập phân
-            return `Doanh thu: ${value} triệu VNĐ`;
+            const value = parseFloat(context.raw).toLocaleString('it-IT', {
+              style: 'currency',
+              currency: 'VND',
+            }); // Làm tròn giá trị đến 2 chữ số thập phân
+            return `Doanh thu: ${value}  VNĐ`;
           },
         },
       },

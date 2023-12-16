@@ -4,13 +4,19 @@ import { Select, Table } from 'antd';
 import { getAllPayment, updatePayment } from '@/services/paymentService';
 import ModelOrder from '@/components/ModelOrder';
 import { toast } from 'react-toastify';
-
+import { format } from 'date-fns';
+// import { spacing } from 'react-select/dist/declarations/src/theme';
+import { Button, message, Popconfirm } from 'antd';
+import './styled.scss';
+import LoadingPage from '@/components/LoadingPage';
 const OrderPage = () => {
   const { Option } = Select;
   const [data, setData] = useState([]);
   const [dataOld, setDataOld] = useState([]);
   const [orderItem, setOrderItem] = useState([]);
   const [checkView, setCheckView] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const handleGetAllPayment = async () => {
     const { data } = await getAllPayment();
     if (data) {
@@ -19,8 +25,9 @@ const OrderPage = () => {
         orderId: item?.orderId,
         phone: item?.phone,
         cart: item?.cart?.length,
+        createdAt: format(new Date(item.createdAt), 'dd/MM/yyyy'),
         status: item?.status,
-        totalmoney: parseFloat(item?.totalmoney / 100).toLocaleString('it-IT', {
+        totalmoney: parseFloat(item?.totalmoney).toLocaleString('it-IT', {
           style: 'currency',
           currency: 'VND',
         }),
@@ -31,34 +38,14 @@ const OrderPage = () => {
     }
   };
   useEffect(() => {
-    handleGetAllPayment();
+    const handleLoading = async () => {
+      await setIsLoading(true);
+      await handleGetAllPayment();
+      await setIsLoading(false);
+    };
+    handleLoading();
   }, []);
 
-  const handleChangeStatus = (record, selectedStatus) => {
-    // Thực hiện xử lý khi chọn status ở đây, có thể gửi request đến server, cập nhật dữ liệu, v.v.
-    console.log(`Order ID: ${record.status} - New Status: ${selectedStatus}`);
-    // Ví dụ: Cập nhật trạng thái của đơn hàng
-  };
-  const handleChangeStatus123 = async (record, selectedValue) => {
-    let state;
-    if (selectedValue === 'Prepare') {
-      state = 1;
-    } else if (selectedValue === 'Shipping') {
-      state = 2;
-    } else if (selectedValue === 'Successful') {
-      state = 3;
-    } else if (selectedValue === 'Fail') {
-      state = 4;
-    }
-    const result = await updatePayment({
-      orderId: record.orderId,
-      status: state,
-    });
-    if (result) {
-      toast.success('Edit successfuly');
-      handleGetAllPayment();
-    }
-  };
   const handleView = (rowId) => {
     const result = dataOld.filter((item) => item.orderId === rowId);
     setCheckView(true);
@@ -69,19 +56,39 @@ const OrderPage = () => {
     setCheckView(false);
   };
 
-  const getStatusText = (status) => {
-    switch (status) {
-      case 1:
-        return 'Prepare';
-      case 2:
-        return 'Shipping';
-      case 3:
-        return 'Successful';
-      case 4:
-        return 'Fail';
-      default:
-        return 'Select action';
+  const confirmStatus_2 = async (status, orderId) => {
+    const result = await updatePayment({
+      orderId: orderId,
+      status: status + 1,
+    });
+    if (result) {
+      message.success('Updated successfully');
+      handleGetAllPayment();
     }
+  };
+  const confirmStatus_3 = async (status, orderId) => {
+    const result = await updatePayment({
+      orderId: orderId,
+      status: status + 1,
+    });
+    if (result) {
+      message.success('Updated successfully');
+      handleGetAllPayment();
+    }
+  };
+  const confirmStatus_4 = async (status, orderId) => {
+    const result = await updatePayment({
+      orderId: orderId,
+      status: status + 2,
+    });
+    if (result) {
+      message.success('Updated successfully');
+      handleGetAllPayment();
+    }
+  };
+  const cancel = (e) => {
+    console.log(e);
+    message.error('Click on No');
   };
 
   const columns = [
@@ -104,38 +111,128 @@ const OrderPage = () => {
       width: 8,
     },
     {
-      title: 'Total book',
-      dataIndex: 'cart',
-      key: 'cart',
-      width: 8,
-    },
-    {
       title: 'Total money',
       dataIndex: 'totalmoney',
       key: 'totalmoney',
-      width: 10,
+      width: 7,
+    },
+    {
+      title: 'Date time',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      width: 5,
     },
     {
       title: 'Status',
       key: 'action',
-      width: 10,
-      render: (_, record) => (
-        <Select
-          defaultValue={getStatusText(record.status)}
-          value={getStatusText(record.status)}
-          style={{ width: 120 }}
-          onChange={(value) => handleChangeStatus123(record, value)}
-        >
-          <Option value="Prepare">Prepare</Option>
-          <Option value="Shipping">Shipping</Option>
-          <Option value="Successful">Successful</Option>
-          <Option value="Fail">Fail</Option>
-        </Select>
-      ),
+      width: 5,
+      render: (_, record) => {
+        let state;
+        let css;
+        if (record.status === 1) {
+          state = 'Prepare';
+          css = 'bg-[#ee9b00]';
+        } else if (record.status === 2) {
+          state = 'Shipping';
+          css = 'bg-orange-500';
+        } else if (record.status === 3) {
+          state = 'Successful';
+          css = 'bg-green-500';
+        } else if (record.status === 4) {
+          state = 'Fail';
+          css = 'bg-red-500';
+        }
+        return (
+          <span
+            className={`px-2 py-1 font-semibold text-white rounded-xl whitespace-nowrap ${css}`}
+          >
+            {state}
+          </span>
+        );
+      },
     },
     {
       title: 'Action',
       key: 'action',
+      width: 7,
+      render: (text, record) => {
+        if (record.status === 1) {
+          return (
+            <Popconfirm
+              title="Order confirmation successful"
+              description="Are you sure the order has been successfully prepared?"
+              onConfirm={() => confirmStatus_2(record.status, record.orderId)}
+              onCancel={cancel}
+              okText="Yes"
+              cancelText="No"
+            >
+              <button
+                type="button"
+                className="bg-[#80ed99] px-[8px] py-[6px] inline-block rounded-lg"
+              >
+                <span className="font-semibold text-white whitespace-nowrap">
+                  Order confirm
+                </span>
+              </button>
+            </Popconfirm>
+          );
+        } else if (record.status === 2) {
+          return (
+            <div className="flex flex-col items-start justify-start gap-y-[5px]">
+              <Popconfirm
+                title="Delivery confirmation successful."
+                description="Are you sure the order has been successfully delivered?"
+                onConfirm={() => confirmStatus_3(record.status, record.orderId)}
+                onCancel={cancel}
+                okText="Yes"
+                cancelText="No"
+              >
+                <button
+                  type="button"
+                  className="bg-[#4361ee] px-[8px] py-[6px] inline-block rounded-lg"
+                >
+                  <span className="font-semibold text-white whitespace-nowrap">
+                    Confirm success
+                  </span>
+                </button>
+              </Popconfirm>
+              <Popconfirm
+                title="Delivery confirmation failed."
+                description="Are you sure the order delivery has failed?"
+                onConfirm={() => confirmStatus_4(record.status, record.orderId)}
+                onCancel={cancel}
+                okText="Yes"
+                cancelText="No"
+              >
+                <button
+                  type="button"
+                  className="bg-[#ef233c] px-[8px] py-[6px] inline-block rounded-lg"
+                >
+                  <span className="font-semibold text-white whitespace-nowrap">
+                    Confirm cancel
+                  </span>
+                </button>
+              </Popconfirm>
+            </div>
+          );
+        } else if (record.status === 3) {
+          return (
+            <span className="font-semibold text-green-500 ">
+              Order delivery successfully
+            </span>
+          );
+        } else if (record.status === 4) {
+          return (
+            <span className="font-semibold text-red-500 whitespace-nowrap">
+              Order delivery failed.
+            </span>
+          );
+        }
+      },
+    },
+    {
+      title: 'View',
+      key: 'view',
       width: 7,
       render: (text, record) => (
         <button type="button" onClick={() => handleView(record.orderId)}>
@@ -165,21 +262,27 @@ const OrderPage = () => {
 
   return (
     <>
-      <div className="max-h-[400px]">
-        <Table
-          columns={columns}
-          dataSource={data}
-          className="max-h-[400px]"
-          pagination={{
-            showSizeChanger: true, // Hiển thị tùy chọn lựa chọn pageSize
-            pageSizeOptions: ['5', '10', '20'], // Các tùy chọn pageSize
-            defaultPageSize: 5, // Kích thước mặc định của pageSize
-          }}
-          scroll={{
-            x: 850,
-            y: 380,
-          }}
-        />
+      <div className="max-h-[600px]">
+        {isLoading ? (
+          <div className="mx-auto mt-10 w-max">
+            <LoadingPage></LoadingPage>
+          </div>
+        ) : (
+          <Table
+            columns={columns}
+            dataSource={data}
+            height={600}
+            pagination={{
+              showSizeChanger: true,
+              pageSizeOptions: ['5', '10', '20'],
+              defaultPageSize: 5,
+            }}
+            scroll={{
+              x: 800,
+              y: 420,
+            }}
+          />
+        )}
       </div>
       <ModelOrder
         active={checkView}

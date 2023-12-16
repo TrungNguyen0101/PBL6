@@ -59,7 +59,7 @@ const ModelOrder = ({ orderItem, active, handleOffActive }) => {
                       <span className="">{item?.booktitle}</span>
                     </div>
                   </td>
-                  <td className="p-0  price-amount amount">
+                  <td className="p-0 price-amount amount">
                     <div className="flex items-center gap-x-[10px]">
                       <span className="line-through ml-[10px]">
                         {item?.price?.toLocaleString('it-IT', {
@@ -69,7 +69,7 @@ const ModelOrder = ({ orderItem, active, handleOffActive }) => {
                       </span>
                     </div>
                   </td>
-                  <td className="p-0  price-amount amount">
+                  <td className="p-0 price-amount amount">
                     <span className="text-red-500">
                       {parseFloat(
                         item?.discount !== 0

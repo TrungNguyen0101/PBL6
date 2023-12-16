@@ -10,13 +10,17 @@ import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { getAllAccount } from '@/services/authService';
 import { getAllBook } from '@/services/bookService';
-import { getAllPayment } from '@/services/paymentService';
+import {
+  getAllPayment,
+  getAllPaymentByStatus,
+} from '@/services/paymentService';
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [lengthAccount, setLengthAccount] = useState(0);
   const [lengthProduct, setLengthProduct] = useState(0);
-  const [lengthOrdert, setLengthOrdert] = useState(0);
+  const [lengthOrder, setLengthOrder] = useState(0);
+  const [paymentStatus, setPaymentStatus] = useState(0);
 
   // const account =
   //   typeof window !== 'undefined'
@@ -43,12 +47,22 @@ const Page = () => {
     const handleGetAllPayment = async () => {
       const { data } = await getAllPayment();
       if (data.length > 0) {
-        setLengthOrdert(data.length);
+        setLengthOrder(data.length);
       }
     };
     handleGetAllPayment();
     handleGetAllAccount();
     handleGetAllBooks();
+  }, []);
+
+  useEffect(() => {
+    const handleGetAllPaymentByStatus = async () => {
+      const result = await getAllPaymentByStatus();
+      if (result.data.length > 0) {
+        setPaymentStatus(result.data);
+      }
+    };
+    handleGetAllPaymentByStatus();
   }, []);
 
   return (
@@ -117,7 +131,7 @@ const Page = () => {
         <div className="text-white">
           <div className="p-[20px] bg-[#ffc107] rounded-t-lg ">
             <h2 className="text-[25px] font-semibold">Orders</h2>
-            <span className="text-[20px]">{lengthOrdert}+</span>
+            <span className="text-[20px]">{lengthOrder}+</span>
           </div>
           <Link
             as={routes.ORDER}
@@ -173,7 +187,7 @@ const Page = () => {
       </div>
 
       <div className="flex items-center justify-center w-full mt-[50px]  overflow-auto">
-        <ChartBar></ChartBar>
+        <ChartBar paymentStatus={paymentStatus}></ChartBar>
       </div>
     </div>
   );
