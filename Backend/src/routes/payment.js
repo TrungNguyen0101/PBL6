@@ -216,7 +216,6 @@ function sortObject(obj) {
 }
 router.get("/getAllPayment", async function (req, res, next) {
     const payments = await db.Payment.find({});
-    console.log(payments)
     return res.send({
         data: payments
     })
@@ -242,4 +241,5 @@ router.post("/update_state", async function (req, res, next) {
     });
 })
 router.post("/payment_direct", middleware.authMiddleWare, paymentController.handlePaymentDirect);
-module.exports = router;
+router.get("/payment_history",middleware.authMiddleWare,paymentController)
+    module.exports = router;
