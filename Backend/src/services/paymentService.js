@@ -13,6 +13,7 @@ const paymentDirect = async (user, cart, data) => {
             totalmoney: data.totalmoney,
             orderId: orderId,
             cart: cart,
+            name: data.name,
             user: user,
             phone: data.phone,
             address: data.address,
