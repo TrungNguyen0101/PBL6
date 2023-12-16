@@ -33,7 +33,7 @@ export default function HistoryContract() {
                 <View style={{ flex: 1, gap: 12, marginTop: 12, paddingHorizontal: 8 }}>
                     {historyContract.map((contract, index) => (
                         <HistoryContractCard
-                            name={contract.user.email}
+                            name={contract.name}
                             phone={contract.phone}
                             address={contract.address}
                             totalAmount={contract.totalmoney}

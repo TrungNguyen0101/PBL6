@@ -10,7 +10,7 @@ export default function DescriptionContract({ data }) {
   return (
     <SafeAreaView style={{ flex: 1, minHeight: screenHeight }}>
       <ScrollView style={{ flex: 1 }}>
-        <PayMethodContract />
+        <PayMethodContract data={data} />
         <PayDetailContract data={data} />
         <Notice />
       </ScrollView>
