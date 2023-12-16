@@ -1,3 +1,4 @@
+const { data } = require("jquery");
 const { bookService } = require("../services");
 const bookController = require("./bookController");
 
@@ -94,7 +95,33 @@ async function insertBook(req, res) {
     });
   }
 }
-
+async function handleSearchBook(req, res) {
+  try {
+    let query = req.params.title;
+    if (!query) {
+      return res.status(500).json({
+        status: 500,
+        message: "Missing inputs parameter",
+      })
+    }
+    const book = await bookService.searchBook(query);
+    if (book.status === 200) {
+      res.status(200).json({
+        message: "Search succeed",
+        data: book.data,
+      });
+    }
+    else {
+      res.status(500).json({
+        message: "Search Failed",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "failed",
+    });
+  }
+}
 module.exports = {
   getAllBooks: getAllBooks,
   getBookById: getBookById,
@@ -103,4 +130,5 @@ module.exports = {
   getAllBooksByDiscount: getAllBooksByDiscount,
   updateBook: updateBook,
   insertBook: insertBook,
+  handleSearchBook: handleSearchBook,
 };
