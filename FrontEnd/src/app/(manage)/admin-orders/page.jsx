@@ -278,17 +278,19 @@ const OrderPage = () => {
               defaultPageSize: 5,
             }}
             scroll={{
-              x: 800,
-              y: 420,
+              y: 430, // Vertical scrolling
+              x: 1210, // Enable horizontal scrolling
             }}
           />
         )}
       </div>
-      <ModelOrder
-        active={checkView}
-        orderItem={orderItem}
-        handleOffActive={handleOffActive}
-      ></ModelOrder>
+      {checkView && (
+        <ModelOrder
+          active={checkView}
+          orderItem={orderItem}
+          handleOffActive={handleOffActive}
+        ></ModelOrder>
+      )}
     </>
   );
 };
