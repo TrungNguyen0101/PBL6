@@ -27,6 +27,20 @@ const paymentDirect = async (user, cart, data) => {
     }
     return result
 }
+const paymenHistory = async (user) => {
+    let result = {};
+    try {
+        let data = await db.Payment.find({});
+        const newData = data.filter((p) => p.user._id === user._id);
+        result.data = newData
+        result.status = 200;
+        result.message = "Succeed";
+    } catch (e) {
+        result.status = 500;
+        result.message = e;
+    }
+    return result
+}
 module.exports = {
-    paymentDirect
+    paymentDirect, paymenHistory
 };
