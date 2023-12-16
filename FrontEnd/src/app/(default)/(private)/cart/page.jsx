@@ -45,7 +45,7 @@ export default function Cart() {
         const { Book, Count } = item;
         const totalPrice = parseFloat(Book.price) * parseInt(Count); // Tính tổng giá tiền
 
-        return { ...Book, Count, price: totalPrice }; // Tạo đối tượng mới chứa thông tin sách và Count
+        return { ...Book, Count, price: Book.price }; // Tạo đối tượng mới chứa thông tin sách và Count
       });
       setPayment({
         book: booksWithCount,
@@ -97,9 +97,8 @@ export default function Cart() {
   const handleCheckout = () => {
     sessionStorage.setItem('bookList', JSON.stringify(payment));
     sessionStorage.setItem('check', true);
-    updatePayments();
+    // updatePayments();
     router.push('/check-out');
-    console.log(payment);
   };
   return (
     <section className="cart-wrapper">

@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 import Header from '@/components/layout/Header';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { postPayment } from '@/services/paymentService';
+import { postPayment, postPaymentDirect } from '@/services/paymentService';
 import { useRouter } from 'next/navigation';
 import { getBookById } from '@/services/bookService';
 import TableAnt from '@/components/TableAnt';
 import { BsBank } from 'react-icons/bs';
 import { GiTakeMyMoney } from 'react-icons/gi';
+import '../../../styles/Input.scss';
+import { updatePayment } from '@/services/orderService';
 
 const CheckOutPage = () => {
   const router = useRouter();
@@ -18,7 +20,10 @@ const CheckOutPage = () => {
   const [isShowListLocation, setIsShowListLocation] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [book, setBook] = useState(null);
-
+  const accountID =
+    typeof window !== 'undefined'
+      ? JSON.parse(sessionStorage?.getItem('auth'))?.user._id
+      : null;
   const fetchAllLocation = async () => {
     const res = await axios.get(
       `https://rsapi.goong.io/Place/AutoComplete?api_key=GS65AY8rHZnAKAMvfwP8tZvMNaszJrCS1bZM6NYg&input=${location}`
@@ -27,28 +32,62 @@ const CheckOutPage = () => {
       setListLocation(res?.data?.predictions);
     }
   };
+
+  async function updatePayments() {
+    try {
+      const promises = book?.book.map(async (item) => {
+        console.log('++++++++++', item._id);
+        const kq = await updatePayment({
+          IdAccount: accountID,
+          BookId: item._id,
+        });
+        return kq; // Assuming you want to return something after updatePayment
+      });
+      const results = await Promise.all(promises);
+      console.log('All payments updated:', results);
+    } catch (error) {
+      console.error('Error updating payments:', error);
+    }
+  }
+
   const fetchBookById = async () => {
     const idBook = sessionStorage.getItem('idBook');
     if (!idBook) return;
     const res = await getBookById(idBook);
     const count = sessionStorage.getItem('count');
-    const priceBook = sessionStorage.getItem('priceBook');
+    const pricePerBook = sessionStorage.getItem('pricePerBook');
     if (res && res?.data && res?.data?.book) {
+      let totalMoney = 0;
+      book?.book?.forEach((item) => {
+        if (item.discount > 0) {
+          totalMoney += (item.price * count * (100 - item.discount)) / 100;
+          console.log(totalMoney);
+        } else totalMoney += item.price * item.quantity;
+      });
       setBook({
         book: [
           {
             ...res?.data?.book,
             Count: count,
-            price: count * res?.data?.book?.price,
+            price: JSON.parse(pricePerBook),
           },
         ],
-        totalMoney: priceBook,
+        totalMoney: totalMoney,
       });
     }
   };
   const handleOnChangeLocation = (event) => {
     setLocation(event.target.value);
     setIsShowListLocation(true);
+  };
+  const handleCheckOutByDirect = async () => {
+    const res = await postPaymentDirect(
+      location,
+      phoneNumber,
+      book?.totalMoney,
+      book?.book
+    );
+    updatePayments();
   };
   const handleCheckOutByVNPAY = async () => {
     if (!phoneNumber) {
@@ -69,6 +108,7 @@ const CheckOutPage = () => {
     if (res && res?.data) {
       router.push(res?.data);
     }
+    updatePayments();
   };
   useEffect(() => {
     fetchAllLocation();
@@ -113,7 +153,7 @@ const CheckOutPage = () => {
                   id="phone-number"
                   type="text"
                   placeholder="Số điện thoại"
-                  className="p-2 text-base rounded outline-none"
+                  className="input w-full py-[10px] pl-[10px] text-base rounded-md outline-none font-semibold"
                   onChange={(event) => setPhoneNumber(event.target.value)}
                 />
               </div>
@@ -125,7 +165,7 @@ const CheckOutPage = () => {
                   id="location"
                   value={location}
                   type="text"
-                  className="p-2 text-base rounded outline-none"
+                  className="input w-full py-[10px] pl-[10px] text-base rounded-md outline-none font-semibold"
                   placeholder="Enter a location"
                   onChange={(event) => handleOnChangeLocation(event)}
                 />
@@ -150,7 +190,10 @@ const CheckOutPage = () => {
               2. Chọn phương thức thanh toán
             </h2>
             <div>
-              <div className="flex items-center cursor-pointer mb-[5px] gap-x-1 w-max hover:text-[#6d4eec] transition-all">
+              <div
+                className="flex items-center cursor-pointer mb-[5px] gap-x-1 w-max hover:text-[#6d4eec] transition-all"
+                onClick={handleCheckOutByDirect}
+              >
                 <span>
                   <GiTakeMyMoney size="25px" />
                 </span>

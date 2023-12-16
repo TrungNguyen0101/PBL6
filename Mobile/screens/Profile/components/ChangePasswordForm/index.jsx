@@ -76,7 +76,6 @@ export default function ChangePasswordForm({ styles }) {
       } catch (err) {
         console.log(err)
       }
-      console.log('Submitted:', values)
     },
   })
   return (
