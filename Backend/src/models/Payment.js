@@ -12,6 +12,7 @@ const Payment = new Schema({
     code_bank: { type: String },
     cart: { type: Array },
     user: { type: Object },
+    name: { type: String },
     phone: { type: String },
     address: { type: String },
     status: { type: Number, default: 1 },
