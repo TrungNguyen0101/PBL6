@@ -40,8 +40,6 @@ const OrderPage = () => {
     // Ví dụ: Cập nhật trạng thái của đơn hàng
   };
   const handleChangeStatus123 = async (record, selectedValue) => {
-    console.log('Selected Value:', selectedValue);
-    console.log('Selected Value:', record.orderId);
     let state;
     if (selectedValue === 'Prepare') {
       state = 1;
@@ -58,6 +56,7 @@ const OrderPage = () => {
     });
     if (result) {
       toast.success('Edit successfuly');
+      handleGetAllPayment();
     }
   };
   const handleView = (rowId) => {
@@ -123,33 +122,14 @@ const OrderPage = () => {
       render: (_, record) => (
         <Select
           defaultValue={getStatusText(record.status)}
+          value={getStatusText(record.status)}
           style={{ width: 120 }}
           onChange={(value) => handleChangeStatus123(record, value)}
         >
-          <Option
-            value="Prepare"
-            onClick={() => handleChangeStatus(record, 'Prepare')}
-          >
-            Prepare
-          </Option>
-          <Option
-            value="Shipping"
-            onClick={() => handleChangeStatus(record, 'Shipping')}
-          >
-            Shipping
-          </Option>
-          <Option
-            value="Successful"
-            onClick={() => handleChangeStatus(record, 'Successful')}
-          >
-            Successful
-          </Option>
-          <Option
-            value="Fail"
-            onClick={() => handleChangeStatus(record, 'Fail')}
-          >
-            Fail
-          </Option>
+          <Option value="Prepare">Prepare</Option>
+          <Option value="Shipping">Shipping</Option>
+          <Option value="Successful">Successful</Option>
+          <Option value="Fail">Fail</Option>
         </Select>
       ),
     },
