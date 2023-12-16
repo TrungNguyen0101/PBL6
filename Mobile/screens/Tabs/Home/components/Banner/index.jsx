@@ -80,7 +80,7 @@ const Banner = () => {
     <View style={{ height: screenHeight * 0.9 - 56 }}>
       <FlatList
         ref={flatListRef}
-        data={products}
+        data={products ?? []}
         renderItem={({ item }) => (
           <BannerItem
             item={item}

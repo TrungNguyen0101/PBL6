@@ -20,6 +20,7 @@ import { CheckoutContext } from '../../../context/CheckoutProvider'
 export default function Settings({ navigation }) {
   const { user, setUser } = useContext(AuthContext)
   const { setCart } = useContext(CheckoutContext)
+
   const handleLogout = () => {
     if (user) {
       setUser(null)
@@ -32,6 +33,7 @@ export default function Settings({ navigation }) {
       })
     }
   }
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -51,12 +53,11 @@ export default function Settings({ navigation }) {
             <Text style={styles.signInText}>{user?.username}</Text>
           ) : (
             <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
-              <Text style={styles.signInText}>Sign in</Text>
+              <Text style={styles.signInText}>Đăng nhập</Text>
             </TouchableOpacity>
           )}
         </View>
       </LinearGradient>
-      <View></View>
       <View style={styles.body}>
         {user ? (
           <TouchableOpacity
@@ -67,7 +68,23 @@ export default function Settings({ navigation }) {
               <FontAwesome name="user" size={24} color="white" />
             </View>
             <View style={styles.optionTextWrapper}>
-              <Text style={styles.optionText}>My Profile</Text>
+              <Text style={styles.optionText}>Thông tin cá nhân</Text>
+              <Fontisto name="angle-right" size={16} color="black" />
+            </View>
+          </TouchableOpacity>
+        ) : (
+          ''
+        )}
+        {user ? (
+          <TouchableOpacity
+            style={styles.option}
+            onPress={() => navigation.navigate('HistoryContract', { headerName: 'Lịch sử giao dịch' })}
+          >
+            <View style={styles.optionIconWrapper}>
+              <MaterialIcons name="history" size={24} color="white" />
+            </View>
+            <View style={styles.optionTextWrapper}>
+              <Text style={styles.optionText}>Lịch sử giao dịch</Text>
               <Fontisto name="angle-right" size={16} color="black" />
             </View>
           </TouchableOpacity>
@@ -79,7 +96,7 @@ export default function Settings({ navigation }) {
             <MaterialIcons name="privacy-tip" size={24} color="white" />
           </View>
           <View style={styles.optionTextWrapper}>
-            <Text style={styles.optionText}>Privacy</Text>
+            <Text style={styles.optionText}>Chính sách</Text>
             <Fontisto name="angle-right" size={16} color="black" />
           </View>
         </TouchableOpacity>
@@ -88,7 +105,7 @@ export default function Settings({ navigation }) {
             <Entypo name="help" size={24} color="white" />
           </View>
           <View style={styles.optionTextWrapper}>
-            <Text style={styles.optionText}>Help</Text>
+            <Text style={styles.optionText}>Hỗ trợ</Text>
             <Fontisto name="angle-right" size={16} color="black" />
           </View>
         </TouchableOpacity>
@@ -98,7 +115,7 @@ export default function Settings({ navigation }) {
               <SimpleLineIcons name="logout" size={24} color="white" />
             </View>
             <View style={styles.optionTextWrapper}>
-              <Text style={styles.optionText}>Log out</Text>
+              <Text style={styles.optionText}>Đăng xuất</Text>
               <Fontisto name="angle-right" size={16} color="black" />
             </View>
           </TouchableOpacity>

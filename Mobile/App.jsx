@@ -35,6 +35,9 @@ import ForgetPassword from './screens/Auth/ForgetPassword'
 import PaymentMethod from './screens/PaymentMethod'
 import PaymentAddress from './screens/PaymentAddress'
 import WebViewScreen from './screens/WebView'
+import HistoryContract from './screens/HistoryContract'
+import HistoryContractDetail from './screens/HistoryContractDetail'
+import ContractProvider from './context/ContractProvider'
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -79,75 +82,87 @@ export default function App() {
       <AuthProvider>
         <CheckoutProvider>
           <ProductProvider>
-            <NavigationContainer>
-              <Stack.Navigator initialRouteName="Tabs">
-                <Stack.Screen
-                  name="Tabs"
-                  component={TabsComponent}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="CategoryProduct"
-                  component={ListProductByCategory}
-                  options={({ route }) => ({ title: route.params.headerName })}
-                />
-                <Stack.Screen
-                  name="AllProducts"
-                  component={ListAllProduct}
-                  options={({ route }) => ({ title: route.params.headerName })}
-                />
-                <Stack.Screen
-                  name="SignIn"
-                  component={SignIn}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="ForgetPassword"
-                  component={ForgetPassword}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="SignUp"
-                  component={SignUp}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Profile"
-                  component={Profile}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="DetailProduct"
-                  component={DetailProduct}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Checkout"
-                  component={Checkout}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name="Comments"
-                  component={Comments}
-                  options={({ route }) => ({ title: route.params.headerName })}
-                />
-                <Stack.Screen
-                  name="PaymentMethod"
-                  component={PaymentMethod}
-                  options={({ route }) => ({ title: route.params.headerName })}
-                />
-                <Stack.Screen
-                  name="PaymentAddress"
-                  component={PaymentAddress}
-                  options={({ route }) => ({ title: route.params.headerName })}
-                />
-                <Stack.Screen
-                  name="WebViewScreen"
-                  component={WebViewScreen}
-                  options={{ headerShown: false }}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
+            <ContractProvider>
+              <NavigationContainer>
+                <Stack.Navigator initialRouteName="Tabs">
+                  <Stack.Screen
+                    name="Tabs"
+                    component={TabsComponent}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="CategoryProduct"
+                    component={ListProductByCategory}
+                    options={({ route }) => ({ title: route.params.headerName })}
+                  />
+                  <Stack.Screen
+                    name="AllProducts"
+                    component={ListAllProduct}
+                    options={({ route }) => ({ title: route.params.headerName })}
+                  />
+                  <Stack.Screen
+                    name="SignIn"
+                    component={SignIn}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="ForgetPassword"
+                    component={ForgetPassword}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="SignUp"
+                    component={SignUp}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Profile"
+                    component={Profile}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="DetailProduct"
+                    component={DetailProduct}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Checkout"
+                    component={Checkout}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="HistoryContractDetail"
+                    component={HistoryContractDetail}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="Comments"
+                    component={Comments}
+                    options={({ route }) => ({ title: route.params.headerName })}
+                  />
+                  <Stack.Screen
+                    name="PaymentMethod"
+                    component={PaymentMethod}
+                    options={({ route }) => ({ title: route.params.headerName })}
+                  />
+                  <Stack.Screen
+                    name="PaymentAddress"
+                    component={PaymentAddress}
+                    options={({ route }) => ({ title: route.params.headerName })}
+                  />
+                  <Stack.Screen
+                    name="HistoryContract"
+                    component={HistoryContract}
+                    options={({ route }) => ({ title: route.params.headerName })}
+                  />
+                  <Stack.Screen
+                    name="WebViewScreen"
+                    component={WebViewScreen}
+                    options={{ headerShown: false }}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </ContractProvider>
             <Toast config={toastConfig} />
           </ProductProvider>
         </CheckoutProvider>
