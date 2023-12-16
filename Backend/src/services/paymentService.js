@@ -3,11 +3,11 @@ const db = require("../models/index.js");
 const paymentDirect = async (user, cart, data) => {
     let result = {};
     try {
-        const numberOfRandomNumbers = 10;
-        const orderId = [];
-        for (let i = 0; i < numberOfRandomNumbers; i++) {
-            const orderId = Math.random();
-            orderId.push(randomNumber);
+        const numberOfRandomIntegers = 10;
+        let orderId = "";
+        for (let i = 0; i < numberOfRandomIntegers; i++) {
+            const randomInteger = Math.floor(Math.random() * 10);
+            orderId += randomInteger;
         }
         await db.Payment.create({
             totalmoney: data.totalmoney,
