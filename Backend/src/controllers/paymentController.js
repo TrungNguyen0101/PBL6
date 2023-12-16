@@ -41,6 +41,18 @@ const handlePaymentHistory = async (req, res) => {
         message: result.message
     })
 }
+const handlePaymentHistorySucceed = async (req, res) => {
+    let result = await paymentService.paymenHistorySucceed();
+    if (result.status === 200) {
+        return res.status(200).json({
+            data: result.data,
+            message: result.message
+        })
+    }
+    return res.status(500).json({
+        message: result.message
+    })
+}
 module.exports = {
-    handlePaymentDirect, handlePaymentHistory
+    handlePaymentDirect, handlePaymentHistory, handlePaymentHistorySucceed
 };

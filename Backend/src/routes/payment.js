@@ -241,5 +241,6 @@ router.post("/update_state", async function (req, res, next) {
     });
 })
 router.post("/payment_direct", middleware.authMiddleWare, paymentController.handlePaymentDirect);
-router.get("/payment_history", middleware.authMiddleWare, paymentController.handlePaymentHistory)
+router.get("/payment_history", middleware.authMiddleWare, paymentController.handlePaymentHistory);
+router.get("/payment_history_succeed", paymentController.handlePaymentHistorySucceed);
 module.exports = router;

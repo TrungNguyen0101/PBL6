@@ -41,6 +41,21 @@ const paymenHistory = async (user) => {
     }
     return result
 }
+const paymenHistorySucceed = async () => {
+    let result = {};
+    try {
+        let data = await db.Payment.find({});
+        const newData = data.filter((p) => p.status === 3);
+        console.log(newData)
+        result.data = newData
+        result.status = 200;
+        result.message = "Succeed";
+    } catch (e) {
+        result.status = 500;
+        result.message = e;
+    }
+    return result
+}
 module.exports = {
-    paymentDirect, paymenHistory
+    paymentDirect, paymenHistory, paymenHistorySucceed
 };
