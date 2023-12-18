@@ -6,7 +6,7 @@ export function TopBar() {
   const dispatch = useDispatch();
   return (
     <header className="relative z-10 items-center ">
-      <div className="relative z-10 flex flex-col justify-center h-full px-3 mx-auto text-black bg-[#90e0ef]">
+      <div className="relative z-10 flex flex-col justify-center h-full px-3 mx-auto text-black bg-[#90e0ef] py-[4px]">
         <div className="relative flex items-center w-full pl-1 sm:ml-0 sm:pr-2">
           <div className="relative flex items-center w-12 h-full group">
             <button
@@ -29,7 +29,7 @@ export function TopBar() {
               </svg>
             </button>
           </div>
-          <div className="container relative left-0 flex w-3/4">
+          <div className="container relative left-0 flex w-3/4 ">
             <div className="relative items-center hidden w-full ml-8 group md:flex lg:w-72">
               <div className="absolute flex items-center justify-center w-auto h-10 p-3 pr-2 text-sm text-gray-500 uppercase cursor-pointer sm:hidden">
                 <svg
@@ -46,7 +46,7 @@ export function TopBar() {
               </div>
             </div>
           </div>
-          <div className="relative flex items-center justify-end w-full p-1 ml-5 sm:right-auto sm:mr-0">
+          {/* <div className="relative flex items-center justify-end w-full p-1 ml-5 sm:right-auto sm:mr-0">
             <a href="#" className="block pr-5">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -102,7 +102,7 @@ export function TopBar() {
                 className="object-cover w-10 h-10 mx-auto rounded-full"
               />
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </header>

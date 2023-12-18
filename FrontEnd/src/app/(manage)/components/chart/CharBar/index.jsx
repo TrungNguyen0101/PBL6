@@ -125,10 +125,10 @@ function ChartBar({ paymentStatus, percent }) {
     labels: sortedMonths.map((month) => month.createdAt),
     datasets: [
       {
-        label: 'Sales',
+        label: 'Revenue over the past 4 months ',
         data: sortedMonths.map((month) => month.totalmoney),
         backgroundColor: [
-          'rgba(54, 162, 235, 0.6)',
+          'rgba(52, 162, 235, 0.6)',
           'rgba(255, 206, 86, 0.6)',
           'rgba(75, 192, 192, 0.6)',
           'rgba(153, 102, 255, 0.6)',
@@ -146,7 +146,7 @@ function ChartBar({ paymentStatus, percent }) {
               style: 'currency',
               currency: 'VND',
             }); // Làm tròn giá trị đến 2 chữ số thập phân
-            return `Doanh thu: ${value}  VNĐ`;
+            return `Sales: ${value}  VNĐ`;
           },
         },
       },
@@ -155,14 +155,14 @@ function ChartBar({ paymentStatus, percent }) {
       x: {
         title: {
           display: true,
-          text: 'Thời gian (Tháng)',
+          text: 'Time (Month)',
         },
       },
       y: {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Triệu (VNĐ)',
+          text: 'VNĐ (đ)',
         },
       },
     },
