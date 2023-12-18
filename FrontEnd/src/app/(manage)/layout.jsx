@@ -19,7 +19,7 @@ function LayoutAdmin({ children }) {
   useEffect(() => {
     const auth = JSON.parse(sessionStorage.getItem('auth'));
     if (auth?.user?.roleID !== '1') {
-      router.push('/');
+      router.replace('/');
       toast.error('You do not have access');
     }
   }, []);
