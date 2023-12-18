@@ -53,6 +53,49 @@ const handlePaymentHistorySucceed = async (req, res) => {
         message: result.message
     })
 }
+const handlePaymentOnline = async (req, res) => {
+    let data = req.query;
+    if (!data) {
+        return res.status(500).json({
+            errCode: 1,
+            message: "Missing inputs parameter",
+        })
+    }
+    let result = await paymentService.paymenOnline(data);
+    if (result.status === 200) {
+        return res.status(200).json({
+            rspCode: result.response,
+            message: result.message
+        })
+    }
+    return res.status(500).json({
+        message: result.message
+    })
+}
+const handleCreate_payment_url = async (req, res) => {
+    let user = req.User.User;
+    let data = req.body;
+    let ip = req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+    if (!data) {
+        return res.status(500).json({
+            errCode: 1,
+            message: "Missing inputs parameter",
+        })
+    }
+    let result = await paymentService.createpayment(user, ip, data);
+    if (result.status === 200) {
+        return res.status(200).json({
+            data: result.data,
+            message: result.message
+        })
+    }
+    return res.status(500).json({
+        message: result.message
+    })
+}
 module.exports = {
-    handlePaymentDirect, handlePaymentHistory, handlePaymentHistorySucceed
+    handlePaymentDirect, handlePaymentHistory, handlePaymentHistorySucceed, handlePaymentOnline, handleCreate_payment_url
 };
