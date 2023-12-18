@@ -27,13 +27,13 @@ function LayoutAdmin({ children }) {
     }
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1300);
   }, []);
 
   return (
     <>
       {loading ? (
-        <div className="mx-auto mt-10 w-max">
+        <div className="mx-auto mt-10 w-max h-[90vh] flex items-center justify-center">
           <LoadingPage></LoadingPage>
         </div>
       ) : (
