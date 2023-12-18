@@ -5,7 +5,7 @@ info:
     Website backend bán sách là một ứng dụng web được sử dụng để quản lý việc bán sách. Nó có thể được sử dụng để theo dõi thông tin về sách, chẳng hạn như tiêu đề, tác giả, giá cả và số lượng có sẵn. Nó cũng có thể được sử dụng để xử lý các đơn đặt hàng và thanh toán.
   version: 1.0.11
 servers:
-  - url: https://pbl6-production-4c10.up.railway.app/
+  - url: https://nthdv-pbl6.up.railway.app/
 tags:
   - name: user
     description: Everything about your users
@@ -67,6 +67,14 @@ paths:
                         type: string
                         description: ID vai trò
                         default: 0
+                      isVerified:
+                        type: string
+                        description: Xác thực người dùng
+                        default: false
+                      avatar:
+                        type: string
+                        description: Avatar người dùng
+                        default: 
                       __v:
                         type: integer
                         description: Phiên bản của dữ liệu
@@ -84,8 +92,8 @@ paths:
     post:
       tags:
         - user
-      summary: Login for user
-      description: Login for user
+      summary: Register for user
+      description: Register for user
       requestBody:
         required: true
         content:
@@ -111,6 +119,10 @@ paths:
               schema:
                 type: object
                 properties:
+                  status:
+                    type: number
+                    description: Trạng thái
+                    default: 200
                   message:
                     type: string
                     description: Thông điệp

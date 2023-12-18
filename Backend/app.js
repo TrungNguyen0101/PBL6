@@ -11,13 +11,14 @@ const swaggerUi = require('swagger-ui-express');
 require("dotenv").config();
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
+// const swaggerDocument = require('./swagger.json');
 var debug = require('debug')('backend:server');
 var http = require('http');
 const session = require('express-session');
 app.use(cors());
 
-app.use('/', express.static(path.join(__dirname, 'lib')))
-// app.use('/', express.static(path.join(__dirname, 'lib')), swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+// app.use('/', express.static(path.join(__dirname, 'lib')))
+app.use('/api-docs', express.static(path.join(__dirname, 'lib')), swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 // middleware test
 app.use(
     express.urlencoded({
