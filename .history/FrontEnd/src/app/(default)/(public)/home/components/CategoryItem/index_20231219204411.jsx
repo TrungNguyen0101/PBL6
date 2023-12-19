@@ -25,6 +25,8 @@ const CategoryItem = ({ category, imageFolder }) => {
     currentlyUsed = chosenImageIndex;
   } while (usedImages.includes(currentlyUsed));
   usedImages.push(currentlyUsed);
+  console.log(chosenImages);
+  console.log(currentlyUsed);
   return (
     <>
       <div className="rounded-lg category-item">
