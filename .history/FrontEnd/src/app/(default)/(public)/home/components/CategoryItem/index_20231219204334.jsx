@@ -25,6 +25,8 @@ const CategoryItem = ({ category, imageFolder }) => {
     currentlyUsed = chosenImageIndex;
   } while (usedImages.includes(currentlyUsed));
   usedImages.push(currentlyUsed);
+  console.log(chosenImages);
+  console.log(currentlyUsed);
   return (
     <>
       <div className="rounded-lg category-item">
@@ -33,7 +35,7 @@ const CategoryItem = ({ category, imageFolder }) => {
           className="h-[140px] block"
         >
           <img
-            src={chosenImages[chosenImageIndex]}
+            src={chosenImages[currentlyUsed]}
             alt=""
             className="object-cover w-full h-full rounded-lg opacity-80"
           />

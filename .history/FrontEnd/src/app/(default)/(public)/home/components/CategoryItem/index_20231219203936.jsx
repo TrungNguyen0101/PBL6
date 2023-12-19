@@ -9,7 +9,7 @@ const CategoryItem = ({ category, imageFolder }) => {
   const usedImages = [];
   let chosenImages = [];
 
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; i < 12; i++) {
     // Chọn một ảnh ngẫu nhiên
     const randomImage = images[Math.floor(Math.random() * images.length)];
 
@@ -19,12 +19,11 @@ const CategoryItem = ({ category, imageFolder }) => {
     // Thêm ảnh vào mảng chosenImages
     chosenImages.push(randomImage);
   }
-  let chosenImageIndex, currentlyUsed;
+  let chosenImageIndex;
   do {
     chosenImageIndex = Math.floor(Math.random() * chosenImages.length);
-    currentlyUsed = chosenImageIndex;
-  } while (usedImages.includes(currentlyUsed));
-  usedImages.push(currentlyUsed);
+  } while (usedImages.includes(chosenImageIndex));
+  console.log(chosenImages);
   return (
     <>
       <div className="rounded-lg category-item">

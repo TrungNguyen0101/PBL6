@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 const Banner = () => {
   const [listBook, setListBook] = useState([]);
   const fectchBannerBook = async () => {
-    const res = await getAllBookWithPagination(3, 8);
+    const res = await getAllBookWithPagination(3, 6);
     if (res && res?.data) {
       setListBook(res?.data?.books);
     }

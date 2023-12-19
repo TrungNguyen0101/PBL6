@@ -6,25 +6,22 @@ const CategoryItem = ({ category, imageFolder }) => {
     { length: 17 },
     (_, index) => `${imageFolder}image${index + 1}.jpg`
   );
-  const usedImages = [];
-  let chosenImages = [];
 
-  for (let i = 0; i < 16; i++) {
+  const chosenImages = new Set();
+
+  for (let i = 0; i < 5; i++) {
     // Chọn một ảnh ngẫu nhiên
     const randomImage = images[Math.floor(Math.random() * images.length)];
 
-    // Xóa ảnh đó khỏi mảng images
-    images.splice(images.indexOf(randomImage), 1);
+    // Kiểm tra xem ảnh đó đã có trong Set chưa
+    if (!chosenImages.has(randomImage)) {
+      // Nếu chưa thì thêm ảnh vào Set
+      chosenImages.add(randomImage);
 
-    // Thêm ảnh vào mảng chosenImages
-    chosenImages.push(randomImage);
+      // Thoát khỏi vòng lặp
+      break;
+    }
   }
-  let chosenImageIndex, currentlyUsed;
-  do {
-    chosenImageIndex = Math.floor(Math.random() * chosenImages.length);
-    currentlyUsed = chosenImageIndex;
-  } while (usedImages.includes(currentlyUsed));
-  usedImages.push(currentlyUsed);
   return (
     <>
       <div className="rounded-lg category-item">
@@ -33,7 +30,7 @@ const CategoryItem = ({ category, imageFolder }) => {
           className="h-[140px] block"
         >
           <img
-            src={chosenImages[chosenImageIndex]}
+            src={chosenImages}
             alt=""
             className="object-cover w-full h-full rounded-lg opacity-80"
           />

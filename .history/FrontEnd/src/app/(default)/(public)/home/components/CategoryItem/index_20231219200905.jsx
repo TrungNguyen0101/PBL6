@@ -6,25 +6,29 @@ const CategoryItem = ({ category, imageFolder }) => {
     { length: 17 },
     (_, index) => `${imageFolder}image${index + 1}.jpg`
   );
-  const usedImages = [];
-  let chosenImages = [];
 
-  for (let i = 0; i < 16; i++) {
-    // Chọn một ảnh ngẫu nhiên
-    const randomImage = images[Math.floor(Math.random() * images.length)];
+  // Khởi tạo một biến để theo dõi chỉ số hình ảnh
+  let imageIndex = 0;
 
-    // Xóa ảnh đó khỏi mảng images
-    images.splice(images.indexOf(randomImage), 1);
+  // Định nghĩa hàm để lấy hình ảnh tiếp theo
+  function getNextImage() {
+    // Lấy hình ảnh hiện tại dựa trên bộ đếm
+    const currentImage = images[imageIndex];
 
-    // Thêm ảnh vào mảng chosenImages
-    chosenImages.push(randomImage);
+    // Tăng bộ đếm cho hình ảnh tiếp theo
+    imageIndex++;
+
+    // Xử lý khi đạt đến cuối chuỗi hình ảnh
+    if (imageIndex === images.length) {
+      // Đặt lại bộ đếm để lặp lại trở lại hình ảnh đầu tiên
+      imageIndex = 0;
+    }
+
+    return currentImage;
   }
-  let chosenImageIndex, currentlyUsed;
-  do {
-    chosenImageIndex = Math.floor(Math.random() * chosenImages.length);
-    currentlyUsed = chosenImageIndex;
-  } while (usedImages.includes(currentlyUsed));
-  usedImages.push(currentlyUsed);
+
+  // Sử dụng hàm getNextImage để truy cập hình ảnh theo thứ tự
+  const nextImage = getNextImage();
   return (
     <>
       <div className="rounded-lg category-item">
@@ -33,7 +37,7 @@ const CategoryItem = ({ category, imageFolder }) => {
           className="h-[140px] block"
         >
           <img
-            src={chosenImages[chosenImageIndex]}
+            src={randomImage}
             alt=""
             className="object-cover w-full h-full rounded-lg opacity-80"
           />

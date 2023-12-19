@@ -20,11 +20,26 @@ const CategoryItem = ({ category, imageFolder }) => {
     chosenImages.push(randomImage);
   }
   let chosenImageIndex, currentlyUsed;
+  let tempIndex;
+
   do {
     chosenImageIndex = Math.floor(Math.random() * chosenImages.length);
     currentlyUsed = chosenImageIndex;
+
+    if (usedImages.includes(currentlyUsed)) {
+      tempIndex = currentlyUsed;
+      for (let i = 0; i < chosenImages.length; i++) {
+        if (!usedImages.includes(i)) {
+          chosenImages[currentlyUsed] = chosenImages[i];
+          chosenImages[i] = tempIndex;
+          break;
+        }
+      }
+    }
   } while (usedImages.includes(currentlyUsed));
   usedImages.push(currentlyUsed);
+  console.log(chosenImages);
+  console.log(currentlyUsed);
   return (
     <>
       <div className="rounded-lg category-item">
@@ -33,7 +48,7 @@ const CategoryItem = ({ category, imageFolder }) => {
           className="h-[140px] block"
         >
           <img
-            src={chosenImages[chosenImageIndex]}
+            src={chosenImages[currentlyUsed]}
             alt=""
             className="object-cover w-full h-full rounded-lg opacity-80"
           />

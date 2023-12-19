@@ -31,7 +31,7 @@ const Category = () => {
         {listCategory?.length > 0 &&
           listCategory?.map((category, index) => (
             <SwiperSlide key={index}>
-              <CategoryItem category={category} imageFolder="/Image/" />
+              <CategoryItem category={category} />
             </SwiperSlide>
           ))}
       </Swiper>

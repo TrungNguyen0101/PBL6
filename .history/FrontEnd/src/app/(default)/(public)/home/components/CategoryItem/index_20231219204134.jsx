@@ -19,12 +19,13 @@ const CategoryItem = ({ category, imageFolder }) => {
     // Thêm ảnh vào mảng chosenImages
     chosenImages.push(randomImage);
   }
-  let chosenImageIndex, currentlyUsed;
+  let chosenImageIndex;
   do {
     chosenImageIndex = Math.floor(Math.random() * chosenImages.length);
-    currentlyUsed = chosenImageIndex;
-  } while (usedImages.includes(currentlyUsed));
-  usedImages.push(currentlyUsed);
+  } while (usedImages.includes(chosenImageIndex));
+  usedImages.push(chosenImageIndex);
+  console.log(chosenImages);
+  console.log(chosenImageIndex);
   return (
     <>
       <div className="rounded-lg category-item">
