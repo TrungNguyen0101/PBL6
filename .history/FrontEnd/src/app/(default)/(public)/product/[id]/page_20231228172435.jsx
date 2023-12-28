@@ -15,11 +15,7 @@ import {
   getAllCommentByBook,
   postComment,
 } from '@/services/commentService';
-import {
-  getAllBooksByDiscount,
-  getBookByCategory,
-  getBookById,
-} from '@/services/bookService';
+import { getAllBooksByDiscount, getBookById } from '@/services/bookService';
 import { format } from 'date-fns';
 import { Badge } from 'antd';
 import { FaTrashAlt } from 'react-icons/fa';
