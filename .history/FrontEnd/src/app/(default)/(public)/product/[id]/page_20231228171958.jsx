@@ -15,11 +15,7 @@ import {
   getAllCommentByBook,
   postComment,
 } from '@/services/commentService';
-import {
-  getAllBooksByDiscount,
-  getBookByCategory,
-  getBookById,
-} from '@/services/bookService';
+import { getAllBooksByDiscount, getBookById } from '@/services/bookService';
 import { format } from 'date-fns';
 import { Badge } from 'antd';
 import { FaTrashAlt } from 'react-icons/fa';
@@ -235,13 +231,6 @@ const ProductDetail = () => {
   useEffect(() => {
     fetchBookByAction();
   }, [category]);
-  const randomCategories = listBookCategory.slice(
-    Math.floor(Math.random() * listBookCategory.length),
-    Math.min(
-      Math.floor(Math.random() * listBookCategory.length) + 5,
-      listBookCategory.length
-    )
-  );
   return (
     <section className="content">
       {isLoading ? (

@@ -15,11 +15,7 @@ import {
   getAllCommentByBook,
   postComment,
 } from '@/services/commentService';
-import {
-  getAllBooksByDiscount,
-  getBookByCategory,
-  getBookById,
-} from '@/services/bookService';
+import { getAllBooksByDiscount, getBookById } from '@/services/bookService';
 import { format } from 'date-fns';
 import { Badge } from 'antd';
 import { FaTrashAlt } from 'react-icons/fa';
@@ -177,8 +173,8 @@ const ProductDetail = () => {
     sessionStorage.setItem('idBook', book?._id);
     sessionStorage.setItem('pricePerBook', Number(book?.price));
   };
-  const category = book?.category;
   const fetchBookByAction = async () => {
+    const category = book?.category;
     const res = await getBookByCategory(`${category}`);
     if (res && res?.data) {
       setListBookCategory(res?.data?.book);
