@@ -15,11 +15,7 @@ import {
   getAllCommentByBook,
   postComment,
 } from '@/services/commentService';
-import {
-  getAllBooksByDiscount,
-  getBookByCategory,
-  getBookById,
-} from '@/services/bookService';
+import { getAllBooksByDiscount, getBookById } from '@/services/bookService';
 import { format } from 'date-fns';
 import { Badge } from 'antd';
 import { FaTrashAlt } from 'react-icons/fa';
@@ -45,9 +41,6 @@ const ProductDetail = () => {
   const { id } = useParams();
   const parsedDate = new Date(book !== undefined && book?.datePicker);
   const formattedDate = format(parsedDate, 'dd/MM/yyyy');
-  const [orderItem, setOrderItem] = useState([]);
-  const [listBookCategory, setListBookCategory] = useState([]);
-  const maxItem = 5;
   const account =
     typeof window !== 'undefined'
       ? JSON.parse(sessionStorage?.getItem('auth'))
@@ -72,12 +65,7 @@ const ProductDetail = () => {
       setOrderLength(data?.order?.length);
     }
   };
-  const handleGetItemCart = async () => {
-    const { data } = await getOrderByAccount(account?.user?._id);
-    if (data?.order?.length > 0) {
-      setOrderItem(data?.order);
-    }
-  };
+
   const handleAddCart = async () => {
     try {
       if (account) {
@@ -177,13 +165,7 @@ const ProductDetail = () => {
     sessionStorage.setItem('idBook', book?._id);
     sessionStorage.setItem('pricePerBook', Number(book?.price));
   };
-  const category = book?.category;
-  const fetchBookByAction = async () => {
-    const res = await getBookByCategory(`${category}`);
-    if (res && res?.data) {
-      setListBookCategory(res?.data?.book);
-    }
-  };
+  console.log('details', book);
   useEffect(() => {
     try {
       const handleGetBookByDiscount = async () => {
@@ -219,9 +201,7 @@ const ProductDetail = () => {
   useEffect(() => {
     handleGetLengthCart();
   }, [orderLength]);
-  useEffect(() => {
-    handleGetItemCart();
-  }, [orderLength]);
+
   useEffect(() => {
     fetchAllCommentByBook();
   }, []);
@@ -232,16 +212,7 @@ const ProductDetail = () => {
       setAuth(JSON.parse(auth));
     }
   }, []);
-  useEffect(() => {
-    fetchBookByAction();
-  }, [category]);
-  const randomCategories = listBookCategory.slice(
-    Math.floor(Math.random() * listBookCategory.length),
-    Math.min(
-      Math.floor(Math.random() * listBookCategory.length) + 5,
-      listBookCategory.length
-    )
-  );
+  console.log('check book', book);
   return (
     <section className="content">
       {isLoading ? (
