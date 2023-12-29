@@ -6,21 +6,31 @@ import { useEffect } from 'react';
 
 const TableAnt = ({ dataAccount }) => {
   const [data, setData] = React.useState([]);
-
   useEffect(() => {
-    const handleGetAllAccount = async () => {
-      const newData = dataAccount?.book?.map((x) => {
-        return {
-          ...x,
-          price: Number((x.price * (100 - x.discount)) / 100),
-        };
-      });
-      if (dataAccount?.book?.length > 0) {
-        setData(newData);
-      }
-    };
-    handleGetAllAccount();
+    if (dataAccount?.book?.length === 1) {
+      setData(dataAccount?.book);
+    } else {
+      const bookList = sessionStorage.getItem('bookList');
+      console.log('bl', JSON.parse(bookList));
+      setData(JSON.parse(bookList)?.book);
+    }
   }, [dataAccount?.book]);
+  // useEffect(() => {
+  //   const count = sessionStorage.getItem('count');
+  //   if (!count) return;
+  //   const handleGetAllAccount = async () => {
+  //     const newData = dataAccount?.book?.map((x) => {
+  //       return {
+  //         ...x,
+  //         price: Number((x.price * count * (100 - x.discount)) / 100),
+  //       };
+  //     });
+  //     if (dataAccount?.book?.length > 0) {
+  //       setData(newData);
+  //     }
+  //   };
+  //   handleGetAllAccount();
+  // }, [dataAccount?.book]);
 
   const columns = [
     {
@@ -47,12 +57,26 @@ const TableAnt = ({ dataAccount }) => {
       key: 'Count',
       width: 7,
     },
-    // {
-    //   title: 'Price',
-    //   dataIndex: 'price',
-    //   key: 'price',
-    //   width: 7,
-    // },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      width: 7,
+      render: (_, record) => {
+        console.log('rc', record);
+        let state;
+        let css;
+        if (record.discount === 0) {
+          state = Number(record.Count * record.price);
+        } else if (record.discount > 0) {
+          state = Number(
+            (record.price * record.Count * (100 - record.discount)) / 100
+          );
+        }
+        return (
+          <span className={`font-semibold rounded-xl  ${css}`}>{state}</span>
+        );
+      },
+    },
   ];
 
   return (
