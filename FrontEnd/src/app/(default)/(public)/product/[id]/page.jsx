@@ -158,13 +158,13 @@ const ProductDetail = () => {
       );
       return;
     }
-    router.push('/check-out');
     sessionStorage.setItem('priceBook', Number(price * count));
     sessionStorage.setItem('count', Number(count));
     sessionStorage.setItem('idBook', book?._id);
     sessionStorage.setItem('pricePerBook', Number(book?.price));
+    sessionStorage.setItem('book', JSON.stringify(book));
+    router.push('/check-out');
   };
-  console.log('details', book);
   useEffect(() => {
     try {
       const handleGetBookByDiscount = async () => {

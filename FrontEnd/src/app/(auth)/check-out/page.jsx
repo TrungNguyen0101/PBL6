@@ -36,7 +36,6 @@ const CheckOutPage = () => {
   async function updatePayments() {
     try {
       const promises = book?.book.map(async (item) => {
-        console.log('++++++++++', item._id);
         const kq = await updatePayment({
           IdAccount: accountID,
           BookId: item._id,
@@ -44,7 +43,6 @@ const CheckOutPage = () => {
         return kq; // Assuming you want to return something after updatePayment
       });
       const results = await Promise.all(promises);
-      console.log('All payments updated:', results);
     } catch (error) {
       console.error('Error updating payments:', error);
     }
@@ -58,24 +56,27 @@ const CheckOutPage = () => {
     const pricePerBook = sessionStorage.getItem('pricePerBook');
     if (res && res?.data && res?.data?.book) {
       let totalMoney = 0;
-      book?.book?.forEach((item) => {
-        if (item.discount > 0) {
-          totalMoney += (item.price * count * (100 - item.discount)) / 100;
-          console.log(totalMoney);
-        } else totalMoney += item.price * item.quantity;
-      });
+      let price = 0;
+      if (res?.data?.book?.discount > 0) {
+        totalMoney =
+          (pricePerBook * count * (100 - res?.data?.book?.discount)) / 100;
+      } else {
+        totalMoney = pricePerBook * count;
+      }
       setBook({
         book: [
           {
             ...res?.data?.book,
             Count: count,
             price: JSON.parse(pricePerBook),
+            totalMoney: Number(totalMoney),
           },
         ],
-        totalMoney: totalMoney,
+        totalMoney: Number(totalMoney),
       });
     }
   };
+
   const handleOnChangeLocation = (event) => {
     setLocation(event.target.value);
     setIsShowListLocation(true);
