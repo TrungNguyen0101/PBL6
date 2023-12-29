@@ -10,13 +10,21 @@ import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { getAllAccount } from '@/services/authService';
 import { getAllBook } from '@/services/bookService';
-import { getAllPayment } from '@/services/paymentService';
+import {
+  getAllPayment,
+  getAllPaymentByStatus,
+} from '@/services/paymentService';
 
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [lengthAccount, setLengthAccount] = useState(0);
   const [lengthProduct, setLengthProduct] = useState(0);
-  const [lengthOrdert, setLengthOrdert] = useState(0);
+  const [lengthOrder, setLengthOrder] = useState(0);
+  const [paymentStatus, setPaymentStatus] = useState(0);
+  const [totalMoney, setTotalMoney] = useState(0);
+  const [sale, setSale] = useState(0);
+  console.log('file: page.jsx:26 ~ Page ~ sale:', parseFloat(sale) < 0);
+  // console.log('file: page.jsx:24 ~ Page ~ paymentStatus:', paymentStatus);
 
   // const account =
   //   typeof window !== 'undefined'
@@ -43,12 +51,26 @@ const Page = () => {
     const handleGetAllPayment = async () => {
       const { data } = await getAllPayment();
       if (data.length > 0) {
-        setLengthOrdert(data.length);
+        setLengthOrder(data.length);
       }
     };
     handleGetAllPayment();
     handleGetAllAccount();
     handleGetAllBooks();
+  }, []);
+
+  useEffect(() => {
+    const handleGetAllPaymentByStatus = async () => {
+      const result = await getAllPaymentByStatus();
+      if (result.data.length > 0) {
+        let totalSum = result.data.reduce((accumulator, currentValue) => {
+          return parseFloat(accumulator) + parseFloat(currentValue.totalmoney);
+        }, 0);
+        setTotalMoney(totalSum);
+        setPaymentStatus(result.data);
+      }
+    };
+    handleGetAllPaymentByStatus();
   }, []);
 
   return (
@@ -117,7 +139,7 @@ const Page = () => {
         <div className="text-white">
           <div className="p-[20px] bg-[#ffc107] rounded-t-lg ">
             <h2 className="text-[25px] font-semibold">Orders</h2>
-            <span className="text-[20px]">{lengthOrdert}+</span>
+            <span className="text-[20px]">{lengthOrder}+</span>
           </div>
           <Link
             as={routes.ORDER}
@@ -146,8 +168,12 @@ const Page = () => {
         </div>
         <div className="p-[20px] bg-[#4f5051] rounded-lg h-full text-white">
           <span className="text-[25px] font-semibold float-right">Sales</span>
-          <div className="flex items-center gap-x-[10px] text-[#3cd188]">
-            <span className="text-[20px]">%</span>
+          <div
+            className={`flex items-center gap-x-[10px] ${
+              parseFloat(sale) > 0 ? 'text-[#3cd188]' : 'text-red-500'
+            }`}
+          >
+            {/* <span className="text-[20px]">%</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"
@@ -163,17 +189,27 @@ const Page = () => {
                 <path d="M9.5 3.5h4v4" />
                 <path d="M13.5 3.5L7.85 9.15a.5.5 0 0 1-.7 0l-2.3-2.3a.5.5 0 0 0-.7 0L.5 10.5" />
               </g>
-            </svg>
-            <span className="text-[25px]">+12,5</span>
+            </svg> */}
+            {parseFloat(sale) > 0 ? (
+              <span className="text-[18px]">+{sale}% / Last month</span>
+            ) : (
+              <span className="text-[18px]">{sale}% / Last month</span>
+            )}
           </div>
-          <span className="inline-block float-right mt-[30px] text-[25px]">
-            2.300.000 VNĐ
+          <span className="block text-right mt-[30px] text-[25px]">
+            {totalMoney.toLocaleString('it-IT', {
+              style: 'currency',
+              currency: 'VND',
+            })}
           </span>
         </div>
       </div>
 
       <div className="flex items-center justify-center w-full mt-[50px]  overflow-auto">
-        <ChartBar></ChartBar>
+        <ChartBar
+          paymentStatus={paymentStatus}
+          percent={(data) => setSale(data)}
+        ></ChartBar>
       </div>
     </div>
   );

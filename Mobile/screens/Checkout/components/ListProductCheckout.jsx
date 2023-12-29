@@ -10,7 +10,6 @@ import React, { useContext } from 'react'
 
 import CheckoutCard from '../../../components/CheckoutCard'
 
-// import img from '../../assets/Image/Cart/image.jpg'
 import colors from '../../../contains/colors'
 
 import { Entypo } from '@expo/vector-icons'
@@ -45,7 +44,8 @@ export default function ListProductCheckout() {
               image={book?.Book?.mainImage[0]?.url}
               quantity={book?.Count}
               name={book?.Book?.booktitle}
-              price={book?.PriceDiscount}
+              price={book?.Book?.price}
+              discount={book?.Book?.discount}
             />
           ))
         ) : (

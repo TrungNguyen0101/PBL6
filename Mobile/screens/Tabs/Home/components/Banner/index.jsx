@@ -53,6 +53,8 @@ const Banner = () => {
   const navigation = useNavigation()
 
   useEffect(() => {
+    if (!products) return
+
     const autoScroll = setInterval(() => {
       if (activeIndex === 28) {
         flatListRef?.current?.scrollToIndex({
@@ -70,7 +72,7 @@ const Banner = () => {
     return () => {
       clearInterval(autoScroll)
     }
-  }, [activeIndex])
+  }, [activeIndex, products])
 
   const handleScroll = (event) => {
     setActiveIndex(Math.round(event.nativeEvent.contentOffset.x / screenWidth))
@@ -80,7 +82,7 @@ const Banner = () => {
     <View style={{ height: screenHeight * 0.9 - 56 }}>
       <FlatList
         ref={flatListRef}
-        data={products}
+        data={products ?? []}
         renderItem={({ item }) => (
           <BannerItem
             item={item}

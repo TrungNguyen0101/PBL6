@@ -10,4 +10,5 @@ router.get("/book-by-category", bookController.getBookByCategory);
 router.get("/:id", bookController.getBookById);
 router.post("/insert", bookController.insertBook);
 router.put("/", bookController.updateBook);
+router.post("/search", bookController.handleSearchBook);
 module.exports = router;

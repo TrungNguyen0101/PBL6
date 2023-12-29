@@ -126,7 +126,10 @@ export default function Overview() {
                 color: colors.orangeColor,
               }}
             >
-              ${productDetail?.price}
+              {productDetail?.price.toLocaleString('it-IT', {
+                style: 'currency',
+                currency: 'VND',
+              })}
             </Text>
           </View>
         )}

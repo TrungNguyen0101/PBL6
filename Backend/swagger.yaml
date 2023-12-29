@@ -1,16 +1,27 @@
 openapi: 3.0.3
 info:
   title: Swagger Bookstore - OpenAPI 3.0
-  description: |
-    Website backend bán sách là một ứng dụng web được sử dụng để quản lý việc bán sách. Nó có thể được sử dụng để theo dõi thông tin về sách, chẳng hạn như tiêu đề, tác giả, giá cả và số lượng có sẵn. Nó cũng có thể được sử dụng để xử lý các đơn đặt hàng và thanh toán.
+  description: >
+    Backend API for a bookstore website used to manage book sales. 
+    It tracks information about books, such as titles, authors, prices, and quantities. 
+    It also handles order processing and payments.
   version: 1.0.11
 servers:
-  - url: https://pbl6-production-4c10.up.railway.app/
+  - url: https://nthdv-pbl6.up.railway.app/
+components:
+  securitySchemes:
+    bearerToken:
+      type: http
+      scheme: bearer
+security:
+  - bearerToken: [eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2QyYjkwODBiNDU4NWI1ZDQ1ZWRmZiIsIlVzZXIiOnsiX2lkIjoiNjU3ZDJiOTA4MGI0NTg1YjVkNDVlZGZmIiwiYXZhdGFyIjoiIiwidXNlcm5hbWUiOiJkYXQiLCJwaG9uZU51bWJlciI6OTMwMzAzMDIsImVtYWlsIjoiaGtodXkyMjA4MDJAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkR3Uub2R2OTFXbWlCR1ZBMUEwQ2JPZUdaTHl4ZGJOcEhYRy50U0IyVTJyZ0VJNnhqVVlGU2UiLCJyb2xlSUQiOiIzIiwiaXNWZXJpZmllZCI6dHJ1ZSwidmVyaWZpY2F0aW9uQ29kZSI6Ijc5ODQ3OSIsImhpc3RvcnkiOltdLCJjcmVhdGVkQXQiOiIyMDIzLTEyLTE2VDA0OjQ2OjA4LjA3NFoiLCJ1cGRhdGVkQXQiOiIyMDIzLTEyLTE4VDA1OjIxOjM0LjU5OFoiLCJfX3YiOjB9LCJpYXQiOjE3MDI4Nzk0MzksImV4cCI6MTcwMjk2NTgzOX0.KCXcjMUjR5nTTfeTh3XhEIEdSSNivqXL7QIJKwHP84A]
+
 tags:
   - name: user
-    description: Everything about your users
+    description: Operations related to user management
   - name: book
-    description: Everything about book
+    description: Operations related to books
+
 paths:
   /api/user/login:
     post:
@@ -28,10 +39,10 @@ paths:
                 email:
                   type: string
                   format: email
-                  description: Email của người dùng
+                  description: Email of the user
                 password:
                   type: string
-                  description: Mật khẩu của người dùng
+                  description: Password of the user
       responses:
         "200":
           description: Successful operation
@@ -42,50 +53,55 @@ paths:
                 properties:
                   access_token:
                     type: string
-                    description: Mã thông báo truy cập
-                    default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NDRjOTI3MDQwMTQ2YzhjOGE3N2Y1ZiIsInJvbGVJRCI6IjAiLCJpYXQiOjE2OTkwNzQxMzQsImV4cCI6MTY5OTA3NDEzNH0.lSP_L1HNaInhy4ItzyKD_AwYNoad95CxKYnOhBv40e0"
+                    description: Access token
+                    default: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
                   user:
                     type: object
                     properties:
                       _id:
                         type: string
-                        description: ID của người dùng
+                        description: ID of the user
                         default: 6544c927040146c8c8a77f5f
                       username:
                         type: string
-                        description: Tên người dùng
+                        description: Username
                         default: user
                       email:
                         type: string
                         format: email
-                        description: Địa chỉ email
-                      password:
-                        type: string
-                        description: Mật khẩu
-                        default: $2b$10$m9FXErML6jsWU4YZYX5eJOGiTiPHG1tt8UHsJRMlNWS9g/f78m1rK
+                        description: Email address
                       roleID:
                         type: string
-                        description: ID vai trò
+                        description: Role ID
                         default: 0
+                      isVerified:
+                        type: string
+                        description: User verification status
+                        default: false
+                      avatar:
+                        type: string
+                        description: User avatar
+                        default: 
                       __v:
                         type: integer
-                        description: Phiên bản của dữ liệu
+                        description: Data version
                   status:
                     type: integer
-                    description: Mã trạng thái của yêu cầu
+                    description: Request status code
                     default: 200
                   message:
                     type: string
-                    description: Thông điệp
+                    description: Response message
                     default: Login succeed!
         "400":
           description: Invalid ID 
+
   /api/user/register:
     post:
       tags:
         - user
-      summary: Login for user
-      description: Login for user
+      summary: Register for user
+      description: Register for user
       requestBody:
         required: true
         content:
@@ -95,14 +111,14 @@ paths:
               properties:
                 username:
                   type: string
-                  description: Tên của người dùng
+                  description: Username
                 email:
                   type: string
                   format: email
-                  description: Email của người dùng
+                  description: Email of the user
                 password:
                   type: string
-                  description: Mật khẩu của người dùng
+                  description: Password of the user
       responses:
         "200":
           description: Successful operation
@@ -111,18 +127,158 @@ paths:
               schema:
                 type: object
                 properties:
+                  status:
+                    type: number
+                    description: Response status code
+                    default: 200
                   message:
                     type: string
-                    description: Thông điệp
+                    description: Response message
                     default: Created user succeed!
         "400":
           description: Invalid ID supplied
+
+  /api/user/update:
+    put:
+      tags:
+        - user
+      summary: Update user details
+      description: Update user details
+      security:
+        - bearerToken: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Username
+                  example: nthdv
+                phoneNumber:
+                  type: number
+                  description: User phone number
+                  example: 123456678
+                avatar:
+                  type: string
+                  description: User avatar
+                  example: 1
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: number
+                    description: Response status code
+                    default: 200
+                  message:
+                    type: string
+                    description: Response message
+                    default: Update user succeed!
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+  
+  /api/user/getId/{id}:
+    get:
+      tags:
+        - user
+      summary: Get User by ID
+      description: Retrieves user details by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: User not found
+
+  /api/user/forgot-password:
+    post:
+      tags:
+        - user
+      summary: Forgot Password
+      description: Handles forgotten passwords
+      responses:
+        '200':
+          description: Successful operation
+
+  /api/user/sendcode-verify:
+    post:
+      tags:
+        - user
+      summary: Send Code for Verification
+      description: Sends a verification code
+      responses:
+        '200':
+          description: Successful operation
+
+  /api/user/verify:
+    post:
+      tags:
+        - user
+      summary: Verify User
+      description: Handles user verification
+      responses:
+        '200':
+          description: Successful operation
+
+  /api/user/add-user-by-admin:
+    post:
+      tags:
+        - user
+      summary: Add User by Admin
+      description: Adds a user by an admin
+      responses:
+        '200':
+          description: Successful operation
+
+  /api/user/change-password:
+    post:
+      tags:
+        - user
+      summary: Change Password
+      description: Handles changing a user's password
+      responses:
+        '200':
+          description: Successful operation
+
+  /api/user/getallaccount:
+    get:
+      tags:
+        - user
+      summary: Get All Accounts
+      description: Retrieves details for all user accounts
+      responses:
+        '200':
+          description: Successful operation
+
+  /api/user/getCountByRole:
+    get:
+      tags:
+        - user
+      summary: Get Count by Role
+      description: Retrieves the count of users based on their role
+      responses:
+        '200':
+          description: Successful operation
   /api/book:
-   post:
+    post:
       tags:
         - book
-      summary: Login for user
-      description: Login for user
+      summary: Create a new book
+      description: Create a new book
       requestBody:
         required: true
         content:
@@ -130,16 +286,18 @@ paths:
             schema:
               type: object
               properties:
-                username:
+                title:
                   type: string
-                  description: Tên của người dùng
-                email:
+                  description: Book title
+                author:
                   type: string
-                  format: email
-                  description: Email của người dùng
-                password:
-                  type: string
-                  description: Mật khẩu của người dùng
+                  description: Author of the book
+                price:
+                  type: number
+                  description: Price of the book
+                quantity:
+                  type: integer
+                  description: Quantity available
       responses:
         "200":
           description: Successful operation
@@ -150,7 +308,154 @@ paths:
                 properties:
                   message:
                     type: string
-                    description: Thông điệp
-                    default: Created user succeed!
+                    description: Response message
+                    default: Created book succeed!
         "400":
           description: Invalid ID supplied
+    get:
+      tags:
+        - book
+      summary: Get All Books
+      description: Retrieves details for all books
+      responses:
+        '200':
+          description: Successful operation
+
+  /api/book/book-by-discount:
+    get:
+      tags:
+        - book
+      summary: Get All Books by Discount
+      description: Retrieves details for books with discounts
+      responses:
+        '200':
+          description: Successful operation
+
+  /api/book/{id}:
+    get:
+      tags:
+        - book
+      summary: Get Book by ID
+      description: Retrieves details for a specific book by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Book not found
+
+    delete:
+      tags:
+        - book
+      summary: Delete Book by ID
+      description: Deletes a specific book by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Book not found
+
+  /api/book/book-by-category:
+    get:
+      tags:
+        - book
+      summary: Get Books by Category
+      description: Retrieves details for books based on category
+      responses:
+        '200':
+          description: Successful operation
+
+  /api/book/insert:
+    post:
+      tags:
+        - book
+      summary: Insert a New Book
+      description: Inserts a new book into the system
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object  # Define your book schema here
+              properties:
+                title:
+                  type: string
+                  description: Title of the book
+                author:
+                  type: string
+                  description: Author of the book
+                price:
+                  type: number
+                  description: Price of the book
+                category:
+                  type: string
+                  description: Category of the book
+      responses:
+        '200':
+          description: Successful operation
+
+  /api/book/update:
+    put:
+      tags:
+        - book
+      summary: Update Book
+      description: Updates details for an existing book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object  # Define your book update schema here
+              properties:
+                id:
+                  type: string
+                  description: ID of the book to update
+                title:
+                  type: string
+                  description: Updated title of the book
+                author:
+                  type: string
+                  description: Updated author of the book
+                price:
+                  type: number
+                  description: Updated price of the book
+                category:
+                  type: string
+                  description: Updated category of the book
+      responses:
+        '200':
+          description: Successful operation
+
+  /api/book/search:
+    post:
+      tags:
+        - book
+      summary: Search Books
+      description: Searches for books based on specific criteria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object  # Define your search criteria schema here
+              properties:
+                keyword:
+                  type: string
+                  description: Search keyword
+                category:
+                  type: string
+                  description: Search category
+      responses:
+        '200':
+          description: Successful operation

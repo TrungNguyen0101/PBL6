@@ -15,7 +15,11 @@ import {
   getAllCommentByBook,
   postComment,
 } from '@/services/commentService';
-import { getAllBooksByDiscount, getBookById } from '@/services/bookService';
+import {
+  getAllBooksByDiscount,
+  getBookByCategory,
+  getBookById,
+} from '@/services/bookService';
 import { format } from 'date-fns';
 import { Badge } from 'antd';
 import { FaTrashAlt } from 'react-icons/fa';
@@ -23,6 +27,7 @@ import '../style/styled.scss';
 import '../style/SwiperButton.scss';
 import { da } from 'date-fns/locale';
 import Swal from 'sweetalert2';
+import Popover from '@/components/Popover';
 
 const ProductDetail = () => {
   const router = useRouter();
@@ -40,6 +45,9 @@ const ProductDetail = () => {
   const { id } = useParams();
   const parsedDate = new Date(book !== undefined && book?.datePicker);
   const formattedDate = format(parsedDate, 'dd/MM/yyyy');
+  const [orderItem, setOrderItem] = useState([]);
+  const [listBookCategory, setListBookCategory] = useState([]);
+  const maxItem = 5;
   const account =
     typeof window !== 'undefined'
       ? JSON.parse(sessionStorage?.getItem('auth'))
@@ -64,7 +72,12 @@ const ProductDetail = () => {
       setOrderLength(data?.order?.length);
     }
   };
-
+  const handleGetItemCart = async () => {
+    const { data } = await getOrderByAccount(account?.user?._id);
+    if (data?.order?.length > 0) {
+      setOrderItem(data?.order);
+    }
+  };
   const handleAddCart = async () => {
     try {
       if (account) {
@@ -165,6 +178,13 @@ const ProductDetail = () => {
     sessionStorage.setItem('book', JSON.stringify(book));
     router.push('/check-out');
   };
+  const category = book?.category;
+  const fetchBookByAction = async () => {
+    const res = await getBookByCategory(`${category}`);
+    if (res && res?.data) {
+      setListBookCategory(res?.data?.book);
+    }
+  };
   useEffect(() => {
     try {
       const handleGetBookByDiscount = async () => {
@@ -200,7 +220,9 @@ const ProductDetail = () => {
   useEffect(() => {
     handleGetLengthCart();
   }, [orderLength]);
-
+  useEffect(() => {
+    handleGetItemCart();
+  }, [orderLength]);
   useEffect(() => {
     fetchAllCommentByBook();
   }, []);
@@ -211,7 +233,16 @@ const ProductDetail = () => {
       setAuth(JSON.parse(auth));
     }
   }, []);
-  console.log('check book', book);
+  useEffect(() => {
+    fetchBookByAction();
+  }, [category]);
+  const randomCategories = listBookCategory.slice(
+    Math.floor(Math.random() * listBookCategory.length),
+    Math.min(
+      Math.floor(Math.random() * listBookCategory.length) + 5,
+      listBookCategory.length
+    )
+  );
   return (
     <section className="content">
       {isLoading ? (
@@ -248,25 +279,97 @@ const ProductDetail = () => {
                 <span className="product-name">{book?.booktitle}</span>
               </nav>
             </div>
-            <Link
-              href="/cart"
-              className="pr-[20px]"
-              onClick={() => setRouteLoading(true)}
-            >
-              <Badge count={orderLength} showZero>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
-                  viewBox="0 0 24 24"
+            <div className="col-span-1 justify-self-start mr-5 items-center">
+              <Popover
+                renderPopover={
+                  <div className="bg-white relative shadow-md rounded-md border border-gray-200 w-[350px] text-sm ">
+                    <div className="p-2">
+                      <div className="text-gray-400 capitalize">
+                        Sản phẩm mới thêm
+                      </div>
+                      <div>
+                        {orderLength > 0 ? (
+                          orderItem.slice(0, 5).map((item) => (
+                            <div>
+                              {' '}
+                              <div className="mt-5">
+                                <div className="mt-4 flex ">
+                                  <div className="flex-shrink-0">
+                                    <img
+                                      key={item.Book.mainImage}
+                                      src={item.Book.mainImage[0].url}
+                                      alt="anh"
+                                      className="w-11 h-11 object-cover"
+                                    />
+                                  </div>
+                                  <div
+                                    className="flex-grow ml-2 overflow-hidden"
+                                    key={item.Book.booktitle}
+                                  >
+                                    <div className="truncate">
+                                      {item.Book.booktitle}
+                                    </div>
+                                  </div>
+                                  <div
+                                    className="ml-2 flex-shrink-0"
+                                    key={item.Book.price}
+                                  >
+                                    <span className="text-orange">
+                                      {item.Book.price}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="flex h-[300px] w-full items-center justify-center p-2">
+                            <img
+                              src="https://evgracias.com/images/no-products.jpg"
+                              alt="no purchase"
+                              className="h-full w-full"
+                            />
+                          </div>
+                        )}
+
+                        <div className="flex mt-6 items-center justify-between">
+                          <div className="capitalize text-xs text-gray-500">
+                            {orderLength > maxItem ? orderLength - maxItem : ''}{' '}
+                            Thêm hàng vào giỏ
+                          </div>
+                          <Link
+                            href="/cart"
+                            className="capitalize bg-red-500 hover:bg-opacity-90 px-4 py-2 rounded-2xl text-white"
+                          >
+                            Xem giỏ hàng
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
+              >
+                <Link
+                  href="/cart"
+                  className="pr-[20px] flex justify-end items-center"
+                  onClick={() => setRouteLoading(true)}
                 >
-                  <path
-                    fill="currentColor"
-                    d="M11 9V6H8V4h3V1h2v3h3v2h-3v3zM7 22q-.825 0-1.412-.587T5 20q0-.825.588-1.412T7 18q.825 0 1.413.588T9 20q0 .825-.587 1.413T7 22m10 0q-.825 0-1.412-.587T15 20q0-.825.588-1.412T17 18q.825 0 1.413.588T19 20q0 .825-.587 1.413T17 22M1 4V2h3.275l4.25 9h7l3.9-7H21.7l-4.4 7.95q-.275.5-.737.775T15.55 13H8.1L7 15h12v2H7q-1.125 0-1.713-.975T5.25 14.05L6.6 11.6L3 4z"
-                  />
-                </svg>
-              </Badge>
-            </Link>
+                  <Badge count={orderLength} showZero>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="33"
+                      height="33"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M11 9V6H8V4h3V1h2v3h3v2h-3v3zM7 22q-.825 0-1.412-.587T5 20q0-.825.588-1.412T7 18q.825 0 1.413.588T9 20q0 .825-.587 1.413T7 22m10 0q-.825 0-1.412-.587T15 20q0-.825.588-1.412T17 18q.825 0 1.413.588T19 20q0 .825-.587 1.413T17 22M1 4V2h3.275l4.25 9h7l3.9-7H21.7l-4.4 7.95q-.275.5-.737.775T15.55 13H8.1L7 15h12v2H7q-1.125 0-1.713-.975T5.25 14.05L6.6 11.6L3 4z"
+                      />
+                    </svg>
+                  </Badge>
+                </Link>
+              </Popover>
+            </div>
           </div>
           {/* <!-- End header-detail area --> */}
           <div className="detail-wrapper">
@@ -808,6 +911,35 @@ const ProductDetail = () => {
                   </SwiperSlide>
                 ))}
             </Swiper>
+          </div>
+          {/* <!-- related books -->/ */}
+          <div className="flex px-[20px] flex-col justify-start">
+            <div className="directory-name">
+              <h1>Maybe you will like</h1>
+            </div>
+            <div>
+              <div className="flex max-w-full max-h-[350px] flex-row gap-x-[30px] my-3  ">
+                {listBookCategory.length > 0 &&
+                  randomCategories.slice(0, 5).map((item, index) => (
+                    <div
+                      className="max-w-[230px] max-h-[330px] flex flex-col hover:scale-110"
+                      key={index}
+                    >
+                      <Link href={`/product/${item._id}`}>
+                        {' '}
+                        <img
+                          src={item?.mainImage[0].url}
+                          alt=""
+                          className="w-[220px] h-[280px] rounded-lg pb-1 cursor-pointer"
+                        />
+                        <div className="text-xl flex  w-full font-bold hover:text-black/60 cursor-pointer">
+                          {item?.booktitle}
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+              </div>
+            </div>
           </div>
         </div>
       )}
