@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import LoadingPage from '@/components/LoadingPage';
+import { getAccountById } from '@/services/authService';
 
 const style = {
   container: 'bg-gray-900 h-screen overflow-hidden relative',
@@ -17,17 +18,20 @@ const style = {
 function LayoutAdmin({ children }) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-
   useEffect(() => {
-    setLoading(true);
-    const auth = JSON.parse(sessionStorage.getItem('auth'));
-    if (auth?.user?.roleID !== '1') {
-      router.replace('/');
-      toast.error('You do not have access');
-    }
-    setTimeout(() => {
-      setLoading(false);
-    }, 1300);
+    const handleCheckRole = async () => {
+      setLoading(true);
+      const auth = JSON.parse(sessionStorage.getItem('auth'));
+      const result = await getAccountById(auth?.user?._id);
+      if (result?.user?.roleID !== '1') {
+        router.replace('/');
+        toast.error('You do not have access');
+      }
+      setTimeout(() => {
+        setLoading(false);
+      }, 1300);
+    };
+    handleCheckRole();
   }, []);
 
   return (

@@ -48,16 +48,23 @@ export default function SignInPage() {
   });
   const handleSignIn = async (values) => {
     const res = await postSignIn(values.email, values.password);
-    if (res.status === 200 && res?.user?.roleID === '1') {
-      toast.success(res.message);
-      router.push(routes.DASHBOARD);
-      sessionStorage.setItem('token', res.access_token);
-      sessionStorage.setItem('auth', JSON.stringify(res));
-    } else if (res.status === 200 && res?.user?.roleID === '3') {
-      toast.success(res.message);
-      router.push(routes.HOME);
-      sessionStorage.setItem('token', res.access_token);
-      sessionStorage.setItem('auth', JSON.stringify(res));
+
+    if (res?.user?.roleID) {
+      if (res?.user?.roleID === '1') {
+        const userWithoutRoleID = { ...res };
+        delete userWithoutRoleID?.user?.roleID;
+        toast.success(res.message);
+        router.push(routes.DASHBOARD);
+        sessionStorage.setItem('token', res.access_token);
+        sessionStorage.setItem('auth', JSON.stringify(userWithoutRoleID));
+      } else if (res?.user?.roleID === '3') {
+        const userWithoutRoleID = { ...res };
+        delete userWithoutRoleID?.user?.roleID;
+        toast.success(res.message);
+        router.push(routes.HOME);
+        sessionStorage.setItem('token', res.access_token);
+        sessionStorage.setItem('auth', JSON.stringify(userWithoutRoleID));
+      }
     } else if (res?.response?.status === 500) {
       toast.error(res?.response?.message);
     } else if (res?.response?.status === 500) {

@@ -56,6 +56,9 @@ const changePassword = (oldpassword, newpassword) => {
   });
 };
 
+const getAccountById = (id) => {
+  return instance.get(`user/getId/${id}`);
+};
 export {
   postSignIn,
   postSignUp,
@@ -66,4 +69,5 @@ export {
   changePassword,
   postSignUp123,
   getAllAccount,
+  getAccountById,
 };

@@ -107,7 +107,8 @@ const CheckOutPage = () => {
       book?.book
     );
     if (res && res?.data) {
-      router.push(res?.data);
+      router.push('/');
+      window.open(res?.data, '_blank');
     }
     updatePayments();
   };
@@ -152,7 +153,7 @@ const CheckOutPage = () => {
                 <input
                   value={phoneNumber}
                   id="phone-number"
-                  type="text"
+                  type="number"
                   placeholder="Số điện thoại"
                   className="input w-full py-[10px] pl-[10px] text-base rounded-md outline-none font-semibold"
                   onChange={(event) => setPhoneNumber(event.target.value)}
