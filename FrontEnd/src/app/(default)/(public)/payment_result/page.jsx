@@ -1,14 +1,24 @@
+'use client';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import moment from 'moment';
 import React from 'react';
-import { Container, Alert, Heading, Text, Button } from 'tailwindcss';
-
 export default function page() {
-  const orderId = '833883794';
-  const deliveryDate = '2024-01-05';
-  const check = false;
+  const searchParams = useSearchParams();
+  const transactionStatus = searchParams.get('vnp_TransactionStatus');
+  const code = searchParams.get('vnp_TmnCode');
+  const Date = searchParams.get('vnp_PayDate');
+  const date = moment(Date, 'YYYYMMDDHHmmss');
+  const formattedDate = date.format('DD-MM-YYYY HH:mm');
+  const deliveryDate = date.add(7, 'days');
+  const formattedDateShip = deliveryDate.format('DD-MM-YYYY');
+  // const decodedQueryString = decodeURIComponent(queryString);
+  // const queryString = searchParams.toString();
+
   return (
     <div className="w-full  max-w-[600px] mx-auto my-[50px] min-h-[450px] pt-4 px-4 bg-white  text-gray-500 text-center rounded-xl shadow-lg">
-      {check ? (
+      {transactionStatus === '00' ? (
         <div className="mt-[20px]">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhLUjvZxYG3cFjZb-pyaof20zvvG6ctBK10g&usqp=CAU"
@@ -19,8 +29,12 @@ export default function page() {
             Thanh toán thành công
           </h1>
           <p className="pt-[10px]">
-            Mã số đơn hàng của bạn là{' '}
-            <span className="text-xl font-bold">{orderId}</span>.
+            Mã số đơn hàng của bạn là :{' '}
+            <span className="text-xl font-bold">{code}</span>.
+          </p>
+          <p className="pt-[10px]">
+            Thời gian thanh toán là :{' '}
+            <span className="text-xl font-bold">{formattedDate}</span>.
           </p>
           <p className="pt-[10px]">
             Bạn có thể xem chi tiết trong :{' '}
@@ -32,15 +46,16 @@ export default function page() {
             </Link>
           </p>
           <p className="pt-[10px]">
-            Thời gian dự kiến giao hàng là{' '}
-            <span className="text-xl font-bold">{deliveryDate}</span>.
+            Thời gian dự kiến giao hàng là :{' '}
+            <span className="text-xl font-bold">{formattedDateShip}</span>.
           </p>
           <div className="mt-4 flex justify-center p-t[10px]">
-            <Link href="/">
-              <button className="w-40 h-10 mt-[10px] rounded-full bg-green-500 text-white hover:bg-green-500/80">
-                Tiếp tục mua hàng
-              </button>
-            </Link>
+            <button
+              onClick={window.close()}
+              className="w-40 h-10 mt-[10px] rounded-full bg-green-500 text-white hover:bg-green-500/80"
+            >
+              Tiếp tục mua hàng
+            </button>
           </div>
         </div>
       ) : (
@@ -58,11 +73,12 @@ export default function page() {
             những trải nghiệm tuyệt vời!
           </p>
           <div className="mt-4 flex justify-center p-t[10px]">
-            <Link href="/">
-              <button className="w-40 h-10 mt-[10px] rounded-full bg-green-500 text-white hover:bg-green-500/80">
-                Tiếp tục mua hàng
-              </button>
-            </Link>
+            <button
+              onClick={() => window.close()}
+              className="w-40 h-10 mt-[10px] rounded-full bg-green-500 text-white hover:bg-green-500/80"
+            >
+              Tiếp tục mua hàng
+            </button>
           </div>
         </div>
       )}
