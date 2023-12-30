@@ -61,17 +61,17 @@ export default function Header() {
         {auth ? (
           <>
             <Popover
-              className="flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6  bg-sky-800  text-white font-medium px-2 rounded-lg"
+              className="flex items-center px-2 py-1 ml-6 font-medium text-white rounded-lg cursor-pointer hover:text-gray-300 bg-sky-800"
               renderPopover={
-                <div className="bg-white relative shadow-md rounded-sm border border-gray-200">
+                <div className="relative bg-white border border-gray-200 rounded-sm shadow-md">
                   <button
-                    className="block py-3 px-4 hover:bg-slate-100 bg-white hover:text-red-600 w-full text-left pr-20"
+                    className="block w-full px-4 py-3 pr-20 text-left bg-white hover:bg-slate-100 hover:text-red-600"
                     onClick={() => changeLanguage('vi')}
                   >
                     {t('vn')}
                   </button>
                   <button
-                    className="block py-3 px-4 hover:bg-slate-100 bg-white hover:text-red-600 w-full text-left"
+                    className="block w-full px-4 py-3 text-left bg-white hover:bg-slate-100 hover:text-red-600"
                     onClick={() => changeLanguage('en')}
                   >
                     {t('en')}
@@ -115,17 +115,17 @@ export default function Header() {
         ) : (
           <>
             <Popover
-              className="flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6  bg-sky-800  text-white font-medium px-2 rounded-lg"
+              className="flex items-center px-2 py-1 ml-6 font-medium text-white rounded-lg cursor-pointer hover:text-gray-300 bg-sky-800"
               renderPopover={
-                <div className="bg-white relative shadow-md rounded-sm border border-gray-200">
+                <div className="relative bg-white border border-gray-200 rounded-sm shadow-md">
                   <button
-                    className="block py-3 px-4 hover:bg-slate-100 bg-white hover:text-red-600 w-full text-left pr-20"
+                    className="block w-full px-4 py-3 pr-20 text-left bg-white hover:bg-slate-100 hover:text-red-600"
                     onClick={() => changeLanguage('vi')}
                   >
                     {t('vn')}
                   </button>
                   <button
-                    className="block py-3 px-4 hover:bg-slate-100 bg-white hover:text-red-600 w-full text-left"
+                    className="block w-full px-4 py-3 text-left bg-white hover:bg-slate-100 hover:text-red-600"
                     onClick={() => changeLanguage('en')}
                   >
                     {t('en')}
