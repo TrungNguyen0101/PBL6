@@ -282,7 +282,7 @@ const ProductDetail = () => {
             <div className="col-span-1 justify-self-start mr-5 items-center">
               <Popover
                 renderPopover={
-                  <div className="bg-white relative shadow-md rounded-md border border-gray-200 w-[350px] text-sm ">
+                  <div className="bg-white relative shadow-md rounded-md border border-gray-200 w-[350px] text-sm  mr-5">
                     <div className="p-2">
                       <div className="text-gray-400 capitalize">
                         Sản phẩm mới thêm
