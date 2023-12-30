@@ -48,7 +48,7 @@ const InforLogin = () => {
           <div className="flex flex-row items-center justify-center gap-x-[5px] ">
             <Image
               src={imageUser}
-              className="object-cover w-[40px] h-[40px] rounded-full"
+              className="object-cover w-full h-full rounded-full"
               alt=""
             />{' '}
             <span className="min-w-[70px]">
