@@ -47,11 +47,7 @@ export default function Popover({
       <AnimatePresence>
         <FloatingPortal id={id}>
           {isOpen && (
-            <div
-              ref={refs.setFloating}
-              style={floatingStyles}
-              className="z-20 bg-red-500"
-            >
+            <div ref={refs.setFloating} style={floatingStyles} className="z-20">
               <motion.div
                 initial={{ opacity: 0, transform: 'scale(0)' }}
                 animate={{ opacity: 1, transform: 'scale(1)' }}
@@ -64,7 +60,7 @@ export default function Popover({
                     left: middlewareData.arrow?.x,
                     top: middlewareData.arrow?.y,
                   }}
-                  className="bg-transparent w-full h-[10px] absolute translate-y-[-97%] z-10"
+                  className="bg-transparent w-[330px] h-[10px] absolute translate-y-[-98%] z-10 "
                 />
                 {renderPopover}
               </motion.div>
