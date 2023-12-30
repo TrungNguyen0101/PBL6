@@ -47,7 +47,11 @@ export default function Popover({
       <AnimatePresence>
         <FloatingPortal id={id}>
           {isOpen && (
-            <div ref={refs.setFloating} style={floatingStyles} className="z-20">
+            <div
+              ref={refs.setFloating}
+              style={floatingStyles}
+              className="z-20 bg-red-500"
+            >
               <motion.div
                 initial={{ opacity: 0, transform: 'scale(0)' }}
                 animate={{ opacity: 1, transform: 'scale(1)' }}
