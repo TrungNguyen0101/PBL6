@@ -64,7 +64,7 @@ export default function Popover({
                     left: middlewareData.arrow?.x,
                     top: middlewareData.arrow?.y,
                   }}
-                  className="border-x-transparent border-t-transparent border-b-white border-[11px] absolute translate-y-[-97%] z-10"
+                  className="bg-transparent w-full h-[10px] absolute translate-y-[-97%] z-10"
                 />
                 {renderPopover}
               </motion.div>
