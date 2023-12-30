@@ -14,10 +14,9 @@ import Chart from 'chart.js/auto';
 // PointElement,
 // );
 
-function ChartBar({ paymentStatus }) {
-  // console.log('file: index.jsx:18 ~ ChartBar ~ paymentStatus:', paymentStatus);
+function ChartBar({ paymentStatus, percent }) {
   const [sortedMonths, setSortedMonths] = useState([]);
-  console.log('file: index.jsx:20 ~ ChartBar ~ sortedMonths:', sortedMonths);
+  // console.log('file: index.jsx:20 ~ ChartBar ~ sortedMonths:', sortedMonths);
 
   useEffect(() => {
     const handleData = () => {
@@ -102,14 +101,34 @@ function ChartBar({ paymentStatus }) {
     handleData();
   }, [paymentStatus]);
 
+  useEffect(() => {
+    // Lấy thông tin về totalmoney của tháng cuối và tháng trước đó
+    if (sortedMonths.length > 0) {
+      let lastMonthTotalMoney = parseFloat(
+        sortedMonths[sortedMonths.length - 1].totalmoney
+      );
+      let previousMonthTotalMoney = parseFloat(
+        sortedMonths[sortedMonths.length - 2].totalmoney
+      );
+
+      // Tính phần trăm giảm (tăng)
+      let percentageChange =
+        ((lastMonthTotalMoney - previousMonthTotalMoney) /
+          previousMonthTotalMoney) *
+        100;
+      if (percentageChange) {
+        percent(percentageChange.toFixed(2));
+      }
+    }
+  }, [sortedMonths]);
   const data = {
     labels: sortedMonths.map((month) => month.createdAt),
     datasets: [
       {
-        label: 'Sales',
+        label: 'Revenue over the past 4 months ',
         data: sortedMonths.map((month) => month.totalmoney),
         backgroundColor: [
-          'rgba(54, 162, 235, 0.6)',
+          'rgba(52, 162, 235, 0.6)',
           'rgba(255, 206, 86, 0.6)',
           'rgba(75, 192, 192, 0.6)',
           'rgba(153, 102, 255, 0.6)',
@@ -127,7 +146,7 @@ function ChartBar({ paymentStatus }) {
               style: 'currency',
               currency: 'VND',
             }); // Làm tròn giá trị đến 2 chữ số thập phân
-            return `Doanh thu: ${value}  VNĐ`;
+            return `Sales: ${value}  VNĐ`;
           },
         },
       },
@@ -136,14 +155,14 @@ function ChartBar({ paymentStatus }) {
       x: {
         title: {
           display: true,
-          text: 'Thời gian (Tháng)',
+          text: 'Time (Month)',
         },
       },
       y: {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Triệu (VNĐ)',
+          text: 'VNĐ (đ)',
         },
       },
     },
