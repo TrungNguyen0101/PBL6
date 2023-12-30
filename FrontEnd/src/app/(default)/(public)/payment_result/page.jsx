@@ -3,8 +3,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import moment from 'moment';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { successPayment } from '@/services/paymentService';
 export default function page() {
+  const [check, setCheck] = useState(true);
   const searchParams = useSearchParams();
   const transactionStatus = searchParams.get('vnp_TransactionStatus');
   const code = searchParams.get('vnp_TmnCode');
@@ -17,10 +19,18 @@ export default function page() {
   const decodedQueryString = decodeURIComponent(queryString);
 
   const handleClose = () => {
-    // window.close('', '_parent', '');
-    // window.opener = self;
     window.close();
   };
+
+  useEffect(() => {
+    const handleSuccess = async () => {
+      if (transactionStatus === '00' && check) {
+        const result = await successPayment(decodedQueryString);
+        setCheck(false);
+      }
+    };
+    handleSuccess();
+  }, []);
 
   return (
     <div className="w-full  max-w-[600px] mx-auto my-[50px] min-h-[450px] pt-4 px-4 bg-white  text-gray-500 text-center rounded-xl shadow-lg">

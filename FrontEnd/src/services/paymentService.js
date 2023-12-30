@@ -31,12 +31,16 @@ const updatePayment = (data) => {
   return instance.post('payment/update_state', data);
 };
 
+const successPayment = (data) => {
+  return instance.get(`/payment/payment_online?${data}`);
+};
+
 export {
   postPayment,
   getAllPayment,
   updatePayment,
   postPaymentDirect,
   getCustomerHistory,
-  getAllPaymentByStatus
+  getAllPaymentByStatus,
+  successPayment,
 };
-

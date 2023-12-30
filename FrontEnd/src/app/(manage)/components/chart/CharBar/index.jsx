@@ -16,7 +16,6 @@ import Chart from 'chart.js/auto';
 
 function ChartBar({ paymentStatus, percent }) {
   const [sortedMonths, setSortedMonths] = useState([]);
-  // console.log('file: index.jsx:20 ~ ChartBar ~ sortedMonths:', sortedMonths);
 
   useEffect(() => {
     const handleData = () => {
@@ -55,16 +54,32 @@ function ChartBar({ paymentStatus, percent }) {
 
           return acc;
         }, []);
+      console.log('file: index.jsx:39 ~ handleData ~ newData1:', newData1);
 
       // Tính thời gian hiện tại
-      const currentDate = new Date();
+      // const currentDate = new Date();
 
       // Tạo mảng 4 tháng gần nhất
-      const recentMonths = Array.from({ length: 4 }, (_, index) => {
-        const date = new Date(currentDate);
-        date.setMonth(currentDate.getMonth() - index);
-        return date.toLocaleString('default', { month: 'long' });
-      });
+      // const recentMonths = Array.from({ length: 4 }, (_, index) => {
+      //   const date = new Date(currentDate);
+      //   date.setMonth(currentDate.getMonth() - index);
+      //   return date.toLocaleString('en-US', { month: 'long' });
+      // });
+      // console.log(
+      //   'file: index.jsx:70 ~ recentMonths ~ recentMonths:',
+      //   recentMonths
+      // );
+      const currentMonth = new Date().getMonth() + 1;
+      const recentMonths = [];
+
+      for (let i = 0; i < 4; i++) {
+        const month = ((currentMonth - i - 1 + 12) % 12) + 1;
+        const monthName = new Date(2000, month - 1, 1).toLocaleString(
+          'default',
+          { month: 'long' }
+        );
+        recentMonths.push(monthName);
+      }
 
       // Map qua mảng dữ liệu và trả về kết quả
       const newData123 = recentMonths.map((month) => {
