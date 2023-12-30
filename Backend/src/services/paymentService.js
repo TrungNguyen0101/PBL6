@@ -114,6 +114,7 @@ const paymenOnline = async (data) => {
                                 user: userManage,
                                 cart: cartManage,
                                 name: nameManage,
+                                phone: phoneManage,
                                 address: addressManage,
                                 time: vnp_Params["vnp_PayDate"],
                                 payment_method: "ONL"
@@ -133,6 +134,7 @@ const paymenOnline = async (data) => {
                                 user: userManage,
                                 cart: cartManage,
                                 name: nameManage,
+                                phone: phoneManage,
                                 address: addressManage,
                                 time: vnp_Params["vnp_PayDate"],
                                 payment_method: "ONL"
