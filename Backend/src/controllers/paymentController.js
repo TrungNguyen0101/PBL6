@@ -54,7 +54,7 @@ const handlePaymentHistorySucceed = async (req, res) => {
     })
 }
 const handlePaymentOnline = async (req, res) => {
-    let data = req.query;
+    let data = req.body;
     if (!data) {
         return res.status(500).json({
             errCode: 1,
