@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
-import colors from '../../../../../contains/colors';
+import colors from '../../../../../contains/colors'
 
 const styles = StyleSheet.create({
   dotWrapper: {
@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   descriptionName: {
-    color: colors.whiteColor,
     fontSize: 20,
     color: colors.grayColor,
     textShadowColor: 'rgba(0, 0, 0, 1)',
@@ -38,7 +37,6 @@ const styles = StyleSheet.create({
     textShadowRadius: 20,
   },
   descriptionCategory: {
-    color: colors.whiteColor,
     fontSize: 18,
     color: colors.grayColor,
     textShadowColor: 'rgba(0, 0, 0, 1)',
@@ -46,7 +44,6 @@ const styles = StyleSheet.create({
     textShadowRadius: 20,
   },
   descriptionText: {
-    color: colors.whiteColor,
     fontSize: 18,
     textAlign: 'justify',
     color: colors.grayColor,
@@ -64,6 +61,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 20,
   },
-});
+})
 
-export default styles;
+export default styles

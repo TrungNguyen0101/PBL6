@@ -1,6 +1,12 @@
+'use client';
+import { useState } from 'react';
 import { Overlay } from './components/Overlay';
 import { TopBar } from './components/TopBar';
 import { Sidebar } from './components/sidebar/Sidebar';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import LoadingPage from '@/components/LoadingPage';
 
 const style = {
   container: 'bg-gray-900 h-screen overflow-hidden relative',
@@ -9,17 +15,40 @@ const style = {
 };
 
 function LayoutAdmin({ children }) {
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    setLoading(true);
+    const auth = JSON.parse(sessionStorage.getItem('auth'));
+    if (auth?.user?.roleID !== '1') {
+      router.replace('/');
+      toast.error('You do not have access');
+    }
+    setTimeout(() => {
+      setLoading(false);
+    }, 1300);
+  }, []);
+
   return (
-    <div className={style.container}>
-      <div className="flex items-start">
-        <Overlay />
-        <Sidebar mobileOrientation="end" />
-        <div className={`${style.mainContainer} bg-white `}>
-          <TopBar />
-          <main className={style.main}>{children}</main>
+    <>
+      {loading ? (
+        <div className="mx-auto mt-10 w-max h-[90vh] flex items-center justify-center">
+          <LoadingPage></LoadingPage>
         </div>
-      </div>
-    </div>
+      ) : (
+        <div className={style.container}>
+          <div className="flex items-start">
+            <Overlay />
+            <Sidebar mobileOrientation="end" />
+            <div className={`${style.mainContainer} bg-white `}>
+              <TopBar />
+              <main className={style.main}>{children}</main>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

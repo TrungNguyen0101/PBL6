@@ -1,18 +1,29 @@
-import { ActivityIndicator, Alert, Image, KeyboardAvoidingView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { FontAwesome, AntDesign } from '@expo/vector-icons';
+/* eslint-disable react/prop-types */
+import {
+  ActivityIndicator,
+  Image,
+  KeyboardAvoidingView,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native'
+import React, { useState } from 'react'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import { FontAwesome, AntDesign } from '@expo/vector-icons'
 
-import styles from './styles';
-import Background from '../../../assets/Image/Auth/background.gif';
+import styles from './styles'
+import Background from '../../../assets/Image/Auth/background.gif'
 
 import { post } from '../../../axios-config'
+import Toast from 'react-native-toast-message'
 
 export default function SignUp({ navigation }) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isHidePassword, setIsHidePassword] = useState(true);
-  const [isHideConfirmPassword, setIsHideConfirmPassword] = useState(true);
+  const [isLoading, setIsLoading] = useState(false)
+  const [isHidePassword, setIsHidePassword] = useState(true)
+  const [isHideConfirmPassword, setIsHideConfirmPassword] = useState(true)
 
   const formik = useFormik({
     initialValues: {
@@ -36,7 +47,7 @@ export default function SignUp({ navigation }) {
             {
               message:
                 'Your password must have at least 1 uppercase, 1 lowercase, 1 special character',
-            }
+            },
           )
           .required('Please enter your password'),
         confirmPassword: yup
@@ -46,51 +57,35 @@ export default function SignUp({ navigation }) {
       })
       .required(),
     onSubmit: async (values) => {
-      setIsLoading(true);
+      setIsLoading(true)
       try {
         const formData = {
           username: values.username,
           email: values.email,
-          password: values.password
+          password: values.password,
         }
 
-        const response = await post('/user/register', formData);
+        const response = await post('/user/register', formData)
         if (response) {
-          Alert.alert(
-            'Thông báo',
-            'Đăng ký tài khoản thành công',
-            [
-              {
-                text: 'Đóng',
-                onPress: () => { navigation.navigate('SignIn') }
-              }
-            ]
-          )
+          Toast.show({
+            type: 'success',
+            text1: 'Thông báo',
+            text2: 'Đăng ký tài khoản thành công',
+          })
+          navigation.navigate('SignIn')
         }
       } catch (error) {
-        Alert.alert(
-          'Lỗi',
-          error?.message,
-          [
-            {
-              text: 'Đóng',
-              style: 'cancel'
-            }
-          ]
-        )
+        console.log(error)
       } finally {
         setTimeout(() => {
-          setIsLoading(false);
+          setIsLoading(false)
         }, 1000)
       }
     },
-  });
+  })
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
-    >
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
@@ -104,9 +99,9 @@ export default function SignUp({ navigation }) {
               value={formik.values.username}
               onChangeText={formik.handleChange('username')}
               onBlur={formik.handleBlur('username')}
-              autoCapitalize='none'
+              autoCapitalize="none"
               style={styles.input}
-              placeholder='Enter your username'
+              placeholder="Enter your username"
             />
             {formik.touched.username && formik.errors.username ? (
               <Text style={styles.errorText}>{formik.errors.username}</Text>
@@ -118,9 +113,9 @@ export default function SignUp({ navigation }) {
               value={formik.values.email}
               onChangeText={formik.handleChange('email')}
               onBlur={formik.handleBlur('email')}
-              autoCapitalize='none'
+              autoCapitalize="none"
               style={styles.input}
-              placeholder='Enter your email address'
+              placeholder="Enter your email address"
             />
             {formik.touched.email && formik.errors.email ? (
               <Text style={styles.errorText}>{formik.errors.email}</Text>
@@ -134,11 +129,27 @@ export default function SignUp({ navigation }) {
                 value={formik.values.password}
                 onChangeText={formik.handleChange('password')}
                 onBlur={formik.handleBlur('password')}
-                autoCapitalize='none'
+                autoCapitalize="none"
                 style={[styles.input, styles.inputPassword]}
-                placeholder='Enter your password'
+                placeholder="Enter your password"
               />
-              {isHidePassword ? <FontAwesome onPress={() => setIsHidePassword(!isHidePassword)} name="eye-slash" size={20} color="black" style={styles.hidePassword} /> : <FontAwesome onPress={() => setIsHidePassword(!isHidePassword)} name="eye" size={20} color="black" style={styles.hidePassword} />}
+              {isHidePassword ? (
+                <FontAwesome
+                  onPress={() => setIsHidePassword(!isHidePassword)}
+                  name="eye-slash"
+                  size={20}
+                  color="black"
+                  style={styles.hidePassword}
+                />
+              ) : (
+                <FontAwesome
+                  onPress={() => setIsHidePassword(!isHidePassword)}
+                  name="eye"
+                  size={20}
+                  color="black"
+                  style={styles.hidePassword}
+                />
+              )}
             </View>
             {formik.touched.password && formik.errors.password ? (
               <Text style={styles.errorText}>{formik.errors.password}</Text>
@@ -152,20 +163,45 @@ export default function SignUp({ navigation }) {
                 value={formik.values.confirmPassword}
                 onChangeText={formik.handleChange('confirmPassword')}
                 onBlur={formik.handleBlur('confirmPassword')}
-                autoCapitalize='none'
+                autoCapitalize="none"
                 style={[styles.input, styles.inputPassword]}
-                placeholder='Enter confirm your password'
+                placeholder="Enter confirm your password"
               />
-              {isHideConfirmPassword ? <FontAwesome onPress={() => setIsHideConfirmPassword(!isHideConfirmPassword)} name="eye-slash" size={20} color="black" style={styles.hidePassword} /> : <FontAwesome onPress={() => setIsHideConfirmPassword(!isHideConfirmPassword)} name="eye" size={20} color="black" style={styles.hidePassword} />}
+              {isHideConfirmPassword ? (
+                <FontAwesome
+                  onPress={() =>
+                    setIsHideConfirmPassword(!isHideConfirmPassword)
+                  }
+                  name="eye-slash"
+                  size={20}
+                  color="black"
+                  style={styles.hidePassword}
+                />
+              ) : (
+                <FontAwesome
+                  onPress={() =>
+                    setIsHideConfirmPassword(!isHideConfirmPassword)
+                  }
+                  name="eye"
+                  size={20}
+                  color="black"
+                  style={styles.hidePassword}
+                />
+              )}
             </View>
             {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-              <Text style={styles.errorText}>{formik.errors.confirmPassword}</Text>
+              <Text style={styles.errorText}>
+                {formik.errors.confirmPassword}
+              </Text>
             ) : null}
           </View>
           {isLoading ? (
             <ActivityIndicator size={'large'} color={'#0000ff'} />
           ) : (
-            <TouchableOpacity onPress={formik.handleSubmit} style={styles.loginBtn}>
+            <TouchableOpacity
+              onPress={formik.handleSubmit}
+              style={styles.loginBtn}
+            >
               <Text style={styles.loginText}>Register</Text>
             </TouchableOpacity>
           )}
@@ -175,12 +211,15 @@ export default function SignUp({ navigation }) {
               <Text style={styles.signUpLink}>Sign In</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.returnHome} onPress={() => navigation.navigate('Home')}>
+          <TouchableOpacity
+            style={styles.returnHome}
+            onPress={() => navigation.navigate('Home')}
+          >
             <AntDesign name="arrowleft" size={24} color="black" />
             <Text>Back to home</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
-  );
+  )
 }

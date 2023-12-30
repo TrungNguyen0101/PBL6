@@ -25,7 +25,10 @@ const BookCard = ({ data }) => {
         <div className="flex items-center justify-between">
           <span className="text-[#bc1313dd] text-sm">{data?.author}</span>
           <span className="text-[#bc1313dd] text-xs font-semibold">
-            {data?.price}
+            {data?.price?.toLocaleString('it-IT', {
+              style: 'currency',
+              currency: 'VND',
+            })}
           </span>
         </div>
       </div>

@@ -1,22 +1,36 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
-import '../style/styled.scss';
-import { useParams } from 'next/navigation';
-import axios from 'axios';
-import { format, parseISO } from 'date-fns';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import Raiting from '@/components/Raiting';
+import LoadingPage from '@/components/LoadingPage';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-import { getAllBooksByDiscount, getBookById } from '@/services/bookService';
-import LoadingPage from '@/components/LoadingPage';
-import { getOrderByAccount, postOrder } from '@/services/orderService';
+import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import Raiting from '@/components/Raiting';
-import { Avatar, Badge } from 'antd';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper';
+import { getOrderByAccount, postOrder } from '@/services/orderService';
+import {
+  deleteCommnet,
+  getAllCommentByBook,
+  postComment,
+} from '@/services/commentService';
+import {
+  getAllBooksByDiscount,
+  getBookByCategory,
+  getBookById,
+} from '@/services/bookService';
+import { format } from 'date-fns';
+import { Badge } from 'antd';
+import { FaTrashAlt } from 'react-icons/fa';
+import '../style/styled.scss';
+import '../style/SwiperButton.scss';
+import { da } from 'date-fns/locale';
+import Swal from 'sweetalert2';
+import Popover from '@/components/Popover';
 
 const ProductDetail = () => {
+  const router = useRouter();
   const [routeLoading, setRouteLoading] = useState(false);
   const [value, setValue] = useState(0);
   const [orderLength, setOrderLength] = useState(0);
@@ -24,9 +38,16 @@ const ProductDetail = () => {
   const [bookDiscount, setBookDiscount] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(1);
+  const [listCommentByBook, setListCommentByBook] = useState([]);
+  const [comment, setComment] = useState('');
+  const [auth, setAuth] = useState(null);
+  const cmtRef = useRef();
   const { id } = useParams();
   const parsedDate = new Date(book !== undefined && book?.datePicker);
   const formattedDate = format(parsedDate, 'dd/MM/yyyy');
+  const [orderItem, setOrderItem] = useState([]);
+  const [listBookCategory, setListBookCategory] = useState([]);
+  const maxItem = 5;
   const account =
     typeof window !== 'undefined'
       ? JSON.parse(sessionStorage?.getItem('auth'))
@@ -51,7 +72,12 @@ const ProductDetail = () => {
       setOrderLength(data?.order?.length);
     }
   };
-
+  const handleGetItemCart = async () => {
+    const { data } = await getOrderByAccount(account?.user?._id);
+    if (data?.order?.length > 0) {
+      setOrderItem(data?.order);
+    }
+  };
   const handleAddCart = async () => {
     try {
       if (account) {
@@ -79,6 +105,86 @@ const ProductDetail = () => {
     }
   };
 
+  const fetchAllCommentByBook = async () => {
+    const res = await getAllCommentByBook(id);
+    if (res && res?.data) {
+      setListCommentByBook(res?.data?.comments);
+    }
+  };
+  const handleAddComment = async () => {
+    const auth = sessionStorage.getItem('auth');
+    if (!auth) {
+      toast.warning('Vui lòng đăng nhập!!!');
+      return;
+    }
+    const res = await postComment(id, comment);
+    if (res && res.data) {
+      fetchAllCommentByBook();
+      setComment('');
+      cmtRef.current.value = '';
+      toast.success(res.message);
+    }
+  };
+  const handleDeleteComment = (idComment) => {
+    const auth = sessionStorage.getItem('auth');
+    if (!auth) {
+      toast.warning('Bạn chưa đăng nhập!!!');
+      return;
+    }
+    Swal.fire({
+      title: 'Bạn có muốn xóa comment này?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Vâng, hãy xóa nó!',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await deleteCommnet(idComment);
+        if (res && res.message === 'Comment successfully deleted') {
+          Swal.fire({
+            title: 'Xóa!',
+            text: 'Comment đã được xóa!',
+            icon: 'success',
+          });
+          fetchAllCommentByBook();
+        } else {
+          Swal.fire({
+            title: 'Xóa!',
+            text: 'Comment chưa được xóa!',
+            icon: 'error',
+          });
+        }
+      }
+    });
+  };
+  const handleBuyNow = (price) => {
+    sessionStorage.setItem('check', false);
+    const auth = sessionStorage.getItem('auth');
+    const parseAuth = JSON.parse(auth);
+    if (!auth) {
+      toast.error('Bạn chưa đăng nhập!!!');
+      return;
+    } else if (!parseAuth?.user?.isVerified) {
+      toast.warning(
+        'Tài khoản của bạn chưa được xác thực nên không thể mua sách. Vui lòng xác thực tài khoản!!!'
+      );
+      return;
+    }
+    sessionStorage.setItem('priceBook', Number(price * count));
+    sessionStorage.setItem('count', Number(count));
+    sessionStorage.setItem('idBook', book?._id);
+    sessionStorage.setItem('pricePerBook', Number(book?.price));
+    sessionStorage.setItem('book', JSON.stringify(book));
+    router.push('/check-out');
+  };
+  const category = book?.category;
+  const fetchBookByAction = async () => {
+    const res = await getBookByCategory(`${category}`);
+    if (res && res?.data) {
+      setListBookCategory(res?.data?.book);
+    }
+  };
   useEffect(() => {
     try {
       const handleGetBookByDiscount = async () => {
@@ -114,7 +220,29 @@ const ProductDetail = () => {
   useEffect(() => {
     handleGetLengthCart();
   }, [orderLength]);
+  useEffect(() => {
+    handleGetItemCart();
+  }, [orderLength]);
+  useEffect(() => {
+    fetchAllCommentByBook();
+  }, []);
 
+  useEffect(() => {
+    const auth = sessionStorage.getItem('auth');
+    if (auth) {
+      setAuth(JSON.parse(auth));
+    }
+  }, []);
+  useEffect(() => {
+    fetchBookByAction();
+  }, [category]);
+  const randomCategories = listBookCategory.slice(
+    Math.floor(Math.random() * listBookCategory.length),
+    Math.min(
+      Math.floor(Math.random() * listBookCategory.length) + 5,
+      listBookCategory.length
+    )
+  );
   return (
     <section className="content">
       {isLoading ? (
@@ -123,6 +251,19 @@ const ProductDetail = () => {
         </div>
       ) : (
         <div className={`content-wrapper ${routeLoading ? 'cursor-wait' : ''}`}>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@500&display=swap"
+            rel="stylesheet"
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Merienda+One&family=Nunito:wght@200;300;400;500;600&display=swap"
+          />
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+          />
+
           {/* <!-- Start main detail area --> */}
           {/* <!-- Start header-detail area --> */}
           <div className="header-detail pt-[15px]">
@@ -138,25 +279,97 @@ const ProductDetail = () => {
                 <span className="product-name">{book?.booktitle}</span>
               </nav>
             </div>
-            <Link
-              href="/cart"
-              className="pr-[20px]"
-              onClick={() => setRouteLoading(true)}
-            >
-              <Badge count={orderLength} showZero>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
-                  viewBox="0 0 24 24"
+            <div className="col-span-1 justify-self-start mr-5 items-center">
+              <Popover
+                renderPopover={
+                  <div className="bg-white relative shadow-md rounded-md border border-gray-200 w-[350px] text-sm ">
+                    <div className="p-2">
+                      <div className="text-gray-400 capitalize">
+                        Sản phẩm mới thêm
+                      </div>
+                      <div>
+                        {orderLength > 0 ? (
+                          orderItem.slice(0, 5).map((item) => (
+                            <div>
+                              {' '}
+                              <div className="mt-5">
+                                <div className="mt-4 flex ">
+                                  <div className="flex-shrink-0">
+                                    <img
+                                      key={item.Book.mainImage}
+                                      src={item.Book.mainImage[0].url}
+                                      alt="anh"
+                                      className="w-11 h-11 object-cover"
+                                    />
+                                  </div>
+                                  <div
+                                    className="flex-grow ml-2 overflow-hidden"
+                                    key={item.Book.booktitle}
+                                  >
+                                    <div className="truncate">
+                                      {item.Book.booktitle}
+                                    </div>
+                                  </div>
+                                  <div
+                                    className="ml-2 flex-shrink-0"
+                                    key={item.Book.price}
+                                  >
+                                    <span className="text-orange">
+                                      {item.Book.price}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="flex h-[300px] w-full items-center justify-center p-2">
+                            <img
+                              src="https://evgracias.com/images/no-products.jpg"
+                              alt="no purchase"
+                              className="h-full w-full"
+                            />
+                          </div>
+                        )}
+
+                        <div className="flex mt-6 items-center justify-between">
+                          <div className="capitalize text-xs text-gray-500">
+                            {orderLength > maxItem ? orderLength - maxItem : ''}{' '}
+                            Thêm hàng vào giỏ
+                          </div>
+                          <Link
+                            href="/cart"
+                            className="capitalize bg-red-500 hover:bg-opacity-90 px-4 py-2 rounded-2xl text-white"
+                          >
+                            Xem giỏ hàng
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
+              >
+                <Link
+                  href="/cart"
+                  className="pr-[20px] flex justify-end items-center"
+                  onClick={() => setRouteLoading(true)}
                 >
-                  <path
-                    fill="currentColor"
-                    d="M11 9V6H8V4h3V1h2v3h3v2h-3v3zM7 22q-.825 0-1.412-.587T5 20q0-.825.588-1.412T7 18q.825 0 1.413.588T9 20q0 .825-.587 1.413T7 22m10 0q-.825 0-1.412-.587T15 20q0-.825.588-1.412T17 18q.825 0 1.413.588T19 20q0 .825-.587 1.413T17 22M1 4V2h3.275l4.25 9h7l3.9-7H21.7l-4.4 7.95q-.275.5-.737.775T15.55 13H8.1L7 15h12v2H7q-1.125 0-1.713-.975T5.25 14.05L6.6 11.6L3 4z"
-                  />
-                </svg>
-              </Badge>
-            </Link>
+                  <Badge count={orderLength} showZero>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="33"
+                      height="33"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M11 9V6H8V4h3V1h2v3h3v2h-3v3zM7 22q-.825 0-1.412-.587T5 20q0-.825.588-1.412T7 18q.825 0 1.413.588T9 20q0 .825-.587 1.413T7 22m10 0q-.825 0-1.412-.587T15 20q0-.825.588-1.412T17 18q.825 0 1.413.588T19 20q0 .825-.587 1.413T17 22M1 4V2h3.275l4.25 9h7l3.9-7H21.7l-4.4 7.95q-.275.5-.737.775T15.55 13H8.1L7 15h12v2H7q-1.125 0-1.713-.975T5.25 14.05L6.6 11.6L3 4z"
+                      />
+                    </svg>
+                  </Badge>
+                </Link>
+              </Popover>
+            </div>
           </div>
           {/* <!-- End header-detail area --> */}
           <div className="detail-wrapper">
@@ -253,15 +466,24 @@ const ProductDetail = () => {
                     {book?.discount !== 0 ? (
                       <>
                         <span className="old-price">
-                          ${book?.price.toFixed(2)}
+                          {book?.price?.toLocaleString('it-IT', {
+                            style: 'currency',
+                            currency: 'VND',
+                          })}
                         </span>
                         <span className="current-price">
-                          ${priceDiscount.toFixed(2)}
+                          {priceDiscount?.toLocaleString('it-IT', {
+                            style: 'currency',
+                            currency: 'VND',
+                          })}
                         </span>
                       </>
                     ) : (
                       <span className="current-price">
-                        ${book?.price.toFixed(2)}
+                        {book?.price?.toLocaleString('it-IT', {
+                          style: 'currency',
+                          currency: 'VND',
+                        })}
                       </span>
                     )}
                   </div>
@@ -287,9 +509,31 @@ const ProductDetail = () => {
                         <span className="add-text">Add To Cart</span>
                       </button>
                     </div>
-                    <button className="product-buy">
+                    {book?.discount !== 0 ? (
+                      <button
+                        className="product-buy"
+                        onClick={() =>
+                          handleBuyNow(
+                            ((100 - book?.discount) / 100) * book?.price
+                          )
+                        }
+                      >
+                        <span className="buy-text">Buy Now</span>
+                      </button>
+                    ) : (
+                      <button
+                        className="product-buy"
+                        onClick={() => handleBuyNow(book?.price?.toFixed(2))}
+                      >
+                        <span className="buy-text">Buy Now</span>
+                      </button>
+                    )}
+                    {/* <button
+                      className="product-buy"
+                      onClick={() => handleBuyNow(book?.price?.toFixed(2))}
+                    >
                       <span className="buy-text">Buy Now</span>
-                    </button>
+                    </button> */}
                   </div>
                   <button className="favorite-product mt-[20px] flex justify-center items-center gap-x-[10px] m-atuo">
                     <i className="fa fa-heart-o icon-heart"></i>
@@ -441,7 +685,12 @@ const ProductDetail = () => {
                           <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
                         </div>
                         <div className="item-price">
-                          <span>${item.price.toFixed(2)}</span>
+                          <span>
+                            {item?.price?.toLocaleString('it-IT', {
+                              style: 'currency',
+                              currency: 'VND',
+                            })}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -574,15 +823,17 @@ const ProductDetail = () => {
                       <span className="require">*</span>
                     </label>
                     <textarea
+                      ref={cmtRef}
                       name="comment"
                       id="comment"
                       cols="45"
                       rows="8"
                       required
                       className="resize-none"
+                      onChange={(event) => setComment(event.target.value)}
                     ></textarea>
                   </p>
-                  <button className="form-submit">
+                  <button className="form-submit" onClick={handleAddComment}>
                     <input
                       name="submit"
                       type="submit"
@@ -596,61 +847,99 @@ const ProductDetail = () => {
             </div>
           </div>
           {/* <!-- End Customer Reviews -->/ */}
-          <div className="px-[20px]">
+          <div className="px-[20px] list-comment">
             <div className="reviews-heading mb-[10px]">
               <h3 className="label-comment">
                 Reviews for
-                <span className="font-semibold"> {book?.booktitle}</span>
+                <span className="font-semibold">{book?.booktitle}</span>
               </h3>
             </div>
             <Swiper
-              modules={[Pagination]}
+              modules={[Navigation, Pagination]}
               spaceBetween={20}
-              slidesPerView={2}
-              // navigation
+              slidesPerView={3}
+              navigation
               grabCursor={'true'}
-              pagination={{ clickable: true }}
               className="pb-[40px]"
             >
-              <SwiperSlide>
-                <div className="bg-[#f8f8f8] review-card p-[10px] rounded-lg">
-                  <div className="card-top">
-                    <div className="profile">
-                      <div className="profile-image">
-                        <Image
-                          src={book?.mainImage[0]?.url}
-                          alt="123"
-                          width={100}
-                          height={100}
-                        />
-                      </div>
-                      <div className="profile-name">
-                        <strong>My Nguyen</strong>
-                        <div className="likes">
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
-                          <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
+              {listCommentByBook?.length > 0 &&
+                listCommentByBook?.map((cmt, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="bg-[#f8f8f8] review-card p-[10px] rounded-lg">
+                      <div className="card-top">
+                        <div className="profile">
+                          <div className="profile-image">
+                            <Image
+                              src={cmt?.user?.avatar}
+                              alt=""
+                              width={100}
+                              height={100}
+                            />
+                          </div>
+                          <div className="profile-name">
+                            <strong>{cmt?.user?.username}</strong>
+                            <div className="likes">
+                              <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
+                              <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
+                              <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
+                              <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
+                              <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
+                            </div>
+                          </div>
+                          <div className="comment-date">
+                            <span>
+                              {`${new Date(cmt?.createdAt).getDate()}-${
+                                new Date(cmt?.createdAt).getMonth() + 1
+                              }-${new Date(cmt?.createdAt).getFullYear()}`}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                      <div className="comment-date">
-                        <span>July 6 ,2023</span>
+                      <div className="flex items-center justify-between card-main gap-x-5">
+                        <p>{cmt?.comment}</p>
+                        {auth?.user?._id === cmt?.id_user && (
+                          <span
+                            title="Delete"
+                            className="mt-[5px] cursor-pointer"
+                            onClick={() => handleDeleteComment(cmt?._id)}
+                          >
+                            <FaTrashAlt />
+                          </span>
+                        )}
                       </div>
                     </div>
-                  </div>
-                  <div className="card-main">
-                    <p>
-                      A seemingly elegant design can quickly begin to bloat with
-                      unexpected content or break under the weight of actual
-                      activity. Fake data can ensure a nice looking layout but
-                      it doesn’t reflect what a living, breathing application
-                      must endure. Real data does.
-                    </p>
-                  </div>
-                </div>
-              </SwiperSlide>
+                  </SwiperSlide>
+                ))}
             </Swiper>
+          </div>
+          {/* <!-- related books -->/ */}
+          <div className="flex px-[20px] flex-col justify-start">
+            <div className="directory-name">
+              <h1>Maybe you will like</h1>
+            </div>
+            <div>
+              <div className="flex max-w-full max-h-[350px] flex-row gap-x-[30px] my-3  ">
+                {listBookCategory.length > 0 &&
+                  randomCategories.slice(0, 5).map((item, index) => (
+                    <div
+                      className="max-w-[230px] max-h-[330px] flex flex-col hover:scale-110"
+                      key={index}
+                    >
+                      <Link href={`/product/${item._id}`}>
+                        {' '}
+                        <img
+                          src={item?.mainImage[0].url}
+                          alt=""
+                          className="w-[220px] h-[280px] rounded-lg pb-1 cursor-pointer"
+                        />
+                        <div className="text-xl flex  w-full font-bold hover:text-black/60 cursor-pointer">
+                          {item?.booktitle}
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+              </div>
+            </div>
           </div>
         </div>
       )}

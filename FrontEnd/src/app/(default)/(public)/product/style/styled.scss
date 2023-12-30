@@ -53,26 +53,26 @@
   color: var(--white);
 }
 
-::-webkit-scrollbar {
-  height: 1px;
-  width: 10px;
-  border-radius: 50%;
-}
+// ::-webkit-scrollbar {
+//   height: 1px;
+//   width: 10px;
+//   border-radius: 50%;
+// }
 
-::-webkit-scrollbar-track {
-  background-color: transparent;
-}
+// ::-webkit-scrollbar-track {
+//   background-color: transparent;
+// }
 
-::-webkit-scrollbar-thumb {
-  background-color: var(--icon-down);
-  border-radius: 20px;
-}
+// ::-webkit-scrollbar-thumb {
+//   background-color: var(--icon-down);
+//   border-radius: 20px;
+// }
 
 html {
   /* font-size: 62.5%; */
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  scroll-padding-top: 65px;
+  // overflow-x: hidden;
+  // scroll-behavior: smooth;
+  // scroll-padding-top: 65px;
 }
 
 body {

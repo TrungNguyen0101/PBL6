@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
-import colors from '../../contains/colors';
+import colors from '../../contains/colors'
 
 const styles = StyleSheet.create({
   shadow: {
@@ -32,9 +32,8 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 16,
-    color: '#888',
-    flex: 1,
+    color: colors.orangeColor,
   },
-});
+})
 
-export default styles;
+export default styles

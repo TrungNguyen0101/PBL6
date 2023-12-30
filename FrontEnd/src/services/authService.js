@@ -14,6 +14,13 @@ const postSignUp = (username, email, password) => {
     password,
   });
 };
+const postSignUp123 = (username, email, password) => {
+  return instance.post('user/add-user-by-admin', {
+    username,
+    email,
+    password,
+  });
+};
 
 const updateInforUser = (username, phoneNumber, avatar) => {
   return instance.put('user/update', {
@@ -29,6 +36,9 @@ const forgotPassword = (email) => {
   });
 };
 
+const getAllAccount = () => {
+  return instance.get('user/getallaccount');
+};
 const sendCodeVerify = () => {
   return instance.post('user/sendcode-verify');
 };
@@ -54,4 +64,6 @@ export {
   sendCodeVerify,
   verifyCode,
   changePassword,
+  postSignUp123,
+  getAllAccount,
 };

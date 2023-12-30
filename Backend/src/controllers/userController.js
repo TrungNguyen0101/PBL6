@@ -162,22 +162,30 @@ const handleVerifyUser = async (req, res) => {
     }
 }
 const handleAddUserByAdmin = async (req, res) => {
-    let admin = req.User.User;
-    let user = req.body;
-    console.log(admin, user)
-    let data = await userService.addUserByAdmin(admin, user);
-    if (data.status === 200) {
-        return res.status(200).json({
-            status: data.status,
-            message: data.message,
-        })
-    }
-    else {
+    let data = req.body;
+    if (!data) {
         return res.status(500).json({
-            status: data.status,
-            message: data.message
+            errCode: 1,
+            message: "Missing inputs parameter",
         })
     }
+    let userData = await userService.addUserByAdmin(data);
+    if (userData.status === 200) {
+        const response = {
+            ...userData.data,
+            status: 200,
+            message: userData.message
+        }
+        return res.status(200).json(response);
+    }
+    const response = {
+        ...userData.data,
+        status: 500,
+        message: userData.message
+    }
+    return res.status(500).json({
+        response
+    });
 }
 const handleChangePassword = async (req, res) => {
     let user = req.User.User;

@@ -118,6 +118,25 @@ const getBookByCategory = async (category) => {
   }
   return bookData;
 };
+const searchBook = async (query) => {
+  let bookData = {};
+  try {
+    const result = await Book.find({
+      $or: [
+        { booktitle: { $regex: query, $options: 'i' } }, // Tìm kiếm theo tiêu đề (không phân biệt chữ hoa/chữ thường)
+        { author: { $regex: query, $options: 'i' } } // Tìm kiếm theo tác giả
+      ]
+    });
+    console.log(result)
+    bookData.data = result;
+    bookData.status = 200;
+    bookData.message = "Succeed";
+  } catch (e) {
+    bookData.status = 500;
+    bookData.message = e;
+  }
+  return bookData;
+}
 module.exports = {
   insertBook: insertBook,
   updateBook: updateBook,
@@ -126,4 +145,5 @@ module.exports = {
   getBookById: getBookById,
   getBookByCategory: getBookByCategory,
   getAllBooksByDiscount: getAllBooksByDiscount,
+  searchBook: searchBook,
 };
