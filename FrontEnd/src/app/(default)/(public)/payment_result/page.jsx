@@ -13,8 +13,14 @@ export default function page() {
   const formattedDate = date.format('DD-MM-YYYY HH:mm');
   const deliveryDate = date.add(7, 'days');
   const formattedDateShip = deliveryDate.format('DD-MM-YYYY');
-  // const decodedQueryString = decodeURIComponent(queryString);
-  // const queryString = searchParams.toString();
+  const queryString = searchParams.toString();
+  const decodedQueryString = decodeURIComponent(queryString);
+
+  const handleClose = () => {
+    // window.close('', '_parent', '');
+    // window.opener = self;
+    window.close();
+  };
 
   return (
     <div className="w-full  max-w-[600px] mx-auto my-[50px] min-h-[450px] pt-4 px-4 bg-white  text-gray-500 text-center rounded-xl shadow-lg">
@@ -36,22 +42,22 @@ export default function page() {
             Thời gian thanh toán là :{' '}
             <span className="text-xl font-bold">{formattedDate}</span>.
           </p>
-          <p className="pt-[10px]">
+          {/* <p className="pt-[10px]">
             Bạn có thể xem chi tiết trong :{' '}
             <Link
               href="/customer-history"
-              className="font-bold text-xl hover:text-gray-500/80"
+              className="text-xl font-bold hover:text-gray-500/80"
             >
               Lịch sử mua hàng
             </Link>
-          </p>
+          </p> */}
           <p className="pt-[10px]">
             Thời gian dự kiến giao hàng là :{' '}
             <span className="text-xl font-bold">{formattedDateShip}</span>.
           </p>
           <div className="mt-4 flex justify-center p-t[10px]">
             <button
-              onClick={window.close()}
+              onClick={() => handleClose()}
               className="w-40 h-10 mt-[10px] rounded-full bg-green-500 text-white hover:bg-green-500/80"
             >
               Tiếp tục mua hàng
@@ -74,7 +80,7 @@ export default function page() {
           </p>
           <div className="mt-4 flex justify-center p-t[10px]">
             <button
-              onClick={() => window.close()}
+              onClick={() => handleClose()}
               className="w-40 h-10 mt-[10px] rounded-full bg-green-500 text-white hover:bg-green-500/80"
             >
               Tiếp tục mua hàng
