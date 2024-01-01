@@ -97,7 +97,8 @@ async function insertBook(req, res) {
 }
 async function handleSearchBook(req, res) {
   try {
-    let query = req.params.title;
+    let query = req.query.title;
+    console.log(query)
     if (!query) {
       return res.status(500).json({
         status: 500,
@@ -105,6 +106,7 @@ async function handleSearchBook(req, res) {
       })
     }
     const book = await bookService.searchBook(query);
+    console.log(book);
     if (book.status === 200) {
       res.status(200).json({
         message: "Search succeed",

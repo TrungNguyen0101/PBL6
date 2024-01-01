@@ -97,51 +97,55 @@ const paymenOnline = async (data) => {
         let paymentStatus = '0'; // Default to '0' if not available
         let checkOrderId = true; // Mã đơn hàng "giá trị của vnp_TxnRef" VNPAY phản hồi tồn tại trong CSDL của bạn
         let checkAmount = true; // Kiểm tra số tiền "giá trị của vnp_Amout/100" trùng khớp với số tiền của đơn hàng trong CSDL của bạn
-
+        const payment = await db.Payment.findOne({ orderId: orderId }).exec();
         if (secureHash === signed) {
             if (checkOrderId) {
                 if (checkAmount) {
                     if (paymentStatus === '0') {
                         if (rspCode === '00') {
                             // Payment successful
-                            await db.Payment.create({
-                                orderId: vnp_Params["vnp_TxnRef"],
-                                totalmoney: vnp_Params["vnp_Amount"] / 100,
-                                note: vnp_Params["vnp_OrderInfo"],
-                                vnp_response_code: vnp_Params["vnp_ResponseCode"],
-                                code_vnpay: vnp_Params["vnp_TransactionNo"],
-                                code_bank: vnp_Params["vnp_BankCode"],
-                                user: userManage,
-                                cart: cartManage,
-                                name: nameManage,
-                                phone: phoneManage,
-                                address: addressManage,
-                                time: vnp_Params["vnp_PayDate"],
-                                payment_method: "ONL"
-                            })
+                            if (!payment) {
+                                await db.Payment.create({
+                                    orderId: vnp_Params["vnp_TxnRef"],
+                                    totalmoney: vnp_Params["vnp_Amount"] / 100,
+                                    note: vnp_Params["vnp_OrderInfo"],
+                                    vnp_response_code: vnp_Params["vnp_ResponseCode"],
+                                    code_vnpay: vnp_Params["vnp_TransactionNo"],
+                                    code_bank: vnp_Params["vnp_BankCode"],
+                                    user: userManage,
+                                    cart: cartManage,
+                                    name: nameManage,
+                                    phone: phoneManage,
+                                    address: addressManage,
+                                    time: vnp_Params["vnp_PayDate"],
+                                    payment_method: "ONL"
+                                })
+                            }
                             result.response = rspCode
                             result.status = 200;
                             result.message = "Online payment is successful";
                         } else {
                             // Payment failed
-                            await db.Payment.create({
-                                orderId: vnp_Params["vnp_TxnRef"],
-                                totalmoney: vnp_Params["vnp_Amount"] / 100,
-                                note: vnp_Params["vnp_OrderInfo"],
-                                vnp_response_code: vnp_Params["vnp_ResponseCode"],
-                                code_vnpay: vnp_Params["vnp_TransactionNo"],
-                                code_bank: vnp_Params["vnp_BankCode"],
-                                user: userManage,
-                                cart: cartManage,
-                                name: nameManage,
-                                phone: phoneManage,
-                                address: addressManage,
-                                time: vnp_Params["vnp_PayDate"],
-                                payment_method: "ONL"
-                            })
-                            result.response = rspCode
-                            result.status = 200;
-                            result.message = "Online payment is failed";
+                            if (!payment) {
+                                await db.Payment.create({
+                                    orderId: vnp_Params["vnp_TxnRef"],
+                                    totalmoney: vnp_Params["vnp_Amount"] / 100,
+                                    note: vnp_Params["vnp_OrderInfo"],
+                                    vnp_response_code: vnp_Params["vnp_ResponseCode"],
+                                    code_vnpay: vnp_Params["vnp_TransactionNo"],
+                                    code_bank: vnp_Params["vnp_BankCode"],
+                                    user: userManage,
+                                    cart: cartManage,
+                                    name: nameManage,
+                                    phone: phoneManage,
+                                    address: addressManage,
+                                    time: vnp_Params["vnp_PayDate"],
+                                    payment_method: "ONL"
+                                })
+                                result.response = rspCode
+                                result.status = 200;
+                                result.message = "Online payment is failed";
+                            }
                         }
                     } else {
                         result.response = rspCode
