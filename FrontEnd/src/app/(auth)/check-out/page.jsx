@@ -110,7 +110,10 @@ const CheckOutPage = () => {
       router.push('/');
       window.open(res?.data, '_blank');
     }
-    updatePayments();
+    const check = sessionStorage.getItem('check');
+    if (check === 'true') {
+      updatePayments();
+    }
   };
   useEffect(() => {
     fetchAllLocation();

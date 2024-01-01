@@ -26,10 +26,12 @@ function ChartBar({ paymentStatus, percent }) {
           const monthName = new Intl.DateTimeFormat('en-US', {
             month: 'long',
           }).format(date);
+          const year = date.getFullYear();
 
           return {
             createdAt: monthName,
             totalmoney: item.totalmoney,
+            year: year,
           };
         });
 
@@ -49,12 +51,12 @@ function ChartBar({ paymentStatus, percent }) {
             acc.push({
               createdAt: item.createdAt,
               totalmoney: item.totalmoney,
+              year: item.year,
             });
           }
 
           return acc;
         }, []);
-      console.log('file: index.jsx:39 ~ handleData ~ newData1:', newData1);
 
       // Tính thời gian hiện tại
       // const currentDate = new Date();
@@ -85,13 +87,12 @@ function ChartBar({ paymentStatus, percent }) {
       const newData123 = recentMonths.map((month) => {
         const dataForMonth =
           newData1 && newData1?.find((item) => item.createdAt === month);
-
         return {
           createdAt: month,
           totalmoney: dataForMonth ? dataForMonth.totalmoney : '0',
+          year: dataForMonth ? dataForMonth.year : null,
         };
       });
-
       // Sắp xếp mảng theo tháng
       newData123.sort((a, b) => {
         const months = [
@@ -108,9 +109,11 @@ function ChartBar({ paymentStatus, percent }) {
           'November',
           'December',
         ];
+        if (a.year !== b.year) {
+          return a.year - b.year;
+        }
         return months.indexOf(a.createdAt) - months.indexOf(b.createdAt);
       });
-
       setSortedMonths(newData123);
     };
     handleData();

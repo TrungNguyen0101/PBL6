@@ -18,17 +18,22 @@ import {
 import LoadingAnt from '@/components/Loading';
 import ModalAnt from '@/components/ModalAnt';
 import axios from 'axios';
-import { getAllBook, getBookById } from '@/services/bookService';
+import { getAllBook, getBookById, searchBook } from '@/services/bookService';
+import { useTranslation } from 'react-i18next';
+import { debounce } from 'lodash';
 
 export default function ProductPage() {
   const checkAdd = useSelector((state) => state.form.checkAdd);
   const current = useSelector((state) => state.form.current);
+  const [searchTerm, setSearchTerm] = useState('');
   const dispatch = useDispatch();
 
   const [isEdit, setIsEdit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [idBook, setIdBook] = useState('');
   const [book, setBook] = useState({});
   const [listBook, setListBook] = useState([]);
+  const { t } = useTranslation('books');
 
   const hanleGetBookById = async (idBook) => {
     const { data } = await getBookById(idBook);
@@ -66,10 +71,28 @@ export default function ProductPage() {
     }
   };
 
+  const handleSearch = debounce(async (term) => {
+    if (term) {
+      setIsLoading(true);
+      const { data } = await searchBook({ title: term });
+      setListBook(data);
+    } else {
+      setIsLoading(true);
+      const { data } = await getAllBook();
+      setListBook(data.books);
+    }
+    setIsLoading(false);
+  }, 1000);
+  const handleChange = (event) => {
+    const newSearchTerm = event.target.value;
+    setSearchTerm(newSearchTerm);
+    handleSearch(newSearchTerm);
+  };
+
   return (
     <>
       {!checkAdd ? (
-        <div className="relative">
+        <div className={`relative ${isLoading ? 'cursor-wait' : ''}`}>
           <h2 className="font-semibold text-[28px] mb-[10px]">
             Products Management
           </h2>
@@ -80,6 +103,15 @@ export default function ProductPage() {
             >
               Add Product
             </button>
+            <input
+              type="text"
+              placeholder={t('search')}
+              className={`mt-[10px] w-[40%] p-3 text-sm font-semibold border rounded-md outline-none ${
+                isLoading ? 'cursor-wait' : ''
+              }`}
+              value={searchTerm}
+              onChange={handleChange}
+            />
           </div>
           <TableData
             handleOnEdit={handleOnEdit}

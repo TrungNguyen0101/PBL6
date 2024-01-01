@@ -12,6 +12,7 @@ import {
 import CartItem from './CartItem';
 import { Switch } from 'antd';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 export default function Cart() {
   const router = useRouter();
   const [order, setOder] = useState([]);
@@ -95,10 +96,13 @@ export default function Cart() {
     }
   }
   const handleCheckout = () => {
-    sessionStorage.setItem('bookList', JSON.stringify(payment));
-    sessionStorage.setItem('check', true);
-    // updatePayments();
-    router.push('/check-out');
+    if (payment.totalMoney > 0) {
+      sessionStorage.setItem('bookList', JSON.stringify(payment));
+      sessionStorage.setItem('check', true);
+      router.push('/check-out');
+    } else {
+      toast.warning('Cart Empty!!!');
+    }
   };
   return (
     <section className="cart-wrapper">

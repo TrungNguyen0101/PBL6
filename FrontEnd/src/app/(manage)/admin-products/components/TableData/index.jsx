@@ -145,7 +145,7 @@ const TableData = ({ handleOnEdit, listBook, hanldeGetAllBooks }) => {
   }, [listBook]);
 
   return (
-    <div className="max-h-[400px]">
+    <div className="max-h-[500px]">
       {isLoading ? (
         <div className="mx-auto mt-10 w-max">
           <LoadingPage></LoadingPage>
@@ -154,15 +154,15 @@ const TableData = ({ handleOnEdit, listBook, hanldeGetAllBooks }) => {
         <Table
           columns={columns}
           dataSource={data}
-          className="max-h-[400px]"
+          className="max-h-[500px]"
           pagination={{
             showSizeChanger: true, // Hiển thị tùy chọn lựa chọn pageSize
-            pageSizeOptions: ['3', '6', '9'], // Các tùy chọn pageSize
-            defaultPageSize: 3, // Kích thước mặc định của pageSize
+            pageSizeOptions: ['4', '8', '12'], // Các tùy chọn pageSize
+            defaultPageSize: 4, // Kích thước mặc định của pageSize
           }}
           scroll={{
             x: 800,
-            y: 227,
+            y: 275,
           }}
         />
       )}
