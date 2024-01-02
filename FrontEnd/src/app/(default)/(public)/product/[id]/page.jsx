@@ -28,8 +28,10 @@ import '../style/SwiperButton.scss';
 import { da } from 'date-fns/locale';
 import Swal from 'sweetalert2';
 import Popover from '@/components/Popover';
+import { useTranslation } from 'react-i18next';
 
 const ProductDetail = () => {
+  const { t } = useTranslation('books');
   const router = useRouter();
   const [routeLoading, setRouteLoading] = useState(false);
   const [value, setValue] = useState(0);
@@ -274,7 +276,7 @@ const ProductDetail = () => {
                   className="home"
                   onClick={() => setRouteLoading(true)}
                 >
-                  Home /
+                  {t('home')}/
                 </Link>
                 <span className="product-name">{book?.booktitle}</span>
               </nav>
@@ -285,7 +287,7 @@ const ProductDetail = () => {
                   <div className="bg-white relative shadow-md rounded-md border border-gray-200 w-[350px] text-sm  mr-5">
                     <div className="p-2">
                       <div className="text-gray-400 capitalize">
-                        Sản phẩm mới thêm
+                        {t('newProductsAdded')}
                       </div>
                       <div>
                         {orderLength > 0 ? (
@@ -335,13 +337,13 @@ const ProductDetail = () => {
                         <div className="flex mt-6 items-center justify-between">
                           <div className="capitalize text-xs text-gray-500">
                             {orderLength > maxItem ? orderLength - maxItem : ''}{' '}
-                            Thêm hàng vào giỏ
+                            {t('Cart')}
                           </div>
                           <Link
                             href="/cart"
                             className="capitalize bg-red-500 hover:bg-opacity-90 px-4 py-2 rounded-2xl text-white"
                           >
-                            Xem giỏ hàng
+                            {t('viewcart')}
                           </Link>
                         </div>
                       </div>
@@ -401,7 +403,7 @@ const ProductDetail = () => {
                     <span className="customer-review">
                       (
                       <a href="#" className="customer-review-link">
-                        2 Customer reviews
+                        2 {t('customerReviews')}
                       </a>
                       )
                     </span>
@@ -412,15 +414,15 @@ const ProductDetail = () => {
                   {/* Information book */}
                   <div className="orther-information pb-[10px]">
                     <div className="release-date">
-                      <span className="orther-title">Release date</span>
+                      <span className="orther-title">{t('RealeaseDate')}</span>
                       <span className="info">{formattedDate}</span>
                     </div>
                     <div className="publisher">
-                      <span className="orther-title">Publisher</span>
+                      <span className="orther-title">{t('Publisher')}</span>
                       <span className="info">{book?.publisher}</span>
                     </div>
                     <div className="developer">
-                      <span className="orther-title">Author</span>
+                      <span className="orther-title">{t('Author')}</span>
                       <span className="info">{book?.author}</span>
                     </div>
                   </div>
@@ -506,7 +508,7 @@ const ProductDetail = () => {
                       </div>
 
                       <button className="product-add" onClick={handleAddCart}>
-                        <span className="add-text">Add To Cart</span>
+                        <span className="add-text">{t('AddToCart')}</span>
                       </button>
                     </div>
                     {book?.discount !== 0 ? (
@@ -518,14 +520,14 @@ const ProductDetail = () => {
                           )
                         }
                       >
-                        <span className="buy-text">Buy Now</span>
+                        <span className="buy-text">{t('BuyNow')}</span>
                       </button>
                     ) : (
                       <button
                         className="product-buy"
                         onClick={() => handleBuyNow(book?.price?.toFixed(2))}
                       >
-                        <span className="buy-text">Buy Now</span>
+                        <span className="buy-text">{t('BuyNow')}</span>
                       </button>
                     )}
                     {/* <button
@@ -537,7 +539,7 @@ const ProductDetail = () => {
                   </div>
                   <button className="favorite-product mt-[20px] flex justify-center items-center gap-x-[10px] m-atuo">
                     <i className="fa fa-heart-o icon-heart"></i>
-                    <span> Add to wishlist</span>
+                    <span>{t('Addtowishlist')}</span>
                   </button>
                 </div>
                 {/* <!-- End product-purchase-table area --> */}
@@ -551,7 +553,7 @@ const ProductDetail = () => {
           {/* <!-- Start Description area --> */}
           <div className="description-wrapper">
             <div className="description-title directory-name">
-              <h1>Description</h1>
+              <h1>{t('Description')}</h1>
               <div className="mt-5">
                 <Swiper
                   spaceBetween={20}
@@ -577,7 +579,7 @@ const ProductDetail = () => {
               </div>
             </div>
             <div className="description-detail mt-[20px]">
-              <h2>Information about the story</h2>
+              <h2>{t('Information')}</h2>
               <div className="story-summary">
                 <p className="story-summary-value">{book?.infomation}</p>
 
@@ -599,7 +601,7 @@ const ProductDetail = () => {
             {/* <!-- Start specification area --> */}
             <div className="specification-wrapper">
               <div className="specification-title directory-name">
-                <h1>Specification</h1>
+                <h1>{t('Specification')}</h1>
               </div>
               <div className="overview">
                 <header className="overview-title">
@@ -607,23 +609,25 @@ const ProductDetail = () => {
                     className="fa fa-info-circle overview-icon"
                     aria-hidden="true"
                   ></i>
-                  <span className="overview-label">Overview</span>
+                  <span className="overview-label">{t('Overview')}</span>
                 </header>
                 <div className="overview-content">
                   <div className="overview-releaseDate specification-form">
-                    <span className="releaseDate-label">Release Date</span>
+                    <span className="releaseDate-label">
+                      {t('RealeaseDate')}
+                    </span>
                     <span className="releaseDate-value value">
                       {formattedDate}
                     </span>
                   </div>
                   <div className="overview-publisher specification-form">
-                    <span className="publisher-label">Publisher</span>
+                    <span className="publisher-label">{t('Publisher')}</span>
                     <span className="publisher-value value">
                       {book?.publisher}
                     </span>
                   </div>
                   <div className="overview-developer specification-form pb-[10px]">
-                    <span className="developer-label">Author</span>
+                    <span className="developer-label">{t('Author')}</span>
                     <span className="developer-value">{book?.author}</span>
                   </div>
                 </div>
@@ -631,11 +635,11 @@ const ProductDetail = () => {
               <div className="languages">
                 <header className="languages-title">
                   <i className="fa fa-globe languages-icon"></i>
-                  <span className="languages-label">Languages</span>
+                  <span className="languages-label">{t('Languages')}</span>
                 </header>
                 <div className="languages-content">
                   <div className="languages-language specification-form">
-                    <span className="language-label">Language</span>
+                    <span className="language-label">{t('Language')}</span>
                     <span className="language-value value">
                       {book?.language.length > 0 &&
                         book?.language.map((item, index) => (
@@ -653,7 +657,7 @@ const ProductDetail = () => {
             {/* <!-- Start discounted area --> */}
             <div className="discounted-wrapper">
               <div className="discounted-title directory-name">
-                <h1>Discounted Story</h1>
+                <h1>{t('DiscountedStory')}</h1>
               </div>
               <div className="discounted-content">
                 {bookDiscount?.length > 0 &&
@@ -704,7 +708,7 @@ const ProductDetail = () => {
           {/* <!-- Start Customer Reviews --> */}
           <div className="customerReviews-wrapper">
             <div className="customerReviews-title directory-name">
-              <h1>Customer Reviews</h1>
+              <h1>{t('CustomerReviews')}</h1>
             </div>
             <div className="total">
               <div className="total-Rating">
@@ -719,7 +723,7 @@ const ProductDetail = () => {
                     <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
                     <i className="fa fa-solid fa-star fa-2xl icon-star"></i>
                   </div>
-                  <div className="ratingHeader-reviews">2 Reviews</div>
+                  <div className="ratingHeader-reviews">2 {t('Reviews')}</div>
                 </div>
                 <div className="rating-main">
                   <div className="rating-five rating-items">
@@ -800,18 +804,14 @@ const ProductDetail = () => {
                 </div>
               </div>
               <div className="review-form-wrapper">
-                <h4 className="review-title">ADD A REVIEW</h4>
+                <h4 className="review-title">{t('AddAReview')}</h4>
                 <div className="review-form">
                   <p className="comment-notes">
-                    <span className=" notes">
-                      Your email address will not be published. Required fields
-                      are marked
-                    </span>
-                    <span className="text-red-500 require">*</span>
+                    <span className=" notes">{t('wish')}</span>
                   </p>
                   <div className="comment-form-rating">
                     <label htmlFor="rating" className="mr-[10px]">
-                      <span className="rating">Your rating</span>
+                      <span className="rating"> {t('Yourrating')}</span>
                       <span className="require">*</span>
                       <span className="rating">:</span>
                     </label>
@@ -819,7 +819,7 @@ const ProductDetail = () => {
                   </div>
                   <p className="comment-form-comment">
                     <label htmlFor="comment">
-                      <span className="comment">Your review</span>
+                      <span className="comment"> {t('YourReview')}</span>
                       <span className="require">*</span>
                     </label>
                     <textarea
@@ -839,7 +839,7 @@ const ProductDetail = () => {
                       type="submit"
                       id="submit"
                       className="submit"
-                      value="Submit"
+                      value={t('Submit')}
                     />
                   </button>
                 </div>
@@ -850,8 +850,8 @@ const ProductDetail = () => {
           <div className="px-[20px] list-comment">
             <div className="reviews-heading mb-[10px]">
               <h3 className="label-comment">
-                Reviews for
-                <span className="font-semibold">{book?.booktitle}</span>
+                {t('Reviewsfor')}
+                <span className="font-semibold"> {book?.booktitle}</span>
               </h3>
             </div>
             <Swiper
@@ -915,14 +915,14 @@ const ProductDetail = () => {
           {/* <!-- related books -->/ */}
           <div className="flex px-[20px] flex-col justify-start">
             <div className="directory-name">
-              <h1>Maybe you will like</h1>
+              <h1>{t('Maybeyouwilllike')}</h1>
             </div>
             <div>
               <div className="flex max-w-full max-h-[350px] flex-row gap-x-[30px] my-3  ">
                 {listBookCategory.length > 0 &&
                   randomCategories.slice(0, 5).map((item, index) => (
                     <div
-                      className="max-w-[230px] max-h-[330px] flex flex-col hover:scale-110"
+                      className="max-w-[230px] max-h-[330px] flex flex-col hover:scale-110 transition delay-150 duration-150 ease-in-out"
                       key={index}
                     >
                       <Link href={`/product/${item._id}`}>

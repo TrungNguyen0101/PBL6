@@ -3,8 +3,10 @@ import '../../../styles/ScrollStyles.scss';
 import TableAntHistory from '@/components/TableAntHistory';
 import { getCustomerHistory } from '@/services/paymentService';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const CustomerHistoryPage = () => {
+  const { t } = useTranslation('info');
   const [listHistory, setListHistory] = useState([]);
   const fecthDataHistoryCustomer = async () => {
     const res = await getCustomerHistory();
@@ -17,7 +19,7 @@ const CustomerHistoryPage = () => {
   }, []);
   return (
     <div className="w-[800px]">
-      <h1 className="font-semibold text-3xl mb-3">Lịch sử đơn hàng</h1>
+      <h1 className="font-semibold text-3xl mb-3">{t('PurchaseHistory')}</h1>
       <div>
         <TableAntHistory listHistory={listHistory} />
       </div>

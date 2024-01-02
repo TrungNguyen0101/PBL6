@@ -1,32 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const TableAntHistory = ({ listHistory }) => {
+  const { t } = useTranslation('info');
   console.log(listHistory);
   const [data, setData] = useState([]);
   const columns = [
     {
-      title: 'Tên người nhận',
+      title: t('RecipientName'),
       dataIndex: 'name',
       width: 140,
     },
     {
-      title: 'SĐT',
+      title: t('Phone'),
       dataIndex: 'phone',
       width: 110,
     },
     {
-      title: 'Địa Chỉ',
+      title: t('Address'),
       dataIndex: 'address',
       width: 150,
     },
     {
-      title: 'Tổng tiền',
+      title: t('Totalmoney'),
       dataIndex: 'totalmoney',
       width: 110,
     },
     {
-      title: 'Phương thức thanh toán',
+      title: t('Paymentmethods'),
       dataIndex: 'payment_method',
       width: 190,
       render: (_, record) => {
@@ -44,7 +46,7 @@ const TableAntHistory = ({ listHistory }) => {
       },
     },
     {
-      title: 'Trạng thái',
+      title: t('Status'),
       dataIndex: 'status',
       width: 110,
       render: (_, record) => {

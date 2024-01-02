@@ -3,8 +3,10 @@ import React from 'react';
 import { Table, Button, Popconfirm, message } from 'antd';
 // import './styled.scss';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const TableAnt = ({ dataAccount }) => {
+  const { t } = useTranslation('checkout');
   const [data, setData] = React.useState([]);
   useEffect(() => {
     if (dataAccount?.book?.length === 1) {
@@ -34,31 +36,31 @@ const TableAnt = ({ dataAccount }) => {
 
   const columns = [
     {
-      title: 'Title',
+      title: t('Title'),
       dataIndex: 'booktitle',
       key: 'booktitle',
       width: 10,
     },
     {
-      title: 'Author',
+      title: t('Author'),
       dataIndex: 'author',
       key: 'author',
       width: 10,
     },
     {
-      title: 'Category',
+      title: t('Category'),
       dataIndex: 'category',
       key: 'category',
       width: 10,
     },
     {
-      title: 'Count',
+      title: t('Count'),
       dataIndex: 'Count',
       key: 'Count',
       width: 7,
     },
     {
-      title: 'Price',
+      title: t('Price'),
       dataIndex: 'price',
       width: 7,
       render: (_, record) => {
@@ -81,7 +83,7 @@ const TableAnt = ({ dataAccount }) => {
 
   return (
     <div className="max-h-[400px]">
-      <h1 className="mb-2 text-2xl font-semibold">Thông tin các sách đặt</h1>
+      <h1 className="mb-2 text-2xl font-semibold">{t('Information')}</h1>
       <Table
         columns={columns}
         dataSource={data}
