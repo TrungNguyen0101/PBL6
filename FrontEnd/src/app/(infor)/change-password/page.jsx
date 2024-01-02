@@ -10,6 +10,7 @@ import { changePassword } from '@/services/authService';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import routes from '@/constant/routes';
+import { useTranslation } from 'react-i18next';
 
 const schema = yup
   .object({
@@ -32,6 +33,7 @@ const schema = yup
   .required();
 
 const ChangePasswordPage = () => {
+  const { t } = useTranslation('info');
   const router = useRouter();
   const {
     handleSubmit,
@@ -57,17 +59,14 @@ const ChangePasswordPage = () => {
         onSubmit={handleSubmit(handleChangePassword)}
       >
         <h1 className="mb-3 text-2xl font-semibold text-center">
-          Đổi mật khẩu
+          {t('ChangePassword')}
         </h1>
-        <p className="mb-3 text-sm font-semibold text-center">
-          Mật khẩu của bạn phải có ít nhất 6 ký tự, bao gồm cả chữ số, chữ cái
-          và ký tự đặc biệt
-        </p>
+        <p className="mb-3 text-sm font-semibold text-center">{t('rule')}</p>
         <>
           <InputTogglePassword
             name="oldPassword"
             control={control}
-            label="Nhập mật khẩu hiện tại"
+            label={t('currentpassword')}
           />
           <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
             {errors?.oldPassword && errors.oldPassword.message}
@@ -77,7 +76,7 @@ const ChangePasswordPage = () => {
           <InputTogglePassword
             name="newPassword"
             control={control}
-            label="Nhập mật khẩu mới"
+            label={t('newpassword')}
           />
           <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
             {errors?.newPassword && errors.newPassword.message}
@@ -87,14 +86,14 @@ const ChangePasswordPage = () => {
           <InputTogglePassword
             name="repeatPassword"
             control={control}
-            label="Nhập lại mật khẩu mới"
+            label={t('re-enter')}
           />
           <p className="text-xs font-semibold text-red-700 h-[20px]  py-1 whitespace-break-spaces">
             {errors?.repeatPassword && errors.repeatPassword.message}
           </p>
         </>
         <div className="mx-auto w-max">
-          <Button kind="primary">Đổi mật khẩu</Button>
+          <Button kind="primary">{t('ChangePassword')}</Button>
         </div>
       </form>
     </>

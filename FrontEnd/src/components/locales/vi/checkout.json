@@ -1,0 +1,23 @@
+{
+  "Information": "Thông tin các sách đặt",
+  "Title": "Tiêu đề",
+  "Author": "Tác giả",
+  "Category": "Thể Loại",
+  "Count": "Số Lượng",
+  "Price": "Giá",
+  "FillInformation": "Điền thông tin",
+  "Enterphone": "Nhập số điện thoại",
+  "EP": "Số điện thoại",
+  "EnterAddress": "Nhập địa chỉ",
+  "EA": "Nhập vị trí",
+  "method": "Chọn phương thức thanh toán",
+  "cash": "Thanh toán khi nhận hàng",
+  "VNPAY": "Thanh toán qua VNPAY",
+  "Paymentsuccess": "Thanh toán thành công",
+  "Paymentfail": "Thanh toán thất bại",
+  "notify": "Vui lòng kiểm tra lại quá trình thanh toán của bạn. Chúc bạn sẽ có những trải nghiệm tuyệt vời!",
+  "code": "Mã đơn hàng của bạn là : ",
+  "time": "Thời gian thanh toán là : ",
+  "timedelivery": "Thời gian dự kiến giao hàng là :",
+  "Continueshopping": "Tiếp tục mua hàng"
+}

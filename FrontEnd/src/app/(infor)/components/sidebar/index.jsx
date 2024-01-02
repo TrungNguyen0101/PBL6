@@ -10,8 +10,10 @@ import Image from 'next/image';
 import { FaUser, FaKey, FaShoppingCart } from 'react-icons/fa';
 import { IoLogOut } from 'react-icons/io5';
 import imageUser from '../../../../assets/logo-user.png';
+import { useTranslation } from 'react-i18next';
 
 const Sidebar = () => {
+  const { t } = useTranslation('info');
   const router = useRouter();
   const [auth, setAuth] = useState(null);
   const updateInfor = useSelector((state) => state.updateInfor.isUpdate);
@@ -56,28 +58,28 @@ const Sidebar = () => {
           className="hover:text-[#6d4eec] transition-all flex items-center gap-x-2"
         >
           <FaUser />
-          Thông tin cá nhân
+          {t('Profiles')}
         </Link>
         <Link
           href={routes.CHANGEPASSWORD}
           className="hover:text-[#6d4eec] transition-all flex items-center gap-x-2"
         >
           <FaKey />
-          Đổi mật khẩu
+          {t('ChangePassword')}
         </Link>
         <Link
           href={routes.CUSTOMERHISTORY}
           className="hover:text-[#6d4eec] transition-all flex items-center gap-x-2"
         >
           <FaShoppingCart />
-          Lịch sử mua hàng
+          {t('PurchaseHistory')}
         </Link>
         <span
           onClick={handleLogout}
           className="cursor-pointer hover:text-[#6d4eec] transition-all flex items-center gap-x-2"
         >
           <IoLogOut />
-          Đăng xuất
+          {t('Logout')}
         </span>
       </div>
     </div>

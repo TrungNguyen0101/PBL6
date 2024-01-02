@@ -19,10 +19,14 @@ const BannerItem = ({ book }) => {
             />
           ))}
       <div className="absolute bottom-16 left-10 text-white w-[600px] flex flex-col gap-y-3">
-        <h2 className="text-2xl">Tên sách: {book?.booktitle}</h2>
-        <span className="inline-block text-lg">Thể loại: {book?.category}</span>
+        <h2 className="text-2xl">
+          {t('Booktitle')}: {book?.booktitle}
+        </h2>
+        <span className="inline-block text-lg">
+          {'Category'}: {book?.category}
+        </span>
         <p className="mb-2 text-base font-light leading-6">
-          Mô tả: {book?.desc}
+          {t('Description')}: {book?.desc}
         </p>
         <Link
           href={`/product/${book?._id}`}

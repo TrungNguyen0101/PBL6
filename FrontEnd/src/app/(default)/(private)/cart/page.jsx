@@ -13,7 +13,9 @@ import CartItem from './CartItem';
 import { Switch } from 'antd';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 export default function Cart() {
+  const { t } = useTranslation('cart');
   const router = useRouter();
   const [order, setOder] = useState([]);
   const [payment, setPayment] = useState({});
@@ -123,14 +125,16 @@ export default function Cart() {
                       className={`${isChecked ? '' : 'bg-[#00000073]'}`}
                     />
                   </th>
-                  <th className="pr-0 product-name">Product</th>
-                  <th className="px-0 product-price">Price</th>
+                  <th className="pr-0 product-name">{t('Product')}</th>
+                  <th className="px-0 product-price">{t('Price')}</th>
                   {/* <th className="whitespace-nowrap product-price">
                       Sale price
                     </th> */}
-                  <th className="pl-[15px]  product-quantity">Quantity</th>
+                  <th className="pl-[15px]  product-quantity">
+                    {t('Quantity')}
+                  </th>
                   <th className="pl-[10px] text-left product-subtotal">
-                    Subtotal
+                    {t('Subtotal')}
                   </th>
                 </tr>
               </thead>
@@ -154,14 +158,14 @@ export default function Cart() {
         </div>
         <div className="bg-white cart-totals w-[28%]">
           <div className="liner-continer">
-            <h4 className="title">Cart totals</h4>
+            <h4 className="title">{t('CartTotal')}</h4>
           </div>
           <div className="wd-cart-totals">
             <div className="cart-totals-inner">
               <table className="table-shop">
                 <tbody>
                   <tr className="order-total">
-                    <th>Total</th>
+                    <th>{t('Total')}</th>
                     <td>
                       <span>
                         {payment.totalMoney
@@ -180,7 +184,7 @@ export default function Cart() {
                   className="text-white checkout-button"
                   onClick={handleCheckout}
                 >
-                  Proceed to checkout
+                  {t('Proceedtocheckout')}
                 </button>
               </div>
             </div>

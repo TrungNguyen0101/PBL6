@@ -11,8 +11,10 @@ import { BsBank } from 'react-icons/bs';
 import { GiTakeMyMoney } from 'react-icons/gi';
 import '../../../styles/Input.scss';
 import { updatePayment } from '@/services/orderService';
+import { useTranslation } from 'react-i18next';
 
 const CheckOutPage = () => {
+  const { t } = useTranslation('checkout');
   const router = useRouter();
   const [location, setLocation] = useState('');
   const [listLocation, setListLocation] = useState([]);
@@ -147,31 +149,33 @@ const CheckOutPage = () => {
         <TableAnt dataAccount={book} />
         <div className="mx-auto">
           <div className="mb-7">
-            <h2 className="mb-2 text-2xl font-semibold">1. Điền thông tin</h2>
+            <h2 className="mb-2 text-2xl font-semibold">
+              1. {t('FillInformation')}
+            </h2>
             <div className="flex gap-x-3">
               <div className="flex flex-col w-1/2 gap-y-2">
                 <label htmlFor="phone-number" className="font-semibold">
-                  Nhập số điện thoại
+                  {t('Enterphone')}
                 </label>
                 <input
                   value={phoneNumber}
                   id="phone-number"
                   type="number"
-                  placeholder="Số điện thoại"
+                  placeholder={t('EP')}
                   className="input w-full py-[10px] pl-[10px] text-base rounded-md outline-none font-semibold"
                   onChange={(event) => setPhoneNumber(event.target.value)}
                 />
               </div>
               <div className="relative flex flex-col w-1/2 gap-y-2">
                 <label htmlFor="location" className="font-semibold">
-                  Nhập địa chỉ
+                  {t('EnterAddress')}
                 </label>
                 <input
                   id="location"
                   value={location}
                   type="text"
                   className="input w-full py-[10px] pl-[10px] text-base rounded-md outline-none font-semibold"
-                  placeholder="Enter a location"
+                  placeholder={t('EA')}
                   onChange={(event) => handleOnChangeLocation(event)}
                 />
                 {isShowListLocation && location && (
@@ -191,9 +195,7 @@ const CheckOutPage = () => {
             </div>
           </div>
           <div>
-            <h2 className="mb-2 text-2xl font-semibold">
-              2. Chọn phương thức thanh toán
-            </h2>
+            <h2 className="mb-2 text-2xl font-semibold">2. {t('method')}</h2>
             <div>
               <div
                 className="flex items-center cursor-pointer mb-[5px] gap-x-1 w-max hover:text-[#6d4eec] transition-all"
@@ -202,7 +204,7 @@ const CheckOutPage = () => {
                 <span>
                   <GiTakeMyMoney size="25px" />
                 </span>
-                <span className="font-semibold">Thanh toán trực tiếp</span>
+                <span className="font-semibold">{t('cash')}</span>
               </div>
               <div
                 className="flex items-center cursor-pointer gap-x-1 w-max hover:text-[#6d4eec] transition-all"
@@ -211,7 +213,7 @@ const CheckOutPage = () => {
                 <span>
                   <BsBank size="20px" />
                 </span>
-                <span className="font-semibold">Thanh toán qua VNPAY</span>
+                <span className="font-semibold">{t('VNPAY')}</span>
               </div>
             </div>
           </div>

@@ -1,10 +1,13 @@
+'use client';
 import Field from '../Field';
 import Label from '../Label';
 import Input from '../Input';
 import { useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { useTranslation } from 'react-i18next';
 
-const InputTogglePassword = ({ name, control, label = "Password" }) => {
+const InputTogglePassword = ({ name, control, label = 'Password' }) => {
+  const { t } = useTranslation('info');
   const [isShowPassword, setIsShowPassword] = useState(false);
   return (
     <Field>
@@ -18,7 +21,7 @@ const InputTogglePassword = ({ name, control, label = "Password" }) => {
           control={control}
           id={name}
           isIcon={true}
-          placeholder="Enter your password"
+          placeholder={t('EPW')}
         />
         <span
           className="absolute translate-y-1/2 cursor-pointer right-3 bottom-1/2"

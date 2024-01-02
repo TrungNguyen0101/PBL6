@@ -17,5 +17,16 @@
   "Profiles": "Thông tin cá nhân",
   "ChangePassword": "Đổi mật khẩu",
   "PurchaseHistory": "Lịch sử mua hàng",
-  "Logout": "Đăng xuất"
+  "Logout": "Đăng xuất",
+  "Booktitle": "Tên sách",
+  "Description": "Mô tả",
+  "introduce": "NTHĐV bán sách và giao hàng tận nơi. Không hỗ trợ đặt mua và nhận hàng trực tiếp tại văn phòng cũng như tất cả hệ thống NTHĐV trên toàn quốc.",
+  "Social": "Mạng xã hội",
+  "LearnMore": "Tìm hiểu thêm",
+  "Contact": "Liên hệ",
+  "MyAccount": "Tài khoản của tôi",
+  "privacyPolicy": "Chính sách bảo mật thông tin cá nhân",
+  "introudceUS": "Giới thiệu NTHĐV",
+  "login": "Đăng Nhập",
+  "register": "Tạo tài khoản mới "
 }

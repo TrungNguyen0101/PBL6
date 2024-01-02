@@ -5,7 +5,9 @@ import { useSearchParams } from 'next/navigation';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { successPayment } from '@/services/paymentService';
+import { useTranslation } from 'react-i18next';
 export default function page() {
+  const { t } = useTranslation('checkout');
   const [check, setCheck] = useState(true);
   const searchParams = useSearchParams();
   const transactionStatus = searchParams.get('vnp_TransactionStatus');
@@ -42,14 +44,13 @@ export default function page() {
             className="w-[150px] h-[150px] rounded-full mx-auto"
           />
           <h1 className="text-3xl font-bold text-green-600">
-            Thanh toán thành công
+            {t('Paymentsuccess')}
           </h1>
           <p className="pt-[10px]">
-            Mã số đơn hàng của bạn là :{' '}
-            <span className="text-xl font-bold">{code}</span>.
+            {t('code')} <span className="text-xl font-bold">{code}</span>.
           </p>
           <p className="pt-[10px]">
-            Thời gian thanh toán là :{' '}
+            {t('time')}{' '}
             <span className="text-xl font-bold">{formattedDate}</span>.
           </p>
           {/* <p className="pt-[10px]">
@@ -62,7 +63,7 @@ export default function page() {
             </Link>
           </p> */}
           <p className="pt-[10px]">
-            Thời gian dự kiến giao hàng là :{' '}
+            {t('timedelivery')}{' '}
             <span className="text-xl font-bold">{formattedDateShip}</span>.
           </p>
           <div className="mt-4 flex justify-center p-t[10px]">
@@ -70,7 +71,7 @@ export default function page() {
               onClick={() => handleClose()}
               className="w-40 h-10 mt-[10px] rounded-full bg-green-500 text-white hover:bg-green-500/80"
             >
-              Tiếp tục mua hàng
+              {t('Continueshopping')}
             </button>
           </div>
         </div>
@@ -93,7 +94,7 @@ export default function page() {
               onClick={() => handleClose()}
               className="w-40 h-10 mt-[10px] rounded-full bg-green-500 text-white hover:bg-green-500/80"
             >
-              Tiếp tục mua hàng
+              {t('Continueshopping')}
             </button>
           </div>
         </div>

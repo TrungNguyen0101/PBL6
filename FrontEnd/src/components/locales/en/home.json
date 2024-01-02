@@ -17,5 +17,16 @@
   "Profiles": "Profiles",
   "ChangePassword": "Change password",
   "PurchaseHistory": "Purchase History",
-  "Logout": "Log Out"
+  "Logout": "Log Out",
+  "Booktitle": "Book Title",
+  "Description": "Description",
+  "introduce": "NTHĐV sells books and delivers them to your door. Do not support ordering and receiving goods directly at the office as well as all NTHĐV systems nationwide.",
+  "Social": "Social network",
+  "LearnMore": "Learn more",
+  "Contact": "Contact",
+  "MyAccount": "My account",
+  "introudceUS": "Introducing NTHĐV",
+  "privacyPolicy": "Privacy policy",
+  "login": "Login",
+  "register": "Register"
 }

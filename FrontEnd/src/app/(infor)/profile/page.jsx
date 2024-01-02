@@ -13,8 +13,10 @@ import { updateReducer } from '@/redux/reducers/updateInforReducer';
 import { updateInforUser } from '@/services/authService';
 import { toast } from 'react-toastify';
 import { FaCheck, FaImage } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 const ProfilePage = () => {
+  const { t } = useTranslation('info');
   const [auth, setAuth] = useState(null);
   const [avatar, setAvatar] = useState(null);
   const [previewAvatar, setPreviewAvatar] = useState(null);
@@ -113,20 +115,18 @@ const ProfilePage = () => {
         onSubmit={handleSubmit(handleChangeInfor)}
       >
         <h1 className="mb-5 text-2xl font-semibold text-center">
-          Thông tin người dùng
+          {t('Userinfo')}
         </h1>
         <div className="w-[500px] bg-white mx-auto p-4 rounded-md mb-2">
-          <h2 className="text-2xl font-semibold text-center">Xác thực</h2>
+          <h2 className="text-2xl font-semibold text-center">{t('Verify')}</h2>
           <h3 className="flex items-center justify-center mb-2 text-sm font-semibold gap-x-1">
-            {auth?.isVerified
-              ? 'Tài khoản của bạn đã được xác thực'
-              : 'Tài khoản của bạn chưa được xác thực'}
+            {auth?.isVerified ? t('suceessVerify') : t('failVerify')}
             {auth?.user?.isVerified && <FaCheck color="green" size="15px" />}
           </h3>
           {auth?.user?.isVerified === false && (
             <div className="mx-auto w-max">
               <Button type="button" kind="primary" to={routes.VERIFYCODE}>
-                Xác thực ngay
+                {t('Verifynow')}
               </Button>
             </div>
           )}
@@ -171,7 +171,7 @@ const ProfilePage = () => {
         <div className="mb-3">
           <Field>
             <div className="mb-2">
-              <Label htmlFor="email">Email address</Label>
+              <Label htmlFor="email">{t('Emailaddress')}</Label>
             </div>
             <Input
               type="email"
@@ -186,7 +186,7 @@ const ProfilePage = () => {
         <div className="mb-3">
           <Field>
             <div className="mb-2">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username">{t('Username')}</Label>
             </div>
             <Input
               type="text"
@@ -200,20 +200,20 @@ const ProfilePage = () => {
         <div className="mb-5">
           <Field>
             <div className="mb-2">
-              <Label htmlFor="phoneNumber">Phone Number</Label>
+              <Label htmlFor="phoneNumber">{t('PhoneNumber')}</Label>
             </div>
             <Input
               type="text"
               name="phoneNumber"
               control={control}
               id="phoneNumber"
-              placeholder="Enter your phone number"
+              placeholder={t('EYNB')}
               className="input-phoneNumber"
             />
           </Field>
         </div>
         <div className="mx-auto w-max">
-          <Button kind="primary">Lưu thông tin</Button>
+          <Button kind="primary">{t('Saveinformation')}</Button>
         </div>
       </form>
     </div>

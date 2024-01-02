@@ -1,0 +1,23 @@
+{
+  "Information": "Information about books ordered",
+  "Title": "Title",
+  "Author": "Author",
+  "Category": "Category",
+  "Count": "Count",
+  "Price": "Price",
+  "FillInformation": "Fill in information",
+  "Enterphone": "Enter phone number",
+  "EP": "Phone Number",
+  "EnterAddress": "Enter Address",
+  "EA": "Enter A Location",
+  "method": "Select a payment method",
+  "cash": "Payment on delivery",
+  "VNPAY": "Payment via VNPAY",
+  "Paymentsuccess": "Payment success",
+  "Paymentfail": "Payment failed",
+  "notify": "Please review your payment history. Wish you will have Great experiences!",
+  "code": "Your order code is : ",
+  "time": "Payment time is : ",
+  "timedelivery": "Estimated delivery time is : ",
+  "Continueshopping": "Continue shopping"
+}
