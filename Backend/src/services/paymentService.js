@@ -247,6 +247,19 @@ function sortObject(obj) {
     }
     return sorted;
 }
+const getdetailPayment = async (id) => {
+    const result = {};
+    try {
+        const books = await db.Payment.findById(id);
+        result.data = books;
+        result.status = 200;
+        result.message = "Get Detail Succeed!"
+    } catch (e) {
+        result.status = 500;
+        result.message = e;
+    }
+    return result;
+}
 module.exports = {
-    paymentDirect, paymenHistory, paymenHistorySucceed, createpayment, paymenOnline
+    paymentDirect, paymenHistory, paymenHistorySucceed, createpayment, paymenOnline, getdetailPayment
 };

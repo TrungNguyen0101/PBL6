@@ -96,6 +96,25 @@ const handleCreate_payment_url = async (req, res) => {
         message: result.message
     })
 }
+const handleGetDetailPaymentByID = async (req, res) => {
+    const id = req.params.id;
+    if (!id) {
+        return res.status(404).json({
+            errCode: 1,
+            message: "Missing inputs parameter",
+        })
+    }
+    let result = await paymentService.getdetailPayment(id);
+    if (result.status === 200) {
+        return res.status(200).json({
+            data: result.data,
+            message: result.message
+        })
+    }
+    return res.status(500).json({
+        message: result.message
+    })
+}
 module.exports = {
-    handlePaymentDirect, handlePaymentHistory, handlePaymentHistorySucceed, handlePaymentOnline, handleCreate_payment_url
+    handlePaymentDirect, handlePaymentHistory, handlePaymentHistorySucceed, handlePaymentOnline, handleCreate_payment_url, handleGetDetailPaymentByID
 };
