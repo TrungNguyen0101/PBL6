@@ -29,11 +29,11 @@ const ProfilePage = () => {
   });
   const handleChangeInfor = async (values) => {
     const inputPhoneNumber = document.querySelector('.input-phoneNumber');
-    if (
-      inputPhoneNumber.value.charAt(0) !== '0' ||
-      typeof inputPhoneNumber.value === 'string'
-    ) {
+    if (inputPhoneNumber.value.charAt(0) !== '0') {
       toast.error('Số điện thọai không hợp lệ');
+      return;
+    } else if (typeof Number(inputPhoneNumber.value) !== 'number') {
+      toast('Số điện thọai không hợp lệ');
       return;
     } else if (
       inputPhoneNumber.value.length > 10 ||
@@ -47,6 +47,7 @@ const ProfilePage = () => {
       values.phoneNumber,
       avatar
     );
+    console.log(res);
     if (res.status === 200) {
       toast.success(res.message);
       sessionStorage.setItem('auth', JSON.stringify(res));
