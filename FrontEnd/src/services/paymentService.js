@@ -10,8 +10,9 @@ const postPayment = (amount, phone, address, bankCode, language, cart) => {
     cart,
   });
 };
-const postPaymentDirect = (address, phone, totalmoney, cart) => {
+const postPaymentDirect = (name, address, phone, totalmoney, cart) => {
   return instance.post('payment/payment_direct', {
+    name,
     address,
     phone,
     totalmoney,

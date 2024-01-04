@@ -21,6 +21,7 @@ const CheckOutPage = () => {
   const [isCheck, setIsCheck] = useState(null);
   const [isShowListLocation, setIsShowListLocation] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [name, setName] = useState('');
   const [book, setBook] = useState(null);
   const accountID =
     typeof window !== 'undefined'
@@ -84,16 +85,38 @@ const CheckOutPage = () => {
     setIsShowListLocation(true);
   };
   const handleCheckOutByDirect = async () => {
+    if (!name) {
+      toast.warning('Vui lòng nhập tên!!!');
+      return;
+    } else if (!phoneNumber) {
+      toast.warning('Vui lòng nhập số điện thoại!!!');
+      return;
+    } else if (!location) {
+      toast.warning('Vui lòng nhập địa chỉ');
+      return;
+    }
     const res = await postPaymentDirect(
+      name,
       location,
       phoneNumber,
       book?.totalMoney,
       book?.book
     );
+    if (res) toast.success('Thanh toán thành công');
     updatePayments();
+    router.push('/');
+    sessionStorage.removeItem('priceBook');
+    sessionStorage.removeItem('count');
+    sessionStorage.removeItem('check');
+    sessionStorage.removeItem('idBook');
+    sessionStorage.removeItem('pricePerBook');
+    sessionStorage.removeItem('book');
   };
   const handleCheckOutByVNPAY = async () => {
-    if (!phoneNumber) {
+    if (!name) {
+      toast.warning('Vui lòng nhập tên!!!');
+      return;
+    } else if (!phoneNumber) {
       toast.warning('Vui lòng nhập số điện thoại!!!');
       return;
     } else if (!location) {
@@ -145,7 +168,10 @@ const CheckOutPage = () => {
   return (
     <>
       <Header></Header>
-      <div className="mt-7 w-[850px] mx-auto bg-[#f2f3f4] shadow-xl rounded-md p-8">
+      <form
+        className="mt-7 w-[850px] mx-auto bg-[#f2f3f4] shadow-xl rounded-md p-8"
+        autoComplete="off"
+      >
         <TableAnt dataAccount={book} />
         <div className="mx-auto">
           <div className="mb-7">
@@ -153,7 +179,20 @@ const CheckOutPage = () => {
               1. {t('FillInformation')}
             </h2>
             <div className="flex gap-x-3">
-              <div className="flex flex-col w-1/2 gap-y-2">
+              <div className="flex flex-col w-[33.33%] gap-y-2">
+                <label htmlFor="phone-number" className="font-semibold">
+                  {t('Entername')}
+                </label>
+                <input
+                  value={name}
+                  id="phone-number"
+                  type="number"
+                  placeholder={t('EN')}
+                  className="input w-full py-[10px] pl-[10px] text-base rounded-md outline-none font-semibold"
+                  onChange={(event) => setName(event.target.value)}
+                />
+              </div>
+              <div className="flex flex-col w-[33.33%] gap-y-2">
                 <label htmlFor="phone-number" className="font-semibold">
                   {t('Enterphone')}
                 </label>
@@ -166,7 +205,7 @@ const CheckOutPage = () => {
                   onChange={(event) => setPhoneNumber(event.target.value)}
                 />
               </div>
-              <div className="relative flex flex-col w-1/2 gap-y-2">
+              <div className="relative flex flex-col w-[33.33%] gap-y-2">
                 <label htmlFor="location" className="font-semibold">
                   {t('EnterAddress')}
                 </label>
@@ -218,7 +257,7 @@ const CheckOutPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </>
   );
 };

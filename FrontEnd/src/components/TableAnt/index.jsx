@@ -13,7 +13,6 @@ const TableAnt = ({ dataAccount }) => {
       setData(dataAccount?.book);
     } else {
       const bookList = sessionStorage.getItem('bookList');
-      console.log('bl', JSON.parse(bookList));
       setData(JSON.parse(bookList)?.book);
     }
   }, [dataAccount?.book]);
