@@ -96,7 +96,6 @@ const TableAntHistory = ({
       key: 'action',
       width: 150,
       render: (_, record) => {
-        console.log(record);
         let state;
         let css;
         if (record.status === 1) {
@@ -139,11 +138,10 @@ const TableAntHistory = ({
       },
     },
     {
-      title: 'Chi tiết đơn hàng',
+      title: 'Details Order',
       key: 'detail',
       width: 200,
       render: (_, record) => {
-        console.log(record);
         let state;
         let css;
         if (record.status === 1) {
@@ -167,7 +165,6 @@ const TableAntHistory = ({
   useEffect(() => {
     setData(listHistory);
   }, [listHistory]);
-  console.log(isModalOpen);
   return (
     <div>
       <Table
