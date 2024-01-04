@@ -145,12 +145,11 @@ const searchPageBook = async (query) => {
     const skip = (parsedPage - 1) * parsedLimit;
     const totalCount = await Book.countDocuments({});
     const totalPages = Math.ceil(totalCount / parsedLimit);
-    const result = await Book.find({
+    const books = await Book.find({
       $or: [
         { booktitle: { $regex: query.title, $options: 'i' } }, // Tìm kiếm theo tiêu đề (không phân biệt chữ hoa/chữ thường)
       ]
     }).skip(skip).limit(parsedLimit);
-    console.log(result)
     bookData = {
       page: parsedPage,
       limit: parsedLimit,
@@ -158,7 +157,7 @@ const searchPageBook = async (query) => {
       totalCount,
       status: 200,
       message: "Succeed",
-      result,
+      books,
     };
   } catch (e) {
     bookData.status = 500;
