@@ -37,5 +37,6 @@ router.post("/update_state", async function (req, res, next) {
         data: updatedData
     });
 })
+router.get("/:id", paymentController.handleGetDetailPaymentByID);
 module.exports = router;
 
