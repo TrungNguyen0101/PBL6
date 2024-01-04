@@ -186,7 +186,7 @@ const CheckOutPage = () => {
                 <input
                   value={name}
                   id="phone-number"
-                  type="number"
+                  type="text"
                   placeholder={t('EN')}
                   className="input w-full py-[10px] pl-[10px] text-base rounded-md outline-none font-semibold"
                   onChange={(event) => setName(event.target.value)}

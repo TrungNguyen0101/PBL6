@@ -57,9 +57,12 @@ export default function SignUpPage() {
       values.email,
       values.password
     );
+    console.log(res);
     if (res.status === 200) {
       toast.success(res.message);
       router.push(routes.LOGIN);
+    } else if (res?.response?.status === 500) {
+      toast.error(res?.response?.message);
     }
   };
   return (

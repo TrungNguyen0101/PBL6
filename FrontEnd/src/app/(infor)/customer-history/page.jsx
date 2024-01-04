@@ -21,7 +21,10 @@ const CustomerHistoryPage = () => {
     <div className="w-[800px]">
       <h1 className="font-semibold text-3xl mb-3">{t('PurchaseHistory')}</h1>
       <div>
-        <TableAntHistory listHistory={listHistory} />
+        <TableAntHistory
+          listHistory={listHistory}
+          fecthDataHistoryCustomer={fecthDataHistoryCustomer}
+        />
       </div>
     </div>
   );

@@ -36,6 +36,9 @@ const successPayment = (data) => {
   return instance.get(`/payment/payment_online?${data}`);
 };
 
+const getDeleteDetailOrder = (id) => {
+  return instance.get(`/payment/${id}`);
+};
 export {
   postPayment,
   getAllPayment,
@@ -44,4 +47,5 @@ export {
   getCustomerHistory,
   getAllPaymentByStatus,
   successPayment,
+  getDeleteDetailOrder,
 };
