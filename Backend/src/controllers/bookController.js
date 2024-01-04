@@ -98,7 +98,6 @@ async function insertBook(req, res) {
 async function handleSearchBook(req, res) {
   try {
     let query = req.query.title;
-    console.log(query)
     if (!query) {
       return res.status(500).json({
         status: 500,
@@ -106,6 +105,33 @@ async function handleSearchBook(req, res) {
       })
     }
     const book = await bookService.searchBook(query);
+    if (book.status === 200) {
+      res.status(200).json({
+        message: "Search succeed",
+        data: book.data,
+      });
+    }
+    else {
+      res.status(500).json({
+        message: "Search Failed",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "failed",
+    });
+  }
+}
+async function handleSearchPageBook(req, res) {
+  try {
+    let query = req.query;
+    if (!query) {
+      return res.status(500).json({
+        status: 500,
+        message: "Missing inputs parameter",
+      })
+    }
+    const book = await bookService.searchPageBook(query);
     console.log(book);
     if (book.status === 200) {
       res.status(200).json({
@@ -133,4 +159,5 @@ module.exports = {
   updateBook: updateBook,
   insertBook: insertBook,
   handleSearchBook: handleSearchBook,
+  handleSearchPageBook: handleSearchPageBook
 };

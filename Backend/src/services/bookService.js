@@ -124,13 +124,42 @@ const searchBook = async (query) => {
     const result = await Book.find({
       $or: [
         { booktitle: { $regex: query, $options: 'i' } }, // Tìm kiếm theo tiêu đề (không phân biệt chữ hoa/chữ thường)
-        { author: { $regex: query, $options: 'i' } } // Tìm kiếm theo tác giả
       ]
     });
     console.log(result)
     bookData.data = result;
     bookData.status = 200;
     bookData.message = "Succeed";
+  } catch (e) {
+    bookData.status = 500;
+    bookData.message = e;
+  }
+  return bookData;
+}
+const searchPageBook = async (query) => {
+  let bookData = {};
+  try {
+    const { page, limit } = query;
+    const parsedPage = parseInt(page) || 1;
+    const parsedLimit = parseInt(limit) || 10;
+    const skip = (parsedPage - 1) * parsedLimit;
+    const totalCount = await Book.countDocuments({});
+    const totalPages = Math.ceil(totalCount / parsedLimit);
+    const result = await Book.find({
+      $or: [
+        { booktitle: { $regex: query.title, $options: 'i' } }, // Tìm kiếm theo tiêu đề (không phân biệt chữ hoa/chữ thường)
+      ]
+    }).skip(skip).limit(parsedLimit);
+    console.log(result)
+    bookData = {
+      page: parsedPage,
+      limit: parsedLimit,
+      totalPages,
+      totalCount,
+      status: 200,
+      message: "Succeed",
+      result,
+    };
   } catch (e) {
     bookData.status = 500;
     bookData.message = e;
@@ -146,4 +175,5 @@ module.exports = {
   getBookByCategory: getBookByCategory,
   getAllBooksByDiscount: getAllBooksByDiscount,
   searchBook: searchBook,
+  searchPageBook: searchPageBook
 };

@@ -11,4 +11,5 @@ router.get("/:id", bookController.getBookById);
 router.post("/insert", bookController.insertBook);
 router.put("/", bookController.updateBook);
 router.post("/search", bookController.handleSearchBook);
+router.post("/search-page", bookController.handleSearchPageBook);
 module.exports = router;
