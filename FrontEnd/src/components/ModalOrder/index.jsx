@@ -3,9 +3,6 @@ import { Modal } from 'antd';
 import { getDeleteDetailOrder } from '@/services/paymentService';
 const ModalOrder = ({ isModalOpen, setIsModalOpen = () => {}, idOrder }) => {
   const [dataOrder, setDataOrder] = useState(null);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
   const handleOk = () => {
     setIsModalOpen(false);
   };
@@ -29,14 +26,18 @@ const ModalOrder = ({ isModalOpen, setIsModalOpen = () => {}, idOrder }) => {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        width={650}
       >
-        <div>
+        <div className="mt-5">
           {dataOrder?.cart?.length > 0 &&
             dataOrder?.cart?.map((item) => (
-              <div key={item._id} className="flex gap-x-3">
+              <div key={item._id} className="flex gap-x-4 mb-5">
                 {item?.mainImage.length > 0 &&
                   item?.mainImage.map((image, index) => (
-                    <div key={index} className="w-[80px] h-[120px]">
+                    <div
+                      key={index}
+                      className="w-[100px] h-[120px] flex-shrink-0"
+                    >
                       <img
                         src={image.url}
                         alt=""
@@ -49,14 +50,20 @@ const ModalOrder = ({ isModalOpen, setIsModalOpen = () => {}, idOrder }) => {
                     {item.booktitle}
                   </p>
                   <p className="mt-1">Author: {item.author}</p>
-                  <p>x {item.Count}</p>
+                  <p>Quantity: {item.Count}</p>
+                  <p className="text-[#bc1313dd] font-semibold text-lg">
+                    {(
+                      (item.Count * ((100 - item.discount) * item.price)) /
+                      100
+                    ).toLocaleString('it-IT', {
+                      style: 'currency',
+                      currency: 'VND',
+                    })}
+                  </p>
                 </div>
               </div>
             ))}
         </div>
-        <p className="pl-[90px] -translate-y-[50px] text-[#bc1313dd] text-lg font-semibold">
-          {dataOrder?.totalmoney}
-        </p>
       </Modal>
     </>
   );
