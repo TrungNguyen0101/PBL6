@@ -123,10 +123,10 @@ const searchBook = async (query) => {
   try {
     const result = await Book.find({
       $or: [
-        { booktitle: { $regex: query, $options: 'i' } }, // Tìm kiếm theo tiêu đề (không phân biệt chữ hoa/chữ thường)
-      ]
+        { booktitle: { $regex: query, $options: "i" } }, // Tìm kiếm theo tiêu đề (không phân biệt chữ hoa/chữ thường)
+      ],
     });
-    console.log(result)
+    console.log(result);
     bookData.data = result;
     bookData.status = 200;
     bookData.message = "Succeed";
@@ -135,7 +135,7 @@ const searchBook = async (query) => {
     bookData.message = e;
   }
   return bookData;
-}
+};
 const searchPageBook = async (query) => {
   let bookData = {};
   try {
@@ -147,16 +147,20 @@ const searchPageBook = async (query) => {
     const totalPages = Math.ceil(totalCount / parsedLimit);
     const books = await Book.find({
       $or: [
-        { booktitle: { $regex: query.title, $options: 'i' } }, // Tìm kiếm theo tiêu đề (không phân biệt chữ hoa/chữ thường)
-      ]
-    }).skip(skip).limit(parsedLimit);
+        { booktitle: { $regex: query.title, $options: "i" } },
+
+        // Tìm kiếm theo tiêu đề (không phân biệt chữ hoa/chữ thường)
+      ],
+    })
+      .skip(skip)
+      .limit(parsedLimit);
     bookData = {
       page: parsedPage,
       limit: parsedLimit,
       totalPages,
       totalCount,
       status: 200,
-      message: "Succeed",
+      message: "Succeed ",
       books,
     };
   } catch (e) {
@@ -164,7 +168,7 @@ const searchPageBook = async (query) => {
     bookData.message = e;
   }
   return bookData;
-}
+};
 module.exports = {
   insertBook: insertBook,
   updateBook: updateBook,
@@ -174,5 +178,5 @@ module.exports = {
   getBookByCategory: getBookByCategory,
   getAllBooksByDiscount: getAllBooksByDiscount,
   searchBook: searchBook,
-  searchPageBook: searchPageBook
+  searchPageBook: searchPageBook,
 };

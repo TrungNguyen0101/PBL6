@@ -33,6 +33,11 @@ const deleteBook = (id) => {
 const searchBook = (data) => {
   return instance.post(`book/search?title=${data.title}`);
 };
+const searchPageBook = (page = 1, limit, data) => {
+  return instance.post(
+    `book/search-page?page=${page}&limit=${limit}&title=${data.title}`
+  );
+};
 export {
   getAllBook,
   getBookById,
@@ -43,4 +48,5 @@ export {
   getAllBookWithPagination,
   getAllBooksByDiscount,
   searchBook,
+  searchPageBook,
 };
