@@ -28,7 +28,6 @@ const InforLogin = () => {
       setAuth(JSON.parse(auth));
     }
   }, [updateInfor]);
-  console.log(auth?.user);
   return (
     <div className="relative font-semibold infor">
       <div className="min-w-[120px] h-[40px] cursor-pointer">

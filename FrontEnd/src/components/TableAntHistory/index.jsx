@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 const TableAntHistory = ({ listHistory }) => {
   const { t } = useTranslation('info');
-  console.log(listHistory);
   const [data, setData] = useState([]);
   const columns = [
     {
@@ -39,7 +38,6 @@ const TableAntHistory = ({ listHistory }) => {
         } else if (record.payment_method === 'ON') {
           state = 'Thanh toán online';
         }
-        console.log('state', state);
         return (
           <span className={`font-semibold rounded-xl  ${css}`}>{state}</span>
         );
@@ -57,7 +55,6 @@ const TableAntHistory = ({ listHistory }) => {
         } else if (record.payment_method === 'ON') {
           state = 'Thanh toán online';
         }
-        console.log('state', state);
         return (
           <span className={`font-semibold rounded-xl  ${css}`}>{state}</span>
         );
