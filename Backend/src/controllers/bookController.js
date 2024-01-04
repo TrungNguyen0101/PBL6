@@ -132,11 +132,10 @@ async function handleSearchPageBook(req, res) {
       })
     }
     const book = await bookService.searchPageBook(query);
-    console.log(book);
     if (book.status === 200) {
       res.status(200).json({
         message: "Search succeed",
-        result,
+        result: book,
       });
     }
     else {
