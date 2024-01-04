@@ -136,7 +136,7 @@ async function handleSearchPageBook(req, res) {
     if (book.status === 200) {
       res.status(200).json({
         message: "Search succeed",
-        data: book.data,
+        book,
       });
     }
     else {
