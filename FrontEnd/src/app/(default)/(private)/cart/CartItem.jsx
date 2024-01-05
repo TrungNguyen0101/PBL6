@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import {
   deleteOrder,
@@ -9,6 +9,7 @@ import {
 } from '@/services/orderService';
 import { toast } from 'react-toastify';
 import { Popconfirm } from 'antd';
+import { getBookById } from '@/services/bookService';
 
 const CartItem = ({
   cart,
@@ -24,6 +25,7 @@ const CartItem = ({
   const [count, setCount] = useState(cart.Count);
   const [order, setOrder] = useState({});
   const [loading, setLoading] = useState(false);
+  const [book123, setBook123] = useState({});
 
   const handleUpdateOrder = async (id, count, status) => {
     try {
@@ -82,6 +84,22 @@ const CartItem = ({
     await handleGetCartByAccountStatus(accountID);
     setLoading(false);
   };
+
+  useEffect(() => {
+    try {
+      const handleGetBookByID = async () => {
+        // setIsLoading(true);
+        const result = await getBookById(cart?.Book._id);
+        if (result.data.book) {
+          setBook123(result.data.book);
+          // setIsLoading(false);
+        }
+      };
+      handleGetBookByID();
+    } catch (error) {
+      console.log('file: page.jsx:37 ~ useEffect ~ error:', error);
+    }
+  }, []);
   return (
     <tr className={`${loading ? 'cursor-wait' : ''}`}>
       <td className="p-0 text-center">
@@ -177,7 +195,7 @@ const CartItem = ({
         </span>
       </td>
       <td className="p-[10px] text-left price-amount amount-sub">
-        <span className="text-black">{cart?.Book?.quantity}</span>
+        <span className="text-black">{book123?.quantity}</span>
       </td>
     </tr>
   );

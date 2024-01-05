@@ -14,6 +14,7 @@ import { Switch } from 'antd';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { getBookById } from '@/services/bookService';
 export default function Cart() {
   const { t } = useTranslation('cart');
   const router = useRouter();
@@ -44,23 +45,34 @@ export default function Cart() {
         acc += order.Count * priceDiscount;
         return acc;
       }, 0);
-      const booksWithCount = data?.order.map((item) => {
-        const { Book, Count } = item;
-        const totalPrice = parseFloat(Book.price) * parseInt(Count); // Tính tổng giá tiền
 
-        return { ...Book, Count, price: Book.price }; // Tạo đối tượng mới chứa thông tin sách và Count
-      });
+      const booksWithCount = await Promise.all(
+        data?.order.map(async (item) => {
+          const { Book, Count } = item;
+          const totalPrice = parseFloat(Book.price) * parseInt(Count);
+          const result = await getBookById(Book._id);
+
+          return {
+            ...Book,
+            Count,
+            price: Book.price,
+            quantityNew: result?.data?.book?.quantity,
+          };
+        })
+      );
+
       setPayment({
         book: booksWithCount,
         totalMoney: total,
       });
     } else {
       setPayment({
-        book: {},
+        book: [],
         totalMoney: 0,
       });
     }
   };
+
   useEffect(() => {
     const handleChangeOffStatus = async () => {
       const result = await updateAllStatusOrder({
@@ -102,7 +114,7 @@ export default function Cart() {
       const result =
         payment.book.length > 0 &&
         payment.book.every((item) => {
-          return parseInt(item.Count) <= parseInt(item.quantity);
+          return parseInt(item.Count) <= parseInt(item.quantityNew);
         });
       if (result) {
         sessionStorage.setItem('bookList', JSON.stringify(payment));

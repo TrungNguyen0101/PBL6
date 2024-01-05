@@ -878,12 +878,12 @@ const ProductDetail = () => {
                       <div className="card-top">
                         <div className="profile">
                           <div className="profile-image">
-                            <Image
-                              src={cmt?.user?.avatar}
+                            {/* <Image
+                              src={cmt?.user?.avatar || ''}
                               alt=""
                               width={100}
                               height={100}
-                            />
+                            /> */}
                           </div>
                           <div className="profile-name">
                             <strong>{cmt?.user?.username}</strong>
