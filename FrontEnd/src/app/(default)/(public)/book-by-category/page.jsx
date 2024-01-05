@@ -21,11 +21,11 @@ const BookByCategoryPage = () => {
   return (
     <div className="mt-5 wrapper-content">
       <>
-        <input
+        {/* <input
           type="text"
           placeholder="Search book..."
           className="w-full p-3 text-sm font-semibold rounded-md outline-none"
-        />
+        /> */}
       </>
       <div className="flex flex-wrap gap-5 mt-5">
         {listBook?.length > 0 &&
