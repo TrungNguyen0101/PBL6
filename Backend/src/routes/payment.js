@@ -38,7 +38,7 @@ router.post("/update_state", async function (req, res, next) {
         for (let i = 0; i < updatedData.cart.length; i++) {
             const itemId = updatedData.cart[i]._id;
             const existingBook = await db.Book.findById(itemId);
-            const newQuantity = parseInt(existingBook.quantity) - updatedData.cart[i].quantity;
+            const newQuantity = parseInt(existingBook.quantity) - parseInt(updatedData.cart[i].quantity);
 
             await db.Book.updateOne(
                 { _id: new ObjectId(itemId) },
@@ -50,7 +50,7 @@ router.post("/update_state", async function (req, res, next) {
         for (let i = 0; i < updatedData.cart.length; i++) {
             const itemId = updatedData.cart[i]._id;
             const existingBook = await db.Book.findById(itemId);
-            const newQuantity = parseInt(existingBook.quantity) + updatedData.cart[i].quantity;
+            const newQuantity = parseInt(existingBook.quantity) + parseInt(updatedData.cart[i].quantity);
 
             await db.Book.updateOne(
                 { _id: new ObjectId(itemId) },
