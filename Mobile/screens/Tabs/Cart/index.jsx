@@ -88,47 +88,49 @@ export default function Cart() {
           )}
         </ScrollView>
       </SafeAreaView>
-      <View style={{ flexDirection: 'row', bottom: 0, elevation: 4 }}>
-        <View
-          style={{
-            flex: 2,
-            backgroundColor: colors.whiteColor,
-            alignItems: 'flex-end',
-            paddingHorizontal: 12,
-            paddingVertical: 12,
-          }}
-        >
-          <Text style={{ fontSize: 16 }}>Tổng thanh toán: </Text>
-          <Text
+      {user && (
+        <View style={{ flexDirection: 'row', bottom: 0, elevation: 4 }}>
+          <View
             style={{
-              fontSize: 16,
-              color: colors.orangeColor,
-              fontWeight: 'bold',
+              flex: 2,
+              backgroundColor: colors.whiteColor,
+              alignItems: 'flex-end',
+              paddingHorizontal: 12,
+              paddingVertical: 12,
             }}
           >
-            {totalPrice.toLocaleString('it-IT', {
-              style: 'currency',
-              currency: 'VND',
-            })}
-          </Text>
+            <Text style={{ fontSize: 16 }}>Tổng thanh toán: </Text>
+            <Text
+              style={{
+                fontSize: 16,
+                color: colors.orangeColor,
+                fontWeight: 'bold',
+              }}
+            >
+              {totalPrice.toLocaleString('it-IT', {
+                style: 'currency',
+                currency: 'VND',
+              })}
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Checkout')
+            }}
+            style={{
+              flex: 1,
+              backgroundColor: colors.orangeColor,
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingVertical: 12,
+            }}
+          >
+            <Text style={{ fontSize: 18, color: colors.whiteColor }}>
+              Mua hàng
+            </Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Checkout')
-          }}
-          style={{
-            flex: 1,
-            backgroundColor: colors.orangeColor,
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingVertical: 12,
-          }}
-        >
-          <Text style={{ fontSize: 18, color: colors.whiteColor }}>
-            Mua hàng
-          </Text>
-        </TouchableOpacity>
-      </View>
+      )}
     </View>
   )
 }
