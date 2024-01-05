@@ -176,6 +176,9 @@ const CartItem = ({
           })}
         </span>
       </td>
+      <td className="p-[10px] text-left price-amount amount-sub">
+        <span className="text-black">{cart?.Book?.quantity}</span>
+      </td>
     </tr>
   );
 };

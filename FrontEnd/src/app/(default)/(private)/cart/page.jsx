@@ -99,9 +99,18 @@ export default function Cart() {
   }
   const handleCheckout = () => {
     if (payment.totalMoney > 0) {
-      sessionStorage.setItem('bookList', JSON.stringify(payment));
-      sessionStorage.setItem('check', true);
-      router.push('/check-out');
+      const result =
+        payment.book.length > 0 &&
+        payment.book.every((item) => {
+          return parseInt(item.Count) <= parseInt(item.quantity);
+        });
+      if (result) {
+        sessionStorage.setItem('bookList', JSON.stringify(payment));
+        sessionStorage.setItem('check', true);
+        router.push('/check-out');
+      } else {
+        toast.warn('Product quantity is not enough');
+      }
     } else {
       toast.warning('Cart Empty!!!');
     }
@@ -135,6 +144,10 @@ export default function Cart() {
                   </th>
                   <th className="pl-[10px] text-left product-subtotal">
                     {t('Subtotal')}
+                  </th>
+                  <th className="pl-[10px] text-left product-subtotal">
+                    {/* {t('Subtotal')} */}
+                    Quantity in stock
                   </th>
                 </tr>
               </thead>

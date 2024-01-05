@@ -83,21 +83,25 @@ const ProductDetail = () => {
   const handleAddCart = async () => {
     try {
       if (account) {
-        const formData = {
-          IdAccount: account?.user?._id,
-          Book: book,
-          PriceDiscount:
-            priceDiscount !== ''
-              ? priceDiscount.toFixed(2)
-              : book?.price.toFixed(2),
-          Count: count,
-        };
-        const result = await postOrder(formData);
-        if (result?.data?.errCode === 200) {
-          toast.success('Add book to cart successfully');
-          handleGetLengthCart();
+        if (count > book.quantity) {
+          toast.warn('Product quantity is not enough');
         } else {
-          toast.error('Add book to cart fail');
+          const formData = {
+            IdAccount: account?.user?._id,
+            Book: book,
+            PriceDiscount:
+              priceDiscount !== ''
+                ? priceDiscount.toFixed(2)
+                : book?.price.toFixed(2),
+            Count: count,
+          };
+          const result = await postOrder(formData);
+          if (result?.data?.errCode === 200) {
+            toast.success('Add book to cart successfully');
+            handleGetLengthCart();
+          } else {
+            toast.error('Add book to cart fail');
+          }
         }
       } else {
         toast.error('Please log in');
@@ -281,7 +285,7 @@ const ProductDetail = () => {
                 <span className="product-name">{book?.booktitle}</span>
               </nav>
             </div>
-            <div className="col-span-1 justify-self-start mr-5 items-center">
+            <div className="items-center col-span-1 mr-5 justify-self-start">
               <Popover
                 renderPopover={
                   <div className="bg-white relative shadow-md rounded-md border border-gray-200 w-[350px] text-sm  mr-5">
@@ -295,13 +299,13 @@ const ProductDetail = () => {
                             <div>
                               {' '}
                               <div className="mt-5">
-                                <div className="mt-4 flex ">
+                                <div className="flex mt-4 ">
                                   <div className="flex-shrink-0">
                                     <img
                                       key={item.Book.mainImage}
                                       src={item.Book.mainImage[0].url}
                                       alt="anh"
-                                      className="w-11 h-11 object-cover"
+                                      className="object-cover w-11 h-11"
                                     />
                                   </div>
                                   <div
@@ -313,7 +317,7 @@ const ProductDetail = () => {
                                     </div>
                                   </div>
                                   <div
-                                    className="ml-2 flex-shrink-0"
+                                    className="flex-shrink-0 ml-2"
                                     key={item.Book.price}
                                   >
                                     <span className="text-orange">
@@ -329,19 +333,19 @@ const ProductDetail = () => {
                             <img
                               src="https://evgracias.com/images/no-products.jpg"
                               alt="no purchase"
-                              className="h-full w-full"
+                              className="w-full h-full"
                             />
                           </div>
                         )}
 
-                        <div className="flex mt-6 items-center justify-between">
-                          <div className="capitalize text-xs text-gray-500">
+                        <div className="flex items-center justify-between mt-6">
+                          <div className="text-xs text-gray-500 capitalize">
                             {orderLength > maxItem ? orderLength - maxItem : ''}{' '}
                             {t('Cart')}
                           </div>
                           <Link
                             href="/cart"
-                            className="capitalize bg-red-500 hover:bg-opacity-90 px-4 py-2 rounded-2xl text-white"
+                            className="px-4 py-2 text-white capitalize bg-red-500 hover:bg-opacity-90 rounded-2xl"
                           >
                             {t('viewcart')}
                           </Link>
@@ -538,8 +542,9 @@ const ProductDetail = () => {
                     </button> */}
                   </div>
                   <button className="favorite-product mt-[20px] flex justify-center items-center gap-x-[10px] m-atuo">
-                    <i className="fa fa-heart-o icon-heart"></i>
-                    <span>{t('Addtowishlist')}</span>
+                    {/* <i className="fa fa-heart-o icon-heart"></i>
+                    <span>{t('Addtowishlist')}</span> */}
+                    Quantity : {book?.quantity}
                   </button>
                 </div>
                 {/* <!-- End product-purchase-table area --> */}
@@ -932,7 +937,7 @@ const ProductDetail = () => {
                           alt=""
                           className="w-[220px] h-[280px] rounded-lg pb-1 cursor-pointer"
                         />
-                        <div className="text-xl flex  w-full font-bold hover:text-black/60 cursor-pointer">
+                        <div className="flex w-full text-xl font-bold cursor-pointer hover:text-black/60">
                           {item?.booktitle}
                         </div>
                       </Link>

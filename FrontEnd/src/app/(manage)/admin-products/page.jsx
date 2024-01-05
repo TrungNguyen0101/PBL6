@@ -105,7 +105,7 @@ export default function ProductPage() {
             </button>
             <input
               type="text"
-              placeholder={t('search')}
+              placeholder="Search book..."
               className={`mt-[10px] w-[40%] p-3 text-sm font-semibold border rounded-md outline-none ${
                 isLoading ? 'cursor-wait' : ''
               }`}
