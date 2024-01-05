@@ -4,6 +4,7 @@ let $ = require('jquery');
 const request = require('request');
 const moment = require('moment');
 const db = require("../models/index")
+const { ObjectId } = require('mongodb');
 const middleware = require("../utils/middleware.js");
 const { paymentController } = require("../controllers/index.js");
 router.post('/create_payment_url', middleware.authMiddleWare, paymentController.handleCreate_payment_url);
@@ -33,6 +34,18 @@ router.post("/update_state", async function (req, res, next) {
         }
     );
     const updatedData = await db.Payment.findOne({ orderId: orderId }).exec();
+    if (updatedData.status === 4) {
+        for (let i = 0; i < updatedData.cart.length; i++) {
+            const itemId = updatedData.cart[i]._id;
+            const existingBook = await db.Book.findById(itemId);
+            const newQuantity = parseInt(existingBook.quantity) - 1;
+
+            const result = await db.Book.updateOne(
+                { _id: new ObjectId(itemId) },
+                { $set: { quantity: newQuantity } }
+            );
+        }
+    }
     return res.send({
         data: updatedData
     });
