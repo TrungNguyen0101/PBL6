@@ -34,13 +34,13 @@ router.post("/update_state", async function (req, res, next) {
         }
     );
     const updatedData = await db.Payment.findOne({ orderId: orderId }).exec();
-    if (updatedData.status === 4) {
+    if (updatedData.status === 2) {
         for (let i = 0; i < updatedData.cart.length; i++) {
             const itemId = updatedData.cart[i]._id;
             const existingBook = await db.Book.findById(itemId);
             const newQuantity = parseInt(existingBook.quantity) - 1;
 
-            const result = await db.Book.updateOne(
+            await db.Book.updateOne(
                 { _id: new ObjectId(itemId) },
                 { $set: { quantity: newQuantity } }
             );
