@@ -4,11 +4,12 @@ import { Select, Table } from 'antd';
 import { getAllPayment, updatePayment } from '@/services/paymentService';
 import ModelOrder from '@/components/ModelOrder';
 import { toast } from 'react-toastify';
-import { format } from 'date-fns';
+import { compareAsc, format, parse } from 'date-fns';
 // import { spacing } from 'react-select/dist/declarations/src/theme';
 import { Button, message, Popconfirm } from 'antd';
 import './styled.scss';
 import LoadingPage from '@/components/LoadingPage';
+import moment from 'moment';
 const OrderPage = () => {
   const { Option } = Select;
   const [data, setData] = useState([]);
@@ -120,12 +121,21 @@ const OrderPage = () => {
       title: 'Date time',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      width: 5,
+      sorter: (a, b) => {
+        // Assuming dates are in the format 'dd/MM/yyyy', use the appropriate format for your data
+        let dateA = parse(a.createdAt, 'dd/MM/yyyy', new Date());
+        let dateB = parse(b.createdAt, 'dd/MM/yyyy', new Date());
+
+        // Use compareAsc from date-fns to compare the dates or standard JS Date object comparison
+        return compareAsc(dateA, dateB);
+      },
+      width: 7,
     },
     {
       title: 'Status',
       key: 'action',
       width: 5,
+      sorter: (a, b) => a.status - b.status,
       render: (_, record) => {
         let state;
         let css;
