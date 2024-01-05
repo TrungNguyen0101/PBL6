@@ -1,5 +1,5 @@
 import { Alert, Dimensions, Text, TouchableOpacity, View } from 'react-native'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import colors from '../../contains/colors'
 
 import Address from './components/Address'

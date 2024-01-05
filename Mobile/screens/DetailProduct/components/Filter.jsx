@@ -15,8 +15,15 @@ export default function Filter({ book }) {
   const navigation = useNavigation()
 
   const handleAddCart = async () => {
-    const priceDiscount =
-      book?.discount !== 0 ? (book?.price * (100 - book?.discount)) / 100 : ''
+    if (Number(book.quantity) === 0) {
+      Toast.show({
+        text1: 'Thông báo',
+        text2: 'Sản phẩm hiện tại đang hết hàng'
+      })
+      return;
+    }
+
+    const priceDiscount = book?.discount !== 0 ? (book?.price * (100 - book?.discount)) / 100 : ''
     try {
       if (user) {
         const formData = {
