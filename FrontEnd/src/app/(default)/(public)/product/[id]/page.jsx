@@ -173,6 +173,10 @@ const ProductDetail = () => {
       );
       return;
     }
+    if (+book.quantity < count) {
+      toast.warning('Product quantity is not enough');
+      return;
+    }
     sessionStorage.setItem('priceBook', Number(price * count));
     sessionStorage.setItem('count', Number(count));
     sessionStorage.setItem('idBook', book?._id);
